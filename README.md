@@ -1,1 +1,0 @@
-# minjipi.github.io
