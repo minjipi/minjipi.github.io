@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta property="og:title" content="햄스터 잡기 🐹" />
+<meta property="og:description" content="15초 안에 귀여운 햄스터를 잡아 점수를 올려보세요!" />
+<meta property="og:image" content="https://minjipi.github.io/hamster-bg.png" />
+<meta property="og:url" content="https://minjipi.github.io/" />
+<meta property="og:type" content="website" />
+  
+  <meta charset="UTF-8" />
+  <title>햄스터 잡기 게임 🐹</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url("hamster-bg.png") center / cover no-repeat fixed;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #111827;
+    }
+
+    .game-card {
+      background: rgba(255, 255, 255, 0.88);
+      padding: 28px 24px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.22);
+      width: 90%;
+      max-width: 430px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 18px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .info-item span.label {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .info-item span.value {
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .high-score {
+      font-size: 15px;
+      color: #9ca3af;
+      text-align: right;
+      margin-bottom: 6px;
+    }
+
+    .legend {
+      font-size: 15px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 10px 0 14px 0;
+    }
+
+    .hole {
+      background: #facc15;
+      border-radius: 999px;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow:
+        inset 0 4px 8px rgba(0, 0, 0, 0.25),
+        0 4px 6px rgba(0, 0, 0, 0.15);
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.1s, transform 0.06s;
+    }
+
+    .hole::after {
+      /* 톱밥 느낌 살짝 */
+      content: "";
+      position: absolute;
+      inset: 65% 8% 6% 8%;
+      background: #fef3c7;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
+
+    .hole:active {
+      transform: translateY(2px);
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .entity {
+      font-size: 28px;
+      opacity: 0;
+      transform: translateY(10px) scale(0.8);
+      transition: opacity 0.1s, transform 0.1s;
+      pointer-events: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hole.active {
+      background: #fbbf24;
+    }
+
+    .hole.active .entity {
+      opacity: 1;
+      transform: translateY(-4px) scale(1);
+    }
+
+    .btn-row {
+      margin-top: 6px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      /* 💙 하늘색 그라데이션 */
+      color: #1e3a8a;
+      /* 진한 파란 글씨 */
+      box-shadow: 0 6px 14px rgba(147, 197, 253, 0.4);
+    }
+
+    .btn:not([disabled]):hover {
+      transform: translateY(-1px);
+    }
+
+    /* 게임 중 버튼도 동일한 톤 */
+    .btn.running {
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      color: #1e3a8a;
+      cursor: not-allowed;
+      opacity: 0.7;
+      box-shadow: none;
+    }
+
+    /* 팝업 닫기 버튼도 동일하게 */
+    .popup-content button {
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      color: #1e3a8a;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(147, 197, 253, 0.4);
+    }
+
+
+    .countdown {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 800;
+      color: #f97316;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      background: rgba(255, 255, 255, 0.7);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 24px 28px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: pop 0.25s ease-out;
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .popup-content h2 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .popup-content p {
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .popup-content button {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="game-card">
+    <h1>햄스터 잡기 🐹</h1>
+    <p class="subtitle">15초 안에 점수를 최대한 많이 올려보세요!</p>
+
+    <div class="info-row">
+      <div class="info-item">
+        <span class="label">점수</span><span id="score" class="value">0</span>
+      </div>
+      <div class="info-item">
+        <span class="label">남은 시간</span><span id="time" class="value">15</span>초
+      </div>
+    </div>
+
+    <div class="high-score">
+      최고 점수: <span id="highScore">0</span> 점
+    </div>
+    <div class="legend">
+      🐹 +1점 · 🧀 +3점 · 💩 -5점 <br>
+      (점수가 0 아래로 떨어지면 바로 게임 끝!)
+    </div>
+
+    <div class="grid" id="grid">
+      <div class="hole" data-index="0">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="1">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="2">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="3">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="4">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="5">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="6">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="7">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="8">
+        <div class="entity">🐹</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button id="startBtn" class="btn start">▶ 게임 시작</button>
+    </div>
+
+    <div id="countdown" class="countdown"></div>
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <h2>게임 종료!</h2>
+      <p id="popupText"></p>
+      <button id="popupClose">닫기</button>
+    </div>
+  </div>
+
+    <script>
+    const holes = document.querySelectorAll(".hole");
+    const scoreEl = document.getElementById("score");
+    const timeEl = document.getElementById("time");
+    const highScoreEl = document.getElementById("highScore");
+    const startBtn = document.getElementById("startBtn");
+    const popup = document.getElementById("popup");
+    const popupText = document.getElementById("popupText");
+    const popupClose = document.getElementById("popupClose");
+
+    const GAME_TIME = 15;
+    const STORAGE_KEY = "whackAMoleHighScore";
+
+    let score = 0;
+    let timeLeft = GAME_TIME;
+    let gameTimer = null;
+    let moleTimer = null;
+
+    let gameActive = false;
+    let highScore = parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10) || 0;
+    highScoreEl.textContent = highScore;
+
+    function resetHoles() {
+      holes.forEach(h => h.classList.remove("active"));
+    }
+
+    function setEntityForHole(hole, type) {
+      const el = hole.querySelector(".entity");
+      if (!el) return;
+      if (type === "mole") el.textContent = "🐹";
+      else if (type === "cheese") el.textContent = "🧀";
+      else if (type === "poop") el.textContent = "💩";
+    }
+
+    // 엔티티(햄스터/치즈/똥) 등장 로직
+    function showRandomEntity() {
+      resetHoles();
+
+      const index = Math.floor(Math.random() * holes.length);
+      const r = Math.random();
+      let mainEntity;
+      if (r < 0.6) mainEntity = "mole";        // 60%
+      else if (r < 0.75) mainEntity = "cheese"; // 15%
+      else mainEntity = "poop";                // 25%
+
+      const mainHole = holes[index];
+      setEntityForHole(mainHole, mainEntity);
+      mainHole.classList.add("active");
+
+      
+      if (Math.random() < 0.3) {
+        const available = [...holes].filter((_, i) => i !== index);
+        const extraIndex = Math.floor(Math.random() * available.length);
+        const extraHole = available[extraIndex];
+
+        setEntityForHole(extraHole, "poop");
+        extraHole.classList.add("active");
+      }
+
+      const nextDelay = 800 + Math.random() * 600;
+      moleTimer = setTimeout(showRandomEntity, nextDelay);
+    }
+
+    function startGame() {
+      if (gameActive) return;
+
+      score = 0;
+      timeLeft = GAME_TIME;
+      scoreEl.textContent = score;
+      timeEl.textContent = timeLeft;
+
+      startBtn.disabled = true;
+      startBtn.textContent = "게임 중...";
+      startBtn.classList.remove("start", "restart");
+      startBtn.classList.add("running");
+
+      gameActive = true;
+      resetHoles();
+      showRandomEntity();
+
+      gameTimer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          endGame("time");
+        }
+      }, 1000);
+    }
+
+    function endGame(reason) {
+      if (!gameActive && reason !== "negative") return;
+
+      gameActive = false;
+      clearInterval(gameTimer);
+      clearTimeout(moleTimer);
+      resetHoles();
+
+      startBtn.disabled = false;
+      startBtn.textContent = "다시 시작하기";
+      startBtn.className = "btn restart";
+
+      let message = "";
+      const isRecord = score > highScore;
+
+      if (score < 0 || reason === "negative") {
+        message = `점수가 0 아래로 떨어졌어요 💣 바보냐긔... (최종 점수: ${score}점)`;
+      } else if (isRecord) {
+        highScore = score;
+        localStorage.setItem(STORAGE_KEY, highScore.toString());
+        highScoreEl.textContent = highScore;
+        message = `새 기록 달성 🎉 (${score}점)`;
+      } else {
+        message = `내 점수: ${score}점 👏`;
+      }
+
+      popupText.textContent = message;
+      popup.classList.add("show");
+    }
+
+    popupClose.addEventListener("click", () => {
+      popup.classList.remove("show");
+    });
+
+    holes.forEach((hole) => {
+      hole.addEventListener("click", () => {
+        if (!gameActive) return;
+        if (!hole.classList.contains("active")) return;
+
+        const el = hole.querySelector(".entity");
+        if (!el) return;
+        const type = el.textContent;
+
+        if (type === "🐹") {
+          score += 1;
+        } else if (type === "🧀") {
+          score += 3;
+        } else if (type === "💩") {
+          score -= 5;
+        }
+
+        scoreEl.textContent = score;
+        hole.classList.remove("active");
+
+        if (score < 0) {
+          endGame("negative");
+        }
+      });
+    });
+
+    startBtn.addEventListener("click", startGame);
+  </script>
+
+</body>
+
+</html>
