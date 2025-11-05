@@ -2,12 +2,12 @@
 <html lang="ko">
 
 <head>
-<meta property="og:title" content="햄스터 잡기 🐹" />
-<meta property="og:description" content="15초 안에 귀여운 햄스터를 잡아 점수를 올려보세요!" />
-<meta property="og:image" content="https://minjipi.github.io/hamster-bg.png" />
-<meta property="og:url" content="https://minjipi.github.io/" />
-<meta property="og:type" content="website" />
-  
+  <meta property="og:title" content="햄스터 잡기 🐹" />
+  <meta property="og:description" content="15초 안에 귀여운 햄스터를 잡아 점수를 올려보세요!" />
+  <meta property="og:image" content="https://minjipi.github.io/hamster-bg.png" />
+  <meta property="og:url" content="https://minjipi.github.io/" />
+  <meta property="og:type" content="website" />
+
   <meta charset="UTF-8" />
   <title>햄스터 잡기 게임 🐹</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -108,7 +108,7 @@
     }
 
     .hole::after {
-      /* 톱밥 느낌 살짝 */
+      /* 톱밥 느낌 */
       content: "";
       position: absolute;
       inset: 65% 8% 6% 8%;
@@ -157,9 +157,7 @@
       cursor: pointer;
       transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
       background: linear-gradient(135deg, #bfdbfe, #93c5fd);
-      /* 💙 하늘색 그라데이션 */
       color: #1e3a8a;
-      /* 진한 파란 글씨 */
       box-shadow: 0 6px 14px rgba(147, 197, 253, 0.4);
     }
 
@@ -167,7 +165,6 @@
       transform: translateY(-1px);
     }
 
-    /* 게임 중 버튼도 동일한 톤 */
     .btn.running {
       background: linear-gradient(135deg, #bfdbfe, #93c5fd);
       color: #1e3a8a;
@@ -176,7 +173,6 @@
       box-shadow: none;
     }
 
-    /* 팝업 닫기 버튼도 동일하게 */
     .popup-content button {
       background: linear-gradient(135deg, #bfdbfe, #93c5fd);
       color: #1e3a8a;
@@ -187,7 +183,6 @@
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(147, 197, 253, 0.4);
     }
-
 
     .countdown {
       position: absolute;
@@ -335,7 +330,7 @@
     </div>
   </div>
 
-    <script>
+  <script>
     const holes = document.querySelectorAll(".hole");
     const scoreEl = document.getElementById("score");
     const timeEl = document.getElementById("time");
@@ -369,8 +364,25 @@
       else if (type === "poop") el.textContent = "💩";
     }
 
+    // 점수가 오를수록 등장 속도가 빨라지는 딜레이 계산
+    function getNextDelay() {
+      const effectiveScore = Math.max(score, 0);
+      const level = Math.min(Math.floor(effectiveScore / 5), 8); // 5점마다 레벨업, 최대 8레벨
+
+      const baseDelay = 900;   // 시작 딜레이(ms)
+      const step = 80;         // 레벨당 감소량
+      const minDelay = 250;    // 최소 딜레이 (이 밑으로는 안 내려가게)
+
+      const delayWithoutJitter = baseDelay - level * step;
+      const jitter = Math.random() * 120; // 약간의 랜덤성
+
+      return Math.max(minDelay, delayWithoutJitter + jitter);
+    }
+
     // 엔티티(햄스터/치즈/똥) 등장 로직
     function showRandomEntity() {
+      if (!gameActive) return; // 안전장치
+
       resetHoles();
 
       const index = Math.floor(Math.random() * holes.length);
@@ -384,7 +396,6 @@
       setEntityForHole(mainHole, mainEntity);
       mainHole.classList.add("active");
 
-      
       if (Math.random() < 0.3) {
         const available = [...holes].filter((_, i) => i !== index);
         const extraIndex = Math.floor(Math.random() * available.length);
@@ -394,7 +405,7 @@
         extraHole.classList.add("active");
       }
 
-      const nextDelay = 800 + Math.random() * 600;
+      const nextDelay = getNextDelay();
       moleTimer = setTimeout(showRandomEntity, nextDelay);
     }
 
