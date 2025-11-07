@@ -1,0 +1,384 @@
+---
+layout: default
+title: MBTI 궁합 테스트
+description: 나와 상대방의 MBTI 궁합을 확인해보세요!
+---
+
+<style>
+  .compatibility-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .compatibility-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .compatibility-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 12px;
+  }
+
+  .compatibility-header p {
+    font-size: 16px;
+    color: #6b7280;
+  }
+
+  .mbti-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .selector-box {
+    background: linear-gradient(135deg, #fef3f8, #fce7f3);
+    border: 2px solid #fbcfe8;
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .selector-box h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .selector-box select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #fbcfe8;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .selector-box select:hover {
+    border-color: #ec4899;
+  }
+
+  .selector-box select:focus {
+    outline: none;
+    border-color: #ec4899;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+  }
+
+  .check-button {
+    width: 100%;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ec4899, #db2777);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 40px;
+  }
+
+  .check-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.4);
+  }
+
+  .result-box {
+    display: none;
+    background: white;
+    border: 3px solid #ec4899;
+    border-radius: 20px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  .result-box.show {
+    display: block;
+    animation: fadeIn 0.5s;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ec4899, #db2777);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 24px rgba(236, 72, 153, 0.4);
+  }
+
+  .score-circle span {
+    font-size: 48px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .result-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 16px;
+  }
+
+  .result-description {
+    font-size: 16px;
+    color: #6b7280;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .result-details {
+    text-align: left;
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 24px;
+  }
+
+  .result-details h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 12px;
+  }
+
+  .result-details ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .result-details li {
+    padding: 8px 0;
+    color: #4b5563;
+    padding-left: 24px;
+    position: relative;
+  }
+
+  .result-details li::before {
+    content: "💕";
+    position: absolute;
+    left: 0;
+  }
+
+  @media (max-width: 768px) {
+    .mbti-selector {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="compatibility-container">
+  <div class="compatibility-header">
+    <h1>💑 MBTI 궁합 테스트</h1>
+    <p>나와 상대방의 MBTI를 선택하면 궁합 점수와 분석을 알려드려요!</p>
+  </div>
+
+  <div class="mbti-selector">
+    <div class="selector-box">
+      <h3>내 MBTI</h3>
+      <select id="myMbti">
+        <option value="">선택하세요</option>
+        <option value="INTJ">INTJ - 전략가</option>
+        <option value="INTP">INTP - 논리술사</option>
+        <option value="ENTJ">ENTJ - 통솔자</option>
+        <option value="ENTP">ENTP - 변론가</option>
+        <option value="INFJ">INFJ - 옹호자</option>
+        <option value="INFP">INFP - 중재자</option>
+        <option value="ENFJ">ENFJ - 선도자</option>
+        <option value="ENFP">ENFP - 활동가</option>
+        <option value="ISTJ">ISTJ - 현실주의자</option>
+        <option value="ISFJ">ISFJ - 수호자</option>
+        <option value="ESTJ">ESTJ - 경영자</option>
+        <option value="ESFJ">ESFJ - 집정관</option>
+        <option value="ISTP">ISTP - 장인</option>
+        <option value="ISFP">ISFP - 모험가</option>
+        <option value="ESTP">ESTP - 사업가</option>
+        <option value="ESFP">ESFP - 연예인</option>
+      </select>
+    </div>
+
+    <div class="selector-box">
+      <h3>상대방 MBTI</h3>
+      <select id="partnerMbti">
+        <option value="">선택하세요</option>
+        <option value="INTJ">INTJ - 전략가</option>
+        <option value="INTP">INTP - 논리술사</option>
+        <option value="ENTJ">ENTJ - 통솔자</option>
+        <option value="ENTP">ENTP - 변론가</option>
+        <option value="INFJ">INFJ - 옹호자</option>
+        <option value="INFP">INFP - 중재자</option>
+        <option value="ENFJ">ENFJ - 선도자</option>
+        <option value="ENFP">ENFP - 활동가</option>
+        <option value="ISTJ">ISTJ - 현실주의자</option>
+        <option value="ISFJ">ISFJ - 수호자</option>
+        <option value="ESTJ">ESTJ - 경영자</option>
+        <option value="ESFJ">ESFJ - 집정관</option>
+        <option value="ISTP">ISTP - 장인</option>
+        <option value="ISFP">ISFP - 모험가</option>
+        <option value="ESTP">ESTP - 사업가</option>
+        <option value="ESFP">ESFP - 연예인</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="check-button" onclick="checkCompatibility()">
+    궁합 확인하기 💕
+  </button>
+
+  <div class="result-box" id="resultBox">
+    <div class="score-circle">
+      <span id="scoreText">0%</span>
+    </div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-description" id="resultDescription"></div>
+    <div class="result-details">
+      <h4>💕 이런 점이 좋아요!</h4>
+      <ul id="goodPoints"></ul>
+    </div>
+    <div class="result-details">
+      <h4>⚠️ 이런 점은 주의하세요!</h4>
+      <ul id="carePoints"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+const compatibilityData = {
+  // 완벽한 궁합 (95-100%)
+  "INTJ-ENTP": {score: 98, title: "완벽한 궁합! 🔥", description: "서로의 지적 호기심을 자극하는 최고의 조합입니다.", good: ["깊은 대화가 가능해요", "서로의 생각을 존중해요", "성장을 도와줘요"], care: ["너무 이성적일 수 있어요", "감정 표현을 더 해보세요"]},
+  "INFJ-ENFP": {score: 96, title: "환상의 커플! 💖", description: "이상적인 로맨스의 완성입니다.", good: ["감정 교류가 깊어요", "서로를 이해해요", "창의적인 데이트를 즐겨요"], care: ["현실적인 문제도 챙겨보세요", "계획도 가끔 세워보세요"]},
+  "ISTJ-ESFJ": {score: 95, title: "든든한 조합! 💪", description: "안정적이고 따뜻한 관계를 만들어요.", good: ["책임감이 강해요", "가족 같은 편안함이 있어요", "서로를 잘 챙겨요"], care: ["변화도 두려워하지 마세요", "감정 표현을 더 해보세요"]},
+
+  // 좋은 궁합 (85-94%)
+  "ENFJ-INFP": {score: 92, title: "따뜻한 궁합! ☀️", description: "서로를 배려하는 아름다운 관계예요.", good: ["감정 교류가 풍부해요", "서로를 응원해요", "진솔한 대화를 나눠요"], care: ["현실적인 결정도 필요해요", "경계를 지켜주세요"]},
+  "ESTP-ISFP": {score: 90, title: "활기찬 궁합! ⚡", description: "즐거운 추억을 많이 만들어요.", good: ["모험을 즐겨요", "현재를 즐길 줄 알아요", "재미있는 관계예요"], care: ["미래 계획도 세워보세요", "깊은 대화도 나눠보세요"]},
+  "ENTJ-INTJ": {score: 88, title: "파워 커플! 💼", description: "서로의 목표를 응원하는 강한 팀이에요.", good: ["서로의 야망을 이해해요", "효율적으로 문제를 해결해요", "발전하는 관계예요"], care: ["감정도 나눠보세요", "완벽주의를 내려놓아요"]},
+
+  // 보통 궁합 (70-84%)
+  "INTP-INFP": {score: 80, title: "사색하는 커플 🤔", description: "깊이 있는 대화를 나누는 관계예요.", good: ["지적 대화를 즐겨요", "서로의 개성을 존중해요", "독립적이에요"], care: ["감정 표현을 더 해보세요", "실천도 중요해요", "현실적인 문제를 함께 해결해요"]},
+  "ESFP-ENFP": {score: 82, title: "즐거운 커플! 🎉", description: "함께 있으면 항상 즐거워요.", good: ["분위기 메이커예요", "긍정적인 에너지가 넘쳐요", "모험을 즐겨요"], care: ["책임감도 필요해요", "계획도 세워보세요", "깊은 대화도 나눠요"]},
+  "ISTJ-INTJ": {score: 78, title: "신중한 커플 📋", description: "안정적이고 계획적인 관계예요.", good: ["현실적이에요", "신뢰할 수 있어요", "계획적이에요"], care: ["감정 표현을 더 해보세요", "유연성도 필요해요", "재미도 챙겨보세요"]},
+
+  // 노력 필요 (60-69%)
+  "ENFP-ISTJ": {score: 65, title: "노력이 필요해요 💪", description: "서로 다른 점이 많지만 배울 점도 많아요.", good: ["서로에게 새로운 시각을 줘요", "균형을 맞춰줘요", "성장할 기회가 많아요"], care: ["차이를 인정해요", "서로의 방식을 존중해요", "중간 지점을 찾아요"]},
+  "INTP-ESFJ": {score: 62, title: "도전적인 관계 🎯", description: "서로 많이 배울 수 있는 관계예요.", good: ["다른 세계를 보여줘요", "균형을 맞춰줘요", "새로운 경험을 해요"], care: ["소통을 많이 해요", "이해하려 노력해요", "인내심이 필요해요"]},
+};
+
+function checkCompatibility() {
+  const myMbti = document.getElementById('myMbti').value;
+  const partnerMbti = document.getElementById('partnerMbti').value;
+
+  if (!myMbti || !partnerMbti) {
+    alert('두 MBTI를 모두 선택해주세요! 😊');
+    return;
+  }
+
+  // 같은 MBTI
+  if (myMbti === partnerMbti) {
+    showResult({
+      score: 85,
+      title: "거울 같은 커플! 🪞",
+      description: "서로를 너무 잘 이해하는 관계예요!",
+      good: ["서로를 완벽히 이해해요", "편안한 관계예요", "같은 가치관을 공유해요"],
+      care: ["너무 비슷해서 지루할 수 있어요", "다른 시각도 받아들여 보세요", "새로운 시도를 해보세요"]
+    });
+    return;
+  }
+
+  // 궁합 데이터 찾기
+  const key1 = `${myMbti}-${partnerMbti}`;
+  const key2 = `${partnerMbti}-${myMbti}`;
+
+  let result = compatibilityData[key1] || compatibilityData[key2];
+
+  // 데이터에 없으면 기본 점수 계산
+  if (!result) {
+    const score = calculateDefaultScore(myMbti, partnerMbti);
+    result = getDefaultResult(score);
+  }
+
+  showResult(result);
+}
+
+function calculateDefaultScore(mbti1, mbti2) {
+  let score = 70;
+
+  // E/I 비교
+  if (mbti1[0] !== mbti2[0]) score += 5;
+
+  // S/N 비교
+  if (mbti1[1] === mbti2[1]) score += 10;
+  else score -= 5;
+
+  // T/F 비교
+  if (mbti1[2] !== mbti2[2]) score += 8;
+
+  // J/P 비교
+  if (mbti1[3] !== mbti2[3]) score += 7;
+
+  return Math.min(Math.max(score, 60), 90);
+}
+
+function getDefaultResult(score) {
+  if (score >= 85) {
+    return {
+      score: score,
+      title: "좋은 궁합! 😊",
+      description: "서로 잘 맞는 커플이에요!",
+      good: ["서로를 이해해요", "편안한 관계예요", "함께 성장해요"],
+      care: ["소통을 더 해보세요", "차이를 인정해요", "서로를 존중해요"]
+    };
+  } else if (score >= 70) {
+    return {
+      score: score,
+      title: "괜찮은 궁합 👍",
+      description: "노력하면 잘 맞을 수 있어요!",
+      good: ["서로에게 배워요", "새로운 시각을 줘요", "균형을 맞춰줘요"],
+      care: ["소통이 중요해요", "서로를 이해하려 노력해요", "인내심이 필요해요"]
+    };
+  } else {
+    return {
+      score: score,
+      title: "도전적인 관계 💪",
+      description: "많은 노력이 필요하지만 배울 점도 많아요!",
+      good: ["전혀 다른 세계를 보여줘요", "성장할 기회가 많아요", "새로운 경험을 해요"],
+      care: ["차이를 받아들여요", "많은 대화가 필요해요", "서로를 존중하는 게 가장 중요해요"]
+    };
+  }
+}
+
+function showResult(result) {
+  document.getElementById('scoreText').textContent = result.score + '%';
+  document.getElementById('resultTitle').textContent = result.title;
+  document.getElementById('resultDescription').textContent = result.description;
+
+  const goodPoints = document.getElementById('goodPoints');
+  goodPoints.innerHTML = result.good.map(point => `<li>${point}</li>`).join('');
+
+  const carePoints = document.getElementById('carePoints');
+  carePoints.innerHTML = result.care.map(point => `<li>${point}</li>`).join('');
+
+  const resultBox = document.getElementById('resultBox');
+  resultBox.classList.add('show');
+  resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>

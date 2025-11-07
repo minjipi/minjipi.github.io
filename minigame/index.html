@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta property="og:title" content="햄스터 잡기 🐹" />
+  <meta property="og:description" content="15초 안에 귀여운 햄스터를 잡아 점수를 올려보세요!" />
+  <meta property="og:image" content="https://minjipi.github.io/hamster-bg.png" />
+  <meta property="og:url" content="https://minjipi.github.io/" />
+  <meta property="og:type" content="website" />
+
+  <meta charset="UTF-8" />
+  <title>햄스터 잡기 게임 🐹</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url("/hamster-bg.png") center / cover no-repeat fixed;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #111827;
+      overflow: hidden;
+    }
+
+    /* 배경 별 애니메이션 */
+    .star {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.3); }
+    }
+
+    .game-card {
+      background: rgba(255, 255, 255, 0.88);
+      padding: 28px 24px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.22);
+      width: 90%;
+      max-width: 430px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #6b7280;
+      margin-bottom: 18px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .info-item span.label {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .info-item span.value {
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    /* 콤보 표시 */
+    .combo-display {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.5);
+      transform: scale(0);
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 5;
+    }
+
+    .combo-display.show {
+      transform: scale(1);
+      animation: comboPulse 0.6s ease-in-out infinite;
+    }
+
+    @keyframes comboPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* 레벨업 배지 */
+    .level-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #a855f7, #9333ea);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 8px;
+      box-shadow: 0 2px 8px rgba(168, 85, 247, 0.4);
+    }
+
+    .high-score {
+      font-size: 15px;
+      color: #9ca3af;
+      text-align: right;
+      margin-bottom: 6px;
+    }
+
+    .legend {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    /* 게임 규칙 카드 */
+    .rules-box {
+      padding: 12px 16px;
+      margin-bottom: 10px;
+    }
+
+    .items-row {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .item-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .item-emoji {
+      font-size: 22px;
+    }
+
+    .item-points {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .item-points.plus {
+      color: #10b981;
+    }
+
+    .item-points.minus {
+      color: #ef4444;
+    }
+
+    .item-points.rare {
+      color: #f59e0b;
+      animation: sparkle 2s infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    .combo-info {
+      background: linear-gradient(135deg, #fef3c7, #fed7aa);
+      border: 2px solid #fdba74;
+      border-radius: 12px;
+      padding: 8px 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg, #fef2f2, #fee2e2);
+      border: 2px dashed #fca5a5;
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #dc2626;
+    }
+
+    /* 게임 영역 구분선 */
+    .game-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d1d5db 50%, transparent);
+      margin: 16px 0;
+      opacity: 0.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 0 0 14px 0;
+    }
+
+    .hole {
+      background: #facc15;
+      border-radius: 999px;
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow:
+        inset 0 4px 8px rgba(0, 0, 0, 0.25),
+        0 4px 6px rgba(0, 0, 0, 0.15);
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.1s, transform 0.06s;
+    }
+
+    .hole::after {
+      /* 톱밥 느낌 */
+      content: "";
+      position: absolute;
+      inset: 65% 8% 6% 8%;
+      background: #fef3c7;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
+
+    .hole:active {
+      transform: translateY(2px);
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .entity {
+      font-size: 28px;
+      opacity: 0;
+      transform: translateY(10px) scale(0.8);
+      transition: opacity 0.1s, transform 0.1s;
+      pointer-events: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hole.active {
+      background: #fbbf24;
+    }
+
+    .hole.active .entity {
+      opacity: 1;
+      transform: translateY(-4px) scale(1);
+      animation: wiggle 0.5s ease-in-out infinite;
+    }
+
+    /* 흔들흔들 애니메이션 */
+    @keyframes wiggle {
+      0%, 100% { transform: translateY(-4px) rotate(-3deg) scale(1); }
+      25% { transform: translateY(-6px) rotate(3deg) scale(1.05); }
+      50% { transform: translateY(-4px) rotate(-3deg) scale(1); }
+      75% { transform: translateY(-6px) rotate(3deg) scale(1.05); }
+    }
+
+    /* 골든 햄스터 반짝임 */
+    .hole.golden .entity {
+      animation: wiggle 0.5s ease-in-out infinite, goldShine 1s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px #fbbf24);
+    }
+
+    @keyframes goldShine {
+      0%, 100% { filter: drop-shadow(0 0 8px #fbbf24) brightness(1); }
+      50% { filter: drop-shadow(0 0 12px #f59e0b) brightness(1.3); }
+    }
+
+    /* 클릭 파티클 효과 */
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      font-size: 20px;
+      z-index: 100;
+      animation: particleFloat 1s ease-out forwards;
+    }
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-80px) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    /* 점수 팝업 */
+    .score-popup {
+      position: absolute;
+      font-weight: 800;
+      font-size: 24px;
+      color: #10b981;
+      pointer-events: none;
+      z-index: 99;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      animation: scoreFloat 1s ease-out forwards;
+    }
+
+    .score-popup.negative {
+      color: #ef4444;
+    }
+
+    @keyframes scoreFloat {
+      0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-60px) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .btn-row {
+      margin-top: 6px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      color: #1e3a8a;
+      box-shadow: 0 6px 14px rgba(147, 197, 253, 0.4);
+    }
+
+    .btn:not([disabled]):hover {
+      transform: translateY(-1px);
+    }
+
+    .btn.running {
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      color: #1e3a8a;
+      cursor: not-allowed;
+      opacity: 0.7;
+      box-shadow: none;
+    }
+
+    .popup-content button {
+      background: linear-gradient(135deg, #bfdbfe, #93c5fd);
+      color: #1e3a8a;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(147, 197, 253, 0.4);
+    }
+
+    .countdown {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 800;
+      color: #f97316;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      background: rgba(255, 255, 255, 0.7);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 24px 28px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: pop 0.25s ease-out;
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .popup-content h2 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .popup-content p {
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .popup-content button {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="game-card">
+    <div id="comboDisplay" class="combo-display">🔥 콤보 x<span id="comboCount">0</span></div>
+
+    <h1>햄스터 잡기 🐹</h1>
+    <p class="subtitle">15초 안에 점수를 최대한 많이 올려보세요!</p>
+
+    <div class="info-row">
+      <div class="info-item">
+        <span class="label">점수</span><span id="score" class="value">0</span><span id="levelBadge" class="level-badge" style="display: none;">Lv.1</span>
+      </div>
+      <div class="info-item">
+        <span class="label">남은 시간</span><span id="time" class="value">15</span>초
+      </div>
+    </div>
+
+    <div class="high-score">
+      최고 점수: <span id="highScore">0</span> 점
+    </div>
+
+    <div class="rules-box">
+      <div class="items-row">
+        <div class="item-chip">
+          <span class="item-emoji">🐹</span>
+          <span class="item-points plus">+1</span>
+        </div>
+        <div class="item-chip">
+          <span class="item-emoji">🧀</span>
+          <span class="item-points plus">+3</span>
+        </div>
+        <div class="item-chip">
+          <span class="item-emoji">⭐</span>
+          <span class="item-points rare">+5</span>
+        </div>
+        <div class="item-chip">
+          <span class="item-emoji">💩</span>
+          <span class="item-points minus">-5</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="combo-info">
+      🔥 연속 3회 이상 클릭 시 콤보 보너스!
+    </div>
+
+    <div class="warning-box">
+      ⚠️ 점수가 0 아래로 떨어지면 바로 게임 끝!
+    </div>
+
+    <div class="grid" id="grid">
+      <div class="hole" data-index="0">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="1">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="2">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="3">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="4">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="5">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="6">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="7">
+        <div class="entity">🐹</div>
+      </div>
+      <div class="hole" data-index="8">
+        <div class="entity">🐹</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button id="startBtn" class="btn start">▶ 게임 시작</button>
+    </div>
+
+    <div id="countdown" class="countdown"></div>
+  </div>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <h2>게임 종료!</h2>
+      <p id="popupText"></p>
+      <button id="popupClose">닫기</button>
+    </div>
+  </div>
+
+  <script>
+    const holes = document.querySelectorAll(".hole");
+    const scoreEl = document.getElementById("score");
+    const timeEl = document.getElementById("time");
+    const highScoreEl = document.getElementById("highScore");
+    const startBtn = document.getElementById("startBtn");
+    const popup = document.getElementById("popup");
+    const popupText = document.getElementById("popupText");
+    const popupClose = document.getElementById("popupClose");
+    const comboDisplay = document.getElementById("comboDisplay");
+    const comboCount = document.getElementById("comboCount");
+    const levelBadge = document.getElementById("levelBadge");
+
+    const GAME_TIME = 15;
+    const STORAGE_KEY = "whackAMoleHighScore";
+
+    let score = 0;
+    let timeLeft = GAME_TIME;
+    let gameTimer = null;
+    let moleTimer = null;
+    let combo = 0;
+    let comboTimer = null;
+    let currentLevel = 0;
+
+    let gameActive = false;
+    let highScore = parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10) || 0;
+    highScoreEl.textContent = highScore;
+
+    // 배경 별 생성
+    function createStars() {
+      for (let i = 0; i < 20; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        document.body.appendChild(star);
+      }
+    }
+    createStars();
+
+    function resetHoles() {
+      holes.forEach(h => {
+        h.classList.remove("active", "golden");
+      });
+    }
+
+    function setEntityForHole(hole, type) {
+      const el = hole.querySelector(".entity");
+      if (!el) return;
+      if (type === "mole") el.textContent = "🐹";
+      else if (type === "cheese") el.textContent = "🧀";
+      else if (type === "poop") el.textContent = "💩";
+      else if (type === "golden") {
+        el.textContent = "⭐";
+        hole.classList.add("golden");
+      }
+    }
+
+    // 파티클 생성
+    function createParticle(x, y, emoji) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.textContent = emoji;
+      particle.style.left = x + 'px';
+      particle.style.top = y + 'px';
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 1000);
+    }
+
+    // 점수 팝업
+    function showScorePopup(x, y, points) {
+      const popup = document.createElement('div');
+      popup.className = 'score-popup';
+      if (points < 0) popup.classList.add('negative');
+      popup.textContent = (points > 0 ? '+' : '') + points;
+      popup.style.left = x + 'px';
+      popup.style.top = y + 'px';
+      document.body.appendChild(popup);
+      setTimeout(() => popup.remove(), 1000);
+    }
+
+    // 콤보 업데이트
+    function updateCombo() {
+      combo++;
+      if (combo >= 3) {
+        comboCount.textContent = combo;
+        comboDisplay.classList.add('show');
+      }
+
+      clearTimeout(comboTimer);
+      comboTimer = setTimeout(() => {
+        combo = 0;
+        comboDisplay.classList.remove('show');
+      }, 1500);
+    }
+
+    // 콤보 초기화
+    function resetCombo() {
+      combo = 0;
+      comboDisplay.classList.remove('show');
+      clearTimeout(comboTimer);
+    }
+
+    // 레벨 업데이트
+    function updateLevel() {
+      const newLevel = Math.floor(score / 5) + 1;
+      if (newLevel > currentLevel && newLevel <= 10) {
+        currentLevel = newLevel;
+        levelBadge.textContent = 'Lv.' + currentLevel;
+        levelBadge.style.display = 'inline-block';
+
+        // 레벨업 효과
+        levelBadge.style.animation = 'none';
+        setTimeout(() => {
+          levelBadge.style.animation = 'comboPulse 0.5s ease-in-out 3';
+        }, 10);
+      }
+    }
+
+    // 점수가 오를수록 등장 속도가 빨라지는 딜레이 계산
+    function getNextDelay() {
+      const effectiveScore = Math.max(score, 0);
+      const level = Math.min(Math.floor(effectiveScore / 5), 8); // 5점마다 레벨업, 최대 8레벨
+
+      const baseDelay = 900;   // 시작 딜레이(ms)
+      const step = 80;         // 레벨당 감소량
+      const minDelay = 250;    // 최소 딜레이 (이 밑으로는 안 내려가게)
+
+      const delayWithoutJitter = baseDelay - level * step;
+      const jitter = Math.random() * 120; // 약간의 랜덤성
+
+      return Math.max(minDelay, delayWithoutJitter + jitter);
+    }
+
+    // 엔티티(햄스터/치즈/똥) 등장 로직
+    function showRandomEntity() {
+      if (!gameActive) return; // 안전장치
+
+      resetHoles();
+
+      const index = Math.floor(Math.random() * holes.length);
+      const r = Math.random();
+      let mainEntity;
+
+      // 골든 햄스터 (레어, 5% 확률)
+      if (r < 0.05) mainEntity = "golden";
+      else if (r < 0.55) mainEntity = "mole";        // 50%
+      else if (r < 0.70) mainEntity = "cheese"; // 15%
+      else mainEntity = "poop";                // 30%
+
+      const mainHole = holes[index];
+      setEntityForHole(mainHole, mainEntity);
+      mainHole.classList.add("active");
+
+      // 높은 레벨일수록 여러 개 등장
+      const multiSpawnChance = Math.min(0.3 + (currentLevel * 0.05), 0.6);
+      if (Math.random() < multiSpawnChance) {
+        const available = [...holes].filter((_, i) => i !== index);
+        const extraIndex = Math.floor(Math.random() * available.length);
+        const extraHole = available[extraIndex];
+
+        const extraType = Math.random() < 0.7 ? "poop" : "mole";
+        setEntityForHole(extraHole, extraType);
+        extraHole.classList.add("active");
+      }
+
+      const nextDelay = getNextDelay();
+      moleTimer = setTimeout(showRandomEntity, nextDelay);
+    }
+
+    function startGame() {
+      if (gameActive) return;
+
+      score = 0;
+      timeLeft = GAME_TIME;
+      combo = 0;
+      currentLevel = 0;
+      scoreEl.textContent = score;
+      timeEl.textContent = timeLeft;
+      levelBadge.style.display = 'none';
+      resetCombo();
+
+      startBtn.disabled = true;
+      startBtn.textContent = "게임 중...";
+      startBtn.classList.remove("start", "restart");
+      startBtn.classList.add("running");
+
+      gameActive = true;
+      resetHoles();
+      showRandomEntity();
+
+      gameTimer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          endGame("time");
+        }
+      }, 1000);
+    }
+
+    function endGame(reason) {
+      if (!gameActive && reason !== "negative") return;
+
+      gameActive = false;
+      clearInterval(gameTimer);
+      clearTimeout(moleTimer);
+      resetHoles();
+      resetCombo();
+
+      startBtn.disabled = false;
+      startBtn.textContent = "다시 시작하기";
+      startBtn.className = "btn restart";
+
+      let message = "";
+      const isRecord = score > highScore;
+
+      if (score < 0 || reason === "negative") {
+        const reactions = [
+          `아이고... 똥을 너무 많이 밟았어요 💩 (최종: ${score}점)`,
+          `똥 덕분에 점수가 마이너스... 😭 (최종: ${score}점)`,
+          `햄스터보다 똥을 더 좋아하시나봐요? 💩 (최종: ${score}점)`
+        ];
+        message = reactions[Math.floor(Math.random() * reactions.length)];
+      } else if (isRecord) {
+        highScore = score;
+        localStorage.setItem(STORAGE_KEY, highScore.toString());
+        highScoreEl.textContent = highScore;
+        const recordMessages = [
+          `🎉 대박! 신기록 달성! (${score}점)`,
+          `⭐ 천재시네요! 새 기록! (${score}점)`,
+          `🏆 최고 점수 갱신! (${score}점)`
+        ];
+        message = recordMessages[Math.floor(Math.random() * recordMessages.length)];
+      } else {
+        const normalMessages = [
+          `굿! 이번 점수: ${score}점 👏`,
+          `괜찮아요! ${score}점 획득! 💪`,
+          `나쁘지 않아요~ ${score}점! 😊`
+        ];
+        message = normalMessages[Math.floor(Math.random() * normalMessages.length)];
+      }
+
+      popupText.textContent = message;
+      popup.classList.add("show");
+    }
+
+    popupClose.addEventListener("click", () => {
+      popup.classList.remove("show");
+    });
+
+    holes.forEach((hole) => {
+      hole.addEventListener("click", (e) => {
+        if (!gameActive) return;
+        if (!hole.classList.contains("active")) return;
+
+        const el = hole.querySelector(".entity");
+        if (!el) return;
+        const type = el.textContent;
+
+        const rect = hole.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+
+        let points = 0;
+        let particleEmoji = '';
+
+        if (type === "🐹") {
+          points = 1;
+          particleEmoji = '💕';
+          updateCombo();
+        } else if (type === "🧀") {
+          points = 3;
+          particleEmoji = '✨';
+          updateCombo();
+        } else if (type === "⭐") {
+          points = 5;
+          particleEmoji = '🌟';
+          updateCombo();
+          // 골든 햄스터 추가 파티클
+          for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+              createParticle(x + (Math.random() - 0.5) * 40, y + (Math.random() - 0.5) * 40, '⭐');
+            }, i * 100);
+          }
+        } else if (type === "💩") {
+          points = -5;
+          particleEmoji = '💥';
+          resetCombo();
+        }
+
+        // 콤보 보너스
+        if (combo >= 3 && points > 0) {
+          const bonusPoints = Math.floor(combo / 3);
+          points += bonusPoints;
+        }
+
+        // 점수가 0 미만이 될지 미리 체크
+        const newScore = score + points;
+        if (newScore < 0) {
+          score = newScore;
+          scoreEl.textContent = score;
+          showScorePopup(x, y, points);
+          createParticle(x, y, particleEmoji);
+          hole.classList.remove("active");
+          endGame("negative");
+          return;
+        }
+
+        score = newScore;
+        scoreEl.textContent = score;
+
+        // 시각 효과
+        showScorePopup(x, y, points);
+        createParticle(x, y, particleEmoji);
+
+        // 레벨 업데이트
+        if (score > 0) {
+          updateLevel();
+        }
+
+        hole.classList.remove("active");
+
+      });
+    });
+
+    startBtn.addEventListener("click", startGame);
+  </script>
+
+</body>
+
+</html>

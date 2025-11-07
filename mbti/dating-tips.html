@@ -1,0 +1,619 @@
+---
+layout: default
+title: 소개팅 룩 & 장소 추천
+description: MBTI 유형별 소개팅 코디 추천과 완벽한 데이트 장소
+---
+
+<style>
+  .intro {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #fef3f8 0%, #eff6ff 100%);
+    border-radius: 16px;
+  }
+
+  .intro h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    border: none;
+    padding: 0;
+  }
+
+  .intro p {
+    font-size: 18px;
+    color: #6b7280;
+    margin-bottom: 0;
+  }
+
+  .tab-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 12px 32px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #6b7280;
+    transition: all 0.2s;
+    font-size: 16px;
+  }
+
+  .tab-btn:hover {
+    border-color: #a6c1ee;
+    transform: translateY(-2px);
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    color: white;
+    border-color: transparent;
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #1f2937;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #fbc2eb;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .style-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s;
+  }
+
+  .style-card:hover {
+    border-color: #fbc2eb;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .style-card h3 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    margin-top: 0;
+    color: #ec4899;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .style-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    color: #1f2937;
+  }
+
+  .style-card ul {
+    margin-bottom: 16px;
+    padding-left: 20px;
+  }
+
+  .style-card li {
+    margin-bottom: 8px;
+    color: #4b5563;
+  }
+
+  .tip-box {
+    background: #fffbeb;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #fbbf24;
+    margin-top: 16px;
+  }
+
+  .tip-box strong {
+    color: #f59e0b;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .avoid-box {
+    background: #fef2f2;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #ef4444;
+    margin-top: 16px;
+  }
+
+  .avoid-box strong {
+    color: #dc2626;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .location-card {
+    background: linear-gradient(135deg, #fef3f8, #eff6ff);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .location-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    margin-top: 0;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .location-card p {
+    margin-bottom: 16px;
+    color: #4b5563;
+  }
+
+  .location-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .location-tag {
+    background: white;
+    color: #6b7280;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .general-tips {
+    background: linear-gradient(135deg, #fef3f8, #eff6ff);
+    padding: 30px;
+    border-radius: 16px;
+    margin-top: 40px;
+  }
+
+  .general-tips h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1f2937;
+    font-size: 24px;
+  }
+
+  .general-tips ul {
+    margin-bottom: 0;
+  }
+
+  .general-tips li {
+    margin-bottom: 12px;
+    color: #4b5563;
+  }
+
+  @media (max-width: 768px) {
+    .intro h1 {
+      font-size: 24px;
+    }
+
+    .intro p {
+      font-size: 16px;
+    }
+
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 22px;
+    }
+  }
+</style>
+
+<div class="intro">
+  <h1>👔 소개팅 룩 & 장소 추천</h1>
+  <p>첫인상을 결정하는 완벽한 스타일링과 데이트 장소를 찾아보세요</p>
+</div>
+
+<div class="tab-container">
+  <button class="tab-btn active" onclick="showTab('looks')">👗 소개팅 룩</button>
+  <button class="tab-btn" onclick="showTab('places')">📍 데이트 장소</button>
+</div>
+
+<!-- 소개팅 룩 탭 -->
+<div id="looks" class="tab-content active">
+  <div class="section-title">남성 소개팅 룩 추천</div>
+
+  <div class="cards-grid">
+    <div class="style-card">
+      <h3>🎯 깔끔한 캐주얼 (추천★★★★★)</h3>
+      <p>가장 무난하고 호감 가는 스타일. 대부분의 상황에 적합합니다.</p>
+
+      <h4>아이템 조합</h4>
+      <ul>
+        <li>베이직한 색상의 니트/셔츠 (화이트, 베이지, 네이비)</li>
+        <li>슬랙스 or 면바지</li>
+        <li>깔끔한 스니커즈 or 로퍼</li>
+        <li>시계, 심플한 가방 (선택)</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>👍 포인트</strong>
+        옷은 반드시 다림질! 구김 하나 없이 입어야 깔끔한 인상을 줍니다.
+      </div>
+
+      <div class="avoid-box">
+        <strong>❌ 피해야 할 것</strong>
+        너무 타이트한 핏, 과한 로고, 운동화(러닝화)
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h3>💼 세미 포멀 (추천★★★★☆)</h3>
+      <p>고급스러운 분위기를 원한다면. 격식 있는 장소에 적합합니다.</p>
+
+      <h4>아이템 조합</h4>
+      <ul>
+        <li>재킷 (블레이저)</li>
+        <li>셔츠 or 니트</li>
+        <li>슬랙스</li>
+        <li>구두 or 로퍼</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>👍 포인트</strong>
+        너무 딱딱하지 않게 재킷 안에는 편한 니트를 매치하면 좋습니다.
+      </div>
+
+      <div class="avoid-box">
+        <strong>❌ 피해야 할 것</strong>
+        완전한 정장 차림 (면접 같아 보임), 너무 캐주얼한 신발
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h3>👕 모던 스트릿 (추천★★★☆☆)</h3>
+      <p>젊고 세련된 이미지. 20대 초중반에게 추천합니다.</p>
+
+      <h4>아이템 조합</h4>
+      <ul>
+        <li>오버핏 셔츠/맨투맨</li>
+        <li>블랙 or 데님 팬츠</li>
+        <li>깔끔한 스니커즈</li>
+        <li>크로스백 or 에코백 (선택)</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>👍 포인트</strong>
+        색상은 3가지 이하로! 블랙, 화이트, 한 가지 포인트 컬러가 적당합니다.
+      </div>
+
+      <div class="avoid-box">
+        <strong>❌ 피해야 할 것</strong>
+        너무 힙한 스타일, 과한 액세서리, 찢어진 청바지
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">여성 소개팅 룩 추천</div>
+
+  <div class="cards-grid">
+    <div class="style-card">
+      <h3>🌸 페미닌 캐주얼 (추천★★★★★)</h3>
+      <p>자연스러우면서 여성스러운 스타일. 가장 무난한 선택입니다.</p>
+
+      <h4>아이템 조합</h4>
+      <ul>
+        <li>블라우스 or 니트</li>
+        <li>스커트 or 슬랙스</li>
+        <li>로퍼 or 앵클부츠</li>
+        <li>심플한 귀걸이, 목걸이</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>👍 포인트</strong>
+        파스텔 톤이나 화이트, 베이지 등 밝은 색상이 호감도가 높습니다.
+      </div>
+
+      <div class="avoid-box">
+        <strong>❌ 피해야 할 것</strong>
+        너무 짧은 미니스커트, 과한 노출, 너무 화려한 패턴
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h3>👗 원피스 룩 (추천★★★★★)</h3>
+      <p>소개팅 필승 아이템. 한 벌로 완성되는 스타일링입니다.</p>
+
+      <h4>아이템 조합</h4>
+      <ul>
+        <li>무릎 길이 원피스</li>
+        <li>가디건 or 자켓 (추울 때)</li>
+        <li>로퍼 or 플랫슈즈</li>
+        <li>작은 크로스백</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>👍 포인트</strong>
+        너무 화려하지 않은 베이직한 디자인이 오히려 더 세련되어 보입니다.
+      </div>
+
+      <div class="avoid-box">
+        <strong>❌ 피해야 할 것</strong>
+        너무 타이트한 핏, 과도한 프릴/리본, 비치 원피스
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h3>👖 시크 캐주얼 (추천★★★★☆)</h3>
+      <p>편안하면서도 세련된 스타일. 활동적인 데이트에 적합합니다.</p>
+
+      <h4>아이템 조합</h4>
+      <ul>
+        <li>니트 or 블라우스</li>
+        <li>슬랙스 or 데님</li>
+        <li>앵클부츠 or 스니커즈</li>
+        <li>숄더백 or 토트백</li>
+      </ul>
+
+      <div class="tip-box">
+        <strong>👍 포인트</strong>
+        핏이 좋은 바지를 선택하면 체형을 예쁘게 보여줄 수 있습니다.
+      </div>
+
+      <div class="avoid-box">
+        <strong>❌ 피해야 할 것</strong>
+        너무 헐렁한 옷, 운동복 같은 룩, 찢어진 청바지
+      </div>
+    </div>
+  </div>
+
+  <div class="general-tips">
+    <h3>💡 소개팅 패션 공통 팁</h3>
+    <ul>
+      <li><strong>청결:</strong> 옷에 얼룩, 구김이 없는지 꼭 확인하세요</li>
+      <li><strong>향수:</strong> 은은한 향 1-2번 뿌리기 (과하면 역효과!)</li>
+      <li><strong>헤어:</strong> 깔끔하게 정돈된 헤어스타일 (기름기 주의)</li>
+      <li><strong>손톱:</strong> 길거나 더러운 손톱은 절대 NO! 깨끗하게 관리</li>
+      <li><strong>신발:</strong> 깨끗하고 상태 좋은 신발 (닳거나 더러우면 감점)</li>
+      <li><strong>핏:</strong> 자신의 체형에 맞는 핏 선택 (너무 타이트 or 오버사이즈 X)</li>
+      <li><strong>색상:</strong> 전체 코디는 3가지 색상 이내로 통일감 있게</li>
+      <li><strong>액세서리:</strong> 과하지 않게, 심플하게 포인트로만</li>
+      <li><strong>계절감:</strong> 날씨와 계절에 맞는 옷차림 (두꺼운 패딩 X)</li>
+      <li><strong>편안함:</strong> 불편한 옷은 표정과 행동에 영향을 줍니다</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 데이트 장소 탭 -->
+<div id="places" class="tab-content">
+  <div class="section-title">MBTI별 추천 데이트 장소</div>
+
+  <div class="location-card">
+    <h3>🎨 INTJ, INTP, ENTJ, ENTP - 분석형/사고형</h3>
+    <p>지적 호기심을 자극하고 깊이 있는 대화를 나눌 수 있는 곳</p>
+
+    <div class="location-tags">
+      <span class="location-tag">전시회/갤러리</span>
+      <span class="location-tag">북카페</span>
+      <span class="location-tag">와인바</span>
+      <span class="location-tag">박물관</span>
+      <span class="location-tag">조용한 브런치 카페</span>
+    </div>
+
+    <h4>추천 포인트</h4>
+    <ul>
+      <li>💡 예술 작품이나 전시물을 보며 의견을 나눌 수 있는 전시회</li>
+      <li>📚 책을 매개로 대화할 수 있는 독립서점이나 북카페</li>
+      <li>🍷 차분한 분위기의 와인바나 조용한 레스토랑</li>
+      <li>🎯 테마가 있는 카페 (보드게임 카페, 체스 카페 등)</li>
+    </ul>
+
+    <div class="avoid-box">
+      <strong>❌ 피해야 할 곳</strong>
+      시끄러운 클럽/펜스, 너무 붐비는 관광지, 액티비티 위주의 장소
+    </div>
+  </div>
+
+  <div class="location-card">
+    <h3>🎭 ENFP, ENFJ, ESFP, ESFJ - 외향형/활동형</h3>
+    <p>활기차고 재밌는 경험을 할 수 있는 곳</p>
+
+    <div class="location-tags">
+      <span class="location-tag">핫플레이스 카페</span>
+      <span class="location-tag">테마파크</span>
+      <span class="location-tag">공연/뮤지컬</span>
+      <span class="location-tag">체험형 전시</span>
+      <span class="location-tag">루프탑 바</span>
+    </div>
+
+    <h4>추천 포인트</h4>
+    <ul>
+      <li>🎪 즐거운 경험을 공유할 수 있는 테마파크나 놀이공원</li>
+      <li>🎵 라이브 공연이나 뮤지컬, 콘서트</li>
+      <li>📸 인스타그램에 올릴 만한 감성적인 핫플레이스</li>
+      <li>🎨 체험형 전시나 팝업스토어</li>
+      <li>🌆 분위기 좋은 루프탑 바나 야경 명소</li>
+    </ul>
+
+    <div class="avoid-box">
+      <strong>❌ 피해야 할 곳</strong>
+      너무 조용한 곳, 활동이 제한적인 곳, 단조로운 장소
+    </div>
+  </div>
+
+  <div class="location-card">
+    <h3>🌿 INFP, INFJ, ISFP, ISFJ - 내향형/감성형</h3>
+    <p>조용하고 감성적인 분위기에서 깊은 대화를 나눌 수 있는 곳</p>
+
+    <div class="location-tags">
+      <span class="location-tag">감성 카페</span>
+      <span class="location-tag">공원 산책</span>
+      <span class="location-tag">미술관</span>
+      <span class="location-tag">작은 공방</span>
+      <span class="location-tag">한적한 레스토랑</span>
+    </div>
+
+    <h4>추천 포인트</h4>
+    <ul>
+      <li>🌳 공원이나 식물원에서 여유롭게 산책하며 대화</li>
+      <li>☕ 아늑하고 조용한 동네 카페</li>
+      <li>🎨 작은 미술관이나 갤러리</li>
+      <li>🕯️ 분위기 있는 디저트 카페나 베이커리</li>
+      <li>🎭 작은 공연장이나 북토크</li>
+    </ul>
+
+    <div class="avoid-box">
+      <strong>❌ 피해야 할 곳</strong>
+      시끄럽고 붐비는 곳, 너무 화려한 곳, 빠른 페이스의 액티비티
+    </div>
+  </div>
+
+  <div class="location-card">
+    <h3>⚡ ESTJ, ESTP, ISTJ, ISTP - 실용형/활동형</h3>
+    <p>실질적인 활동을 함께 하거나 편안하게 즐길 수 있는 곳</p>
+
+    <div class="location-tags">
+      <span class="location-tag">맛집 탐방</span>
+      <span class="location-tag">스포츠 관람</span>
+      <span class="location-tag">드라이브</span>
+      <span class="location-tag">클라이밍/볼링</span>
+      <span class="location-tag">브런치 카페</span>
+    </div>
+
+    <h4>추천 포인트</h4>
+    <ul>
+      <li>🍽️ 유명한 맛집이나 특색 있는 레스토랑</li>
+      <li>⚽ 함께 활동할 수 있는 스크린 야구장, 볼링장</li>
+      <li>🚗 드라이브 코스 (카페 투어, 바다 드라이브)</li>
+      <li>🎯 방탈출 카페, VR 게임방</li>
+      <li>🏃 가볍게 즐길 수 있는 액티비티 (클라이밍, 서핑 체험)</li>
+    </ul>
+
+    <div class="avoid-box">
+      <strong>❌ 피해야 할 곳</strong>
+      너무 추상적인 전시, 지나치게 감성적인 곳, 목적 없는 장소
+    </div>
+  </div>
+
+  <div class="general-tips">
+    <h3>💡 소개팅 장소 선택 공통 팁</h3>
+    <ul>
+      <li><strong>첫 만남:</strong> 카페나 레스토랑 같은 대화 중심 장소가 안전합니다</li>
+      <li><strong>접근성:</strong> 서로 만나기 편한 중간 지점이나 대중교통이 편한 곳</li>
+      <li><strong>소음:</strong> 대화하기 너무 시끄럽지 않은 곳 (배경음악 적당한 곳)</li>
+      <li><strong>프라이버시:</strong> 너무 개방적이지 않고 적당히 조용한 공간</li>
+      <li><strong>조명:</strong> 너무 어둡지도 밝지도 않은 분위기 (얼굴 잘 보이게)</li>
+      <li><strong>시간:</strong> 2-3시간 정도 머물 수 있는 곳 (너무 짧거나 길지 않게)</li>
+      <li><strong>계절:</strong> 날씨와 계절을 고려한 장소 선택 (더울 때 실외 X)</li>
+      <li><strong>비용:</strong> 부담 없는 가격대의 장소 (첫 만남은 1-2만원 대)</li>
+      <li><strong>백업:</strong> 분위기가 어색할 경우 이동할 수 있는 2차 장소 미리 생각</li>
+      <li><strong>예약:</strong> 웨이팅이 긴 곳은 미리 예약하거나 피하세요</li>
+    </ul>
+  </div>
+
+  <div class="section-title" style="margin-top: 50px;">시간대별 추천 장소</div>
+
+  <div class="cards-grid">
+    <div class="style-card">
+      <h3>☕ 오전/브런치 (11시-1시)</h3>
+      <ul>
+        <li>브런치 카페</li>
+        <li>베이커리 카페</li>
+        <li>공원 산책 → 카페</li>
+        <li>핸드드립 커피 전문점</li>
+      </ul>
+      <div class="tip-box">
+        <strong>👍 장점</strong>
+        상쾌하고 밝은 분위기, 자연스러운 종료 시점, 부담 적은 가격
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h3>🌞 점심/오후 (1시-5시)</h3>
+      <ul>
+        <li>맛집 레스토랑</li>
+        <li>전시회/갤러리</li>
+        <li>카페 투어</li>
+        <li>북카페</li>
+      </ul>
+      <div class="tip-box">
+        <strong>👍 장점</strong>
+        활동적인 데이트 가능, 자연광으로 얼굴 잘 보임, 다양한 활동 가능
+      </div>
+    </div>
+
+    <div class="style-card">
+      <h3>🌆 저녁/디너 (6시-9시)</h3>
+      <ul>
+        <li>분위기 좋은 레스토랑</li>
+        <li>와인바/루프탑 바</li>
+        <li>야경 명소</li>
+        <li>디저트 카페</li>
+      </ul>
+      <div class="tip-box">
+        <strong>👍 장점</strong>
+        로맨틱한 분위기, 은은한 조명, 본격적인 데이트 느낌
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.remove('active');
+    });
+
+    // Remove active class from all buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // Show selected tab content
+    document.getElementById(tabName).classList.add('active');
+
+    // Add active class to clicked button
+    event.target.classList.add('active');
+  }
+</script>

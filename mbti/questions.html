@@ -1,0 +1,659 @@
+---
+layout: default
+title: 소개팅 질문 리스트
+description: 소개팅에서 써먹을 수 있는 실전 질문 모음
+---
+
+<style>
+  .intro {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #fef3f8 0%, #eff6ff 100%);
+    border-radius: 16px;
+  }
+
+  .intro h1 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    border: none;
+    padding: 0;
+  }
+
+  .intro p {
+    font-size: 18px;
+    color: #6b7280;
+    margin-bottom: 0;
+  }
+
+  .filter-section {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .filter-btn {
+    padding: 12px 24px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #6b7280;
+    transition: all 0.2s;
+    font-size: 15px;
+  }
+
+  .filter-btn:hover {
+    border-color: #a6c1ee;
+    transform: translateY(-2px);
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    color: white;
+    border-color: transparent;
+  }
+
+  .question-category {
+    margin-bottom: 50px;
+  }
+
+  .category-header {
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    color: white;
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .category-header h2 {
+    margin: 0;
+    font-size: 24px;
+    border: none;
+    padding: 0;
+    color: white;
+  }
+
+  .category-description {
+    background: #f9fafb;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    border-left: 4px solid #fbc2eb;
+  }
+
+  .question-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .question-item {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s;
+  }
+
+  .question-item:hover {
+    border-color: #fbc2eb;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .question-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: start;
+    gap: 8px;
+  }
+
+  .question-number {
+    color: #ec4899;
+    font-weight: 700;
+    min-width: 28px;
+  }
+
+  .question-why {
+    color: #6b7280;
+    font-size: 14px;
+    padding-left: 36px;
+    margin-bottom: 10px;
+  }
+
+  .question-tip {
+    background: #fffbeb;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #92400e;
+    margin-left: 36px;
+    border-left: 3px solid #fbbf24;
+  }
+
+  .timing-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: auto;
+  }
+
+  .avoid-section {
+    background: #fef2f2;
+    padding: 24px;
+    border-radius: 12px;
+    margin-top: 40px;
+    border-left: 4px solid #ef4444;
+  }
+
+  .avoid-section h3 {
+    color: #dc2626;
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+  .avoid-section ul {
+    margin-bottom: 0;
+  }
+
+  .avoid-section li {
+    color: #991b1b;
+    margin-bottom: 8px;
+  }
+
+  .tips-box {
+    background: linear-gradient(135deg, #fef3f8, #eff6ff);
+    padding: 30px;
+    border-radius: 16px;
+    margin-top: 40px;
+  }
+
+  .tips-box h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #1f2937;
+    font-size: 24px;
+  }
+
+  .tips-box ul {
+    margin-bottom: 0;
+  }
+
+  .tips-box li {
+    margin-bottom: 12px;
+    color: #4b5563;
+  }
+
+  @media (max-width: 768px) {
+    .intro h1 {
+      font-size: 24px;
+    }
+
+    .intro p {
+      font-size: 16px;
+    }
+
+    .filter-btn {
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+
+    .question-text {
+      font-size: 16px;
+    }
+
+    .category-header h2 {
+      font-size: 20px;
+    }
+  }
+</style>
+
+<div class="intro">
+  <h1>💬 소개팅 질문 리스트</h1>
+  <p>어색한 침묵을 깨는 자연스러운 질문들을 준비했어요</p>
+</div>
+
+<div class="filter-section">
+  <button class="filter-btn active" onclick="filterQuestions('all')">전체</button>
+  <button class="filter-btn" onclick="filterQuestions('beginning')">처음 10분</button>
+  <button class="filter-btn" onclick="filterQuestions('middle')">중반 30분</button>
+  <button class="filter-btn" onclick="filterQuestions('deep')">깊어질 때</button>
+</div>
+
+<div class="question-category" data-timing="beginning">
+  <div class="category-header">
+    <span style="font-size: 32px;">👋</span>
+    <h2>처음 10분 - 가벼운 아이스 브레이킹</h2>
+  </div>
+
+  <div class="category-description">
+    <strong>💡 목표:</strong> 긴장을 풀고 편안한 분위기 만들기. 부담 없이 답할 수 있는 가벼운 질문으로 시작하세요.
+  </div>
+
+  <div class="question-list">
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q1.</span>
+        <span>여기까지 오시는 데 괜찮으셨어요? 멀진 않으셨나요?</span>
+      </div>
+      <div class="question-why">
+        👉 상대방을 배려하는 모습을 보여주고, 자연스럽게 거주 지역 이야기로 이어갈 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: "저는 ~에서 왔는데 생각보다 가까워서 좋네요" 같이 자신의 이야기도 함께 공유하세요.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q2.</span>
+        <span>이 근처 자주 오세요? 이 장소 어떠세요?</span>
+      </div>
+      <div class="question-why">
+        👉 현재 환경에 대한 가벼운 대화로 어색함을 풀 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 상대방이 근처 맛집이나 카페를 추천해주면 "나중에 같이 가볼까요?"로 자연스럽게 연결 가능!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q3.</span>
+        <span>평소에 커피 자주 드세요? 어떤 메뉴 좋아하세요?</span>
+      </div>
+      <div class="question-why">
+        👉 현재 상황과 연관된 질문으로 자연스럽고, 취향을 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: "저도 그거 좋아해요!"로 공감대를 형성하거나, "한번 먹어볼게요!" 하며 호기심을 보이세요.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q4.</span>
+        <span>오늘 날씨 어때요? 요즘 날씨 변덕스럽죠?</span>
+      </div>
+      <div class="question-why">
+        👉 클리셰지만 정말 안전한 시작 질문. 누구나 쉽게 답할 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 날씨 이야기는 짧게! 2-3마디 나누고 바로 다른 주제로 넘어가세요.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q5.</span>
+        <span>주말에 주로 뭐 하면서 보내세요?</span>
+      </div>
+      <div class="question-why">
+        👉 상대방의 라이프스타일과 취미를 자연스럽게 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 공통점을 찾으면 "저도요!" 하며 공감대 형성, 다르면 "재밌을 것 같은데 어떤 매력이 있어요?" 호기심 표현!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q6.</span>
+        <span>요즘 재밌게 보는 드라마나 예능 있으세요?</span>
+      </div>
+      <div class="question-why">
+        👉 가볍게 답할 수 있고, 공통 관심사를 찾기 쉬운 질문입니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 같은 걸 봤다면 스포 주의하며 감상 공유, 안 봤다면 "재밌어요? 나중에 봐야겠다" 관심 표현!
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="question-category" data-timing="middle">
+  <div class="category-header">
+    <span style="font-size: 32px;">💭</span>
+    <h2>중반 30분 - 서로를 알아가는 시간</h2>
+  </div>
+
+  <div class="category-description">
+    <strong>💡 목표:</strong> 상대방의 가치관, 성격, 라이프스타일을 파악하기. 조금 더 의미 있는 대화로 발전시키세요.
+  </div>
+
+  <div class="question-list">
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q7.</span>
+        <span>지금 하시는 일은 어떠세요? 재밌으세요?</span>
+      </div>
+      <div class="question-why">
+        👉 직업보다는 일에 대한 만족도와 열정을 물어보는 질문입니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: "무슨 일 하세요?"보다 "일은 재밌으세요?"가 더 자연스럽고 긍정적입니다.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q8.</span>
+        <span>취미가 뭐예요? 요즘 빠진 게 있나요?</span>
+      </div>
+      <div class="question-why">
+        👉 상대방의 관심사와 열정을 알 수 있는 중요한 질문입니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 상대방이 취미에 대해 이야기할 때 진심으로 흥미를 보이세요. "어떻게 시작하게 되셨어요?"로 깊이 있게!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q9.</span>
+        <span>여행 좋아하세요? 최근에 어디 다녀오셨어요?</span>
+      </div>
+      <div class="question-why">
+        👉 여행 스타일을 통해 성격과 취향을 파악할 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 여행 이야기는 재밌는 에피소드가 많아서 대화가 자연스럽게 길어집니다. 경청하며 호응하세요!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q10.</span>
+        <span>어떤 음식 좋아하세요? 못 먹는 건 있어요?</span>
+      </div>
+      <div class="question-why">
+        👉 실용적이면서도 중요한 정보. 다음 만남 계획에 활용 가능합니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: "그럼 다음엔 [음식] 맛집 같이 가볼까요?" 자연스럽게 다음 약속 암시!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q11.</span>
+        <span>운동이나 활동적인 거 좋아하세요?</span>
+      </div>
+      <div class="question-why">
+        👉 라이프스타일과 건강에 대한 관심도를 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 같이 할 수 있는 활동이라면 "나중에 같이 해봐요!" 제안 가능!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q12.</span>
+        <span>원래 사시는 곳이 여기예요? 고향이 어디세요?</span>
+      </div>
+      <div class="question-why">
+        👉 성장 배경과 지역 이야기로 대화를 풍부하게 만들 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 같은 지역이면 공감대, 다른 지역이면 지역 특색 이야기로 확장 가능!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q13.</span>
+        <span>요즘 스트레스는 어떻게 푸세요?</span>
+      </div>
+      <div class="question-why">
+        👉 감정 관리 방식과 성격을 파악할 수 있는 질문입니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 상대방의 스트레스 해소법을 존중하고 공감해주세요.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q14.</span>
+        <span>친구들이랑은 주로 뭐 하면서 놀아요?</span>
+      </div>
+      <div class="question-why">
+        👉 사교성과 선호하는 사회적 활동을 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 친구 관계를 통해 상대방의 사회적 성향을 파악할 수 있습니다.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q15.</span>
+        <span>집에서 주로 뭐 하면서 시간 보내세요?</span>
+      </div>
+      <div class="question-why">
+        👉 일상적인 모습과 개인 시간을 어떻게 보내는지 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 인도어 vs 아웃도어 성향을 파악할 수 있는 질문입니다.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="question-category" data-timing="deep">
+  <div class="category-header">
+    <span style="font-size: 32px;">💖</span>
+    <h2>깊어질 때 - 가치관과 관계에 대한 질문</h2>
+  </div>
+
+  <div class="category-description">
+    <strong>💡 목표:</strong> 연애관, 가치관, 미래에 대한 생각을 자연스럽게 공유하기. 분위기가 충분히 편해진 후에 물어보세요.
+  </div>
+
+  <div class="question-list">
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q16.</span>
+        <span>소개팅 자주 나오시는 편이에요? 오늘 어떠세요?</span>
+      </div>
+      <div class="question-why">
+        👉 가볍게 오늘 만남에 대한 느낌을 물어보며, 상대방의 관심도를 파악할 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 긍정적인 답변이 나오면 "저도 오늘 좋은 것 같아요" 하며 호감 표현!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q17.</span>
+        <span>이상형이 어떻게 되세요? 어떤 사람이 좋으세요?</span>
+      </div>
+      <div class="question-why">
+        👉 연애관과 선호하는 성격 유형을 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 너무 직접적이지 않게 "외모보다는 성격이나 가치관 같은 거요!" 하며 부담 덜어주기.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q18.</span>
+        <span>연애할 때 중요하게 생각하는 게 뭐예요?</span>
+      </div>
+      <div class="question-why">
+        👉 연애 가치관을 알 수 있는 중요한 질문입니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: "소통", "배려", "신뢰" 등의 답변이 나오면 공감하며 자신의 생각도 공유하세요.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q19.</span>
+        <span>MBTI가 뭐예요? 본인 성격이랑 맞는 것 같아요?</span>
+      </div>
+      <div class="question-why">
+        👉 요즘 트렌드 질문이면서 성격 파악에 도움이 됩니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: MBTI 궁합 이야기로 자연스럽게 이어가면 재밌는 대화 가능!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q20.</span>
+        <span>연락은 자주 하는 스타일이에요?</span>
+      </div>
+      <div class="question-why">
+        👉 연애 스타일과 연락 빈도 선호도를 미리 파악할 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 상대방의 스타일을 존중하는 태도를 보이세요. "맞춰갈 수 있어요" 같은 유연함!
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q21.</span>
+        <span>앞으로 어떤 목표나 꿈이 있으세요?</span>
+      </div>
+      <div class="question-why">
+        👉 미래 지향적인 모습과 삶의 방향성을 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 꿈과 목표를 진심으로 응원하는 모습을 보이면 좋은 인상을 남깁니다.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q22.</span>
+        <span>요즘 가장 관심 있는 게 뭐예요?</span>
+      </div>
+      <div class="question-why">
+        👉 현재 상대방이 가장 중요하게 여기는 것을 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 상대방의 열정이 느껴지는 주제를 경청하고 질문하세요.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q23.</span>
+        <span>인생에서 가장 중요하게 생각하는 가치가 뭐예요?</span>
+      </div>
+      <div class="question-why">
+        👉 깊이 있는 질문으로 상대방의 핵심 가치관을 알 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 진지한 대화이니 집중해서 들어주고, 자신의 가치관도 솔직하게 공유하세요.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q24.</span>
+        <span>5년 후에는 어떤 모습으로 살고 싶으세요?</span>
+      </div>
+      <div class="question-why">
+        👉 미래 계획과 인생 목표를 간접적으로 파악할 수 있습니다.
+      </div>
+      <div class="question-tip">
+        💡 팁: 결혼, 커리어, 라이프스타일 등 다양한 관점에서 이야기 나눌 수 있습니다.
+      </div>
+    </div>
+
+    <div class="question-item">
+      <div class="question-text">
+        <span class="question-number">Q25.</span>
+        <span>오늘 만나서 너무 좋았어요. 다음에 또 만날 수 있을까요?</span>
+      </div>
+      <div class="question-why">
+        👉 마무리 질문이자 호감 표현. 분위기가 좋다면 직접적으로 물어보세요.
+      </div>
+      <div class="question-tip">
+        💡 팁: 긍정적인 반응이면 바로 다음 약속 잡기! "언제 시간 괜찮으세요?"
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="avoid-section">
+  <h3>❌ 절대 피해야 할 질문들</h3>
+  <ul>
+    <li><strong>"전 애인이랑 왜 헤어졌어요?"</strong> - 과거 연애는 편해진 후에도 조심스럽게</li>
+    <li><strong>"연봉이 어떻게 되세요?"</strong> - 돈 이야기는 첫 만남에서 금물</li>
+    <li><strong>"결혼은 언제 할 생각이에요?"</strong> - 너무 빠르고 부담스러움</li>
+    <li><strong>"집은 어디 살아요? (너무 구체적)"</strong> - 사생활 침해, 안전 문제</li>
+    <li><strong>"몇 살이세요?"</strong> - 나이는 자연스럽게 알게 되면 좋지만, 직접 묻지 말기</li>
+    <li><strong>"성형했어요?"</strong> - 외모 관련 민감한 질문 금지</li>
+    <li><strong>"종교가 뭐예요?"</strong> - 첫 만남에서는 피하는 게 좋음</li>
+    <li><strong>"부모님은 뭐 하세요?"</strong> - 너무 깊은 개인 정보</li>
+    <li><strong>"왜 아직 결혼 안 하셨어요?"</strong> - 실례되는 질문</li>
+    <li><strong>정치 관련 질문</strong> - 의견 충돌 가능성 높음</li>
+  </ul>
+</div>
+
+<div class="tips-box">
+  <h3>💡 질문할 때 꿀팁</h3>
+  <ul>
+    <li><strong>열린 질문 사용:</strong> "네/아니오"로 끝나지 않는 질문이 대화를 풍부하게 만듭니다</li>
+    <li><strong>후속 질문:</strong> 상대방 답변에 관심을 보이며 "그래서 어떻게 됐어요?" 같은 후속 질문하기</li>
+    <li><strong>경청:</strong> 질문보다 중요한 건 경청! 눈 맞추고 고개 끄덕이며 집중해서 들어주세요</li>
+    <li><strong>공감 표현:</strong> "와 대박", "진짜요?", "완전 공감이에요" 같은 자연스러운 반응</li>
+    <li><strong>자기 개방:</strong> 질문만 하지 말고 자신의 이야기도 적절히 공유하세요</li>
+    <li><strong>페이스 조절:</strong> 질문 공세는 심문처럼 느껴질 수 있어요. 자연스러운 대화의 흐름으로</li>
+    <li><strong>분위기 파악:</strong> 상대방이 불편해하는 주제는 빠르게 전환하세요</li>
+    <li><strong>긍정적 톤:</strong> 부정적이거나 비판적인 질문은 피하고, 긍정적인 주제로</li>
+    <li><strong>유머 감각:</strong> 너무 진지하기만 하면 피곤해요. 가벼운 농담도 섞어가며</li>
+    <li><strong>진정성:</strong> 형식적인 질문보다 진심으로 궁금한 걸 물어보세요</li>
+  </ul>
+</div>
+
+<script>
+  function filterQuestions(timing) {
+    const categories = document.querySelectorAll('.question-category');
+    const buttons = document.querySelectorAll('.filter-btn');
+
+    // Remove active class from all buttons
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    // Add active class to clicked button
+    event.target.classList.add('active');
+
+    // Show/hide categories based on filter
+    categories.forEach(category => {
+      if (timing === 'all') {
+        category.style.display = 'block';
+      } else {
+        if (category.dataset.timing === timing) {
+          category.style.display = 'block';
+        } else {
+          category.style.display = 'none';
+        }
+      }
+    });
+
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>

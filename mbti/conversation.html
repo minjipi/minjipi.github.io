@@ -1,0 +1,683 @@
+---
+layout: default
+title: MBTI별 대화 주제
+description: 소개팅에서 MBTI별로 좋아할 대화 주제를 알려드려요!
+---
+
+<style>
+  .conversation-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .conversation-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .conversation-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 12px;
+  }
+
+  .conversation-header p {
+    font-size: 16px;
+    color: #6b7280;
+  }
+
+  .mbti-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 40px;
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .mbti-tab {
+    padding: 12px 8px;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: #6b7280;
+  }
+
+  .mbti-tab:hover {
+    border-color: #ec4899;
+    background: #fef3f8;
+  }
+
+  .mbti-tab.active {
+    background: linear-gradient(135deg, #ec4899, #db2777);
+    color: white;
+    border-color: #ec4899;
+  }
+
+  .content-box {
+    display: none;
+    animation: fadeIn 0.5s;
+  }
+
+  .content-box.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mbti-card {
+    background: linear-gradient(135deg, #fef3f8, #fce7f3);
+    border: 2px solid #fbcfe8;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+
+  .mbti-card h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 8px;
+  }
+
+  .mbti-card .subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    margin-bottom: 24px;
+  }
+
+  .topic-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .topic-section h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topic-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .topic-section li {
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    background: #f9fafb;
+    border-radius: 8px;
+    color: #4b5563;
+    position: relative;
+    padding-left: 48px;
+    transition: all 0.2s;
+  }
+
+  .topic-section li:hover {
+    background: #fef3f8;
+    transform: translateX(4px);
+  }
+
+  .topic-section li::before {
+    position: absolute;
+    left: 16px;
+    font-size: 20px;
+  }
+
+  .good-topics li::before {
+    content: "💬";
+  }
+
+  .avoid-topics li::before {
+    content: "🚫";
+  }
+
+  .tips-section {
+    background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+  }
+
+  .tips-section h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 16px;
+  }
+
+  .tips-section p {
+    color: #4b5563;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .mbti-tabs {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 8px;
+    }
+
+    .mbti-tab {
+      padding: 8px 4px;
+      font-size: 12px;
+    }
+
+    .mbti-card {
+      padding: 24px;
+    }
+
+    .mbti-card h2 {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<div class="conversation-container">
+  <div class="conversation-header">
+    <h1>💬 MBTI별 대화 주제</h1>
+    <p>상대방의 MBTI를 선택하면 좋아할 대화 주제를 알려드려요!</p>
+  </div>
+
+  <div class="mbti-tabs">
+    <div class="mbti-tab active" onclick="showMbti('INTJ')">INTJ</div>
+    <div class="mbti-tab" onclick="showMbti('INTP')">INTP</div>
+    <div class="mbti-tab" onclick="showMbti('ENTJ')">ENTJ</div>
+    <div class="mbti-tab" onclick="showMbti('ENTP')">ENTP</div>
+    <div class="mbti-tab" onclick="showMbti('INFJ')">INFJ</div>
+    <div class="mbti-tab" onclick="showMbti('INFP')">INFP</div>
+    <div class="mbti-tab" onclick="showMbti('ENFJ')">ENFJ</div>
+    <div class="mbti-tab" onclick="showMbti('ENFP')">ENFP</div>
+    <div class="mbti-tab" onclick="showMbti('ISTJ')">ISTJ</div>
+    <div class="mbti-tab" onclick="showMbti('ISFJ')">ISFJ</div>
+    <div class="mbti-tab" onclick="showMbti('ESTJ')">ESTJ</div>
+    <div class="mbti-tab" onclick="showMbti('ESFJ')">ESFJ</div>
+    <div class="mbti-tab" onclick="showMbti('ISTP')">ISTP</div>
+    <div class="mbti-tab" onclick="showMbti('ISFP')">ISFP</div>
+    <div class="mbti-tab" onclick="showMbti('ESTP')">ESTP</div>
+    <div class="mbti-tab" onclick="showMbti('ESFP')">ESFP</div>
+  </div>
+
+  <!-- INTJ -->
+  <div class="content-box active" id="INTJ">
+    <div class="mbti-card">
+      <h2>INTJ - 전략가</h2>
+      <p class="subtitle">논리적이고 독립적인 사고를 가진 완벽주의자</p>
+
+      <div class="topic-section good-topics">
+        <h3>😊 이런 대화 주제가 좋아요</h3>
+        <ul>
+          <li>"요즘 어떤 책 읽고 있어요?" - 지적 호기심 자극</li>
+          <li>"미래에 이루고 싶은 목표가 있나요?" - 장기적 비전 공유</li>
+          <li>"이 문제를 어떻게 해결하면 좋을까요?" - 논리적 사고 존중</li>
+          <li>"효율적인 업무 방식에 대해 어떻게 생각하세요?" - 시스템적 사고</li>
+          <li>"최근에 배운 새로운 지식이 있나요?" - 학습 욕구</li>
+        </ul>
+      </div>
+
+      <div class="topic-section avoid-topics">
+        <h3>😰 이런 대화는 피하세요</h3>
+        <ul>
+          <li>"요즘 연예인 누가 인기래요?" - 관심 없는 가십</li>
+          <li>"느낌이 어때요?" - 막연한 감정 질문</li>
+          <li>"다들 그렇게 하던데요?" - 근거 없는 주장</li>
+          <li>"그냥 이유 없이 좋아요!" - 논리 없는 답변</li>
+          <li>과도하게 감정적인 표현</li>
+        </ul>
+      </div>
+
+      <div class="tips-section">
+        <h3>💡 대화 꿀팁</h3>
+        <p>✅ 논리적으로 말하세요. "왜냐하면~" 같은 근거를 들어주세요.</p>
+        <p>✅ 깊이 있는 대화를 나누세요. 표면적인 대화보다 본질적인 주제를 다루세요.</p>
+        <p>✅ 독립적인 시간을 존중해주세요. 혼자만의 시간이 필요한 사람이에요.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENFP -->
+  <div class="content-box" id="ENFP">
+    <div class="mbti-card">
+      <h2>ENFP - 활동가</h2>
+      <p class="subtitle">열정적이고 창의적인 자유로운 영혼</p>
+
+      <div class="topic-section good-topics">
+        <h3>😊 이런 대화 주제가 좋아요</h3>
+        <ul>
+          <li>"꿈꾸는 이상적인 삶이 있나요?" - 상상력 자극</li>
+          <li>"가장 행복했던 순간은 언제였어요?" - 감정 공유</li>
+          <li>"만약 뭐든 할 수 있다면 뭐 하고 싶어요?" - 가능성 탐색</li>
+          <li>"요즘 관심있는 취미가 있나요?" - 다양한 관심사</li>
+          <li>"여행 가고 싶은 곳이 있나요?" - 모험심 자극</li>
+        </ul>
+      </div>
+
+      <div class="topic-section avoid-topics">
+        <h3>😰 이런 대화는 피하세요</h3>
+        <ul>
+          <li>"구체적인 계획이 뭐예요?" - 너무 세세한 계획 추궁</li>
+          <li>"그건 비현실적이지 않아요?" - 꿈 부정하기</li>
+          <li>"그렇게 자주 바꾸면 안 되죠" - 변화 비난하기</li>
+          <li>"좀 더 현실적으로 생각해요" - 상상력 제한하기</li>
+          <li>지나치게 딱딱하고 형식적인 대화</li>
+        </ul>
+      </div>
+
+      <div class="tips-section">
+        <h3>💡 대화 꿀팁</h3>
+        <p>✅ 열정적으로 반응해주세요. "와 정말 멋진데요!"</p>
+        <p>✅ 다양한 주제로 대화를 즐겨보세요. 한 가지 주제에만 집중하지 마세요.</p>
+        <p>✅ 긍정적인 에너지를 유지하세요. 부정적인 말보다 격려를 해주세요.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISTJ -->
+  <div class="content-box" id="ISTJ">
+    <div class="mbti-card">
+      <h2>ISTJ - 현실주의자</h2>
+      <p class="subtitle">책임감 있고 신뢰할 수 있는 실용주의자</p>
+
+      <div class="topic-section good-topics">
+        <h3>😊 이런 대화 주제가 좋아요</h3>
+        <ul>
+          <li>"일상 루틴이 어떻게 되세요?" - 계획적인 삶</li>
+          <li>"취미로 뭐 하세요?" - 구체적인 활동</li>
+          <li>"주말에 보통 뭐 하세요?" - 일상적인 대화</li>
+          <li>"가족들과는 자주 연락하세요?" - 전통적 가치</li>
+          <li>"맛집 추천해주세요!" - 실용적인 정보 공유</li>
+        </ul>
+      </div>
+
+      <div class="topic-section avoid-topics">
+        <h3>😰 이런 대화는 피하세요</h3>
+        <ul>
+          <li>"느낌 아니까!" - 근거 없는 직관</li>
+          <li>"그냥 충동적으로 해요!" - 무계획적인 행동</li>
+          <li>"추상적인 개념에 대해 얘기해요" - 너무 이론적인 주제</li>
+          <li>"규칙은 깨라고 있는 거예요" - 규칙 무시</li>
+          <li>갑작스러운 계획 변경 제안</li>
+        </ul>
+      </div>
+
+      <div class="tips-section">
+        <h3>💡 대화 꿀팁</h3>
+        <p>✅ 구체적이고 명확하게 말하세요. 애매한 표현은 피하세요.</p>
+        <p>✅ 약속을 잘 지키세요. 신뢰가 가장 중요합니다.</p>
+        <p>✅ 현실적인 주제로 대화하세요. 너무 상상력 넘치는 이야기는 부담스러울 수 있어요.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESFP -->
+  <div class="content-box" id="ESFP">
+    <div class="mbti-card">
+      <h2>ESFP - 연예인</h2>
+      <p class="subtitle">즉흥적이고 활기찬 분위기 메이커</p>
+
+      <div class="topic-section good-topics">
+        <h3>😊 이런 대화 주제가 좋아요</h3>
+        <ul>
+          <li>"요즘 핫한 맛집 가봤어요?" - 트렌드와 경험</li>
+          <li>"주말에 뭐 하고 놀까요?" - 즉흥적인 활동</li>
+          <li>"이 옷 어때요?" - 패션과 스타일</li>
+          <li>"재밌는 영화 추천해주세요!" - 엔터테인먼트</li>
+          <li>"같이 춤춰요!" - 신체 활동</li>
+        </ul>
+      </div>
+
+      <div class="topic-section avoid-topics">
+        <h3>😰 이런 대화는 피하세요</h3>
+        <ul>
+          <li>"미래 10년 계획이 뭐예요?" - 너무 먼 미래</li>
+          <li>"심오한 철학적 질문인데요..." - 너무 깊은 이론</li>
+          <li>"조용히 책이나 읽어요" - 지루한 제안</li>
+          <li>"계획 없이 만나면 안 돼요" - 즉흥성 제한</li>
+          <li>분위기 죽이는 부정적인 말</li>
+        </ul>
+      </div>
+
+      <div class="tips-section">
+        <h3>💡 대화 꿀팁</h3>
+        <p>✅ 재미있게 대화하세요! 웃음이 가득한 시간을 만들어요.</p>
+        <p>✅ 즉흥적인 제안을 해보세요. "지금 당장 ○○ 갈래요?"</p>
+        <p>✅ 현재 순간을 즐기세요. 과거나 미래보다 '지금'이 중요해요.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 나머지 MBTI들... -->
+  <div class="content-box" id="INTP">
+    <div class="mbti-card">
+      <h2>INTP - 논리술사</h2>
+      <p class="subtitle">호기심 많은 분석적 사색가</p>
+      <div class="topic-section good-topics">
+        <h3>😊 이런 대화 주제가 좋아요</h3>
+        <ul>
+          <li>"이 이론에 대해 어떻게 생각해요?" - 지적 탐구</li>
+          <li>"왜 그럴까요?" - 원리 탐색</li>
+          <li>"흥미로운 패턴을 발견했어요" - 분석적 사고</li>
+          <li>"만약 ~라면 어떻게 될까요?" - 가설 토론</li>
+          <li>"최근에 배운 흥미로운 것" - 지식 공유</li>
+        </ul>
+      </div>
+      <div class="topic-section avoid-topics">
+        <h3>😰 이런 대화는 피하세요</h3>
+        <ul>
+          <li>"감정적으로 어때요?" - 감정 강요</li>
+          <li>"다들 그래요" - 대중 추종</li>
+          <li>"이유는 필요 없어요" - 논리 무시</li>
+          <li>"빨리 결정해요!" - 성급한 압박</li>
+          <li>피상적인 사교 대화</li>
+        </ul>
+      </div>
+      <div class="tips-section">
+        <h3>💡 대화 꿀팁</h3>
+        <p>✅ 논리적 토론을 즐겨요. 다른 의견도 편하게 말하세요.</p>
+        <p>✅ 사색할 시간을 주세요. 즉각적인 답변을 기대하지 마세요.</p>
+        <p>✅ 지적 호기심을 자극하세요. 새로운 아이디어를 함께 탐구해요.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showMbti(mbti) {
+  // 모든 탭과 콘텐츠 비활성화
+  document.querySelectorAll('.mbti-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelectorAll('.content-box').forEach(box => {
+    box.classList.remove('active');
+  });
+
+  // 선택된 탭과 콘텐츠 활성화
+  event.target.classList.add('active');
+  document.getElementById(mbti).classList.add('active');
+
+  // 스크롤
+  document.querySelector('.content-box.active').scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
+}
+
+// 페이지 로드 시 모든 MBTI 데이터 생성
+const mbtiData = {
+  ENTJ: {
+    name: "통솔자",
+    desc: "대담하고 상상력이 풍부한 리더",
+    good: [
+      '"목표를 어떻게 달성하실 건가요?" - 목표 지향적',
+      '"효율적인 방법이 뭘까요?" - 생산성 중시',
+      '"리더십 경험 있으세요?" - 리더십 존중',
+      '"장기적으로 어떤 비전이 있으세요?" - 전략적 사고',
+      '"어떻게 문제를 해결하셨어요?" - 해결 능력'
+    ],
+    avoid: [
+      '"그냥 느낌대로 해요" - 비효율 싫어함',
+      '"천천히 생각해봐요" - 신속한 결정 선호',
+      '"감정이 우선이에요" - 논리 우선',
+      '"계획 없이 살아요" - 계획적',
+      '우유부단한 태도'
+    ],
+    tips: '✅ 직설적으로 말하세요. 돌려 말하기보다 명확하게!\n✅ 능력을 인정해주세요. 성취를 칭찬해요.\n✅ 도전적인 대화를 나눠요. 지적 자극이 필요해요.'
+  },
+  ENTP: {
+    name: "변론가",
+    desc: "똑똑하고 호기심 많은 사색가",
+    good: [
+      '"이 아이디어 어때요?" - 창의성 자극',
+      '"반대 의견을 말씀드리면..." - 토론 즐김',
+      '"다른 관점에서 보면?" - 다각도 사고',
+      '"왜 그럴까요?" - 분석적 호기심',
+      '"새로운 시도 해볼까요?" - 혁신 선호'
+    ],
+    avoid: [
+      '"그냥 정해진 대로 해요" - 틀 싫어함',
+      '"토론하지 말아요" - 토론 즐김',
+      '"상처받았어요" - 논리적 토론 선호',
+      '"루틴대로만 해요" - 변화 추구',
+      '권위에 기댄 주장'
+    ],
+    tips: '✅ 토론을 즐겨요. 맞서도 괜찮아요!\n✅ 창의적인 제안을 해보세요. 새로운 게 좋아요.\n✅ 유머를 섞어요. 재치있는 대화를 좋아해요.'
+  },
+  INFJ: {
+    name: "옹호자",
+    desc: "이상주의적이고 통찰력 있는 영혼",
+    good: [
+      '"인생의 의미에 대해..." - 깊은 대화',
+      '"이 세상을 더 나은 곳으로" - 이상주의',
+      '"당신의 가치관은?" - 가치 공유',
+      '"진심을 말씀해주세요" - 진정성',
+      '"꿈꾸는 세상이 있나요?" - 비전 공유'
+    ],
+    avoid: [
+      '"그냥 돈 버는 게 목표예요" - 물질만능주의',
+      '"피상적인 관계로 충분해요" - 깊이 추구',
+      '"현실만 보세요" - 이상 부정',
+      '"감정은 약점이에요" - 감정 존중',
+      '가식적인 태도'
+    ],
+    tips: '✅ 진심으로 대하세요. 가식을 금방 알아챠요.\n✅ 깊은 대화를 나눠요. 표면적인 얘기는 지루해요.\n✅ 공감해주세요. 이해받는 느낌이 중요해요.'
+  },
+  INFP: {
+    name: "중재자",
+    desc: "이상적이고 충실한 가치 수호자",
+    good: [
+      '"이상적인 삶이란?" - 이상 추구',
+      '"어떤 가치를 중요하게 생각해요?" - 가치관',
+      '"창작 활동 하세요?" - 예술적 감각',
+      '"진정한 자신은 어떤 사람인가요?" - 자아 탐색',
+      '"의미있는 일을 하고 싶어요" - 의미 추구'
+    ],
+    avoid: [
+      '"비현실적이에요" - 꿈 부정',
+      '"너무 감정적이에요" - 감정 비난',
+      '"효율만 생각하세요" - 가치 무시',
+      '"현실을 보세요" - 이상 무시',
+      '냉소적이고 비판적인 태도'
+    ],
+    tips: '✅ 따뜻하게 대해주세요. 상처받기 쉬워요.\n✅ 개성을 존중해주세요. 독특함을 인정해요.\n✅ 창의성을 격려해요. 표현을 지지해주세요.'
+  },
+  ENFJ: {
+    name: "선도자",
+    desc: "카리스마 넘치는 영감을 주는 리더",
+    good: [
+      '"사람들을 어떻게 도와주고 싶으세요?" - 이타심',
+      '"팀워크가 중요하죠?" - 협력 중시',
+      '"다른 사람의 성장을 돕는 게" - 멘토링',
+      '"조화로운 관계" - 관계 중시',
+      '"함께 성장해요" - 공동체'
+    ],
+    avoid: [
+      '"나만 생각해요" - 이기심',
+      '"사람은 믿을 게 못 돼요" - 비관주의',
+      '"혼자가 좋아요" - 관계 회피',
+      '"감정은 불필요해요" - 감정 무시',
+      '냉담하고 무관심한 태도'
+    ],
+    tips: '✅ 따뜻하게 반응해주세요. 공감이 중요해요.\n✅ 비전을 공유하세요. 함께 꿈꾸는 걸 좋아해요.\n✅ 감사를 표현하세요. 인정받는 걸 좋아해요.'
+  },
+  ISFJ: {
+    name: "수호자",
+    desc: "헌신적이고 따뜻한 보호자",
+    good: [
+      '"가족이 중요하죠?" - 전통적 가치',
+      '"어떻게 사람들을 도와주세요?" - 봉사',
+      '"안정적인 게 좋아요" - 안정 추구',
+      '"세심하게 챙기시네요" - 배려 인정',
+      '"책임감이 강하시네요" - 신뢰'
+    ],
+    avoid: [
+      '"변화가 필요해요!" - 갑작스러운 변화',
+      '"전통은 낡은 거예요" - 전통 무시',
+      '"혼자 알아서 해요" - 도움 거부',
+      '"감사는 필요 없어요" - 인정 무시',
+      '무례하고 배려 없는 행동'
+    ],
+    tips: '✅ 감사를 자주 표현하세요. 인정이 힘이 돼요.\n✅ 배려를 해주세요. 세심한 관심이 좋아요.\n✅ 안정감을 주세요. 예측 가능한 게 편해요.'
+  },
+  ESTJ: {
+    name: "경영자",
+    desc: "뛰어난 관리 능력을 가진 실용주의자",
+    good: [
+      '"계획이 어떻게 되세요?" - 체계적',
+      '"효율적으로 하려면?" - 실용성',
+      '"책임감이 강하시네요" - 신뢰',
+      '"전통을 중요하게 생각해요" - 가치',
+      '"규칙을 잘 지키시네요" - 원칙'
+    ],
+    avoid: [
+      '"계획 없이 살아요" - 무계획',
+      '"규칙은 깨라고 있어요" - 원칙 무시',
+      '"느낌대로 해요" - 비논리적',
+      '"책임 없이 살래요" - 무책임',
+      '시간 약속을 안 지키기'
+    ],
+    tips: '✅ 정확하게 말하세요. 명확한 커뮤니케이션!\n✅ 약속을 지키세요. 신뢰가 가장 중요해요.\n✅ 실용적으로 대화하세요. 현실적인 얘기를 좋아해요.'
+  },
+  ESFJ: {
+    name: "집정관",
+    desc: "배려심 많고 사교적인 협력자",
+    good: [
+      '"사람들과 시간 보내는 게 좋아요" - 사교성',
+      '"어떻게 도와드릴까요?" - 배려',
+      '"다른 사람 기분이 중요해요" - 공감',
+      '"함께하는 게 즐거워요" - 협력',
+      '"전통적인 가치" - 보수성'
+    ],
+    avoid: [
+      '"혼자가 제일 좋아요" - 관계 회피',
+      '"다른 사람은 신경 안 써요" - 무관심',
+      '"감정은 약점이에요" - 감정 무시',
+      '"도움 필요 없어요" - 독립 과시',
+      '타인에 대한 무례함'
+    ],
+    tips: '✅ 따뜻하게 대해주세요. 친절이 중요해요.\n✅ 함께하는 시간을 즐겨요. 같이 하는 걸 좋아해요.\n✅ 감정을 표현하세요. 공감하는 걸 좋아해요.'
+  },
+  ISTP: {
+    name: "장인",
+    desc: "대담하고 실용적인 실험가",
+    good: [
+      '"어떻게 작동하는 거예요?" - 메커니즘',
+      '"직접 해보셨어요?" - 실전 경험',
+      '"문제를 어떻게 고쳤어요?" - 해결 능력',
+      '"효율적인 방법이 뭐예요?" - 실용성',
+      '"취미로 뭐 만드세요?" - 손재주'
+    ],
+    avoid: [
+      '"감정적으로 얘기해요" - 감정 과잉',
+      '"이론만 아는 거죠?" - 실전 무시',
+      '"계속 말해요!" - 과도한 대화',
+      '"계획대로만 해요" - 융통성 무시',
+      '쓸데없이 긴 설명'
+    ],
+    tips: '✅ 간결하게 말하세요. 요점만 짧게!\n✅ 행동으로 보여주세요. 말보다 행동이 중요해요.\n✅ 공간을 주세요. 혼자 시간이 필요해요.'
+  },
+  ISFP: {
+    name: "모험가",
+    desc: "유연하고 매력적인 예술가",
+    good: [
+      '"예술적 감각이 있으시네요" - 예술성',
+      '"자유롭게 사는 게 좋아요" - 자유',
+      '"아름다운 걸 좋아하세요?" - 미적 감각',
+      '"경험이 중요하죠" - 체험',
+      '"자연 좋아하세요?" - 자연 친화'
+    ],
+    avoid: [
+      '"계획대로만 살아요" - 틀에 박힌 삶',
+      '"현실적으로 생각해요" - 꿈 무시',
+      '"예술은 쓸모없어요" - 예술 폄하',
+      '"규칙을 따라요" - 자유 억압',
+      '비판적이고 판단하는 태도'
+    ],
+    tips: '✅ 개성을 존중해주세요. 독특함을 인정해요.\n✅ 자유를 주세요. 강요하지 마세요.\n✅ 감각적으로 대화하세요. 아름다움을 함께 즐겨요.'
+  },
+  ESTP: {
+    name: "사업가",
+    desc: "똑똑하고 에너지 넘치는 실용가",
+    good: [
+      '"지금 당장 뭐 할까요?" - 즉흥성',
+      '"재미있는 경험 있으세요?" - 모험',
+      '"도전 좋아하세요?" - 도전 정신',
+      '"빠르게 결정하시네요" - 추진력',
+      '"현실적이시네요" - 실용성'
+    ],
+    avoid: [
+      '"천천히 생각해요" - 답답함',
+      '"이론적으로 설명하면..." - 지루함',
+      '"조심히 계획해요" - 즉흥 억제',
+      '"미래를 생각해요" - 먼 미래',
+      '지나치게 신중한 태도'
+    ],
+    tips: '✅ 에너지를 맞춰주세요. 활기차게 대화해요!\n✅ 즉흥적으로 제안하세요. 계획 없는 재미를 좋아해요.\n✅ 행동하세요. 말보다 같이 움직이는 게 좋아요.'
+  }
+};
+
+// 페이지 로드 시 나머지 MBTI 콘텐츠 동적 생성
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.querySelector('.conversation-container');
+
+  Object.keys(mbtiData).forEach(type => {
+    if (document.getElementById(type)) return; // 이미 있으면 스킵
+
+    const data = mbtiData[type];
+    const contentBox = document.createElement('div');
+    contentBox.className = 'content-box';
+    contentBox.id = type;
+
+    contentBox.innerHTML = `
+      <div class="mbti-card">
+        <h2>${type} - ${data.name}</h2>
+        <p class="subtitle">${data.desc}</p>
+
+        <div class="topic-section good-topics">
+          <h3>😊 이런 대화 주제가 좋아요</h3>
+          <ul>
+            ${data.good.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="topic-section avoid-topics">
+          <h3>😰 이런 대화는 피하세요</h3>
+          <ul>
+            ${data.avoid.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="tips-section">
+          <h3>💡 대화 꿀팁</h3>
+          ${data.tips.split('\n').map(tip => `<p>${tip}</p>`).join('')}
+        </div>
+      </div>
+    `;
+
+    container.appendChild(contentBox);
+  });
+});
+</script>
