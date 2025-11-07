@@ -158,8 +158,3 @@ description: MBTI로 알아보는 완벽한 소개팅 궁합과 대화 팁
     <span class="mbti-badge">🎯 실전</span>
   </a>
 </div>
-
-<div class="intro-section" style="margin-top: 60px;">
-  <h3>📝 최근 블로그 포스트</h3>
-  <p>소개팅과 MBTI에 관한 유용한 팁들을 공유합니다!</p>
-</div>
