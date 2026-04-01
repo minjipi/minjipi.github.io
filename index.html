@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>minj. 기술 블로그</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="about.html" class="logo">minj<span class="logo-dot">.</span></a>
+    <div class="topbar-right">
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="검색..." autocomplete="off" />
+        <button class="search-btn" onclick="doSearch()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <a href="editor.html" id="editorLink" title="글 편집기 (로컬 전용)"
+         style="display:none; font-size:0.8rem; color:var(--text-muted); padding:6px 12px; border:1px solid var(--border); border-radius:var(--radius); text-decoration:none; transition: all 0.15s;"
+         onmouseover="this.style.color='var(--accent)';this.style.borderColor='var(--accent)'"
+         onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">✏️ 편집</a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main">
+      <div class="filter-bar" id="filterBar" style="display:none;">
+        <span id="filterLabel"></span>
+        <button onclick="filterCat(null)">✕ 초기화</button>
+      </div>
+      <div class="post-list" id="postList"></div>
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+
+  <script src="posts.js"></script>
+  <script src="path-resolver.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // 로컬 환경에서만 편집기 링크 표시
+    if (location.protocol === "file:" || location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+      document.getElementById("editorLink").style.display = "inline-flex";
+    }
+  </script>
+</body>
+</html>

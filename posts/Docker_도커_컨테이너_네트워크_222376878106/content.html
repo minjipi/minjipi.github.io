@@ -1,0 +1,572 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222376878106 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-dbb41193-ed58-466d-9809-aeeb0f12f2fd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-8c5e39c6-1f27-48b7-a75e-01b701ae150c" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" id="SE-a1046790-622c-4611-82ba-5773d9143c7b" style="color:#000000;"><b>[Docker]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-e911172e-e829-4c51-a087-5f39492dcf4f" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-c1a228a0-04c1-46a4-ae6a-c01aed030d89" style="color:#000000;"><b>Container Network</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-9d3251e1-0ec0-4eb7-b7cd-b9a4ebe8253a" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-8085fcfc-54ce-439b-9479-6991edd2b6b0" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_corner" id="SE-324e0ef1-deab-4f08-9c27-9cff25d88eb4">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_corner">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fa1a4ac8-2e47-4c81-8de2-22025e655cd4" style=""><span class="se-fs-fs28 se-ff- se-style-unset" id="SE-c751c311-ac01-4e87-a07c-93acd6307eb0" style="color:#000000;"><b>도커 컨테이너 네트워크</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-0cc0185e-d7f5-4fa5-93ee-5083bb338bf7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6d742660-b0bc-476c-8eef-d9171e8d7935" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3c83e7b6-ceaa-471b-91e9-0d54f199af4d" style="color:#000000;"><b>[0] 네트워크 관련 명령어</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-8b7458a7-0337-4343-a238-e9687d9e5410">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">	docker network ls		<span class="token se-code-operator">:</span> 네트워크 리스트 출력
+	docker network inspect	<span class="token se-code-operator">:</span> 네트워크 명을 지정<span class="token se-code-punctuation">,</span> 자세한 내용 표시
+	docker network create	<span class="token se-code-operator">:</span> 네트워크 생성
+	docker network rm		<span class="token se-code-operator">:</span> 네트워크 삭제
+	docker network connect	<span class="token se-code-operator">:</span> 컨테이너를 네트워크에 연결
+	docker network disconnect	<span class="token se-code-operator">:</span> 컨테이너를 네트워크에서 연결 해제</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8b7458a7-0337-4343-a238-e9687d9e5410"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5ab2fab7-e946-4900-a05e-e955df5ece1c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-230aa81d-b84c-47bf-a738-e62c902622f1" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-033ede81-b35a-4d0d-9db2-7acded358dc6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7d292672-0ce4-4db5-98a8-c36b4b8d01e8" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3ef2e593-c971-4cd3-93d2-3f5aec7de8d8" style="color:#000000;">우선 컨테이너 아이피를 확인해 보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d258cca6-c779-41e4-8399-ad7b8d362566" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b2fcda7d-4a77-4b2c-a8ed-3e166aefc757" style="color:#000000;">ifconfig 가 설치되어 있지 않아 net-tools 를 먼저 설치한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7f8bb576-4ade-4e57-8884-ea67658abd35">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">yum <span class="token se-code-operator">-</span>y install net<span class="token se-code-operator">-</span>tools
+
+ifconfig</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7f8bb576-4ade-4e57-8884-ea67658abd35"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-9913e9ad-f9b9-4ac0-b486-e9a62e66000c">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-9913e9ad-f9b9-4ac0-b486-e9a62e66000c", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMzIg/MDAxNjIyNDI4NDIxOTUz.maSd7xwVX8CVWtOPf47_8zRVltY5Xf6lO2ilVwX8kTkg.8S9PNS7yz0tfTouk6vtXftaDZgvW7VOdlE19ccQJK8sg.PNG.ghdalswl77/image.png?type=w1", "originalWidth" : "832", "originalHeight" : "233", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-9913e9ad-f9b9-4ac0-b486-e9a62e66000c_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMzIg/MDAxNjIyNDI4NDIxOTUz.maSd7xwVX8CVWtOPf47_8zRVltY5Xf6lO2ilVwX8kTkg.8S9PNS7yz0tfTouk6vtXftaDZgvW7VOdlE19ccQJK8sg.PNG.ghdalswl77/image.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-084cf895-9d15-4e42-983a-c11edec5dbf0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a27fc800-1778-4c4d-ab36-aa7a837a3084" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-81bdfeb4-d4e8-4166-8693-311beeb1d5cc" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-146c1305-55f4-41f1-ae51-4633212073a2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a1d8656e-d6e5-44cf-a8e2-7fa12762db55" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-b5b97414-f247-4b71-a9a4-da9c7dd03170">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c6669d4-ab38-42d2-8580-48b7a6b1b095" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-35c5eca1-89ab-4d87-b58e-d26445210166" style="color:#000000;">네트워크 리스트 출력</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-945b1689-8643-41ba-9b38-2e2901c128de">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker network ls</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-945b1689-8643-41ba-9b38-2e2901c128de"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-fb5933f6-852d-43a6-a798-2e531a63c80f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de12e5b8-a745-4674-bdab-d499ebba2a7a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c694914e-60e2-4585-9e54-afaaa4e64405" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f6a06617-4149-4649-a409-0f011459250d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-49501cfa-1f25-4b40-a5eb-8373b40be6d3" style="color:#000000;"><b>[1] 네트워크 종류</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c5239808-6855-41ad-8b73-2f8dcef6735c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-56448a0b-683a-4bfa-9bcd-a1dd25a211fe" style="color:#000000;">도커 네트워크 종류는 이렇게 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-a69a4abf-0be6-4a5e-82e9-107517f92738">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">NETWORK</span> <span class="token se-code-constant">ID</span> <span class="token se-code-constant">NAME</span> <span class="token se-code-constant">DRIVER</span> <span class="token se-code-constant">SCOPE</span>
+<span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span><span class="token se-code-operator">===</span>
+03210053f006        bridge              bridge              local
+36725cf303e6        host                host                local
+ecaa3570d18c        none                <span class="token se-code-keyword">null</span>                local</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a69a4abf-0be6-4a5e-82e9-107517f92738"}' type="text/data"></script>
+</div> <div class="se-component se-table se-l-table_layout2 __se-component" id="SE-c1144dce-e70d-4036-9c24-a2774bfd9b58">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout2 se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 26.0px;  background-color: #fcffee;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-dc40bd99-125a-415a-aa74-ced78ac82e3c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-10ed490e-40d4-4db0-bc2f-51a21fa17c93" style="color:#000000;"><b>bridge 타입</b></span></p></div>
+</td><td class="se-cell" colspan="2" rowspan="1" style="width: 66.67%; height: 26.0px;  background-color: #fcffee;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33e8fec2-4c5c-4942-802b-2e116bad0000" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-cfad8d77-c311-4faf-b8e0-1223453c68c9" style="color:#000000;">외부 네트워크와 연결되어 있는 독립적인 네트워크.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-495f9787-f648-4627-b4f3-5f783b66d074" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c60f38af-5393-45c9-872c-1d62b2bb7895" style="color:#000000;">컨테이너를 생성하면 기본적으로 설정되는 네트워크.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-99c1aa91-2b72-4306-9ab6-5096c322d511" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-027c223b-426a-4700-89b4-24bae6132ec7" style="color:#000000;">컨테이너는 외부의 리포지터리에 접근할 수 있으며 -p 옵션으로 외부에 포트도 공개 가능.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-929a3c40-6b1d-4c4e-8ea7-524cd3b394af" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-22feab8b-56d3-4994-887f-a7a0adfd15d1" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ce224fa-acd0-4c18-8bb9-8401dac3f8f8" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8adc8ab3-4437-4aeb-b4a8-cd62722be52d" style="color:#000000;">docker network inspect bridge.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #eefdff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-cc2f09be-a9c5-493e-b8ed-f7e6cbbdef09" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-21a4bcf7-f2be-4e14-bd8d-2ecbfcaa4463" style="color:#000000;"><b>host 타입</b></span></p></div>
+</td><td class="se-cell" colspan="2" rowspan="1" style="width: 66.67%; height: 43.0px;  background-color: #eefdff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b32147de-28f5-4ecc-8521-039d7b2ae99d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-23311407-a604-4674-befe-8957c2c2ecbe" style="color:#000000;">컨터이너를 호스트 컴퓨터와 동일한 네트워크에서 컨테이너를 돌리기 위해서 사용.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-307b3979-6de3-4920-b0a2-ffaff50a0a86" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b8f5aa8a-eb3f-4d52-a68a-0b81878286ac" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cf8b1d4d-88c5-49de-afe4-19297520a81e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c1ca082d-3d87-420a-a546-08b4b6c5ad39" style="color:#000000;">docker network inspect host</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-d279107f-dff5-4fc0-a7bc-24e251ed8c09" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3c866a3f-b7e4-4952-bdfe-950ccfdae2e4" style="color:#000000;"><b>none 타입</b></span></p></div>
+</td><td class="se-cell" colspan="2" rowspan="1" style="width: 66.67%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db6d4b81-3c2a-4c95-bb8f-1e02e8b42845" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a589f756-f62b-447a-adb8-5706ca9318ca" style="color:#000000;">컨테이너가 어떤 네트워크와도 연결(attached)되지 않는다. </span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-28a56d10-2335-4106-8c1c-d2033024ef88" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-90aaef48-588f-4e1a-bc64-607fdc645cb9" style="color:#000000;">그래서 외부 네트워크나 다른 컨테이너에서 접근할 수 없다. </span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_table", "id" : "SE-c1144dce-e70d-4036-9c24-a2774bfd9b58", "data": { "columnCount" : "3" }}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5272582f-849e-4f1f-a2ce-ebac2a9fa9b3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8d5cbe87-ec92-480b-b895-041fbc9df92a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ba60f05b-a95f-4e65-8bf4-7eb040d86975" style="color:#000000;">bridge, host 이 두 가지 타입으로 컨테이너를 생성해 보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b752482b-b382-44e2-932b-b2e951a3caed" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c3167ea9-0e9a-4658-b812-d3b6753593dc" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-70bfc3e4-5a4e-4848-9c4d-9e044ed1b4cd" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4d4fdea9-5479-4cf2-b20b-1082d7cbbbd6" style="color:#000000;"><b>[bridge]</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-857875ea-f8b7-42db-a321-d3f21a930792">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker run <span class="token se-code-operator">-</span>it <span class="token se-code-operator">--</span>network bridge <span class="token se-code-operator">--</span>name centos_bridge centos<span class="token se-code-operator">:</span><span class="token se-code-number">7</span> bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-857875ea-f8b7-42db-a321-d3f21a930792"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-a86460ca-8b65-42c0-b584-3c365c09d91e">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:663px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a86460ca-8b65-42c0-b584-3c365c09d91e", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfNzUg/MDAxNjIyNDI5ODk4NTE1.NpYqLdS_9_3JR6cazVv_dxyxKUxs7glWqQGfnqBKw7cg._JsK5Y-RuIiLpNp4bghh6mwsqATq3hc0-TFvwQD-iy8g.PNG.ghdalswl77/image.png?type=w1", "originalWidth" : "663", "originalHeight" : "117", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-a86460ca-8b65-42c0-b584-3c365c09d91e_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfNzUg/MDAxNjIyNDI5ODk4NTE1.NpYqLdS_9_3JR6cazVv_dxyxKUxs7glWqQGfnqBKw7cg._JsK5Y-RuIiLpNp4bghh6mwsqATq3hc0-TFvwQD-iy8g.PNG.ghdalswl77/image.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-be8fe563-4afa-47a8-a7b1-dc0c1d5f7cc6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f238808-4ad8-4884-8545-0643f67f54eb" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-68f5c762-7aab-4171-bcfa-998bffc288ce" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1c7b579c-c73c-46e9-9785-dca0f9f36166" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6e80d931-b0ce-413b-a935-1f85a2a98f1a" style="color:#000000;"><b>[host]</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-027fffe2-49ee-479c-a8ea-2aa9b0d5bd2b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker network create minji_bridge</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-027fffe2-49ee-479c-a8ea-2aa9b0d5bd2b"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-dcca42a7-9925-4663-b9b6-a7b816b38f04">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:404px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-dcca42a7-9925-4663-b9b6-a7b816b38f04", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMjgg/MDAxNjIyNDI5OTgxMzY3.oGDVqtaTPc86zdIMksfJqelrC2sUu23m6dIXmTpVuWkg.Mel7lrQ9QP4eM8lN-uPCmXk9og6kf2J4VmDOvKJBTDcg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%EC%A0%84_11.59.33.png?type=w1", "originalWidth" : "404", "originalHeight" : "87", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-dcca42a7-9925-4663-b9b6-a7b816b38f04_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMjgg/MDAxNjIyNDI5OTgxMzY3.oGDVqtaTPc86zdIMksfJqelrC2sUu23m6dIXmTpVuWkg.Mel7lrQ9QP4eM8lN-uPCmXk9og6kf2J4VmDOvKJBTDcg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%EC%A0%84_11.59.33.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-6b3a6daa-f160-4fe6-9f80-85ca9e8f86a5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker run <span class="token se-code-operator">-</span>it <span class="token se-code-operator">--</span>network minji_bridge <span class="token se-code-operator">--</span>name centos_minji centos<span class="token se-code-operator">:</span><span class="token se-code-number">7</span> bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6b3a6daa-f160-4fe6-9f80-85ca9e8f86a5"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-bd544809-ad6d-432f-866a-3617f612913f">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:669px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-bd544809-ad6d-432f-866a-3617f612913f", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMTA1/MDAxNjIyNDI5NzcxMDA3.TymsKIXbl2tmqQivuTf1IcRniqbK9h8tdHFRHI-dJCYg.rBKDZ5-T-Ut0WOy7LzAybK6w5Wgl9ZfJKknwPWjUohsg.PNG.ghdalswl77/image.png?type=w1", "originalWidth" : "669", "originalHeight" : "121", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-bd544809-ad6d-432f-866a-3617f612913f_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMTA1/MDAxNjIyNDI5NzcxMDA3.TymsKIXbl2tmqQivuTf1IcRniqbK9h8tdHFRHI-dJCYg.rBKDZ5-T-Ut0WOy7LzAybK6w5Wgl9ZfJKknwPWjUohsg.PNG.ghdalswl77/image.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-588639eb-7cea-496b-8f61-774126fefda2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f5ee7c35-af6d-42dc-84da-41ccb749791a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c7cb8b8e-ae76-479b-899c-676dd2422c3a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-60e6eb4c-61cf-4289-afc1-dc468ffa3e1e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-58e8d6f8-a105-49ac-adf2-e0a8432a5979" style="color:#000000;">두 아이피의 대역이 다른 것을 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f0ccb94d-8e3f-4f84-8d77-691538ce0507" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8f26d9d0-180f-4c42-9882-09f21fb77d89" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f340d7f3-02e0-4e22-a1db-3469b823bba2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-31f44dbd-9450-416a-b1bb-9d373f47683f" style="color:#000000;"><b>[2] 컨테이너의 bridge 네트워크 구조</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component" id="SE-3803421c-23dd-4ef9-9bbb-725fc4f0a1b4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"> <span class="token se-code-punctuation">[</span> 컨테이너 <span class="token se-code-punctuation">]</span> <span class="token se-code-punctuation">[</span> 컨테이너 <span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">[</span> lo <span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">[</span>eth0<span class="token se-code-punctuation">]</span> <span class="token se-code-punctuation">[</span> lo <span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">[</span>eth0<span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">[</span>veth<span class="token se-code-punctuation">]</span> <span class="token se-code-punctuation">[</span>veth<span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">[</span>docker0<span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">[</span>실제 네트워크 장치<span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-3803421c-23dd-4ef9-9bbb-725fc4f0a1b4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3314402f-271f-4288-b5fc-6e88fcd45c7b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-690d39d4-219f-42ec-a891-183b72e24bf4" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-06802191-da7d-45b1-8071-5f7ae6408ac7" style="color:#000000;">컨테이너는 Linux Namespace 기술을 이용해 각자 격리된 네트워크 공간을 할당받게 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-41f52e6a-8a39-43be-829e-c1d166c451e3" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-502bf389-48d2-4b6c-aae1-b015484eadfb" style="color:#000000;">기본적으로 172.17.0.0/16 대역의 IP를 순차적으로 할당 받는다. 이 IP는 컨테이너가 재시작할 때마다 변경될 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8f6c4c11-7a1b-4f9d-b4c7-87e85a70cd34" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-26754591-0783-4038-92ee-13f5835a9bf1" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-50de0a8c-f098-4b25-8bc1-2f78d0f4845e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-17c60a4a-5099-4526-b5d4-0a63f6973820" style="color:#000000;">컨테이너는 외부와 통신하기 위해 2개의 네트워크 인터페이스를 함께 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-379e0eb5-69a7-4100-a674-7f5053b7ffb1" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b4d35ce7-028b-4f07-9fd7-04af657187a7" style="color:#000000;">하나는 컨테이너 내부 Namespace에 할당되는eth0 이름의 인터페이스,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79481565-a8bd-43f2-be78-0fec0665e825" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b07caa68-342d-4fb6-a462-b6cca3a47b43" style="color:#000000;">하나는 호스트 네트워크 브리지 docker0에 바인딩 되는 vethXXXXXXX이름 형식의 veth 인터페이스</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5df38d5c-7468-483e-81c6-f7b48ffdc6fe" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a7d0951e-d8ff-479b-9c91-310cb499447e" style="color:#000000;">(“veth”는 “virtual eth”라는 의미).</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-23a1d957-47c5-49de-b065-de13f6267f93" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8f03836b-c838-4b54-89c9-769504b25c01" style="color:#000000;">컨테이너의 eth0인터페이스와 호스트의 veth 인터페이스는 서로 연결되어 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3ecf3f09-037b-45cc-8065-2a4b52f75897" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-25efe960-4c1e-4ea8-8d2d-d77a18575fad" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-733b9a4a-cb56-44d4-be78-8163a495eeeb" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7fe6d4a7-ecac-41a5-b1b8-a669d6ae7696" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-48856ebf-2ea8-4449-adb9-21f3b8df0250">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f76fe296-9014-4449-bd0e-8dbda721c55c" style=""><span class="se-fs- se-ff-" id="SE-a9e1b8a7-dec8-41d7-8988-0336b9521467" style="color:#000000;"><b>컨테이너 Apache 설치</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-76f5cd9a-244a-452b-9416-ad3758eda92e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f730879d-1b01-4ae9-96bc-6fae7f4879ee" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7e2050f2-3d67-47cf-87b2-50f93771e8f2" style="color:#000000;">만들어 둔 컨테이너 하나에 접속해서 httpd를 설치한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3c31a1fd-db02-4ae9-9a45-90353daeff81" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-59c4556a-12ab-4eba-abf8-f77e4568af03" style="color:#000000;">설치는 되지만 실행을 하려고하면 아래와 같이 권한 문제로 실행되지 않는다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ef7016b3-13d8-4850-a1d5-3ca8a59b5298">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:507px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ef7016b3-13d8-4850-a1d5-3ca8a59b5298", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMTgx/MDAxNjIyNDMwMTIzNDIx.najoD-qPtJq0pHSerx87IkVzb6magaUm7Ee9s51m64wg.-_E_TQSXk0yQQUMoGYqS6RZ1GADPG2tNCOKX777wmsEg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_12.02.01.png?type=w1", "originalWidth" : "507", "originalHeight" : "33", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-ef7016b3-13d8-4850-a1d5-3ca8a59b5298_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMTgx/MDAxNjIyNDMwMTIzNDIx.najoD-qPtJq0pHSerx87IkVzb6magaUm7Ee9s51m64wg.-_E_TQSXk0yQQUMoGYqS6RZ1GADPG2tNCOKX777wmsEg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_12.02.01.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-6d03e63a-3454-4fe5-af4c-e7f7fd861eef">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c7dc009b-ac88-48f8-ae3f-430e19859613" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c1c77f87-7731-4cdb-9c96-2a25c9e39b82" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6d6a1d47-bffb-4f33-beb6-d21e3baac99c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-70511882-cbb6-4004-af03-9e2fafd5f81b" style="color:#000000;">여기서 두 가지 방법이 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-54503283-a3e0-4aa1-8185-b3be34830042" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-429530ce-6b23-44a7-a925-f6cf52809f26" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9942e475-4301-4983-b3fc-e5c3ee540d9b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-fea0de14-5a65-4c27-a858-91b480656c9b" style="color:#000000;"><b>1. 권한을 부여해 준다. </b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0cb8baf2-4a2e-49ce-9d8f-ff2d3823ab59" style="color:#000000;">(—privileged 옵션 추가)</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-08ed6591-bf1a-4bcd-ba8a-62dfd4cb0e3b" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d95f9b3f-c0ae-4d5a-ae64-4089e6b59443">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker run <span class="token se-code-operator">-</span>it <span class="token se-code-operator">--</span>network —privileged minji_bridge <span class="token se-code-operator">--</span>name centos_minji centos<span class="token se-code-operator">:</span><span class="token se-code-number">7</span> bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d95f9b3f-c0ae-4d5a-ae64-4089e6b59443"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4a840e04-ee65-4815-868e-cc1a42754375">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-101e6836-c694-4d7f-9d7e-bc2ad84967e6" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-84da13b2-5155-4d05-a825-cf2821f3575a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-34b4c2a8-9340-4041-b769-4504d0b3f031" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-31036c35-2f9b-425e-9c54-9830acb2c681" style="color:#000000;">2. 아파치가 설치되어 있는 컨테이너를 만든다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f38ce913-b15f-4204-b27d-602ed4173536">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker run <span class="token se-code-operator">-</span>it <span class="token se-code-operator">--</span>name apache httpd bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f38ce913-b15f-4204-b27d-602ed4173536"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f527a489-d5a6-462e-aa1a-af6870ca8e4a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-da83cc0a-9d4a-44f8-af80-f30d54c930e5" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-67d09817-f197-428a-be2f-f653f338a82c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-72ba8535-f941-4419-9937-8954045f3a6b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c78d4e31-a057-41e9-b358-4292e8fc0510" style="color:#000000;">설치도 되고 실행도 되지만, 연결이 되지 않는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c2c6c745-850c-4b43-a8af-978fcc84f6bc" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8b75f80f-786f-40fa-89cd-e986d0b48094" style="color:#000000;">포트맵핑까지 되어있는 컨테이너를 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-082060ac-a039-40c8-9722-4ee36bcd43f4" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d215eb30-f48c-4546-a5b7-dac715c48c6f" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-quotation se-l-quotation_line" id="SE-dbd9b383-a032-41a2-8bf9-9e255bbe6aac">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1c22159-1407-4b87-a1c5-9d56e51c5343" style=""><span class="se-fs- se-ff-" id="SE-3fc1c067-77ac-4ca2-bcc3-fddeb6c02d11" style="color:#000000;">포트 맵핑</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-a06f293e-0365-475a-9a1a-ffe6d6786eb9">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker run <span class="token se-code-operator">-</span>it <span class="token se-code-operator">-</span>p <span class="token se-code-number">8080</span><span class="token se-code-operator">:</span><span class="token se-code-number">80</span> <span class="token se-code-operator">--</span>name apache2 httpd bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a06f293e-0365-475a-9a1a-ffe6d6786eb9"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3503b59c-56bd-4312-9ab9-e40494eb5758">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63100aa5-741b-4e35-a93d-fe89ed5e5c27" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f5f8c616-7109-420e-b9c7-f0c02c43473c" style="color:#000000;">-p 옵션으로 외부 포트:내부포트 를 연결</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-54fc79fa-d144-4763-8a5c-491a7d330168">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-54fc79fa-d144-4763-8a5c-491a7d330168", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMjA5/MDAxNjIyNDMwNTIyNDc2.8-k6TA9hpDCy9Vg8s_dPfYtOpCCeLwvc9WnarPi4p4Eg.9dvtEbZKklZwe1WZiqFbRHDPRlQ76C3BG-2M2Oz071wg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_12.08.40.png?type=w1", "originalWidth" : "1040", "originalHeight" : "60", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-54fc79fa-d144-4763-8a5c-491a7d330168_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMjA5/MDAxNjIyNDMwNTIyNDc2.8-k6TA9hpDCy9Vg8s_dPfYtOpCCeLwvc9WnarPi4p4Eg.9dvtEbZKklZwe1WZiqFbRHDPRlQ76C3BG-2M2Oz071wg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_12.08.40.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ef28e6a7-accd-4333-9bd0-e12deb0ab495">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d2ad8298-8bec-4786-a173-aedcd421e186" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2a925c60-9b22-46a6-ba49-5851e5e6240e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2c99013c-14a8-4d38-ac8e-a0b4e1e71c08" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4acae29f-7301-4c56-a775-7ac1fc8f5206" style="color:#000000;">그리고 본체(도커가 설치되어 있는)IP:8080 으로 접속해보면 이렇게</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1f9f5378-fc09-4db8-a10e-1a33701ae7fb">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1f9f5378-fc09-4db8-a10e-1a33701ae7fb", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfODgg/MDAxNjIyNDM1NTM0OTc5.6MbEXQWI8-kAdLLcibbMl6jnZs3MYmntUpxA0Wxzu6Yg.ILXcKBvyxDi5trlNlw7dt8WJNZ9TJOpyjn03jrkaxbYg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_1.32.12.png?type=w1", "originalWidth" : "896", "originalHeight" : "691", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-1f9f5378-fc09-4db8-a10e-1a33701ae7fb_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfODgg/MDAxNjIyNDM1NTM0OTc5.6MbEXQWI8-kAdLLcibbMl6jnZs3MYmntUpxA0Wxzu6Yg.ILXcKBvyxDi5trlNlw7dt8WJNZ9TJOpyjn03jrkaxbYg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_1.32.12.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e428cd5a-3544-4579-89ff-a27cbce52acf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c2f8e9b4-9733-4913-be95-791384b064a6" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-694d9a8f-c635-47f4-a486-76244614ae27" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bb4b75cc-5f6d-4163-894e-85b308e80443" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-363c29ac-f55c-4f35-b482-6bb0f951f732" style="color:#000000;">아파치가 잘 실행된 것을 볼 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee622124-c60d-4e29-a3cf-33db67e11e92" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-786b7986-db83-43a6-bc5e-ce14d3940d93" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-451a44be-e656-4a8f-800b-ae533b97de40" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5bdf1160-5d93-47da-b139-287df243b886" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-793344a1-218c-4484-adf6-21317162ae54" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5b959b87-9b77-4f18-b4ee-8bc165c89dbf" style="color:#000000;">* 컨테이너 생성 시 bash 쉘을 실행시켜주지 않으면?</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6fad60c5-799c-407a-9d35-57a052e9f7ee">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"> docker run <span class="token se-code-operator">-</span>d <span class="token se-code-operator">-</span>p <span class="token se-code-number">8084</span><span class="token se-code-operator">:</span><span class="token se-code-number">80</span> <span class="token se-code-operator">--</span>name apache2_foregroud httpd</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6fad60c5-799c-407a-9d35-57a052e9f7ee"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f57cd8b2-97d5-41a1-bae3-146e8b56091c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1eb29856-fdb4-4da8-bf8e-3d750b485d18" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-5ba5a8b7-5aa1-4347-ad20-9b049f809282" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-8fd88b63-20c2-4870-8a07-1bb1e39b8687">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-94f528e6-cda6-4beb-bb7b-acad5ef434ba" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-7845246a-2eea-4648-93ca-1790da26eec6" style="color:#000000;">3) </span><span class="se-fs- se-ff- se-style-unset" id="SE-5bb275b1-71e6-4b93-9922-abd3f3dcd36c" style="color:#000000;"><b>컨테이너 자원 관리</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-2f703baf-1286-423c-8356-9ab3fca9a31b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f3a8259d-b929-4e34-9aec-3656fecc620f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d3eb5776-0e9a-4edd-b45f-14380d810f5f" style="color:#000000;">컨테이너를 생성하는 run, create 명령어에서 컨테이너를 생성할 때 자원 할당량을 입력하지 않으면 호스트의 자원을 제한 없이 사용가능하다. 하지만 모든 자원을 사용하게 된다면 호스트에 영향을 끼칠 뿐 아니라 다른 컨테이너에도 영향을 끼치게 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-75850666-a018-440c-8b43-ea5bb4ddf817" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-39743085-5c0e-4a43-a59b-199080301c59" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9685bd72-1961-480d-8a3b-275ffc9d7605" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f7a68e2d-c497-47e3-bd69-30c66d7174b1" style="color:#000000;"><b>(0) 컨테이너를 생성</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-ac33b6a7-ef0f-43e1-9e4e-57ea3e5a1e85">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker run <span class="token se-code-operator">-</span>it <span class="token se-code-operator">--</span>name apache <span class="token se-code-operator">-</span>p <span class="token se-code-number">8080</span><span class="token se-code-operator">:</span><span class="token se-code-number">80</span> httpd bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ac33b6a7-ef0f-43e1-9e4e-57ea3e5a1e85"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-372a49fc-b71c-49e1-bf37-6c4384a1fe5c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">apt<span class="token se-code-operator">-</span><span class="token se-code-keyword">get</span> update
+apt<span class="token se-code-operator">-</span><span class="token se-code-keyword">get</span> install net<span class="token se-code-operator">-</span>tools
+httpd<span class="token se-code-operator">-</span>foreground  <span class="token se-code-operator">&amp;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-372a49fc-b71c-49e1-bf37-6c4384a1fe5c"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-551ba4f8-4902-4ba3-966a-8f8d7db6027d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">apt<span class="token se-code-operator">-</span><span class="token se-code-keyword">get</span> install stress</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-551ba4f8-4902-4ba3-966a-8f8d7db6027d"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-ab807a57-8cf2-4b27-a996-962a0cc870a5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">stress <span class="token se-code-operator">-</span>c <span class="token se-code-number">1</span> <span class="token se-code-operator">&amp;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ab807a57-8cf2-4b27-a996-962a0cc870a5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-6129bbd8-d7ce-4df8-aa1d-f046f6d406a7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-511e2ee5-81fe-4be9-891b-54d94b27e4cc" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e87a1b8f-1119-4211-92de-fc96b566baa8" style="color:#000000;">결과:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-539fad78-5aa6-4b49-9ff5-e57a671b6519">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:580px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-539fad78-5aa6-4b49-9ff5-e57a671b6519", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMTAg/MDAxNjIyNDM3MzE3MTM4.4ac3TCdTeVEWIcI3Cx7VuHcZZzpwkHhEsf1rKe3DRVIg.DCUi2rHIWARbDu6PHe1_KDoq5HZKkEPEkumiFvGK3Mcg.PNG.ghdalswl77/image.png?type=w1", "originalWidth" : "580", "originalHeight" : "114", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-539fad78-5aa6-4b49-9ff5-e57a671b6519_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMTAg/MDAxNjIyNDM3MzE3MTM4.4ac3TCdTeVEWIcI3Cx7VuHcZZzpwkHhEsf1rKe3DRVIg.DCUi2rHIWARbDu6PHe1_KDoq5HZKkEPEkumiFvGK3Mcg.PNG.ghdalswl77/image.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e4323b5a-07b1-445d-b44b-313141325e7c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c6893662-7310-411f-96b0-1012edec5783" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-963a8cd1-c684-4168-8bb2-a3c635e649c4" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-420ca928-557b-47df-83b6-49a012d6422a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8b956b4c-5880-4db7-864e-563238e7774f" style="color:#000000;">컨테이너 하나가 cpu 코어 한 개를 100% 쓰고 있어서 25%.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-fcfcda8c-ef60-4fee-92c7-d0a2add35b1e">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:656px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-fcfcda8c-ef60-4fee-92c7-d0a2add35b1e", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMTQ5/MDAxNjIyNDM3NTU4Nzgy.C815WDtlbaSD-mfz0EhsFEukXDYQgumoSLM8iA730Owg.sB245poLF9wACZfN8KqBLlr2L8aeD5FF20ipT_NY31og.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_2.05.56.png?type=w1", "originalWidth" : "656", "originalHeight" : "147", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-fcfcda8c-ef60-4fee-92c7-d0a2add35b1e_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMTQ5/MDAxNjIyNDM3NTU4Nzgy.C815WDtlbaSD-mfz0EhsFEukXDYQgumoSLM8iA730Owg.sB245poLF9wACZfN8KqBLlr2L8aeD5FF20ipT_NY31og.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_2.05.56.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ca1b6e4f-3dc3-4515-9ad0-9dc7d05fd199">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ff52e161-a919-4a20-a69f-856ce0e81655" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-9c4f7a21-6e8f-44f7-a8ea-8a48dfc3380e" style="color:#000000;">해당 컨테이너를 지운 후의 cpu 사용량은 거의 0이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4c2d7624-91e9-4ef3-95ef-26514867fa4d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ce72c84c-3611-4afa-a840-aa4f1a513437" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5f51a79e-822b-484f-824f-9c1dc5567d10" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-782b66e8-e132-4902-a29d-86ce35ae20a2" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-969412e0-03f9-4942-af27-ff164ec8645d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-69fcb305-8033-4a05-8d37-39eed3792c6a" style="color:#000000;">자원에 제한을 걸어둔 컨테이너를 생성해 보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d077eef2-ca67-41c7-8f2e-62ab98931976">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker run <span class="token se-code-operator">-</span>it <span class="token se-code-operator">--</span>cpus <span class="token se-code-number">1</span> <span class="token se-code-operator">--</span>memory 1024MB <span class="token se-code-operator">--</span>name apache <span class="token se-code-operator">-</span>p <span class="token se-code-number">8080</span><span class="token se-code-operator">:</span><span class="token se-code-number">80</span> httpd bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d077eef2-ca67-41c7-8f2e-62ab98931976"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b4a590ae-712b-4357-b907-49d51d544992">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">grep <span class="token se-code-operator">-</span>c processor <span class="token se-code-operator">/</span>proc<span class="token se-code-operator">/</span>cpuinfo </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b4a590ae-712b-4357-b907-49d51d544992"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-fe218978-1412-4423-b681-711619e2f03b">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:530px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-fe218978-1412-4423-b681-711619e2f03b", "src" : "https://blogfiles.pstatic.net/MjAyMTA1MzFfMTg5/MDAxNjIyNDM3ODEzMDY2.E7V20GUk9sKZl70SAmx86hU0J7u8CvqlhZ4-TXl3Ovog.n4Jrvey6dO89aYZ2FjJBTG_JA9J1XqkbaBgZqsCfRzcg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_2.10.11.png?type=w1", "originalWidth" : "530", "originalHeight" : "50", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-fe218978-1412-4423-b681-711619e2f03b_0" src="https://blogfiles.pstatic.net/MjAyMTA1MzFfMTg5/MDAxNjIyNDM3ODEzMDY2.E7V20GUk9sKZl70SAmx86hU0J7u8CvqlhZ4-TXl3Ovog.n4Jrvey6dO89aYZ2FjJBTG_JA9J1XqkbaBgZqsCfRzcg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-31_%EC%98%A4%ED%9B%84_2.10.11.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8c52d07b-c76f-4def-9380-89402e43288e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-47079b8c-ed72-464e-bf60-e2297734e8a7" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ff829a3e-555c-4549-99f5-437edec40fbd" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-343e12a1-36f5-4a27-8b23-3f8909df9028" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-df5d7b05-319b-4b98-9b08-3ba57ee1d185" style="color:#000000;">.....</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-edc9f583-42da-40b9-8350-45fce0130193" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8499567d-4a58-465a-a197-7d9d915273e1" style="color:#000000;">하나로 제한해서 1이 나올 것이라 생각했지만</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f0f95a8-1a48-480a-8a0b-94efa7c25e6e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-74067c35-05aa-4a7f-bcd0-13fccee96d72" style="color:#000000;">컨테이너는 하나만 받은게 아니라 4개를 원래 다 쓸 수 있는데 1개만 쓰도록 제한이 걸린거니까 저렇게 뜨는 것이었다.😧</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-12e61d99-6f18-4a49-9876-e4799cb27f3d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2fb0dde0-6f58-4e2d-b2a3-b9c82a2881f7" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-56f7199e-223f-4ccc-8029-da0f396a1a79" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-64db05e0-32a2-461e-8355-d07ef5506558" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

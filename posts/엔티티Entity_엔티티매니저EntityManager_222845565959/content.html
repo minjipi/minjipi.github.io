@@ -1,0 +1,422 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222845565959 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-81d13ac7-5665-4924-a6a6-a27265319bdf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-c71c45b5-300e-437c-bbc8-4c4044c871b2" style=""><span class="se-fs-fs11 se-ff-" id="SE-6c0e210a-4f05-4f1a-8bb2-7e9ac3974ab2" style="color:#999999;"><i><b>엔티티(Entity) 객체, 엔티티를 다루는 엔티티매니저(EntityManager) 객체</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1f6de39b-1ae7-401e-a736-16cd0f067320" style=""><span class="se-fs- se-ff-" id="SE-16098f1f-013e-46c2-ba5e-9a22d64fe5b3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6f3342e1-3c06-4b32-a57a-d1b3ca4a6525" style=""><span class="se-fs- se-ff-" id="SE-afab834d-22be-4987-94b7-7ec004336b24" style="">JPA의 가장 큰 특징은 영속성(Persistence)이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-398f40ec-c119-401d-8e3f-6544a1da63b4" style=""><span class="se-fs- se-ff-" id="SE-bfb9c4b5-123d-466b-b980-9cb7d9305201" style="">JPA를 사용해 검색한 DB매핑정보(엔티티)는 메모리(영속 컨텍스트)에 저장되고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3b50b346-9a21-4666-9860-926e0319847d" style=""><span class="se-fs- se-ff-" id="SE-17f2568a-ca85-4f83-a4e5-4f0f99aa767d" style="">이러한 엔티티를 영속객체라 부른다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-8f2c3d85-d8d4-4f7f-b119-d6ce3b676ebd">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-88577db5-321a-47bf-917a-a71fd2d7355b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a8214140-1484-495c-80b9-61021ed48b41" style=""><span class="se-fs-fs19 se-ff-" id="SE-65e45e2a-6df7-4200-9fb0-ca4cbf1201cd" style=""><b>엔티티(Entity)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b856c64c-4196-413c-a915-48700795fefa" style=""><span class="se-fs- se-ff-" id="SE-6279ac10-4e72-40e4-9d3e-3ae72333fb1f" style="">JPA는 매번 데이터베이스에 접근하는 것이 아니라 엔티티매니저를 사용하여 메모리상에 작업을 한후 트랜잭션이 커밋되는 시점에 데이터베이스에 반영되는 구조를 가지고 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a36dddd0-8175-49c7-b2ab-0fdbafd249a9" style=""><span class="se-fs- se-ff-" id="SE-c41f8168-3a15-4187-9419-eb4ac259fb58" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-263d102f-2114-49ec-83e7-608b6059507b" style=""><span class="se-fs- se-ff-" id="SE-4c71afab-9756-4fde-9d11-bb3bb574b12b" style="">엔티티는 DB 테이블에 보관할 대상이다. 특정한 시점에 DB에 영향을 미치는 쿼리를 실행한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-43a9c84b-4fe6-478c-a0e7-5c4b3f29db1d" style=""><span class="se-fs- se-ff-" id="SE-1943c006-338f-4fe0-a360-fd2cf99ff3b8" style="">엔티티를 설정하는 방법은 2가지가 있는데 @Entity 어노테이션을 사용하는 방법과, xml 설정을 사용하는 것이다. 대부분 어노테이션을 이용하므로.. 어노테이션을 이용하여 엔티티를 설정하는 법을 알아보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c673ebc-38c7-41d8-a9d0-946eb0b9c2ca" style=""><span class="se-fs- se-ff-" id="SE-49b54401-ab85-4c32-9361-9d83b3cf3eae" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-da4f8f35-3f4f-4241-a976-2bad504e44e1" style=""><span class="se-fs- se-ff-" id="SE-dc2ae5f6-0563-4d6d-a982-448690a3ab4d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-091e5b8a-38ee-4cd1-8999-b3a7a6430e40" style=""><span class="se-fs- se-ff-" id="SE-140a6709-61ef-4397-bd1c-b4548d79d34d" style="">엔티티를 설정하기 위한 애노테이션,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ae88fa4a-ad4b-4799-a0ac-0298febcf73b" style=""><span class="se-fs- se-ff-" id="SE-ecb585c6-e6c1-4680-92aa-ea925d6e43d4" style="">@Entity</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-11af8ea4-8223-4823-bbea-7ad0dddbb0b6" style=""><span class="se-fs- se-ff-" id="SE-c658a283-1b8d-4828-a917-479f3bfa80b6" style="">JPA에서는 쿼리를 자동으로 생성해준다. JPA는 클래스 이름을 테이블 이름으로 사용하는데, 아래의 Room 엔티티는 기본적으로 Room 테이블과 매핑된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-280fb8d2-5715-446c-a47a-860595eded35">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Entity
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Room</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//...</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-280fb8d2-5715-446c-a47a-860595eded35"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b3234e63-9708-4aa9-98dc-c8e4900ec365">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6df3e58c-35ef-4dd2-97c6-2eb33a94c36c" style=""><span class="se-fs- se-ff-" id="SE-fe3f364f-b7df-422f-bccd-94bb097968a0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-715171e0-56f9-4e72-882c-a756a9d49f28" style=""><span class="se-fs- se-ff-" id="SE-7d8a8fec-a579-44c0-b2eb-9001099f3a3d" style="">@Table</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db5783f3-224e-4ba0-8d72-f10d6b05af2b" style=""><span class="se-fs- se-ff-" id="SE-909373bb-27fc-4d66-9efc-2b47cfb41e5f" style="">그렇다면 클래스이름과 테이블의 이름이 다른 경우는?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-59fb7ad4-e81a-4b75-a089-53950c9fcd9a" style=""><span class="se-fs- se-ff-" id="SE-dd2900f1-b3e7-43f0-b160-b851d352848a" style="">@Table을 사용하면 클래스이름과 테이블 이름이 다르더라도 name 속성을 설정하여 테이블의 이름을 지정할 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-9bd995ed-95de-44a6-a7c3-b959d026e1c0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">Table</span><span class="token se-code-punctuation">(</span>name<span class="token se-code-operator">=</span><span class="token se-code-string">"room_info"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Room</span><span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">// ...</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9bd995ed-95de-44a6-a7c3-b959d026e1c0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-cc019544-2daf-4128-b64c-2dee955e8ce8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b55f3679-e64b-40b8-9bbe-779ce9b76abc" style=""><span class="se-fs- se-ff-" id="SE-0c32f6a8-d7f8-4921-8ea0-64b5c20e0a36" style="color:#999999;"><i>* 그리고 order 같은 경우는 order 예약어 때문에 ㅋㅋ table 어노테이션으로 꼭 orders 라고 정해준다.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09b86a0c-851c-45f0-8584-64cf4352a7c6" style=""><span class="se-fs- se-ff-" id="SE-ba8d264b-644f-40ec-83d6-0b1c55c8bd83" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c27a1a29-6c81-4ce3-93af-1064420f1c9a" style=""><span class="se-fs- se-ff-" id="SE-02acc969-3576-45d2-869c-942fb791b8ab" style="">@Id</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6f119449-a2f2-4a42-90e9-422d89ed8002" style=""><span class="se-fs- se-ff-" id="SE-0959796d-0e75-47c1-9f2e-57937cac5f8d" style="">DB가 레코드를 구분하기 위해 주요키를 사용하는 것처럼, JPA는 엔티티의 @Id를 이용하여 식별자를 지정한다. @Id를 지정한 필드 값은 엔티티를 식별하기 위한 식별자로 사용된다. 아래 코드에서 id = ? 쿼리에서 ? 자리에 @Id 설정한 필드가 예시이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8f9a7e97-1405-420e-bb10-e9f4a1397502">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">
+<span class="token se-code-keyword">public</span> Optional <span class="token se-code-function">findRoom</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">int roomId</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+    EntityManagerFactory emf <span class="token se-code-operator">=</span> Persistence<span class="token se-code-punctuation">.</span><span class="token se-code-function">createEntityManagerFactory</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"jpastart"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+    EntityManager em <span class="token se-code-operator">=</span> emf<span class="token se-code-punctuation">.</span><span class="token se-code-function">createEntityManager</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">try</span> <span class="token se-code-punctuation">{</span>
+        Room room <span class="token se-code-operator">=</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">find</span><span class="token se-code-punctuation">(</span>Room<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span> roomId<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">// SELECT ... FROM Room r WHERE id = ? </span>
+<span class="token se-code-keyword">return</span> Optional<span class="token se-code-punctuation">.</span><span class="token se-code-function">ofNullable</span><span class="token se-code-punctuation">(</span>room<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">finally</span> <span class="token se-code-punctuation">{</span>
+        em<span class="token se-code-punctuation">.</span><span class="token se-code-function">close</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8f9a7e97-1405-420e-bb10-e9f4a1397502"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-af7e3531-5f0b-447d-8dfd-3471e20dfffe">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8d4d4a6e-8a33-44e6-8289-3edf9d682e27" style=""><span class="se-fs- se-ff-" id="SE-c9e98b63-5dab-46d1-80ae-53b66e2e0d45" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3867a26a-c174-482c-8d00-9780272d67df" style=""><span class="se-fs- se-ff-" id="SE-6612012c-8ddc-407a-99c2-85d455463820" style="">@Basic </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ff90d0e-14a0-4b4b-b231-b993d06ac5f8" style=""><span class="se-fs- se-ff-" id="SE-1b76dacd-6548-466e-9e7e-0dfb4cb282c1" style="">@Id 애노테이션을 제외한 나머지 영속 대상은 @Basic 을 사용한다. 아래 Room 엔티티는 @Basic 애노테이션이 보이지 않는데, 이는 생략된 것이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-74d320bb-d932-4018-8dfe-14676e4e400e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Entity
+@<span class="token se-code-function">Table</span><span class="token se-code-punctuation">(</span>name<span class="token se-code-operator">=</span><span class="token se-code-string">"room_info"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Room</span> <span class="token se-code-punctuation">{</span>
+    @Id
+    <span class="token se-code-keyword">private</span> String number<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String name<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String description<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-74d320bb-d932-4018-8dfe-14676e4e400e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-27d1802f-80ed-4961-aa2a-7dfaf4e7d415">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9018a35d-0e02-4001-aa43-4ea1a8a82149" style=""><span class="se-fs- se-ff-" id="SE-6aa402bf-7101-4af3-b223-aaa9ebb921bb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b9a5d72d-67d8-4696-bde7-ed348995e0e8" style=""><span class="se-fs- se-ff-" id="SE-7aabef1c-24c0-4968-a3b5-6c91c831521c" style=""><b>@Enumerated </b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9b552003-8814-45a4-96a4-d7488e30b4fe" style=""><span class="se-fs- se-ff-" id="SE-832be650-f377-4512-946d-72b208f1d27b" style="">열거타입에 대한 매핑은 @Enumerated 를 사용한다. (EnumType.STRING을 쓰자. 꼭.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-59253e06-53d1-44cb-ac57-23a07f9a6edc" style=""><span class="se-fs- se-ff-" id="SE-50918c31-0982-46a9-8c0b-d613e1dd6111" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fbb14055-be97-4763-9444-3d5714e66cd8" style=""><span class="se-fs- se-ff-" id="SE-41b7b510-8050-4562-920e-43153e4fe10e" style="">호텔 등급 열거형 &gt;</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6d56f294-3d66-46fb-95d1-82addcba41a2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">enum</span> Grade <span class="token se-code-punctuation">{</span>
+<span class="token se-code-constant">STAR1</span><span class="token se-code-punctuation">,</span> <span class="token se-code-constant">STAR2</span><span class="token se-code-punctuation">,</span> <span class="token se-code-constant">STAR3</span><span class="token se-code-punctuation">,</span> <span class="token se-code-constant">STAR4</span><span class="token se-code-punctuation">,</span> <span class="token se-code-constant">STAR5</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6d56f294-3d66-46fb-95d1-82addcba41a2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f6f133a4-fd59-44fc-8d77-4b0dfab858c0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-661fcbce-01a3-4a14-8740-18bc79552ce8" style=""><span class="se-fs- se-ff-" id="SE-c14ad8c7-9311-465f-bfef-55ed628db78d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3192ac99-51d7-4851-85f7-54bd9d8b4119" style=""><span class="se-fs- se-ff-" id="SE-6eb88cf9-d4ff-488d-ba06-10e0152ce225" style="">호텔 엔티티 &gt;</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a6dbb154-b163-4793-be55-65ff48d5c313">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Entity
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Hotel</span> <span class="token se-code-punctuation">{</span>
+    @Id
+    <span class="token se-code-keyword">private</span> String id<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String name<span class="token se-code-punctuation">;</span>
+    @<span class="token se-code-function">Enumerated</span><span class="token se-code-punctuation">(</span>EnumType<span class="token se-code-punctuation">.</span><span class="token se-code-constant">STRING</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> Grade grade<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a6dbb154-b163-4793-be55-65ff48d5c313"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c4e03759-582d-463e-930f-b494d0738917">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d66e8622-d1a0-44fc-a0a5-35a9b6b3586e" style=""><span class="se-fs- se-ff-" id="SE-e9405fa2-3986-4bb3-8e31-d34a6ef9cf55" style="">Hotel 엔티티를 보면 @Enumerated의 속성으로 EnumType.STRING 으로 지정하고 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ab48cdd9-0f47-43dc-abf2-64e02b6af2b7" style=""><span class="se-fs- se-ff-" id="SE-8d265b3e-b481-4dfe-921b-0dfec66587bc" style="">이 속성은 @Enumerated 애노테이션으로 설정한 열거형을 DB로 저장할 때 어떤 값으로 저장할지 결정한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7f581973-88f3-4b85-908c-e05654f495f3" style=""><span class="se-fs- se-ff-" id="SE-08bc3fbe-cf53-423c-8ab0-73eb731c0bae" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a35ff115-4940-414d-9553-fea30a28cf73" style=""><span class="se-fs- se-ff-" id="SE-0ee518f4-a498-4bdb-b93c-c8893618749c" style="">EnumType.STRING으로 저장하는 경우, hotel 테이블 grade 필드에 "STAR1, STAR2, STAR3, STAR4, STAR5"란 문자열이 저장될 것이고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bce6cb2f-89a0-4ca6-accd-670c2b8c05d7" style=""><span class="se-fs- se-ff-" id="SE-4ccf2cad-e00d-44e6-9117-263fbf54ff69" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7f349395-42cf-4e4a-ab25-b2aa94f85538" style=""><span class="se-fs- se-ff-" id="SE-a82710a1-1249-421d-a38a-087b7088827a" style="">EnumType.ORDINAL을 사용하는 경우, grade필드에는 0~4(인덱스)가 저장된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0b8cd8f5-5553-4c64-ab05-96ca0887d5ee" style=""><span class="se-fs- se-ff-" id="SE-7b6fd5dc-3b57-4702-a846-da85955296e2" style="">(여기서 인덱스0은 STAR1, 인덱스4는 STAR5)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5f0f8e83-01f6-4080-937b-83de304dd92b" style=""><span class="se-fs- se-ff-" id="SE-46ebb738-bd67-4ba0-982f-3698d225353c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a48105dd-6026-4a0a-ab6e-49bf42ed7a73" style=""><span class="se-fs- se-ff-" id="SE-56b3264e-7721-4750-b817-1ce36b346a81" style="">열거형의 순서는 바뀔 가능성이 있기때문에 ORDINAL을 사용하는 것보다는 STRING을 사용하는 것이 유지보수에 더 좋다. 아니 사실 ORDINAL를 쓰면 망한다.. 귀찮더라도 꼭 STRING으로 하자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e132c55-6fbb-4ac7-92bc-8976cdf95849" style=""><span class="se-fs- se-ff-" id="SE-0712c5a3-26d1-43a0-867a-9adce25e7d63" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-68d162c5-1854-4435-882a-4802af8a680d" style=""><span class="se-fs- se-ff-" id="SE-78cc0a49-1124-4c62-9322-06d5032f0874" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-83faa407-0c09-47ce-b4d6-dbc32e5351e3" style=""><span class="se-fs- se-ff-" id="SE-0ccfe690-5b86-4d19-9904-1a7dac13bebe" style=""><b>@Column</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-946e6c7c-1a6b-4ef7-a55f-c986bc365c9e" style=""><span class="se-fs- se-ff-" id="SE-9889efc3-3866-469d-860b-210e3ce71d26" style="">프로퍼티의 이름과 테이블의 칼럼 이름이 같다면 생략이 가능하지만, 다를 경우에는 @Column 애노테이션을 지정해줘야한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-51348a6b-afe5-4715-82bd-51c946800996">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Entity
+@<span class="token se-code-function">Table</span><span class="token se-code-punctuation">(</span>name<span class="token se-code-operator">=</span><span class="token se-code-string">"room_info"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Room</span> <span class="token se-code-punctuation">{</span>
+    @Id
+    <span class="token se-code-keyword">private</span> String number<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String name<span class="token se-code-punctuation">;</span>
+        
+    @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name<span class="token se-code-operator">=</span><span class="token se-code-string">"description"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> String desc<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-51348a6b-afe5-4715-82bd-51c946800996"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-51c5298e-8431-40d9-9481-54af74c79f99">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f3cebc12-60c8-4469-a79a-de5565a0a662" style=""><span class="se-fs- se-ff-" id="SE-839277c1-3531-4b3d-ad2f-db48f10925bf" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7f8c7b51-10bf-469a-95ac-72265a963b9b" style=""><span class="se-fs- se-ff-" id="SE-9170c561-3151-4dcb-8407-ac754d8b2b70" style="">JPA는 INSERT, UPDATE, DELETE의 동작이 보통과 다르기 때문에 예상하지 못하거나 실수를 방지하기 위해 읽기 전용 매핑설정이  가능하다. 읽기 전용 프로퍼티를 설정하는 방법은 insertable 속성과 updateble 속성을 false로 설정하면 된다. 읽기 전용 프로퍼티는 JPA가 자동으로 생성하는 쿼리에서 제외된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-91451dfd-257a-42b9-9195-87f8d8241555">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Entity
+@<span class="token se-code-function">Table</span><span class="token se-code-punctuation">(</span>name<span class="token se-code-operator">=</span><span class="token se-code-string">"room_info"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Room</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//...</span>
+    @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name<span class="token se-code-operator">=</span><span class="token se-code-string">"id"</span><span class="token se-code-punctuation">,</span> insertable<span class="token se-code-operator">=</span><span class="token se-code-boolean">false</span><span class="token se-code-punctuation">,</span> updatable<span class="token se-code-operator">=</span><span class="token se-code-boolean">false</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> Long dbId<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-91451dfd-257a-42b9-9195-87f8d8241555"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7dbf1091-c808-47d4-9a4e-3344d2111a4a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-48a5e4db-8c6a-4e97-aaa8-d41caec2f070" style=""><span class="se-fs- se-ff-" id="SE-105a52b5-0882-494b-826d-aab826b537cc" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-88032186-14ad-44b4-926d-369f660cad7b" style=""><span class="se-fs- se-ff-" id="SE-0d09ee40-fb11-482f-a932-fa2a35c78651" style="">아래처럼 insertable 속성과 updatable 속성을 false로 지정하면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9aa514a6-8b47-4ab7-ab53-049760046b9d" style=""><span class="se-fs- se-ff-" id="SE-6652bb98-44b1-45f1-815e-490df643ab61" style="">JPA에서 쿼리를 생성할 때 해당 컬럼을 제외하는 것을 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd66a443-8865-4dd5-b8e7-4edef9225991" style=""><span class="se-fs- se-ff-" id="SE-28c43c8d-018f-4c0d-ac8d-d994e821b5cf" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-73da0a91-3404-4ce9-8d50-c701d0c7b93b" style=""><span class="se-fs- se-ff-" id="SE-c2fb80b3-f74b-49d0-be1c-0190e8775096" style="">- insert 제외 (id가 쿼리에서제외)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-9170aa48-03ef-4c95-aa4a-8c3688a1c85c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">entityManager<span class="token se-code-punctuation">.</span><span class="token se-code-function">persist</span><span class="token se-code-punctuation">(</span><span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Room</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"R202"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">"홍길동"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">"2번룸"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">//</span>
+insert into <span class="token se-code-function">room_info</span> <span class="token se-code-punctuation">(</span>description<span class="token se-code-punctuation">,</span> name<span class="token se-code-punctuation">,</span> number<span class="token se-code-punctuation">)</span> <span class="token se-code-function">values</span> <span class="token se-code-punctuation">(</span><span class="token se-code-operator">?</span><span class="token se-code-punctuation">,</span> <span class="token se-code-operator">?</span><span class="token se-code-punctuation">,</span> <span class="token se-code-operator">?</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9170aa48-03ef-4c95-aa4a-8c3688a1c85c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b6273c09-0430-432d-b92f-8eb8b692e88a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f630361d-0fe6-488b-8168-792e69a41d47" style=""><span class="se-fs- se-ff-" id="SE-f5c3b5b5-1703-4b09-9649-5c42e8e4fde4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9584334a-92d2-48da-be5c-eb1dd8132fd0" style=""><span class="se-fs- se-ff-" id="SE-ed6a0bc9-c142-4420-8c49-4567076773c2" style="">- update 제외 (id가 쿼리에서 제외)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-a4e67634-aca0-45a9-b3ae-520c013b408e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">entityManager<span class="token se-code-punctuation">.</span><span class="token se-code-function">getTransaction</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">begin</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+Room room <span class="token se-code-operator">=</span> entityManager<span class="token se-code-punctuation">.</span><span class="token se-code-function">find</span><span class="token se-code-punctuation">(</span>Room<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span> <span class="token se-code-string">"R202"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+room<span class="token se-code-punctuation">.</span><span class="token se-code-function">changeName</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"리뉴얼 2번룸"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span> 
+entityManager<span class="token se-code-punctuation">.</span><span class="token se-code-function">getTransaction</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">commit</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">//</span>
+update room_info <span class="token se-code-keyword">set</span> description <span class="token se-code-operator">=</span> <span class="token se-code-operator">?</span><span class="token se-code-punctuation">,</span> name <span class="token se-code-operator">=</span> <span class="token se-code-operator">?</span> where number <span class="token se-code-operator">=</span> <span class="token se-code-operator">?</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a4e67634-aca0-45a9-b3ae-520c013b408e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-75b67292-56ca-407e-9685-74412e3a6e71">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7fa575cc-848d-4047-9647-63f67d1d7a6e" style=""><span class="se-fs- se-ff-" id="SE-5bd36cd2-be61-4c67-a58e-a4da9f57af29" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d6b0a522-e338-4792-834b-25f60e8c4926" style=""><span class="se-fs- se-ff-" id="SE-ff18df99-30ca-4686-99cf-9f0b06c35db7" style=""><b>@Embedded , @Embeddable</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-bcf2bb78-8455-49cf-8142-6c8ebf2ca3af">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Entity
+@<span class="token se-code-function">Table</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"user"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">User</span> <span class="token se-code-punctuation">{</span>
+    @Id
+    @<span class="token se-code-function">GeneratedValue</span><span class="token se-code-punctuation">(</span>strategy <span class="token se-code-operator">=</span> GenerationType<span class="token se-code-punctuation">.</span><span class="token se-code-constant">AUTO</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> Long uid<span class="token se-code-punctuation">;</span>
+​    <span class="token se-code-keyword">private</span> String name<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String phoneNum<span class="token se-code-punctuation">;</span>
+​
+    <span class="token se-code-keyword">private</span> String zipCode<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String address1<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String address2<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bcf2bb78-8455-49cf-8142-6c8ebf2ca3af"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-152c1d4c-02fa-4512-a46b-ddf02bdd8f99">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93bf78c3-2d85-4ae0-9628-b6c59f2ba63b" style=""><span class="se-fs- se-ff-" id="SE-5fb66c7d-1cd3-422b-82ab-c7b2503114f9" style="">위 zipCode, address1, address2는 각각 주소를 나타내는 필드이다. 이때 @Embedded, @Embeddable를 사용하여 Address 라는 하나의 객체로 위의 3개의 데이터를 묶는다면 조금 더 주소라는 의미를 확실하게 표현할 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-fcd297c3-c4f8-4ac3-a0ec-0a766a84982d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Entity
+@<span class="token se-code-function">Table</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"user"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">User</span> <span class="token se-code-punctuation">{</span>
+    @Id
+    @<span class="token se-code-function">GeneratedValue</span><span class="token se-code-punctuation">(</span>strategy <span class="token se-code-operator">=</span> GenerationType<span class="token se-code-punctuation">.</span><span class="token se-code-constant">AUTO</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> Long uid<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String name<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String phoneNum<span class="token se-code-punctuation">;</span>
+​
+    @Embedded
+    <span class="token se-code-keyword">private</span> Address address<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-fcd297c3-c4f8-4ac3-a0ec-0a766a84982d"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-0c02251a-e4d9-4836-a169-3cc2c6d94f41">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Embeddable
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Address</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> String zipCode<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String address1<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String address2<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0c02251a-e4d9-4836-a169-3cc2c6d94f41"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3f909e7e-aa8b-4d12-9d28-e8ad575288e0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-71f4f600-24fd-4775-9b29-7ff21456ea2d" style=""><span class="se-fs- se-ff-" id="SE-764bf36b-5f29-4e08-886c-6d30d5c077db" style="">하나로 표현하고자 하는 개념에 해당하는 클래스를 생성한 뒤 필드를 생성하고, 클래스 상단에 @Embeddable을 사용한다. (@Embeddable은 사실 생략이 가능하다. 하지만 둘 다 적어주는 편이 한 눈에 파악하기 좋다.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-413db38b-2114-402f-8219-b14031344c74" style=""><span class="se-fs- se-ff-" id="SE-3f273043-ea47-41e1-92d3-f1454ae20d16" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bbaaaf5a-e36e-4d0d-8b3c-2cd56ca8fc4e" style=""><span class="se-fs- se-ff-" id="SE-58552f65-0d13-4887-a0ad-7064181d1b15" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9158344b-7b49-435b-a831-7ee0fd0362f2" style=""><span class="se-fs- se-ff-" id="SE-64197f3d-2142-45fc-809f-ea334fd3e874" style=""><b>@AttributeOverride</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-00b4e39e-852e-4b83-a6eb-a22809a0f6a9" style=""><span class="se-fs- se-ff-" id="SE-b39dc06c-bd28-4b46-a848-393c8031104b" style="">@Embedded를 이용해 객체로 Entity의 Column을 표현한다면, Column 이름이 중복되는 문제가 발생하기도 한다. 예를 들어 앞서 생성한 주소(Address) 객체 필드를 여러개를 생성한다면, </span><span class="se-fs- se-ff-" id="SE-c2253ecb-912d-4036-9469-76dcbcd50583" style=""><i><b>repeated column in mapping for entity </b></i></span><span class="se-fs- se-ff-" id="SE-17c4a542-a2b5-47d4-adec-cd8574860fd6" style="">라는 에러가 발생하는데.. @Embedded를 사용하는 경우 객체의 이름이 아닌 해당 객체안에 작성된 필드의 이름을 Column으로 사용하기 때문이다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f1284880-ee49-48d0-9704-e6e44cf74c45" style=""><span class="se-fs- se-ff-" id="SE-f52dbee5-c704-4ce1-be3a-22153c793269" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6a9a3f09-62fb-4b41-b873-0797ecc9c8ac" style=""><span class="se-fs- se-ff-" id="SE-fa07c0ea-6555-4e5e-9369-f296b41527c6" style="">jpa에서 필드의 이름이 아닌 개발자가 지정한 이름으로 column을 생성하기 위해서는 @Column(name = "필드이름")을 사용하면 되지만 Address라는 같은 객체를 사용하고 있으니, 객체 안의 컬럼을 재정의 하는 방법인 @AttributeOverride 을 사용해야 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e113830-30db-47f7-8a2f-bc4f04e98526" style=""><span class="se-fs- se-ff-" id="SE-c02262b8-7de9-447b-ba9c-fc4cf2bca99a" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-4abbd2e9-ca63-4c8d-89fa-0ec651a52af8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Embeddable
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Address</span> <span class="token se-code-punctuation">{</span>
+    @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"home_zipcode"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> String zipCode<span class="token se-code-punctuation">;</span>
+
+    @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"home_address1"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> String address1<span class="token se-code-punctuation">;</span>
+
+    @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"home_address2"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> String address2<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4abbd2e9-ca63-4c8d-89fa-0ec651a52af8"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a6137f30-3d8b-4d30-8084-b1d47c1966b9">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Embedded
+@<span class="token se-code-function">AttributeOverride</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"zipCode"</span><span class="token se-code-punctuation">,</span> column <span class="token se-code-operator">=</span> @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"home_zipCode"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+@<span class="token se-code-function">AttributeOverride</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"address1"</span><span class="token se-code-punctuation">,</span> column <span class="token se-code-operator">=</span> @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"home_address1"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+@<span class="token se-code-function">AttributeOverride</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"address2"</span><span class="token se-code-punctuation">,</span> column <span class="token se-code-operator">=</span> @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"home_address2"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> Address homeAddress<span class="token se-code-punctuation">;</span>
+​
+@Embedded
+@<span class="token se-code-function">AttributeOverride</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"zipCode"</span><span class="token se-code-punctuation">,</span> column <span class="token se-code-operator">=</span> @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"company_zipCode"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+@<span class="token se-code-function">AttributeOverride</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"address1"</span><span class="token se-code-punctuation">,</span> column <span class="token se-code-operator">=</span> @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"company_address1"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+@<span class="token se-code-function">AttributeOverride</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"address2"</span><span class="token se-code-punctuation">,</span> column <span class="token se-code-operator">=</span> @<span class="token se-code-function">Column</span><span class="token se-code-punctuation">(</span>name <span class="token se-code-operator">=</span> <span class="token se-code-string">"company_address2"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> Address companyAddress<span class="token se-code-punctuation">;</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a6137f30-3d8b-4d30-8084-b1d47c1966b9"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-bcdc2a7a-74ef-4181-91c4-0158ed95e23d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-28d59562-56c5-4e7a-8a08-6e3aca61b084" style=""><span class="se-fs- se-ff-" id="SE-1cf4435e-9ca0-4b11-8f3a-5953ecfdf14e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f1322782-85e4-4878-8dac-7a45c3cd4163" style=""><span class="se-fs- se-ff-" id="SE-5a005fa4-93e7-4736-8b53-e6c68baffaa7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bcc68fbb-31dd-4155-a0d4-2536eae5fa50" style=""><span class="se-fs-fs19 se-ff-" id="SE-c1abb0fe-ae7f-448e-be5e-abf27f86b29c" style=""><b>엔티티매니저(EntityManager)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ce2e6535-d1da-4870-a0ba-8efdc6332034" style=""><span class="se-fs- se-ff-" id="SE-ee8b3dc9-607d-4573-b8a9-4baa49adcd1b" style="">엔티티매니저는 영속 컨텍스트에 접근하여 엔티티에 대한 DB 작업을 제공한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f5b82e43-f10c-4408-8412-e5c12caff2a0" style=""><span class="se-fs- se-ff-" id="SE-57b2866a-43a6-4d29-a58c-87dad2bda8a4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b0e52dbb-d70b-41ee-b75f-dc4039b9b03f" style=""><span class="se-fs- se-ff-" id="SE-66e2b3c1-ee95-450e-8f45-a04090458809" style="">- find() 메서드</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c77bfc91-0668-423b-8106-dabfd1fb8687" style=""><span class="se-fs- se-ff-" id="SE-8a155f27-e771-4329-8675-3fd71a83f536" style="">영속 컨텍스트에서 엔티티를 검색하고 없을 경우, DB에서 데이터를 찾아 영속 컨텍스트에 저장한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-adee217a-aaf1-4d3f-9a06-5dbcb0bb60bd" style=""><span class="se-fs- se-ff-" id="SE-6d36a58a-b256-4221-b06f-c44b14c7af70" style="">여기서 식별자는 Entity 클래스에서 @Id 어노테이션으로 지정한 값을 사용해야 한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a02763f7-23b0-4488-a3d1-71cfd42ab1f0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-function">find</span><span class="token se-code-punctuation">(</span>Class entityClass<span class="token se-code-punctuation">,</span> Object primaryKey<span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a02763f7-23b0-4488-a3d1-71cfd42ab1f0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-6a925582-b367-408c-9bda-3455d0529a7f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-121b9ceb-0c57-4dc3-9819-7b7b1e9ec88e" style=""><span class="se-fs- se-ff-" id="SE-c9ac079d-67b0-4f3e-ad79-123109a2fe4e" style="">​</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ab53eaf1-fbbf-4e97-a432-f33c3d988ace" style=""><span class="se-fs- se-ff-" id="SE-23f1e4a3-1b5f-478b-8285-e04147f9edba" style="">엔티티 수정</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" id="SE-34adc71a-e38d-4466-9fdd-91db5535e149" style=""><span class="se-fs- se-ff-" id="SE-03bbbd22-90e0-4058-886e-3ebb4cb182f8" style="">엔티티 매니저는 별도의 update 메서드를 제공하지 않는다. JPA는 트랜잭션 범위에서 엔티티 객체의 상태가 변경되면 이를 트랜잭션 커밋 시점에 반영한다. 주의!</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee7e42db-1fa6-4835-9a81-dbbc2182931b" style=""><span class="se-fs- se-ff-" id="SE-0bba4d8e-8af9-4089-bca6-a31ac8fe20b1" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c4c210c7-816b-477f-888f-9e514fdbffd3" style=""><span class="se-fs- se-ff-" id="SE-288c1587-aee1-46d9-8308-aff09aabe8ae" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9005844a-b18f-4561-b742-c4ba940194bb" style=""><span class="se-fs- se-ff-" id="SE-4f59842e-3738-4344-9baf-6374721c0f7a" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-e3eeacc0-ab09-4174-ad1f-275cfab1dfed" style=""><span class="se-fs-fs13 se-ff-" id="SE-4b54720c-1060-451f-bc89-50919111c100" style="">참고 : </span><span class="se-fs-fs13 se-ff-" id="SE-f318c384-70f7-484d-8fbc-4306582d878e" style=""><a class="se-link" href="https://galid1.tistory.com/592" target="_blank">https://galid1.tistory.com/592</a></span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-afacf045-8e65-4e92-a282-95f4d27d3141" style=""><span class="se-fs- se-ff-" id="SE-184349e9-8f83-48e0-98b8-f6e549159e1f" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

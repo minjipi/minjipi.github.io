@@ -1,0 +1,708 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222739067045 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-1adf6f68-8928-442c-ad3b-aab49612b30d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-f24e536a-94d1-4329-82e2-836f1f007130" style=""><span class="se-fs-fs13 se-ff-system" id="SE-8abca89c-2abd-4d9d-87c3-da439802e311" style="color:#333333;">백엔드(스프링부트)와 프론트(리액트)를 연동해서 구현했으며, Redis는 일단 사용하지 않았습니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-bc03eac0-ef97-4149-b83e-c105f8699121">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2601fbdb-2ade-46be-9e1c-ed38b316733e" style=""><span class="se-fs-fs19 se-ff-" id="SE-89fa5f87-a271-4b48-8413-c4f1bae96038" style="">이메일 인증과 회원가입/로그인을 구현하는 방법</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9d6ad68d-354e-4259-8ff2-2c9aa0ee4e5d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e46912a8-44e2-4016-9c88-714f232e5be1" style=""><span class="se-fs- se-ff-system" id="SE-304d8476-bf89-4ccc-b0ad-f4934679b42d" style="">이메일 인증을 받아 회원가입, 로그인을 구현하는 방법은 여러가지가 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8506ef02-ac13-467a-aa3f-ce6642c8ffcc" style=""><span class="se-fs- se-ff-system" id="SE-af65c30c-b81f-4ff2-ae12-b8c81475670a" style="">내가 생각한 방법은 다음 두 가지다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a743fef3-bafc-49c5-b008-7fb788a83827" style=""><span class="se-fs- se-ff-system" id="SE-a3283427-0264-42d7-8769-d2f9b2a35a4f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a292cd00-d3b7-432c-b80d-2e706d62eb00" style=""><span class="se-fs- se-ff-system" id="SE-303d859f-1d19-4477-9bfb-4ea0fb7704c5" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6bb45f8f-974c-4a76-821b-44c07c461491" style=""><span class="se-fs- se-ff-system" id="SE-e4c0e09e-c80b-4fc5-b39f-6486da32718e" style=""><b>1. 가입 하면서 인증</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e9dca0ba-0c82-4ed4-abdb-04318b70eaf8">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:400px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e9dca0ba-0c82-4ed4-abdb-04318b70eaf8", "src" : "https://postfiles.pstatic.net/MjAyMjA1MDVfMjk4/MDAxNjUxNjgxMTE4OTA1._kFuS9oUjS7it0z7czF7GLRKljVkbRR1JALn23-YQqsg.HLERorsS6DsORIR5O2toYKIxKvQIp6QBjABWsSg-By4g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-05_%EC%98%A4%EC%A0%84_1.18.34.png", "originalWidth" : "688", "originalHeight" : "190", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="110" data-width="400" id="SE-e9dca0ba-0c82-4ed4-abdb-04318b70eaf8_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component" id="SE-857c2e33-546a-41ab-b36a-23142a48c5db">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">이메일 인증 요청 버튼을 클릭 <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> 메일이 감 <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> 메일에서 확인한 번호를 입력</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-857c2e33-546a-41ab-b36a-23142a48c5db"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7631aad1-b18e-493f-ba2f-d39f91067152">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b550f484-61b1-4f12-8514-ba9b2a42dae2" style=""><span class="se-fs- se-ff-system" id="SE-7a35338a-7adc-4e87-949c-169a70d4b55c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d9de5e60-1101-40bc-bd9e-917060bb484a" style=""><span class="se-fs- se-ff-system" id="SE-cb7f2aac-6ff9-47c8-af48-f1f37ee0c540" style="">2. </span><span class="se-fs- se-ff-system" id="SE-d77fb0de-ab72-4e95-931a-276be7f31f02" style=""><b>일단 가입 하고, 인증</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default" id="SE-2c7b83c1-07e3-40d4-80c0-417fb1d0d2c9">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:30.18867924528302%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-67cd6dcb-8f6b-42d5-a7ba-542a3d711f78", "src" : "https://postfiles.pstatic.net/MjAyMjA1MDVfMzUg/MDAxNjUxNjgxMjIyMjUy.QGTSOgo6yQNoNEKcGCnQ7A3noFj1cOFhEluYr-MuVZEg.nNF0WZJCCGlvML9yFR4E-_cI3qnvgAOR5705va9NOmgg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-05_%EC%98%A4%EC%A0%84_1.20.19.png", "originalWidth" : "656", "originalHeight" : "364", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="222" data-width="400" id="SE-2c7b83c1-07e3-40d4-80c0-417fb1d0d2c9_0" src="images/image_3.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:69.81132075471697%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-b8356c47-7222-4381-9ede-0ad392cd84b3", "src" : "https://postfiles.pstatic.net/MjAyMjA1MDVfMTcx/MDAxNjUxNjgxMjc5Njgx.b7nXVOiOvTtClxsvBfEVeRFy12DtB65jasaYoNeoUCUg.VBeKwy9MdyAK1AqvOfyiGQ5Pg_y4AZA3qcD70nnsyiog.PNG.ghdalswl77/SE-b8356c47-7222-4381-9ede-0ad392cd84b3.png", "originalWidth" : "686", "originalHeight" : "166", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="96" data-width="400" id="SE-2c7b83c1-07e3-40d4-80c0-417fb1d0d2c9_1" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-c1f534c8-7f04-45b2-be1e-51cfac69e738">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">가입하기 <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> 유저 정보 저장 <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> 이메일로 보낸 링크를 통해 가입을 완료해주세요<span class="token se-code-punctuation">.</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> 메일을 확인해서 링크로 접속하면 <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> 인증
+
+<span class="token se-code-operator">*</span> 이메일 인증 안하면 <span class="token se-code-punctuation">[</span>회원가입 불가<span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c1f534c8-7f04-45b2-be1e-51cfac69e738"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-661908ca-d805-4140-bfb7-2e4384dbdaea">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0f5e6910-aa18-4c9b-b272-a3f98b3b3c3d" style=""><span class="se-fs- se-ff-system" id="SE-45e3bd66-5f47-4f19-bfb9-dafc3d71b9f9" style=""><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6f4eba13-7958-433a-b28c-d9c7220cfb74" style=""><span class="se-fs- se-ff-system" id="SE-e7bf01aa-89ad-4aa4-9085-f1238c5328ee" style="">나는 두 방법 중 후자인 [가입하고 인증하기 방식]으로 진행했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-64f0fa9c-d652-42cb-bc71-fd0fde97b62d" style=""><span class="se-fs- se-ff-system" id="SE-24489c36-0ce7-4ec9-ae25-9c3c94f32836" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-ee3ae4f9-49df-4149-912a-298d041d731d">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3553425a-1362-45fd-bc41-1952950ce21a" style=""><span class="se-fs- se-ff-" id="SE-332510f3-38a2-48be-8d03-b2661a40f692" style=""><b>로그인 방식</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-3a43b455-b13e-430f-8192-8c81a599a7c8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f904e84-7f64-4a93-995f-ee613139e8bc" style=""><span class="se-fs- se-ff-system" id="SE-ada88e54-4d2d-4977-bc6c-21f4d953a884" style="">다음과 같은 로직으로 구현했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0448daa9-74a5-432d-a016-386b640f15f1" style=""><span class="se-fs- se-ff-system" id="SE-27c9639f-f306-4e66-87ad-d1414a297e8d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4a9e95ec-4995-4e79-b1fb-ee55d330f18c" style=""><span class="se-fs- se-ff-system" id="SE-670358a3-5cde-4fbf-a0c3-0d1d0d8ab370" style="">1. 회원정보 DB 저장 </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip3 se-l-default" id="SE-7177dacf-1010-4e6d-bb90-4be08850e386">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-3">
+<div class="se-module se-module-image" style="width:39.31682458522022%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-26611995-1269-499a-b825-ba774d164739", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfNTkg/MDAxNjUyOTY3MDkzNDg0.3zRK8PrNuktXqf87NcaLsYD8WgX0iv4zfBTiSgB9y54g.fXBW0nnmcONKqv8GTfaSio7lTpvomWbDqJrHpQseBJAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-19_%EC%98%A4%ED%9B%84_10.31.29.png", "originalWidth" : "652", "originalHeight" : "114", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="114" data-width="652" id="SE-7177dacf-1010-4e6d-bb90-4be08850e386_0" src="images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:14.875781362727395%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-f5ed4068-504d-4623-a9b0-6020c940b395", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfMTky/MDAxNjUyOTY3MTMzNDMy.QRbq_qNIpUWRBDSvyODQq48GfsZq40t6JrI7nHzg37Mg.HFhsJg35PaK-yFzNGI7uYTwRpUh2Iaq2J3N8xSp8MOIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-19_%EC%98%A4%ED%9B%84_10.32.10.png", "originalWidth" : "264", "originalHeight" : "122", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="122" data-width="264" id="SE-7177dacf-1010-4e6d-bb90-4be08850e386_1" src="images/image_6.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:45.80739405205239%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4123a80e-c6ef-4404-ae8d-cc03eee6a3c7", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfMjQx/MDAxNjUyOTY3MTUwMjE5.hyMUFQFCoxL4y4otAqLJHISE3XdD1Am5nCzXRn8Qy_og.KfNgbnjNuWZJegeSCHZff3DDZLbHRw89oc2VK9IzpPog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-19_%EC%98%A4%ED%9B%84_10.32.27.png", "originalWidth" : "766", "originalHeight" : "116", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="104" data-width="693" id="SE-7177dacf-1010-4e6d-bb90-4be08850e386_2" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-b5cc5dda-ec5c-42e9-a39e-0aaf151765e3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-326b266a-9209-495a-be75-7ecd0b64fe6a" style=""><span class="se-fs- se-ff-system" id="SE-c7fdc206-3dac-4505-b920-e76e9910c2c4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2d609707-22af-44c5-9262-a3b914a22237" style=""><span class="se-fs- se-ff-system" id="SE-86d81063-f7bb-4cb5-b7db-350066816943" style="">2. 메일에 포함시킬 토큰 값 DB에 저장</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4d02f0a2-a981-46bc-823d-aa4ea7c3016f" style=""><span class="se-fs- se-ff-system" id="SE-f0b06aab-7c6f-40bf-b855-dfb04f2c10f7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-35aa884d-adad-4b82-aa80-75fb2b63f69b" style=""><span class="se-fs- se-ff-system" id="SE-9a2d25a9-03c2-47fb-a614-8089ec8630b6" style="">3. 사용자 정보 조회(status가 0인 회원 조회)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-bd968d92-09c8-4d7a-8404-0ee75ee019ea">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">SELECT</span> <span class="token se-code-operator">*</span> <span class="token se-code-constant">FROM</span> member <span class="token se-code-constant">LEFT</span> <span class="token se-code-constant">OUTER</span> <span class="token se-code-constant">JOIN</span> authority on member<span class="token se-code-punctuation">.</span>idx<span class="token se-code-operator">=</span>authority<span class="token se-code-punctuation">.</span>member_idx <span class="token se-code-constant">WHERE</span> email<span class="token se-code-operator">=</span><span class="token se-code-operator">?</span> <span class="token se-code-constant">AND</span> status<span class="token se-code-operator">=</span><span class="token se-code-number">0</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bd968d92-09c8-4d7a-8404-0ee75ee019ea"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d8f500bd-0da3-441c-9bcc-2dbb21c5b9d3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7c938540-6790-4e97-93fb-4a1ac8c05972" style=""><span class="se-fs- se-ff-system" id="SE-2b5f65f5-5928-46b9-988b-49d9a8416657" style="">4. (조회한)사용자 정보로 JWT 생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-45c2442c-15d4-4d6c-b92e-3be1329d515b" style=""><span class="se-fs- se-ff-system" id="SE-e09e3fb3-1d90-4bd1-b797-ac790b2ab77f" style="">5. 사용자에게 토큰, 위에서 생성한 JWT와 함께 메일 발송</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5e22caba-54e6-435b-82fc-4ec2005ef2ea" style=""><span class="se-fs- se-ff-system" id="SE-d46bbca2-aa35-4d1c-868d-2338e64bd16f" style="">* 여기서 토큰은 이메일 인증용, JWT는 이메일 인증 후 바로 로그인을 위한 토큰임</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-30ff043e-a759-4006-b393-c6d337d16b73" style=""><span class="se-fs- se-ff-system" id="SE-786a3622-b82d-4464-a372-0a5574a54bfd" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-ce37fda3-d958-4af7-97ca-e9b00fd82fb5">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ba78fc71-b6bf-414e-8548-da27d17e9033" style=""><span class="se-fs- se-ff-" id="SE-cef66583-0ccf-4fb4-a31e-50eb181d2087" style="">이메일 인증 (ver. 사용자)</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-36e9d7b9-2170-4b36-9bbf-54a76b470e91">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-192bc19e-78d2-4d8d-b014-b7472090d5ad" style=""><span class="se-fs- se-ff-system" id="SE-2c1e672e-7b75-4e9a-9f5f-a2ce91cd5c8a" style="">회원가입시 아이디와 비밀번호를 입력한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3170f02d-f132-4f59-9dce-14463c3c50dd" style=""><span class="se-fs- se-ff-system" id="SE-537a440a-51c6-4e26-8900-fa2bd5d27ca1" style="">해당 아이디와 비밀번호를 입력하고 회원가입을 진행한다면, 가입된 이메일로 인증 링크를 포함한 메일이 온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9bb185e1-f1c5-496e-8e06-13503b070a60" style=""><span class="se-fs- se-ff-system" id="SE-f8d9c975-8b65-4e0e-9be2-1410dd753eab" style="">사용자는 가입한 이메일에 들어가 해당 링크를 키게 되면 인증이 완료되고 로그인이 필요한 서비스를 사용할 수 있다. 여기까지가 사용자 입장 에서의 로직이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-809f15ef-a4b0-4a47-a4f5-7cab1a87d74c" style=""><span class="se-fs- se-ff-system" id="SE-aacc52dd-e3c4-4b4b-b264-698670058c3e" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-bc117dbe-f535-4899-ada8-3f592f72d0cf">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dc8dec05-83dc-407c-bf7f-946e74050ab8" style=""><span class="se-fs- se-ff-" id="SE-ea40e52b-de51-4907-8ecf-1099c25368c6" style="">이메일 인증 (ver. 개발자)</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-799d0def-6c83-4b84-87f8-d7cb5ff80be3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-32211b47-d04a-4805-8c5a-2968e00a3628" style=""><span class="se-fs- se-ff-system" id="SE-82ffa8ca-b727-4b5d-9323-19cb359b10aa" style="">먼저 회원가입을 진행하면 일단 사용자가 입력한 아이디와 비밀번호를 DB에 저장 시키고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9cf923a8-a2a7-43a0-af45-0528400dc074" style=""><span class="se-fs- se-ff-system" id="SE-8425869b-de4a-412e-b79b-4cd92de3a3c8" style="">인증이 되었는지 안되었는지에 대한 상태를 저장해두어 이를 통해 구분해준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5829ca5d-2966-4bf9-bdaa-b83a8085aad2" style=""><span class="se-fs- se-ff-system" id="SE-00b4c0ad-fd60-44ea-981f-c714a936a8ef" style="">사용자가 메일에 첨부된 링크를 들어가게 되면,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c8f10f0c-2fdc-469c-8369-1af46eff9b11" style=""><span class="se-fs- se-ff-system" id="SE-d1cc68a6-b434-4165-8b75-7a9050329f72" style="">해당 상태를 인증이 된 상태(true)로 바꾸어주어 회원가입이 완료된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5cbc38b1-d537-4a05-b60f-836efa779719" style=""><span class="se-fs- se-ff-system" id="SE-1e79c295-0cfe-4e85-af48-a8820b93f2ba" style="">이때 어떤 사용자에 대한 인증인지 구분하기 위해 링크에 아이디를 파라미터로 담아 보낸다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58f88347-990c-49c4-ba13-91084aac970a" style=""><span class="se-fs- se-ff-system" id="SE-fc6acbed-5286-4506-8235-a7e7ef041549" style="">하지만 아이디는 공개된 정보이기에 누구나 어떤 누구든 아이디만 알고 시간만 얼추 맞다면 가능할지도 모른다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-835725da-b73e-4214-a5d0-d464c565bb03" style=""><span class="se-fs- se-ff-system" id="SE-71dc6eba-a260-44b0-8123-51d0427442ff" style="">그래서 파라미터로 해당 사용자를 식별할 수 있는 식별자로 UUID를 사용해 유일한 링크를 제공했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d7eb31de-2852-4ede-94b9-a6ea08efa5b8" style=""><span class="se-fs- se-ff-system" id="SE-8fb31fe8-a93c-4bed-a967-e338c5dabd1c" style="">또 이 링크는 만료 시간(5분)이 존재한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1fc4daa-bed1-45f1-865d-f597403c7b08" style=""><span class="se-fs- se-ff-system" id="SE-f4bd956f-d0e8-4f0d-9140-e11c8a35a1f8" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-98e282f3-6a8f-4abe-99cf-2869d906c4b9" style=""><span class="se-fs- se-ff-system" id="SE-7691d618-588e-436e-a84b-36d1d6e97890" style="">그럼 이런 로직으로..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-18bf56a2-c476-4592-ac31-7c116e67364b" style=""><span class="se-fs- se-ff-system" id="SE-ed67dad5-fdd1-45c7-b82e-9f6aeaf44fe2" style="">특정 URL 링크를 접속해서 -&gt; 이메일 인증이 되는 방식의 이메일 인증을 구현해보자</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6f6d9952-3eab-4265-b7f9-4ad5b3fd3486" style=""><span class="se-fs- se-ff-system" id="SE-ed87751f-5725-44b4-b9ef-aa85a8a2b23b" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-d833af5b-bd7d-4c76-8bc8-6421cec07e1f">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d21137c7-7313-4e8e-bf98-b82d5bf888dc" style=""><span class="se-fs- se-ff-" id="SE-cbe29fbe-b76d-4844-8049-478aa855b038" style="">1. Gmail SMTP 서버 세팅</span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e5e378ff-d978-4bfe-98b3-4ad009a55ab7" style=""><span class="se-fs- se-ff-" id="SE-93ec404e-eab5-466f-a335-d06649826e73" style="">인증 이메일을 보내는 방법으로 Gmail SMTP를 사용한다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7d59d374-2708-4f11-a77f-9bdb58a1c4bd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-28bbd390-3a23-46b3-97ed-5f5b00acf956" style=""><span class="se-fs- se-ff-system" id="SE-56f2c02b-1c73-40d1-89da-079f06e99a62" style="">이메일 인증을 한다는 것은 어떤 계정으로 이메일을 대신 전송해준다는 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6962a72a-8a9e-4eb1-a1e5-8d12d04a5801" style=""><span class="se-fs- se-ff-system" id="SE-b06ab69b-55a5-4d36-9278-624e5016a55e" style="">이는 SMTP(Simple Mail Transfer Protocol, 간이 전자 우편 전송 프로토콜의 약자로 인터넷에서 이메일을 보내기 위해 이용되는 프로토콜)로 처리할 수 있는데, 그 중에서도 구글에서 제공하는 Gmail SMTP를 사용할 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-19c307ab-bd26-412e-a30b-c8d832e7dc90" style=""><span class="se-fs- se-ff-system" id="SE-e627640f-1e10-4e36-a0a9-c06bc69fcb2d" style="">(네이버나 다른 서버도 설정만 바꾸면 바로 적용 가능하다)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b2c34009-c144-4d9f-bc73-2efd13398c53" style=""><span class="se-fs- se-ff-system" id="SE-b96589db-f8dd-4641-9d4d-01185d08dfd4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-76814d34-36d3-46bc-afbb-143547b3e1a5" style=""><span class="se-fs- se-ff-system" id="SE-7055514e-be29-4932-91f8-e396ac2c948d" style="">우선 이메일을 전송할 "계정"을 설정해야한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3ed86e62-76f6-46e5-ad40-5d2813a1542a" style=""><span class="se-fs- se-ff-system" id="SE-5e05b8ef-6851-495c-900b-04d6f9fcabf4" style="">SMTP용 계정을 세팅해주자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c9c60eb5-0600-4c9f-9d83-148d0c8a9b5b" style=""><span class="se-fs- se-ff-system" id="SE-d2685305-257a-423f-a9b7-eb8fd51ab5b2" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-124b467e-eafb-43d7-bc40-0ccffee0db6b" style=""><span class="se-fs- se-ff-system" id="SE-fe911426-6a7b-4899-b72c-f282bb17479a" style="">다음 링크를 통해 (구글 [보안] 탭에서 찾아도 된다)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-22005a89-5d49-4433-9933-6d6f97c7ee3b" style=""><span class="se-fs- se-ff-system" id="SE-f3bf4f52-6334-48f7-90b6-71a0cb293892" style="">액세스 허용 해서 SMTP를 사용 가능하도록 세팅한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cb3080f4-4acb-40b7-9496-2d7086ec55a5" style=""><span class="se-fs- se-ff-system" id="SE-50827746-8305-4ec9-a4fd-36879a8957ce" style=""><a class="se-link" href="https://www.google.com/settings/security/lesssecureapps" target="_blank">https://www.google.com/settings/security/lesssecureapps</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component" id="SE-4b0855c0-b68c-43e4-82b6-3710b02a1f51">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail" href="https://www.google.com/settings/security/lesssecureapps" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fssl.gstatic.com%2Faccounts%2Fui%2Favatar_2x.png%22&amp;type=ff120"/>
+</a>
+<a class="se-oglink-info" href="https://www.google.com/settings/security/lesssecureapps" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Sign in - Google Accounts</strong>
+<p class="se-oglink-summary">One account. All of Google. Sign in with your Google Account Find my account Create account One Google Account for everything Google</p>
+<p class="se-oglink-url">www.google.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-4b0855c0-b68c-43e4-82b6-3710b02a1f51", "data" : {"link" : "https://www.google.com/settings/security/lesssecureapps", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fssl.gstatic.com%2Faccounts%2Fui%2Favatar_2x.png%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-822da4b3-1c15-4c6e-981d-c93c1000fb7f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dea56791-7ad9-40a5-8e15-162b1bb68ed9" style=""><span class="se-fs- se-ff-system" id="SE-1355c434-3651-4c39-98bb-970e413835bd" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8fb4597f-d65b-4ac2-8139-64f8acb2cf30" style=""><span class="se-fs- se-ff-system" id="SE-76e61c84-8a49-44d7-a64e-4e9f8f36a1f3" style="">1) 계정에 대한 '보안수준이 낮은 앱의 액세스를 허용'</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-82355da7-e233-458d-9761-39f86e6d4aa3">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-dabdb614-7025-4d69-be6e-8791b1fab315">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d73f53e2-f550-491a-bc62-ed04bb119ba6" style=""><span class="se-fs- se-ff-system" id="SE-e963664f-2d59-4a87-aa92-0fd88af678b3" style="">(실습종료 후 다시 비허용으로 돌리길 추천)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9f585719-f25f-4d78-aa85-c9c07f169c86" style=""><span class="se-fs- se-ff-system" id="SE-f72ee8a3-028e-4f32-866e-e5c358a6cd25" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-17e5fd82-83c1-47ba-86bd-1a66833831f0" style=""><span class="se-fs- se-ff-system" id="SE-7c17510e-f7a5-4661-9301-10ff524f9325" style="">2) 2단계 인증 활성화</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5841f79f-66a4-4312-aa14-9736309fb2a1" style=""><span class="se-fs- se-ff-system" id="SE-2554815d-5f7d-45b3-bf81-afe6c8f83c7e" style="">필수 사항은 아니지만.. 방금 보안 수준이 낮은 앱 액세스를 허용해 줬으니 보안 절차상 해준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52bc90f9-06a1-402b-a82a-275f7c230a7f" style=""><span class="se-fs- se-ff-system" id="SE-c5b0abfc-0e40-4742-aa0a-3a0bf857b7ba" style="">(이거 하면 구글 로그인 할때마다 2단계 인증 해야해서 귀찮긴 하지만!..)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e43abf22-6dff-4c4f-8f09-1f471fb8749c">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e43abf22-6dff-4c4f-8f09-1f471fb8749c", "src" : "https://postfiles.pstatic.net/MjAyMjA1MDRfOTIg/MDAxNjUxNjQzMDk2MzAw.nQV9O553iVIDyijQfz6bm6ipP5SJIJBMJdfXA7IscIwg.xSh9kbt7rFx8FkQi-0cZ9v5xUKq0Fe9MXCY80RBcY2cg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-04_%EC%98%A4%ED%9B%84_2.44.13.png", "originalWidth" : "724", "originalHeight" : "422", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="403" data-width="693" id="SE-e43abf22-6dff-4c4f-8f09-1f471fb8749c_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e9dfcefb-87ea-4265-8bcc-16737c9d7686">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ef93db62-55cb-43ba-b49e-a35171eb3615" style=""><span class="se-fs- se-ff-system" id="SE-9fcf1e49-ae1d-4ffc-b305-637be0071aaf" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-34e09331-33ff-4c2d-ad23-8a48c06fc122" style=""><span class="se-fs- se-ff-system" id="SE-a48e38e2-8b1e-44d7-9645-9307f07a6247" style="">3) 구글 앱 비밀번호 발급받기</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ae25976f-2b54-44a3-be04-e2125de6e242" style=""><span class="se-fs- se-ff-system" id="SE-d785e0b1-948b-439c-92ba-a3d058e879cb" style="">'앱 비밀번호'라고만 치면 나온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-afb89d32-df42-42ed-9f59-8f3ca2a368de" style=""><span class="se-fs- se-ff-system" id="SE-c0aff820-e1cb-4eb9-8da8-b5a68ec5164a" style="">다음 이미지와 같이 메일/생성할 기기 선택 후 생성.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-4ee16b64-1712-4419-9212-30cc89be7ec2">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4ee16b64-1712-4419-9212-30cc89be7ec2", "src" : "https://postfiles.pstatic.net/MjAyMjA1MDRfMTU5/MDAxNjUxNjQ0MjM2MzIx.Czu7l0qi2YlA6WBm9ABsf5rZXcMYezxtCEUI-_Dsbsog.szh5JHwkaNFgWX0OFgNq1zglW7XxjzmzLZccLMH0PZUg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-04_%EC%98%A4%ED%9B%84_3.02.37.png", "originalWidth" : "716", "originalHeight" : "523", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="506" data-width="693" id="SE-4ee16b64-1712-4419-9212-30cc89be7ec2_0" src="images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-3808d636-a7b4-4a1b-9050-11c1153d487a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b8ccf3f-ec24-4712-85ba-9623c3bbb923" style=""><span class="se-fs- se-ff-system" id="SE-48719ab8-b45a-4f2e-b6bc-8d0dc798a409" style="">그럼 16자리의 인증키(비밀번호)가 발급된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-75fed150-f20f-4a03-9f63-a21f48360c8f" style=""><span class="se-fs- se-ff-system" id="SE-234a6645-a6fe-4579-aa10-f1a2b9694c27" style="">이 키는 곧 yml 설정 시 필요하니까 복사해두자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15796f4d-a8c6-42db-b488-f3550eba1398" style=""><span class="se-fs- se-ff-system" id="SE-da8fb67c-d90e-4f33-aa65-f2d0aef39230" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-df8b2ecc-238c-45db-8dbf-38ac53414fc7">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93dcaa0e-9bcb-4107-bdd1-c1814dbc1093" style=""><span class="se-fs- se-ff-" id="SE-903b0941-0bb8-4c8c-8739-3ec818cee9f2" style="">2. build gradle (pom.xml) 추가</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9d4b8181-1bfc-4e08-8cd0-58e1acffc7b2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-76196a07-b8d3-43be-a83e-ad78b700f0f4" style=""><span class="se-fs- se-ff-system" id="SE-eee722e0-209b-43a9-b7bb-c6005f4e49cf" style="">build gradle의 경우 dependencies에 다음 한 줄을 추가해준다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-0f91f45f-5e0f-4970-a82b-7659e1102063">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">implementation <span class="token se-code-string">'org.springframework.boot:spring-boot-starter-mail'</span>
+<span class="token se-code-comment">// pom.xml의 경우</span>
+<span class="token se-code-operator">&lt;</span>dependency<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span>groupId<span class="token se-code-operator">&gt;</span>org<span class="token se-code-punctuation">.</span>springframework<span class="token se-code-punctuation">.</span>boot<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>groupId<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span>artifactId<span class="token se-code-operator">&gt;</span>spring<span class="token se-code-operator">-</span>boot<span class="token se-code-operator">-</span>starter<span class="token se-code-operator">-</span>mail<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>artifactId<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>dependency<span class="token se-code-operator">&gt;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0f91f45f-5e0f-4970-a82b-7659e1102063"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-a1658a79-4496-4ce7-adec-0ae35b211c4a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3c774ea5-2f42-47b9-a152-9ac9b5f45c97" style=""><span class="se-fs- se-ff-system" id="SE-740db242-6541-41ce-bcdc-19d6f00dcfa0" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-840f8d42-912d-4b74-9317-9b12a4640aa6">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52252d27-323d-4071-aa4e-f9eb88ed7119" style=""><span class="se-fs- se-ff-" id="SE-92303bcd-576b-4234-abd3-dc89826e7dd1" style="">3. yml 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-fefb968e-897e-456f-8af2-191cc22cb6ea">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a8f907bc-bfc0-47e1-8696-9ecbd0653c8b" style=""><span class="se-fs- se-ff-system" id="SE-0a9b8e5a-69ac-4e18-8988-9fae1eec4a42" style="">username과 password를 세팅을 해준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-489fd06f-407b-4fcf-8139-affb2eeb018f" style=""><span class="se-fs- se-ff-system" id="SE-0414fe56-9cbe-4db3-9e5c-e69f55936a6a" style="">만약 네이버나 다른 SMTP 사용한다면 여기서 host, port username, password 만 맞게 변경해주면 된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e2a9808b-a14f-4dd1-b557-5d2b1c8619e2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">spring</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">mail</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">host</span><span class="token se-code-operator">:</span> smtp<span class="token se-code-punctuation">.</span>gmail<span class="token se-code-punctuation">.</span>com
+    <span class="token se-code-literal-property property">port</span><span class="token se-code-operator">:</span> <span class="token se-code-number">587</span>
+<span class="token se-code-literal-property property">username</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-constant">SMTP</span>용 google 계정<span class="token se-code-punctuation">]</span>
+<span class="token se-code-literal-property property">password</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-constant">SMTP</span>용 google 계정 비밀번호<span class="token se-code-punctuation">]</span>
+<span class="token se-code-literal-property property">properties</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">mail</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">smtp</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">starttls</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">enable</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+<span class="token se-code-literal-property property">required</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+<span class="token se-code-literal-property property">auth</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+<span class="token se-code-literal-property property">connectiontimeout</span><span class="token se-code-operator">:</span> <span class="token se-code-number">5000</span>
+<span class="token se-code-literal-property property">timeout</span><span class="token se-code-operator">:</span> <span class="token se-code-number">5000</span>
+<span class="token se-code-literal-property property">writetimeout</span><span class="token se-code-operator">:</span> <span class="token se-code-number">5000</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e2a9808b-a14f-4dd1-b557-5d2b1c8619e2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f97bd8b7-c5d6-4b39-be9b-4a0acf6eaf53">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fb60fb45-ede6-41e5-8ed2-9673e18ad625" style=""><span class="se-fs- se-ff-system" id="SE-78fa2cfb-a004-4f9b-9679-e5e031d8c538" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fff57fe3-41f5-4699-894d-0e9c4bfb8063" style=""><span class="se-fs- se-ff-system" id="SE-228b206a-44ed-434a-bb2c-666c7689c225" style="">[SMTP용 google 계정] 에 구글 이메일을 넣고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c4b095b7-18a2-4851-a7c6-a53a1da0a741" style=""><span class="se-fs- se-ff-system" id="SE-15bd829c-703b-4580-b1b2-e4376fa060c2" style="">[SMTP용 google 계정 비밀번호]에 아까 복사해둔 인증키를 넣는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-25145049-b527-402e-ad6f-1cd55d853115" style=""><span class="se-fs- se-ff-system" id="SE-3faa33d3-9b91-40c0-a934-b886220a2a40" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b39ba9b9-ec4f-4ecc-96a3-c1736bbbb6fe" style=""><span class="se-fs- se-ff-system" id="SE-0edc3441-4a83-4ca2-bc2c-8dc3693b7b7f" style=""><i>* 만약 아까 안전하지 않은 앱 허용을 하면, 여기에 실제 내 계정의 비밀번호를 입력하면 된다.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b441a9b7-f97c-4bc2-aef6-3c85ab4d5b8c" style=""><span class="se-fs- se-ff-system" id="SE-5b241d86-44b7-4a80-bc67-ed6a3867fdc8" style=""><i>이때 정보가 git에 올라가지 않도록 주의!</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c31e4176-a4e4-4505-90ae-2bca527cc5b2" style=""><span class="se-fs- se-ff-system" id="SE-232fab6a-67b4-4843-8e49-ac6539e0393e" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-7c4007e8-7306-4b97-bdfa-6348763d7340">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e0d0aea1-fef0-453d-bf58-c3c62aef2ba7" style=""><span class="se-fs- se-ff-" id="SE-5e1a90bc-942f-4c9d-910b-ddb45e0740ca" style="">6. Controller</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-0846024b-da42-45a5-9483-88e830ffb8bb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">    @ResponseBody
+    @<span class="token se-code-function">PostMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/signup"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> BaseResponse<span class="token se-code-operator">&lt;</span>PostMemberRes<span class="token se-code-operator">&gt;</span> <span class="token se-code-function">createMember</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">@RequestBody PostMemberReq postMemberReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">try</span> <span class="token se-code-punctuation">{</span>
+            String token <span class="token se-code-operator">=</span> <span class="token se-code-constant">UUID</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">randomUUID</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">toString</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+            PostMemberRes postMemberRes <span class="token se-code-operator">=</span> memberService<span class="token se-code-punctuation">.</span><span class="token se-code-function">createMember</span><span class="token se-code-punctuation">(</span>postMemberReq<span class="token se-code-punctuation">,</span> token<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+            emailCertService<span class="token se-code-punctuation">.</span><span class="token se-code-function">createEmailConfirmationToken</span><span class="token se-code-punctuation">(</span>token<span class="token se-code-punctuation">,</span> postMemberReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getEmail</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">BaseResponse</span><span class="token se-code-operator">&lt;</span><span class="token se-code-operator">&gt;</span><span class="token se-code-punctuation">(</span>postMemberRes<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">catch</span> <span class="token se-code-punctuation">(</span>Exception exception<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">BaseResponse</span><span class="token se-code-operator">&lt;</span><span class="token se-code-operator">&gt;</span><span class="token se-code-punctuation">(</span>BaseResponseStatus<span class="token se-code-punctuation">.</span><span class="token se-code-constant">FAIL</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0846024b-da42-45a5-9483-88e830ffb8bb"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4d1b4fdd-4450-4c75-91bd-bce4ece08e44">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5dea53c1-19f8-4daf-88fc-dc19d2cb9cef" style=""><span class="se-fs- se-ff-system" id="SE-686c109a-5f8d-4402-91d6-54385474ec1d" style="">UUID.randomUUID()로 랜덤한 토큰을 생성해</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2d0efe6c-a24a-4982-9dba-5fe6afc3118c" style=""><span class="se-fs- se-ff-system" id="SE-8bce2fbb-a5e4-43d2-9bab-65d28034b7a8" style="">memberService의 createMember 메서드에 사용자가 입력한 사용자 정보와 함께 토큰을 보내고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-11f9b8f7-c693-4c57-a084-67535a12e6e0" style=""><span class="se-fs- se-ff-system" id="SE-6261795b-8afc-4a16-8f9e-690c80f95ac6" style="">반환값을 postMemberRes에 담는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a13512c3-6b98-4a3e-af2e-1cfcebda4db6" style=""><span class="se-fs- se-ff-system" id="SE-803f80c3-9da6-47c4-912f-edaa9960a658" style="">그리고 사용자 이메일로 findByEmailStatusZero를 호출해 userDetails에 담아 JWT를 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-062c101b-215b-47d4-ba8f-76be77013530" style=""><span class="se-fs- se-ff-system" id="SE-e3fef2d7-316f-432d-99fc-03056f87cfbd" style="">createEmailConfirmationToken 메서드로 사용자에게 토큰, 위에서 생성한 JWT와 함께 메일을 발송한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1d3d9e0a-be07-412a-bbdf-70f0c315ab97" style=""><span class="se-fs- se-ff-system" id="SE-24748879-0e61-4718-9e75-e0bd0b088299" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-quotation se-l-quotation_line" id="SE-efd3a7a7-68db-47bd-9c0a-e631737f364c">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4cfbb9ab-4a62-47e5-b2de-4a960a0eeab1" style=""><span class="se-fs- se-ff-" id="SE-58bee6e5-530a-43db-a7fd-c3132778f590" style="">4. 이메일 Service 생성</span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c495de32-037c-4636-8653-801e85f45f25" style=""><span class="se-fs- se-ff-" id="SE-d8161ceb-df0c-450d-8533-d46beacb8d2f" style="">이메일을 실제 전송하는 서비스와 이메일 인증을 검증하는 서비스.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-1bcab25b-4b01-4d10-9944-5c6ac5dd7467">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Service
+@RequiredArgsConstructor
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">EmailService</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> final JavaMailSender javaMailSender<span class="token se-code-punctuation">;</span>
+
+    @Async
+    <span class="token se-code-keyword">public</span> String <span class="token se-code-function">createEmailConfirmationToken</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String token, String receiverEmail</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        SimpleMailMessage mailMessage <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">SimpleMailMessage</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        mailMessage<span class="token se-code-punctuation">.</span><span class="token se-code-function">setTo</span><span class="token se-code-punctuation">(</span>receiverEmail<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        mailMessage<span class="token se-code-punctuation">.</span><span class="token se-code-function">setSubject</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"회원가입 이메일 인증"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        mailMessage<span class="token se-code-punctuation">.</span><span class="token se-code-function">setText</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"http://localhost:8080/member/confirm?email="</span><span class="token se-code-operator">+</span>receiverEmail<span class="token se-code-operator">+</span><span class="token se-code-string">"&amp;token="</span><span class="token se-code-operator">+</span>token<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        javaMailSender<span class="token se-code-punctuation">.</span><span class="token se-code-function">send</span><span class="token se-code-punctuation">(</span>mailMessage<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"회원가입 이메일 인증"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> GetEmailCertRes <span class="token se-code-function">signupConfirm</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">GetEmailCertReq getEmailCertReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">if</span> <span class="token se-code-punctuation">(</span>emailCertDao<span class="token se-code-punctuation">.</span><span class="token se-code-function">tokenCheck</span><span class="token se-code-punctuation">(</span>getEmailCertReq<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+            GetEmailCertRes getEmailCertRes <span class="token se-code-operator">=</span> emailCertDao<span class="token se-code-punctuation">.</span><span class="token se-code-function">signupConfirm</span><span class="token se-code-punctuation">(</span>getEmailCertReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getEmail</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> getEmailCertRes<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">else</span> <span class="token se-code-punctuation">{</span>
+            GetEmailCertRes getEmailCertRes <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">GetEmailCertRes</span><span class="token se-code-punctuation">(</span><span class="token se-code-number">0</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> getEmailCertRes<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1bcab25b-4b01-4d10-9944-5c6ac5dd7467"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4c325b51-9696-46ac-b520-64cc3179ae88">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f526a7ae-c965-48a2-b06b-4292dc75d58e" style=""><span class="se-fs- se-ff-system" id="SE-90d7e141-24df-454a-9690-defce3144897" style="">(1) </span><span class="se-fs- se-ff-system" id="SE-c08ebe3d-e1c7-491f-a763-802d12790a1c" style=""><b>createEmailConfirmationToken </b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-579130f8-dbfe-4ec8-9080-cd1ea69b9595" style=""><span class="se-fs- se-ff-system" id="SE-ada12aa0-0ba2-4b1c-b51a-e3bf91cf74b9" style="">SimpleMailMessage.setTo로 누구에게 보낼지,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c7eb98c0-153f-4502-a6ea-275e45735441" style=""><span class="se-fs- se-ff-system" id="SE-dfa3fd2b-83f0-4426-a6b1-adb165749cc4" style="">setSubject로 제목을, setText로 내용을 작성할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1339263c-985f-4463-b473-97d14540f655" style=""><span class="se-fs- se-ff-system" id="SE-a7a33478-b13c-4bee-9b49-578581c33527" style="">(지금은 이 내용에 내 서버로 접속하는 링크를 설정해 뒀는데, 추후 프론트엔드와 연동할 땐 수정할 예정이다.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-62f70a5f-06a6-435e-8ed3-6a68925d01b7" style=""><span class="se-fs- se-ff-system" id="SE-97badb19-5abf-421d-951b-af036627226f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-91d2104c-b16d-4612-94a4-5bbcd7783ce7" style=""><span class="se-fs- se-ff-system" id="SE-9eaaee3c-6a70-4ace-a327-0b6e5a95649d" style="">내용에 사용자 메일 주소와 회원가입 시 발급한 토큰을 담아</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a6157039-ab09-447c-89a1-e1485b983914" style=""><span class="se-fs- se-ff-system" id="SE-f684d3c1-1c07-4478-ad36-d286dca8f78b" style="">JavaMailSender를 통해 이전에 설정했던 부분으로 메일을 실제로 보내고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-826ba06e-2044-4cbf-b431-a37cbc1c83a4" style=""><span class="se-fs- se-ff-system" id="SE-e6657120-1730-49b8-b31a-6b281a34fee8" style="">사용자가 이 링크로 접속해 메일 주소와 토큰이 일치 해야만 허용을 해준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7efbef6d-50f3-45f3-8ef5-b1a323e24393" style=""><span class="se-fs- se-ff-system" id="SE-47475a85-1d62-4fa9-9a47-dbef3f758844" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0bb5d2ec-4e59-42eb-ad0f-723f6f2268f7" style=""><span class="se-fs- se-ff-system" id="SE-419827c2-a457-4a14-8642-ec0061f8e26f" style="">* 여기서 비동기(@Async)로 진행한 이유는 메일을 보내는데 우리가 전송하는 동안 기다리게 되어 그 동안 블럭 상태에 놓이게 된다. 이 부분을 방지하고자 비동기 처리를 했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6560eb32-999d-43a8-9257-c9386d0b8d78" style=""><span class="se-fs- se-ff-system" id="SE-8e45ab2a-e11a-4635-9e7a-19749fbac9c6" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be761448-bd1f-4d73-a45f-a8dc102b6169" style=""><span class="se-fs- se-ff-system" id="SE-98db46e2-7507-45c4-903a-c801b8edc199" style="">(2) </span><span class="se-fs- se-ff-system" id="SE-34b914c6-1193-4ac0-81bb-5d3e92c330ec" style=""><b>signupConfirm</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b2e4a832-8fe6-4869-930e-cff922a7c787" style=""><span class="se-fs- se-ff-system" id="SE-f4b28fc9-a0bb-44c2-8cfb-9d6e6f5373d5" style="">메일을 실제로 보내주는 처리를 하는 메소드다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7039e90b-690c-4755-b6d9-197367a730ff" style=""><span class="se-fs- se-ff-system" id="SE-9e526b23-fad3-43f5-90d2-64065c888c28" style="">유저가 위에서 구현한 링크를 누르면,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-70544fad-983d-4ec2-a0a8-02282ea514e6" style=""><span class="se-fs- se-ff-system" id="SE-d00fa4c9-921d-4e9e-a1e0-ea388dfecea3" style="">이 메소드가 동작해서 실제 이 토큰이 있는지 (해당 메일 주소로 발급된) 확인한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e238c878-e33f-4fe4-a426-95cb9d220158" style=""><span class="se-fs- se-ff-system" id="SE-4e1ef751-594e-4791-a9ad-1af21d4aa545" style="">토큰이 있으면 사용자의 설정을 바꿔주고 없으면 에러처리.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c7c3d0eb-dacd-43aa-a0d1-7fa2da9d15ec" style=""><span class="se-fs- se-ff-system" id="SE-1577972e-8c81-4e14-9d9d-ee95663fdcdb" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-e2720287-84d2-4202-bd48-866e368e973f">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e67b8f7b-0080-48b5-9216-0614dc42bdc6" style=""><span class="se-fs- se-ff-" id="SE-6c8fd7bb-b3a0-45a0-bf04-d297c45b446f" style="">5. 이메일 인증 Dao</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-0f3bc913-bef5-4fd1-95bc-937771ce07f4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Repository
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">EmailCertDao</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> JdbcTemplate jdbcTemplate<span class="token se-code-punctuation">;</span>
+
+    @Autowired
+    <span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">setDataSource</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">DataSource dataSource</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">JdbcTemplate</span><span class="token se-code-punctuation">(</span>dataSource<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> Integer <span class="token se-code-function">createToken</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">GetEmailCertReq getEmailCertReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+
+        String createTokenQuery <span class="token se-code-operator">=</span> <span class="token se-code-string">"INSERT INTO emailcert (token,user_email,expired,expired_at) VALUES (?,?,FALSE, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL +5 MINUTE));"</span><span class="token se-code-punctuation">;</span>
+        Object<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span> createTokenParams <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Object</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">{</span>getEmailCertReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getToken</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span> getEmailCertReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getEmail</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate<span class="token se-code-punctuation">.</span><span class="token se-code-function">update</span><span class="token se-code-punctuation">(</span>createTokenQuery<span class="token se-code-punctuation">,</span> createTokenParams<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> Boolean <span class="token se-code-function">tokenCheck</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">GetEmailCertReq getEmailCertReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        String selectEmailCertQuery <span class="token se-code-operator">=</span> <span class="token se-code-string">"SELECT EXISTS(SELECT * FROM emailcert WHERE token=? AND user_email=? AND expired=FALSE AND expired_at&gt;CURRENT_TIMESTAMP)"</span><span class="token se-code-punctuation">;</span>
+        Object<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span> selectEmailCertParams <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Object</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">{</span>
+                getEmailCertReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getToken</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span>
+                getEmailCertReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getEmail</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+        Integer exist <span class="token se-code-operator">=</span> <span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate<span class="token se-code-punctuation">.</span><span class="token se-code-function">queryForObject</span><span class="token se-code-punctuation">(</span>selectEmailCertQuery<span class="token se-code-punctuation">,</span> Integer<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span> selectEmailCertParams<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> exist <span class="token se-code-operator">==</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> GetEmailCertRes <span class="token se-code-function">signupConfirm</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String userEmail</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span>userEmail<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        String signupConfirmQuery <span class="token se-code-operator">=</span> <span class="token se-code-string">"UPDATE member SET status=TRUE WHERE email=?"</span><span class="token se-code-punctuation">;</span>
+        Object<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span> signupConfirmParams <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Object</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">{</span>
+                userEmail<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">GetEmailCertRes</span><span class="token se-code-punctuation">(</span><span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate<span class="token se-code-punctuation">.</span><span class="token se-code-function">update</span><span class="token se-code-punctuation">(</span>signupConfirmQuery<span class="token se-code-punctuation">,</span> signupConfirmParams<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0f3bc913-bef5-4fd1-95bc-937771ce07f4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7d1ba975-f120-465c-ba56-80d2ebe009ab">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-29d3c8fa-9d49-41b3-8e31-4465060aed10" style=""><span class="se-fs- se-ff-system" id="SE-546d31e9-c528-4f0a-8bfb-4e2067cfaa4f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-959ce0eb-3a00-4c88-8d2c-b05a0e3a4ad3" style=""><span class="se-fs- se-ff-system" id="SE-17d40bc6-32e5-43a2-8070-64853f0b67cc" style="">createMember에서 사용자가 입력한 회원 정보를 저장하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-74ab9c92-d3c4-4332-9be6-c88d562c8642" style=""><span class="se-fs- se-ff-system" id="SE-3157c54a-c7a0-46ac-8fb0-1ddd99bf20be" style="">createToken에서 이메일 인증 만료 시간을 현재시간+5분으로 저장한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d70ed479-fafa-4543-891e-cb07583daa4f" style=""><span class="se-fs- se-ff-system" id="SE-7e62ecd1-f031-497c-8651-1fec52fbb5e6" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-793506b2-735b-4bbe-889d-4fc6d72ebae3" style=""><span class="se-fs- se-ff-system" id="SE-7ced34de-55c8-41c6-996b-c760f7609674" style="">토큰이 일치하면 tokenCheck 메서드를 호출해서</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b5a12705-fdf3-4ef9-95d1-3ab942ae7d33">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> Boolean <span class="token se-code-function">tokenCheck</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">GetEmailCertReq getEmailCertReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        String selectEmailCertQuery <span class="token se-code-operator">=</span> <span class="token se-code-string">"SELECT EXISTS (SELECT * FROM emailcert WHERE token=? AND user_email=? AND expired=FALSE AND expired_at&gt;CURRENT_TIMESTAMP)"</span><span class="token se-code-punctuation">;</span>
+        Object<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span> selectEmailCertParams <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Object</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">{</span>
+                getEmailCertReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getToken</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span>
+                getEmailCertReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getEmail</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+        Integer exist <span class="token se-code-operator">=</span> <span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate<span class="token se-code-punctuation">.</span><span class="token se-code-function">queryForObject</span><span class="token se-code-punctuation">(</span>selectEmailCertQuery<span class="token se-code-punctuation">,</span> Integer<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span> selectEmailCertParams<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> exist <span class="token se-code-operator">==</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b5a12705-fdf3-4ef9-95d1-3ab942ae7d33"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3077ee66-aa70-4eb6-97d6-72043bdfd3be">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-855f5f26-5d4e-4a88-a641-e378ba022762" style=""><span class="se-fs- se-ff-system" id="SE-691a9c4a-d609-4465-bd61-ef0d5515f532" style="">유저 테이블의 status 값을 1로 바꿔준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9cbdb5eb-451f-4730-bfa6-b2276428bdfc" style=""><span class="se-fs- se-ff-system" id="SE-f0fab221-df9a-4f96-97d9-e07495a97ebe" style="">이 status 값으로 이메일 인증 여부를 확인한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dedf8f29-3665-41b5-a7f1-af87142cda8b" style=""><span class="se-fs- se-ff-system" id="SE-924cc7a9-c09b-4b2f-9b40-649378444194" style="">(로그인 할때도 status를 확인해 1인 사람만 로그인 시켜주는 등 처리를 할 수 있다.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eaf3c06c-468c-439a-af9e-20b2ad3f0623" style=""><span class="se-fs- se-ff-system" id="SE-67487946-e754-47bc-bb80-302b4ff3abe7" style="">또 토큰의 유효시간을 토큰발급 후 5분간만 유효하게 구현했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b121c592-91f4-4a13-b16b-74f225e7a0ed" style=""><span class="se-fs- se-ff-system" id="SE-2525377b-4663-4809-a10e-f464e2664758" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0609fd39-d407-4eb2-841e-f25af91343e7" style=""><span class="se-fs- se-ff-system" id="SE-807072d3-540f-4d85-81c8-195399cebedb" style="">그리고 사용자가 링크를 눌렀을 때</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c703e527-ce46-48be-838f-3c419360fc02" style=""><span class="se-fs- se-ff-system" id="SE-e1589e51-b259-45b3-bd27-008b3555ceec" style="">signupConfirm 메소드에서 status를 TRUE로 수정해</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-f76bb2b7-ce3b-450e-aaa6-ae4cc80e2db5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">UPDATE</span> member <span class="token se-code-constant">SET</span> status <span class="token se-code-operator">=</span> <span class="token se-code-constant">TRUE</span> <span class="token se-code-constant">WHERE</span> email<span class="token se-code-operator">=</span><span class="token se-code-operator">?</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f76bb2b7-ce3b-450e-aaa6-ae4cc80e2db5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-540a12e3-d048-4d14-a13c-3671f75c2a20">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e4e535f-e028-4569-9e7d-f76993c2647d" style=""><span class="se-fs- se-ff-system" id="SE-98e64742-0e4e-4ee6-99cd-32112366146e" style="">유효하면 1, 유효하지 않으면 0을 반환한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fc636c0f-a060-49a5-8caa-edc5f96e94c8" style=""><span class="se-fs- se-ff-system" id="SE-fd634f90-602c-4124-86da-b334ea0c7a94" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-5966b2d1-c193-45bd-862f-6d7d01e7a28a">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6b028d14-0409-4dbc-bb60-b75532751eb5" style=""><span class="se-fs- se-ff-" id="SE-0072c0d9-355b-413b-ab84-97f2c37bf300" style="">회원가입 테스트</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-6c058fe3-84ea-40be-a2f1-9dc1fdfb0126">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b8572b70-17b7-4266-9202-e6e938919599" style=""><span class="se-fs- se-ff-system" id="SE-96486f52-1666-4180-9302-a7da6e048077" style="">사용자 정보 입력</span></p></li></ol><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default" id="SE-f3a4babb-e9d8-4f3f-a81c-bd82f7b06005">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:41.42011834319527%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-fed04f77-8173-4467-b20c-4037e02e3431", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfMTg0/MDAxNjUyOTY5NzA5Mzkx.PJICMDLe37lmJFUG2JoK9Ps6LiwqBQOHyyNh3MyF3bYg.MbYxFov0nVeTBzGLGigtSB4Ph0Zv2IXlzw48D5KtGl8g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-19_%EC%98%A4%ED%9B%84_11.14.51.png", "originalWidth" : "588", "originalHeight" : "216", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="216" data-width="588" id="SE-f3a4babb-e9d8-4f3f-a81c-bd82f7b06005_0" src="images/image_10.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:58.579881656804744%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-bcd59c2c-ee5d-461a-90ec-8e1f6a6f1196", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfMTA5/MDAxNjUyOTY5NzExNTIw.NnZh_ZA628lRORYP3p24ZVgkucPtDXXmDbhOXWmQq4Ig.tY81ktJk-Y3sfTQl7DER-cz-AoTDskKmU2O9V7WAUusg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-19_%EC%98%A4%ED%9B%84_11.15.00.png", "originalWidth" : "782", "originalHeight" : "204", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="180" data-width="693" id="SE-f3a4babb-e9d8-4f3f-a81c-bd82f7b06005_1" src="images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-adb00aaa-0bd2-4ec8-aa68-d329c57891b1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52ae2e4a-c1e9-4e1b-91b2-8912e61d4784" style=""><span class="se-fs- se-ff-system" id="SE-fe60fce8-0143-4dfb-997f-26907059591c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8f98012d-e751-4f8f-8092-53ece8300e0d" style=""><span class="se-fs- se-ff-system" id="SE-1d1c38b2-122f-4c8d-88b8-8c4cbdefa2f3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cba33245-5bf8-45e1-b7be-33b40688c5c6" style=""><span class="se-fs- se-ff-system" id="SE-21b17cab-874f-4c81-a110-5ada1395b478" style="">2. 이메일 인증</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-fc36292a-a277-4f25-a795-39efe99126e9">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-fc36292a-a277-4f25-a795-39efe99126e9", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfMTc3/MDAxNjUyOTQxMzc0NDIz.TLiqiZT784nOVpPN74lvYMopmXktngTIT7UiAfBI3Ckg.P1wN0u0X9YyZgsB8gyNP-KtlzuyDBpe-8y_NtD9vkRIg.PNG.ghdalswl77/SE-fc36292a-a277-4f25-a795-39efe99126e9.png", "originalWidth" : "1778", "originalHeight" : "464", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="180" data-width="693" id="SE-fc36292a-a277-4f25-a795-39efe99126e9_0" src="images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-bc7c4f9c-45bd-43e1-aa32-685dc2bf251f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a41b0c4-fd36-4830-999d-4366a745caeb" style=""><span class="se-fs- se-ff-system" id="SE-d7658680-b39a-4a51-a002-84eabca50312" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ab074397-7cf5-4114-b112-2ddd388ff391" style=""><span class="se-fs- se-ff-system" id="SE-6685d65c-8bc5-410c-ae69-4bdd5eed24f6" style="">3. 인증 링크 클릭</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-4efdf9d4-d610-4290-8c71-93979f68f598">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4efdf9d4-d610-4290-8c71-93979f68f598", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfNDQg/MDAxNjUyOTQwNTg3NTk0.CQTfBQ1wbv-caXBTKznuf0UWIpz89eC-Lx1ygoyevxcg.j1ytxBzHtgcho_7zr2tNvRj4PeEKZuQPTtXEErl92hUg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-04_%EC%98%A4%ED%9B%84_5.14.52.png", "originalWidth" : "1544", "originalHeight" : "352", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="157" data-width="693" id="SE-4efdf9d4-d610-4290-8c71-93979f68f598_0" src="images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-fa150f65-2298-4f09-8ba5-47f2130de65e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e911e059-f24e-4b19-b9af-5770195f850e" style=""><span class="se-fs- se-ff-system" id="SE-1a1707ab-00a7-437e-a234-00ec32c747a7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33ed086f-c9b0-41c2-b210-0f7277a0a482" style=""><span class="se-fs- se-ff-system" id="SE-9e98d214-c35c-4428-95cd-a4ca7100c680" style="">4. 회원가입 성공</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default" id="SE-a4f2c36c-2a44-45b5-99c2-558421c9b5f3">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:42.924528301886795%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-07b34d74-89da-48f0-9f8b-385ad273eb8e", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfMjAg/MDAxNjUyOTY5NzYzNjQz.bm1snS7qxxkvh7u2bL6Jcl8i8tb_OY83s9Q8QSa2IyYg.96m5zD8vs7XIcgkgx6HQs_XzmeNr0d5gn56Vm9jJ8EIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-19_%EC%98%A4%ED%9B%84_11.16.00.png", "originalWidth" : "588", "originalHeight" : "220", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="220" data-width="588" id="SE-a4f2c36c-2a44-45b5-99c2-558421c9b5f3_0" src="images/image_14.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:57.07547169811321%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-54e08c1c-3e58-4b49-bfa7-f097fc313747", "src" : "https://postfiles.pstatic.net/MjAyMjA1MTlfNTcg/MDAxNjUyOTY5Nzc1MTk3.5ZKWnLbg2Q9oNIkYYxA3wfNtOiZEZS2Ed5b1oAOeulAg.vAGALpsryobjO97Cda5nzjF4EdqDbWVD0c-D3MBtDtUg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-05-19_%EC%98%A4%ED%9B%84_11.16.11.png", "originalWidth" : "766", "originalHeight" : "216", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="195" data-width="693" id="SE-a4f2c36c-2a44-45b5-99c2-558421c9b5f3_1" src="images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-108dbe6d-9187-4207-8b94-cd99e29f1ff9">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e226d0d3-ba13-4bd0-b4ad-517a30b842ed" style=""><span class="se-fs- se-ff-system" id="SE-88120069-85d8-4b6b-b6ed-5eef99c613b4" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-5b5bae32-ed25-40b3-85ce-cb9ecd6df5da">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-01342ec6-131d-434c-a0a2-25cbb9dcedf6" style=""><span class="se-fs- se-ff-" id="SE-c705313d-8938-4caf-b636-79f46aa4be17" style="">레디스 도입.. 😭</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-dac169ea-b2e0-4b76-b0a3-aefd38a82b9a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-250b1321-7308-484e-96f3-4f79d58ceb54" style=""><span class="se-fs- se-ff-system" id="SE-fca2e32d-05b4-4f7d-ad16-ecae0b690d51" style="">근데 구현하고보니, 사실 문제가 많다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e91defc-8e97-45a0-99bb-c134bd0f4b95" style=""><span class="se-fs- se-ff-system" id="SE-753af9e8-d572-4e52-b996-5f3789a26961" style="">이렇게 되면 사용자가 회원가입을 하려고 사용자 정보(닉네임, 이메일 등)까지 입력해두고, 이메일 인증하기는 눌렀지만 메일 확인을 안해서 인증 받지 못했을때..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f6447c7b-cdd5-4868-ad7e-049b96210244" style=""><span class="se-fs- se-ff-system" id="SE-e6c9c0b0-72b8-4c6b-a954-5cd78a851674" style="">디비에는 사용자 정보가 status 0으로 남아있을거고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3197b064-c344-4fd9-8558-e60007b7cef6" style=""><span class="se-fs- se-ff-system" id="SE-c7ed72e1-97a1-49f9-949c-d8245442f2d7" style="">그럼 이메일 인증 유효 시간 이후 영영 회원가입을 못하게 되는데..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4bfef81e-2305-459c-875b-e6a16839abbf" style=""><span class="se-fs- se-ff-system" id="SE-41b6d2e8-1d00-4372-a1ad-da6bb65b0d02" style="">그래서 디비로 받은 사용자 정보가 일정 시간 후 삭제되는 로직을 생각해 봤지만</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a9352248-2898-4a7c-99d3-7433e209cc28" style=""><span class="se-fs- se-ff-system" id="SE-35cf1427-cd6f-49f0-83e8-49249d7cddb7" style="">너무 비효율적인것 같고..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f419f21-bb81-4a60-afc3-1d6095553559" style=""><span class="se-fs- se-ff-system" id="SE-e5041d13-0040-4d3e-84dc-9a17401a371f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-367a970f-ef45-467d-9dfe-185bf56fa2fb" style=""><span class="se-fs- se-ff-system" id="SE-ee4e3e5e-aa5b-4f56-8f62-4e01d293fe83" style="color:#141414;">사용자 테이블을 분리하는 것도 하나의 방법일 것 같다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-98357b0b-79be-4f5e-a7ed-b3911ed9d2e6" style=""><span class="se-fs- se-ff-system" id="SE-cc54b47e-3c83-4fa4-a42a-c20e18c61c3e" style="color:#141414;">인증 완료하기 전까지는 임시사용자 테이블에 정보가 있다가 인증하는 시점에 사용자 테이블에 INSERT되는 형식으로</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4b0a96ab-ba47-4fc1-b060-c6071efd75c8" style=""><span class="se-fs- se-ff-system" id="SE-45e1faed-82db-4a18-8a03-a342dfa1fe18" style="color:#141414;">임시사용자 테이블 DELETE하는 배치 걸어놓고..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-57487df7-eb37-4acd-9814-03a1491062c4" style=""><span class="se-fs- se-ff-system" id="SE-08f21c28-5ee2-47e0-8bce-e4bc743f32ee" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c0447e91-edfe-4bcc-b161-9c3fca0d8a3d" style=""><span class="se-fs- se-ff-system" id="SE-aaeefa26-06ea-4bb3-8b12-e739195bf70c" style="">이런저런 고민을 하다가 redis를 알게됐다. redis는 Memcached와 비슷한 캐시 시스템인데, 모든 데이터를 디비가 아닌 메모리에 저장하고 조회한다. 추후 레디스를 도입할 예정이지만, 일단은 정리해둔다..</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

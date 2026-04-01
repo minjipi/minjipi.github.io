@@ -1,0 +1,78 @@
+<!-- source: https://blog.naver.com/ghdalswl77/223146719938 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-6b2c2858-5a4b-4c48-af5c-b02655ef3646">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee9319dd-11c9-4ed0-acc2-1e8b1485a7b6" style=""><span class="se-fs-fs13 se-ff-system" id="SE-cc448e7a-4813-45b0-9116-2146a9665d3c" style=""><b>[ 에러 ]</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-72a9101c-e428-44c9-a1ed-eb4b1552e939">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">elasticsearch failed to flush <span class="token se-code-keyword">export</span> bulk <span class="token se-code-punctuation">[</span>default_local<span class="token se-code-punctuation">]</span>
+Validation Failed<span class="token se-code-operator">:</span> <span class="token se-code-number">1</span><span class="token se-code-operator">:</span> <span class="token se-code-keyword">this</span> action would add <span class="token se-code-punctuation">[</span><span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span> shards<span class="token se-code-punctuation">,</span> but <span class="token se-code-keyword">this</span> cluster currently has <span class="token se-code-punctuation">[</span><span class="token se-code-number">20516</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">/</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">4000</span><span class="token se-code-punctuation">]</span> maximum normal shards open</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-72a9101c-e428-44c9-a1ed-eb4b1552e939"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9494848b-7038-4624-a288-25ea3c1d34f4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58d4cc9e-f1c9-4c92-b43f-749e72a4bba8" style=""><span class="se-fs- se-ff-system" id="SE-a6ba7662-ca57-4e74-940a-248cd80b7576" style="">관련해서 알아보니 한 샤드당 최대 개수가 있는데 그 이상을 친 것 같았다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2ffe8fe6-db10-4950-b512-019d30961f9a" style=""><span class="se-fs- se-ff-system" id="SE-08dd9c1e-b952-45ce-ad38-dcfaa5e4e650" style="">로그를 보면 현재 노드당 최대 normal shard 개수가 4000개 인데( cluster.max_shards_per_node ), 그 이상으로 넘어가서 에러가 난 듯.. (20516은 한 서버당 4000 개 * 노드 수)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-535cacea-4800-42c3-afba-ebf8b4108680" style=""><span class="se-fs- se-ff-system" id="SE-58141874-1661-47f9-9c0f-6f665d260af9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c9d6220b-665c-489d-9d6e-6cc789b53360" style=""><span class="se-fs- se-ff-system" id="SE-9af411d3-42b8-4fdd-a60b-ea82ee349e54" style="">에러 자체는 동시에 열려 있는 샤드 수가 최대값을 초과하고 있다는 의미고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-afa33e5f-3979-4141-a8f3-15ba79e4e716" style=""><span class="se-fs- se-ff-system" id="SE-bb11565f-a7c1-4626-9939-6fc32b5b5307" style="">샤드는 Elasticsearch의 데이터를 분산 저장하는 단위이며, 각 샤드는 클러스터의 노드에 할당된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-df0b51e8-f71a-44bc-baf0-3dfbf1e14e8c" style=""><span class="se-fs- se-ff-system" id="SE-11347fc0-f920-48af-8ae4-7a5acb293b73" style="">즉, 지금 이 에러는 클러스터에 열려 있는 샤드의 수가 허용된 최대값을 초과하여 샤드를 추가할 수 없다는 것을 의미한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ce0e6d09-679c-4839-8f62-1ef40b183572" style=""><span class="se-fs- se-ff-system" id="SE-2b4ecb5f-0f36-4ac7-9c00-9f2c07d2b9ff" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-a46949c5-22a7-4947-83e8-a157f8676c7d">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79fbd6dc-e418-4382-80af-daa2e00537da" style=""><span class="se-fs- se-ff-" id="SE-92e4f178-9eab-4197-a2ea-e08e81bb1cb6" style="">Elasticsearch 클러스터의 샤드 정보를 가져와서 총 줄 수 출력</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-b52649ca-b8d2-495f-8a8e-bb5af141560f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">curl <span class="token se-code-operator">-</span>s <span class="token se-code-operator">-</span>u <span class="token se-code-punctuation">{</span>id<span class="token se-code-punctuation">}</span><span class="token se-code-operator">:</span><span class="token se-code-punctuation">{</span>pw<span class="token se-code-punctuation">}</span> <span class="token se-code-operator">-</span><span class="token se-code-constant">XGET</span> <span class="token se-code-string">"http://localhost:9200/_cat/shards"</span> <span class="token se-code-operator">|</span> wc <span class="token se-code-operator">-</span>l</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b52649ca-b8d2-495f-8a8e-bb5af141560f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7b753e6f-bb4f-43e3-b0a9-df74ec4a14b7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63d3dfcb-40c7-4a86-8f3d-6d9299d6c841" style=""><span class="se-fs- se-ff-system" id="SE-c75682a5-1bd6-4961-b8ca-331c2ab07081" style="">("</span><span class="se-fs- se-ff-system" id="SE-b94f31c1-c45b-4fc0-b313-f866f08128ad" style=""><a class="se-link" href="http://localhost:9200/_cat/shards%22" target="_blank">http://localhost:9200/_cat/shards"</a></span><span class="se-fs- se-ff-system" id="SE-9046e7ca-38b0-4293-8e7e-9bba416e998d" style=""> 요것이 Elasticsearch 클러스터의 샤드 정보를 조회하기 위한 엔드포인트인데, "|" 를 사용해서 앞의 명령어의 출력을 wc -l 로 전달하므로 즉, 전달된 입력의 줄 수를 카운트해줌)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d535f27f-d9ea-4d8c-bacd-05966d447ccb" style=""><span class="se-fs- se-ff-system" id="SE-a497b006-ff0b-4ede-ba7d-8e673db3b060" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eb6dab60-5209-42db-849e-280bd9a63316" style=""><span class="se-fs- se-ff-system" id="SE-9726df7b-39e6-4e7f-8328-e02307f0729f" style="">했더니 20528 가 나왔다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cdcc3c6e-94e5-439c-ac90-987ad5bbc062" style=""><span class="se-fs- se-ff-system" id="SE-6fbcde87-3cf2-4098-8a1a-668a79b3d47d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8ab9c25b-459d-4f74-8795-d4e54f21f12f" style=""><span class="se-fs- se-ff-system" id="SE-b54e81ca-b87a-4f17-a984-be6de1553ab4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ca605255-db7e-48b3-962b-8143923ef522" style=""><span class="se-fs- se-ff-system" id="SE-fdf9276e-8315-4009-92e1-6cac8649dae8" style="">샤드 최대수를 5000 개로 늘려주었다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-67668fa4-e2f6-4f96-ad39-685d8fd42b06">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">curl <span class="token se-code-operator">-</span>s <span class="token se-code-operator">-</span>u <span class="token se-code-punctuation">{</span>id<span class="token se-code-punctuation">}</span><span class="token se-code-operator">:</span><span class="token se-code-punctuation">{</span>pw<span class="token se-code-punctuation">}</span> <span class="token se-code-operator">-</span><span class="token se-code-constant">XPUT</span> <span class="token se-code-literal-property property">localhost</span><span class="token se-code-operator">:</span><span class="token se-code-number">9200</span><span class="token se-code-operator">/</span>_cluster<span class="token se-code-operator">/</span>settings <span class="token se-code-operator">-</span><span class="token se-code-constant">H</span> <span class="token se-code-string">"Content-Type: application/json"</span> <span class="token se-code-operator">-</span>d <span class="token se-code-string">'{ "persistent": { "cluster.max_shards_per_node": "5000" } }'</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-67668fa4-e2f6-4f96-ad39-685d8fd42b06"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-6400b366-be7b-435c-b1ec-bdc46fd4a8e1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-64c3d235-6fbe-4200-8100-bbda25e4fd91" style=""><span class="se-fs- se-ff-system" id="SE-e0de2c72-6d49-4553-92c2-21ee59f893df" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-31141fb5-088b-4201-96db-c22ddbe1cd8d" style=""><span class="se-fs- se-ff-system" id="SE-18b40db4-f717-46f6-923a-8730585da6f3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ebd2c19c-651c-4b97-8816-99cdf2b4e4db" style=""><span class="se-fs- se-ff-system" id="SE-ef6fe60d-6317-4223-9709-5c7396f6d272" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-136be025-a9bd-4863-a856-eb3149494bf1" style=""><span class="se-fs- se-ff-system" id="SE-44db0547-1e85-4131-8d0c-13c8342086aa" style=""><i>사실 샤드 재배치를 풀어주면 되는 문제였는데,</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6cf1b534-7046-462d-9df4-a2222e50a3ec" style=""><span class="se-fs- se-ff-system" id="SE-572726fe-5592-41cb-b5c8-c57c2ec9f0c2" style=""><i>로그를 보다가 알게된 것이라 빠르게 정리...</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

@@ -1,0 +1,421 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222396837308 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-d2e80315-2b7a-47de-8d49-4b7faf6b7409">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-80323307-897d-487d-9a09-2f52b4890c9f" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" id="SE-c6b38a99-36c3-48da-ad85-c0f94a71bae2" style="color:#000000;"><b>[ Amazon Web Services ]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-aed58dea-1a66-44a9-8a22-f638cde9a450" style="line-height:1.8;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-f7ce8e6e-bfa4-4d97-b095-da7c995571a5" style="color:#000000;"><b>RDS 이중화</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-3792fd3f-083a-4885-8ffe-fb718cfa79ed" style="line-height:1.8;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-a0b8f659-0bc3-4bb2-b5db-73318782ecd6" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-c40ca2bf-daa5-44a2-abc8-0c810d621eb3" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic" id="SE-108f9b96-3d21-4aef-b9f4-481d910ab3e4" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-996de34c-59f5-4ffd-aa2e-ab54b53ccf4a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-1fb93367-ab03-4a11-afbd-137b6c9de4bc" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5ba1622e-f5ad-4ca7-93f0-9208bda10751" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-18500be8-4db6-42bb-b159-7843348d3149" style="color:#000000;"><b>마스터가 온프레미스 환경</b></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-5507d0a7-c253-447c-9c4b-065cd88b629a" style="color:#000000;"> ✅ (디비 서버가 우리 PC에 있을 때)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09f05a7e-6d89-43b9-94f3-bd6c7785b613" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d7390e22-2f85-4463-a42e-356cf43f9138" style="color:#000000;"><a class="se-link" href="https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/mysql_rds_set_external_master.html" target="_blank">https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/UserGuide/mysql_rds_set_external_master.html</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-46450da6-45bb-473c-a419-779454473276" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-5aa42e87-dedf-4d75-919e-139b12b1a34d" style="color:#000000;">마스터가 온프레미스 환경일 때, RDS의 이중화 설정해보기.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-36da991d-3d89-489a-a084-68a298219c4b">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a453f978-9d1d-4936-bd34-16a0fc867804" style=""><span class="se-fs- se-ff-" id="SE-b5cc250f-8a54-4c28-bee8-a816fdb8eae0" style="color:#000000;">1. 마스터로 지정할, centos7 인스턴스 생성.</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-quotation se-l-quotation_line" id="SE-a5bc7e21-80b8-40e5-a524-04f31b2dc68f">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2c77204c-f590-4977-b1bb-47c52e68f7e1" style=""><span class="se-fs- se-ff-" id="SE-52454ed2-e785-4b2c-baf8-8fc7fb4381cd" style="color:#000000;">2. DB 설치, 초기설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a5d17239-d2bf-4e5c-b7c8-ddf83f451e69">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a8ced63-6e47-4341-9865-2cc01594ac73" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6c2da26d-57bb-4c81-8ca4-2a40a00382f3" style="color:#000000;">방화벽 설정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-78fae199-190f-47bf-b3d9-7ed6bfcc1dd2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">setenforce <span class="token se-code-number">0</span>
+systemctl stop firewalld</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-78fae199-190f-47bf-b3d9-7ed6bfcc1dd2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c5d07287-7a4a-4d65-88d7-5c0759e5caed">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c49432b7-bb20-46f3-b42b-7bfc6270ac89" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-bc7570a2-66d5-45a9-be58-609bf80c41ce" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-76779769-d987-40c8-bf32-e9e3501d2012" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-62de9110-3c52-4820-bb81-8dd06c8b46ad" style="color:#000000;">MySQL 설치</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-0d118ce5-d109-4477-9d30-6f81fbe6b2c4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">yum install http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>dev<span class="token se-code-punctuation">.</span>mysql<span class="token se-code-punctuation">.</span>com<span class="token se-code-operator">/</span>get<span class="token se-code-operator">/</span>mysql<span class="token se-code-operator">-</span>community<span class="token se-code-operator">-</span>release<span class="token se-code-operator">-</span>el7<span class="token se-code-operator">-</span><span class="token se-code-number">5</span><span class="token se-code-punctuation">.</span>noarch<span class="token se-code-punctuation">.</span>rpm
+yum install mysql<span class="token se-code-operator">-</span>community<span class="token se-code-operator">-</span>server
+
+systemctl restart mysqld</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0d118ce5-d109-4477-9d30-6f81fbe6b2c4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2e4c806c-fff3-4922-9910-7f313928547b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80afecf9-96b9-4692-84b9-235b8c5bc217" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a8537f31-5035-4729-aabb-afe41a63a205" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f0c9b243-2846-44a6-af05-5ec642dc0448" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-cb483d22-0458-46a5-a3f8-0e1925c59f14" style="color:#000000;">MySQL root 패스워드 설정</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-405bafe6-c573-4eba-8310-dbc0cd5b4076" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-9a075e04-c94b-495c-803d-e0fabd9a3d8a" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-663c4573-695d-411b-8108-1e3ddc56de53">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-05d6713f-8821-4a2d-be73-79ef9f2a10e1" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-c17b6ebc-30a7-4514-923b-e940c5bf0521" style="color:#000000;">3. 마스터 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-34fe7d00-f78b-46cf-8980-084754e77cc1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7e9326a9-3a42-49e1-9e0c-e27ad4c1685a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ae4cab1a-ea03-4ab8-9c3c-c3352b3b8e53" style="color:#000000;">1) /etc/my.cnf 파일 설정</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-30675726-3c93-44bf-82d4-677689ab0bcb" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b90afd1e-c955-430b-a15d-14015b39d9d5" style="color:#000000;">가장 하단에, 다음 내용을 추가한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b002299a-b138-4b66-b0df-4cb6fc86d995">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span>mysqld<span class="token se-code-punctuation">]</span>
+server<span class="token se-code-operator">-</span>id <span class="token se-code-operator">=</span> <span class="token se-code-number">1</span>
+log<span class="token se-code-operator">-</span>bin <span class="token se-code-operator">=</span> mysql<span class="token se-code-operator">-</span>bin</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b002299a-b138-4b66-b0df-4cb6fc86d995"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7b7fc519-1289-4fa2-827a-945a4608d344">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6d0b425a-3c15-40f6-945c-0785c078d59f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-9904550b-97a0-444b-b1bd-b38706afa019" style="color:#000000;">저장 후 나가서,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ea3a850e-0f85-49f9-bf96-acdf1cb5490b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a463f3a5-dc93-4830-b46d-bfad1b35b573" style="color:#000000;">mysql 시스템 재시작</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8113634e-ee68-46e4-adcf-8b742279d456">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart mysqld</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8113634e-ee68-46e4-adcf-8b742279d456"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5852a1ba-1e7d-470a-a043-6623712880bf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9b8087e2-3cca-4fc5-a598-f1d3398fd234" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-85a5e386-f1a3-4a7f-80c0-7b7590e7c38b" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-quotation se-l-quotation_line" id="SE-752cfcab-38dd-43ed-9e85-8ec3f2f7118c">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7814928e-867b-4b9f-b072-810e5e0651f3" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-02375cfb-f5f2-4f27-91c6-5326a479dded" style="color:#000000;">4. Master 상태 확인</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-36698f1c-a043-4166-b36e-2508bc6ebf9c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a17f174a-a8a3-4d4a-9a84-5ffa3636855e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2dfb4d1a-efd8-4852-814f-edc678d75ba1" style="color:#000000;">mysql -u root -p 로그인 후, 데이터를 몇 개 만들어두자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-33b57f2f-3267-459b-a55c-d52d41a8c05f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">create database minji<span class="token se-code-punctuation">;</span>
+create table minji<span class="token se-code-punctuation">.</span><span class="token se-code-function">student</span> <span class="token se-code-punctuation">(</span>name <span class="token se-code-function">varchar</span><span class="token se-code-punctuation">(</span><span class="token se-code-number">10</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span> age int<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+insert into minji<span class="token se-code-punctuation">.</span>student <span class="token se-code-function">values</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">'minji'</span><span class="token se-code-punctuation">,</span><span class="token se-code-string">'25'</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-literal-property property">확인</span> <span class="token se-code-operator">:</span>
+select <span class="token se-code-operator">*</span> from minji<span class="token se-code-punctuation">.</span>student<span class="token se-code-punctuation">;</span>
+<span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span>
+<span class="token se-code-operator">|</span> name  <span class="token se-code-operator">|</span> age  <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span>
+<span class="token se-code-operator">|</span> minji <span class="token se-code-operator">|</span> <span class="token se-code-number">25</span> <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-33b57f2f-3267-459b-a55c-d52d41a8c05f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b42dadc4-b22f-4650-89e8-31a107e900ef">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-024848ab-917d-4d37-88a8-086e290871fc" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f893cecd-08b3-4e96-b73d-47e5ac1b8bb9" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd74de4b-6f3a-49ba-9f25-112a6643de8d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ec51507d-aa51-44b6-9c7d-bbb255b682fc" style="color:#000000;">Master 상태 확인</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b7280681-d864-4dbd-8d6c-8d9a91fe3429">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">show master status<span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b7280681-d864-4dbd-8d6c-8d9a91fe3429"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-7af72707-98bd-4976-a29d-b7e73c1e31fa">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:608px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7af72707-98bd-4976-a29d-b7e73c1e31fa", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMjMx/MDAxNjIzNDAyMzU1NTgy.St80cokOuub_wW9ZsCxLngJhoC8xYOA0I4JC7UPIqvEg.uOQVisaA7UGbIXdP26xCXxKU8pja8xPTMS3lnWmEctIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-11_%EC%98%A4%ED%9B%84_6.05.52.png", "originalWidth" : "608", "originalHeight" : "133", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="133" data-width="608" id="SE-7af72707-98bd-4976-a29d-b7e73c1e31fa_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-487b276f-9f1d-4c8c-bdb9-f0f39389f0d9">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-85c36466-c416-4aa2-9f5c-15e07c5a8df9" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-93b4cba8-67be-4a1a-8edc-99816372bdea" style="color:#000000;">766. 이따 슬레이브 설정 시 필요함 !</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-fd3b6d82-e775-444a-8353-1e4ecc542f20">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b684d60d-aab9-48a5-8294-8d0f88d5f577" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-d5ab3a6d-b2ec-48a3-af1b-b4c77910b18f" style="color:#000000;">5. Replication할 때 사용할 계정 생성</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-cdbd0997-a95d-4dab-8fc7-fa32dc95f95b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">GRANT</span> <span class="token se-code-constant">REPLICATION</span> <span class="token se-code-constant">SLAVE</span> <span class="token se-code-constant">ON</span> <span class="token se-code-operator">*</span><span class="token se-code-punctuation">.</span><span class="token se-code-operator">*</span> <span class="token se-code-constant">TO</span> <span class="token se-code-string">'slave'</span>@<span class="token se-code-string">'%'</span> <span class="token se-code-constant">IDENTIFIED</span> <span class="token se-code-constant">BY</span> <span class="token se-code-string">'qwer1234'</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-cdbd0997-a95d-4dab-8fc7-fa32dc95f95b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9f756aa9-55e0-4b5a-8e70-dbddd83c5381">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2d74e8b2-bfad-423e-b3ce-dde472935474" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ba825451-114e-41ae-830d-50b86ff62df0" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-48acb19d-a9a7-4de7-8615-7a7dab6545a7" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a0d293cc-f6a7-4cd1-9ac5-9b9733d52b11" style="color:#000000;">확인 :</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-967f8efa-e5fc-4fe3-9f0f-2ef77aba3d64">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">select <span class="token se-code-operator">*</span> from mysql<span class="token se-code-punctuation">.</span>user where user<span class="token se-code-operator">=</span><span class="token se-code-string">'slave'</span>\<span class="token se-code-constant">G</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-967f8efa-e5fc-4fe3-9f0f-2ef77aba3d64"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2f4a3e83-55cf-47aa-83d6-10d2dc7cc5b4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6ce48963-7184-4b13-b7c2-5dce891f6434" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-506ea2b7-c7d9-46f6-8979-65a705ef9542" style="color:#000000;">Repl_slave_priv : Y 되어있는지 확인한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-23a86783-e89d-4be7-8260-bb152d420ab2">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-23a86783-e89d-4be7-8260-bb152d420ab2", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTBfNyAg/MDAxNjIzMzE0NTI4NzAz.32zCqgFGSm9_dxglcuw1ER8Limq0FbNCbeDgiBFq0ZYg.C6ScI3aY-7cV7Q-Fc-MHYw-w9KQPJedRjFcrYAxpqUcg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-10_%EC%98%A4%ED%9B%84_5.42.04.png", "originalWidth" : "924", "originalHeight" : "470", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="352" data-width="693" id="SE-23a86783-e89d-4be7-8260-bb152d420ab2_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-75326499-3b57-484e-9f06-eaad9aab0ce0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3575212d-a842-4010-aa4e-470566e3b508" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7f8eb3da-970d-4efb-af5b-247d9df0c919" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-1941878e-902e-4edf-922f-53d03f47ead1">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1cd0acae-f618-4541-bd07-cdee461b8c3d" style=""><span class="se-fs- se-ff-" id="SE-c7836842-2943-4aa0-9073-160be4909184" style="color:#000000;">6. </span><span class="se-fs- se-ff- se-style-unset" id="SE-aee16249-ba68-44d2-ac78-f494bb0f1a76" style="color:#000000;">AWS의 RDS에 생성</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a376ddca-01cd-4cfb-a2c5-53ff46c7c759">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1b0c17f-bae7-4e43-ad4a-46246a45a3a7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-c8cfaf68-4642-4804-894b-7f2b548ca798" style="color:#000000;">RDS 데이터베이스 생성 후 DB  접속.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f6b71e00-5169-4d80-a002-40239b0fb5dc">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mysql <span class="token se-code-operator">-</span>h 앤드포인트 <span class="token se-code-operator">-</span>u minji <span class="token se-code-operator">-</span>p</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f6b71e00-5169-4d80-a002-40239b0fb5dc"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f75fbade-872a-4a9c-ac7e-2dc261f2324b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-760417fd-6438-4485-844b-e71884aa651c" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-eff3b293-b269-4e33-a16d-98fe1b87339a" style="color:#000000;">DB 백업을 해 주거나, 직접 생성하는 등의 방법으로</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f4b96ea6-0fe2-4f04-8fe4-b9070d2af8a3" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3248561d-4067-4188-979c-84c5aee5cece" style="color:#000000;">마스터에 있는 데이터랑 똑같은 상태로 만든다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-0c805594-3239-4403-9cef-6284a118e9ca">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:277px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-0c805594-3239-4403-9cef-6284a118e9ca", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfNzEg/MDAxNjIzNDAyNTg3NzAx.3SUEd2rbSuK5BHmdfVjq8BPoQ-rovOUuQXVxQSSvgeAg._XAVJN06CDM4RDpejokp7LmF4JoFZ8ifPt8D8Dg4eYIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-11_%EC%98%A4%ED%9B%84_6.09.44.png", "originalWidth" : "277", "originalHeight" : "136", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="136" data-width="277" id="SE-0c805594-3239-4403-9cef-6284a118e9ca_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9565310c-b9bf-49eb-a20b-d76aceaab57f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c030b7ac-e32e-450a-be7e-a9888bedc989" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ef79decf-3092-45af-941c-f0913007e01d" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-5ae9bfa0-1757-4cb8-9c0c-a1c5ddef5b91">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1ac1a872-1f4d-4dde-8fcb-3b272ecd0e86" style=""><span class="se-fs- se-ff-" id="SE-cc522aec-392a-4a04-bf4d-c7e67bd428be" style="color:#000000;">7. </span><span class="se-fs- se-ff- se-style-unset" id="SE-ad77e277-ad7a-4134-8834-ee25c356158a" style="color:#000000;">AWS의 RDS</span><span class="se-fs- se-ff- se-style-unset" id="SE-889397cb-b29b-43e6-9081-0362cc8bc2a8" style="color:#000000;"><b> </b></span><span class="se-fs- se-ff-" id="SE-25ba40d5-3a18-452f-8ccd-11d31f0bbc74" style="color:#000000;"><b>Slave 설정</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7120f7fd-d5b7-4a04-9cef-f93e5e6c9c5e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-661e73a5-9d42-4204-8501-c64a928fead8" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b98d8ab6-c4e5-4079-a65f-7784357a84b7" style="color:#000000;">아래 명령어를 조건에 맞게 입력한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-edd2b611-38bc-4828-94cb-4db406f49807">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">CALL</span> mysql<span class="token se-code-punctuation">.</span><span class="token se-code-function">rds_set_external_master</span> <span class="token se-code-punctuation">(</span>
+  host_name
+  <span class="token se-code-punctuation">,</span> host_port
+  <span class="token se-code-punctuation">,</span> replication_user_name
+  <span class="token se-code-punctuation">,</span> replication_user_password
+  <span class="token se-code-punctuation">,</span> mysql_binary_log_file_name
+  <span class="token se-code-punctuation">,</span> mysql_binary_log_file_location
+  <span class="token se-code-punctuation">,</span> ssl_encryption
+<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-edd2b611-38bc-4828-94cb-4db406f49807"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1c77b538-0296-4e63-832c-027833ca8121">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c4c56602-98fb-4b93-bb1d-586767a3fbd1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3940b3d5-9909-446b-98f9-3cf3b2b74497" style="color:#000000;">[예시]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-9057e399-5db2-4597-a3bd-bb0dafc32b42">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">call mysql<span class="token se-code-punctuation">.</span><span class="token se-code-function">rds_set_external_master</span><span class="token se-code-punctuation">(</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-string">'13.209.75.7'</span><span class="token se-code-punctuation">,</span> #마스터 <span class="token se-code-constant">IP</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-number">3306</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-string">'slave'</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-string">'qwer1234'</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-string">'mysql-bin.000001'</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-number">766</span><span class="token se-code-punctuation">,</span>  #show master status로 확인한 것<span class="token se-code-punctuation">.</span>
+<span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9057e399-5db2-4597-a3bd-bb0dafc32b42"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-eb959f6b-3f4c-42e3-b621-0d313690ac9d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80367b1a-b59b-4f72-8884-f97ccf2d05e5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-6b1e58fa-5569-4e7f-8500-2f999292dd5a" style="color:#000000;">앤터!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1a4fbe50-f309-44a3-9445-fa2b821a672b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b23af03e-c025-4e21-9873-9cfb8ce8c4db" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c85000c4-b45a-45f4-9514-64495bc3691e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2149b5f3-1298-44ec-a2f5-309e35c181c2" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-85f0e69a-55e6-4ef2-a805-a544f628b048" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-79a57f14-ff34-4e98-a0ad-bf0bd370655c" style="color:#000000;">결과 :</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-11c819a4-c6e4-47d3-bd2e-71126194e14b">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-11c819a4-c6e4-47d3-bd2e-71126194e14b", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMTQz/MDAxNjIzMzcyNTE3NTI4.21PKOY6bR0cqre1Da45QyvR9C8wcrlp-4erAo_QvTqog.4RbUnWWcjW5nI9-CfMF9MIrwlT_83gw27zISb5IV5rog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-11_%EC%98%A4%EC%A0%84_9.48.34.png", "originalWidth" : "1410", "originalHeight" : "516", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="253" data-width="693" id="SE-11c819a4-c6e4-47d3-bd2e-71126194e14b_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b3946d08-aa67-47b5-984d-f4b9968ac763">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6c771b63-8182-443a-9a23-8e04c4a3b548" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b3ac9eae-86dc-4864-b2b0-3440acf853a3" style="color:#000000;">마스터에서 DB를 insert 하면 슬레이브에서 바로 적용된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2437d12b-87b0-4ba5-8223-d48df8eefb48" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cfe49e52-7065-4795-acdd-13b639e59554" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a9374a25-c38f-4932-8796-4903e83326d7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-15cf9803-59ac-4bf8-a538-a1a98df3908a" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

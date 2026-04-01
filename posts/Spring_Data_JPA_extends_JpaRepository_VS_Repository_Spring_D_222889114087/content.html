@@ -1,0 +1,149 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222889114087 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-95c72854-7d69-4037-973f-e5028eee7dce">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a7a14de4-381d-485c-8533-3031cc0e869f" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-3d31ef29-7887-4df2-b417-940e34c0cd10" style="color:#141414;">우선 extends JpaRepository는 Spring Data JPA 기술을 사용한 것이다. 이에 대한 개념을 간단히 이해하고 둘을 비교해보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c01584c1-5c60-4844-87c7-ee5ad83ad4da" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-e5a2517b-9d93-41a1-b45d-3b87d77b3319" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67f44e08-25fc-4d73-afec-7e040670f033" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-068939fe-3f44-40e8-9b94-dd4fa5fc0e41" style="color:#141414;"><b>0. Spring Data JPA</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-909ff9b0-55ba-480f-b456-6dba06270115" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-84398103-971c-40d1-b1ee-69a8e168f2de" style="color:#141414;">Spring Data JPA는 스프링에서 JPA를 편리하게 사용할 수 있도록 지원하는 모듈.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1dde4bb7-06ab-4526-ab57-5368936842d9" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-04348abb-a039-4172-bb3e-767df8236876" style="color:#141414;">CRUD 처리를 위한 공통 인터페이스를 제공해주고, 인터페이스만 작성하면 동적으로 구현체를 생성해서 주입해주기 때문에 인터페이스만 작성해도 개발을 완료할 수 있다. </span><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-0ba168df-88f7-4d47-9fe0-8d378530958b" style="color:#141414;">설정과 구현에 대한 내용은 아래 </span><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-a4f2efa2-a15c-462b-a450-29d89bcff56c" style="color:#141414;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222314410957" target="_blank">링크</a></span><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-b24235a5-5107-44ae-ab8b-8a68e8526c78" style="color:#141414;"> 참고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-0013c444-e8b4-4997-baec-46472be413c4" style="line-height:2.0;"><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-63e06acf-8247-43f6-9657-6baaaa0a2af4" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0e67eb44-6f8a-4452-a6ea-ea14ef07221f" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-cba48b82-203b-4b2d-807a-a2f69c71837d" style="color:#141414;">Spring Data JPA는 다음과 같이 </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-3202a2c5-aee2-4321-b3f6-2202f627755e" style="color:#141414;"><b>JpaRepository</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-035af252-a286-4e77-9bc1-97a8f6ab1154" style="color:#141414;"> </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-2ed79b85-d1e8-433a-a8b0-508c786ec436" style="color:#141414;"><b>인터페이스를 상속하는 인터페이스</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-bd9a9f53-07c4-41cb-ad08-7c642e356fff" style="color:#141414;">를 정의하면 이 인터페이스를 통해 RDBMS, NoSQL 등의 Repository와 데이터를 주고받을 수 있는 빈을 자동적으로 등록하는 기능을 제공한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a9175e70-03d4-4a84-99b6-66cf2486be91">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">interface</span> <span class="token se-code-class-name">TestRepository</span> <span class="token se-code-keyword">extends</span> <span class="token se-code-class-name">JpaRepository</span><span class="token se-code-operator">&lt;</span>Test<span class="token se-code-punctuation">,</span> Long<span class="token se-code-operator">&gt;</span> <span class="token se-code-punctuation">{</span> <span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a9175e70-03d4-4a84-99b6-66cf2486be91"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9d6a30a1-b9fc-40be-a410-2051db088135">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ea20e4c2-e153-4cbb-92e2-fb3172f0489e" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-921bd071-4329-42ce-9ace-885d9aed56ca" style="color:#141414;">위와 같은 인터페이스를 만들어두고, @Autowird와 같이 빈을 주입하는 어노테이션을 추가하여 사용할 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-bf465bf8-2fb8-4b8a-8844-73da6bacc356">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Component
+@Transactional
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">JpaRunner</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">ApplicationRunner</span> <span class="token se-code-punctuation">{</span>
+	@Autowired
+	TestRepository testRepository<span class="token se-code-punctuation">;</span>
+    
+	@Override
+	<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">run</span><span class="token se-code-punctuation">(</span>ApplicationArguments args<span class="token se-code-punctuation">)</span> throws Exception<span class="token se-code-punctuation">{</span>
+    
+        testRepository<span class="token se-code-punctuation">.</span><span class="token se-code-function">findAll</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">forEach</span><span class="token se-code-punctuation">(</span>System<span class="token se-code-punctuation">.</span>out<span class="token se-code-operator">:</span><span class="token se-code-operator">:</span>println<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bf465bf8-2fb8-4b8a-8844-73da6bacc356"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2f4a6768-f57d-4bf7-b815-59acfedb729a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-367c8e82-e780-445f-9301-41fdbe635c2e" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" id="SE-e81eb5c8-49c4-4017-9e02-1ea1ffeda649" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-78bb212f-ed0e-43ee-96e6-e74a6cb98db4" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-aff94806-769e-4a8b-88e8-7850589feb3e" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0623b822-ad24-40f0-a742-cd45b4cd8dc8" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-81007f9e-ba77-4f6b-9162-60360c02e6ce" style="color:#141414;"><b>1. extends JpaRepository</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1903cb2-8480-4228-94fb-108b97fc6d04" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-4a8efcc3-7dcf-4b19-a26c-4cc3accc39e2" style="color:#141414;">그럼 extends JpaRepository 란 뭘까?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2a456a97-ade8-4112-84cc-389796e3e8c7" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-555a0970-aa69-4860-98b2-74647f666272" style="color:#141414;">개발자가 만든 XRepository 인터페이스가 JpaRepository 인터페이스를 상속하면 해당 인터페이스의 구현체(Spring Data Jpa의 구현체 )인 SimpleJpaRepository에서 @Repository로 스프링 컨테이너가 관리하는 빈이 된다. 코드를 따라가보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-53e5c93b-131a-4f61-833c-ac53d1c3fb45">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-d8af4f26-c9cf-40dd-b9b0-e8e89f90df41">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-5eb0d42b-b726-4cff-8f54-80f6fdefef46">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-562ad96a-6ccf-4158-800a-c46c9a455149">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f998aaa2-2e4f-4160-a2e8-4252b99d03b8" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-72c13fe4-7442-4945-a4a9-e6700a18bee4" style="color:#141414;">그렇기 때문에 우리가 만든 Repository에서 별도의 @Repository 어노테이션 없어도 스프링 빈이 되어 컴포넌트 스캔의 대상이 되어 사용할 수 있는 것이다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a2e7d55f-1d48-45fa-9614-d02dfb574c75" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-06e8e369-024e-47fd-8117-083a1fd91b10" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c88520a6-52ce-4a97-b69f-c715b889c348" style="line-height:2.0;"><span class="se-fs- se-ff-system" id="SE-115a3f81-c7f8-49fa-9467-12f065556621" style="color:#141414;"><i>Q. 구현체가 없는데 어떻게 동작을 하지?</i></span><span class="se-fs- se-ff-system se-style-unset" id="SE-d74f04bc-eff9-421a-bf07-0ada1841c7eb" style="color:#141414;">🤔</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e62eb382-c0d8-4741-b3d7-a14a1e0fb820" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-29ae6270-2ffa-4624-afc7-1113b6e96845" style="color:#141414;">extends JpaRepository 가 있으면 Spring Data JPA가 인터페이스에 대해서 프록시 구현체를 만든 뒤 DI 받기 때문에 사용할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0c44478f-34ad-4072-b930-94c5344b6aa7" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-d9033337-bdae-4acb-b078-74285603d7ad" style="color:#141414;">@Repository 기능으로는 컴포넌트 스캔, JPA의 예외를 스프링에서 공통적으로 처리할 수 있는 예외로 변환해주는 역할도 지원한다. 또 @Repository를 생략할 수도 있는데, Spring Data JPA가 자동으로 컴포넌트 스캔 처리해주기 때문에 가능하다. (아래에 자세히 설명)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fc416489-6dbb-44f5-9196-598afe647986" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-05dcce52-df8a-4dab-9b3c-789b90657565" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b6eca595-e2ed-4333-a89b-be6792055456" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-1b041598-6d9f-4b5e-9ee3-c29b8cda8713" style="color:#141414;"><b>2. @EnableJpaRepositories </b></span><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-106f92e5-6c71-4e88-9ef5-9fbd26dc1efb" style="color:#141414;">공통 인터페이스 설정</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d8df47ba-ea76-4bac-a864-1bbef5e2283f" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-ffb00af5-524e-43d3-82b9-232aa75a8a30" style="color:#141414;">@EnableJpaRepositories 어노테이션은 JpaRepository 에 대한 설정정보를 자동적으로 로딩하고 이 정보를 토대로 Repository 빈을 등록하는 역할을 한다. @EnableJpaRepositories 은 @SpringBootApplication 어노테이션 안에 이미 등록되어 있어서 스프링 부트를 사용할 경우 따로 어노테이션을 추가할 필요가 없다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-353a52f9-ca48-439c-b5a2-9803629dff24">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">Target</span><span class="token se-code-punctuation">(</span>ElementType<span class="token se-code-punctuation">.</span><span class="token se-code-constant">TYPE</span><span class="token se-code-punctuation">)</span>
+@<span class="token se-code-function">Retention</span><span class="token se-code-punctuation">(</span>RetentionPolicy<span class="token se-code-punctuation">.</span><span class="token se-code-constant">RUNTIME</span><span class="token se-code-punctuation">)</span>
+@Documented
+@Inherited
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@<span class="token se-code-function">ComponentScan</span><span class="token se-code-punctuation">(</span>excludeFilters <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">{</span>
+      @<span class="token se-code-function">Filter</span><span class="token se-code-punctuation">(</span>type <span class="token se-code-operator">=</span> FilterType<span class="token se-code-punctuation">.</span><span class="token se-code-constant">CUSTOM</span><span class="token se-code-punctuation">,</span> classes <span class="token se-code-operator">=</span> TypeExcludeFilter<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span>
+      @<span class="token se-code-function">Filter</span><span class="token se-code-punctuation">(</span>type <span class="token se-code-operator">=</span> FilterType<span class="token se-code-punctuation">.</span><span class="token se-code-constant">CUSTOM</span><span class="token se-code-punctuation">,</span> classes <span class="token se-code-operator">=</span> AutoConfigurationExcludeFilter<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> @<span class="token se-code-keyword">interface</span> <span class="token se-code-class-name">SpringBootApplication</span> <span class="token se-code-punctuation">{</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-353a52f9-ca48-439c-b5a2-9803629dff24"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e15f4eca-ce75-473c-92d9-234bb6af57ee">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5bce600c-2f93-456b-a6b7-47f6a989f029" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-332c7d62-f3a7-4491-9ebc-7ed9eadb6cfa" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ef08bfaa-2668-41cf-aa41-86756af59d0a" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-b24bcef2-66dc-4f38-a9ba-d83d09270a58" style="color:#141414;"><b>3. Repository 빈 자동 등록 메커니즘</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9418070d-8a30-41ee-baf9-31b3bfb965ee" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-1f37960e-1a4f-4d4a-835b-c8053e740ec9" style="color:#141414;"><b>스프링부트에서 제공하는 Repository 빈 자동 메커니즘의 원리</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79610128-f182-48a4-bb4a-55388dd13aab" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-4fe12e5d-0c85-4cb5-8953-204f6b983618" style="color:#141414;">@EnableAutoConfiguration에 있는 @Import(JpaRepositoriesRegistrar.class)에서 JpaRepositoriesRegistrar를 import한다. 이 클래스는 Jpa Repository 들을 등록하는 역할을 하는데, JpaRepositoriesRegistrar는 추적해보면 ImportBeanDefinitionRegistrar 인터페이스의 구현체다. 이 ImportBeanDefinitionRegistrar의 인터페이스의 registerBeanDefinitions를 구현하면 어떤 클래스든지 그 클래스에 명시적으로 @Component와 같은 어노테이션을 붙이지 않더라도 빈에 등록할 수 있다. </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-61a11a10-7f8c-45e4-9f9d-11474a7326ee">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-2f4652ac-4702-4ab1-8fbe-6e64cef2b8ed" style=""><span class="se-fs- se-ff-" id="SE-2178276A-5296-4178-B90A-5E4279C2C855" style="">@Repository</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-0bc58774-a15d-41bd-9800-6e03e7c34a0c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3d056e45-8a3d-4fc4-80cc-b6bcb899e629" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" id="SE-a3b53ac1-5262-46f8-9116-cb3d75c711cd" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2bf10d42-544c-43b8-bd76-e9c00a9eba03" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" id="SE-49ca876a-c31e-4538-960b-d7bbdd8fa1b9" style="color:#141414;">이 다음에 이어지는 JPA 학습 순서는 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-e11ffcd7-22b8-4cdd-a70d-6ffa025c7a3f" style="color:#141414;"><a class="se-link" href="https://sudo-minz.tistory.com/139" target="_blank"><b>JPA Entity 매핑</b></a></span><span class="se-fs- se-ff-system se-style-unset" id="SE-a05ae588-5a43-4760-bdd5-6e174e4d0c3f" style="color:#141414;"><a class="se-link" href="https://sudo-minz.tistory.com/139" target="_blank"> (필드와 칼럼 매핑, 기본키 매핑)</a></span><span class="se-fs- se-ff-system se-style-unset" id="SE-66c7ea9b-2a9d-4bff-9541-0a37d90045b4" style="color:#141414;"> 인데, 이미 티스토리에 정리해 두어서 필요하신 분은 다음 링크를 참고해 주세요. 김영한 강사님의 JPA 프로그래밍 책을 보고 정리해 둔 포스팅 입니다. 네이버 블로그에는 이론 정리를 응용해서 제가 직접 작성한 코드에 대한 글을 올리고 있습니다. 감사합니다 :)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a56e54b9-6c55-4dca-a0c6-7dbc4aae141e" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" id="SE-ef9ae66e-0cb2-4b1f-8240-d0093ca1b857" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-10bd3ddf-1e9d-4879-904c-1d42dfa3b966" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" id="SE-26e5549a-af7a-4fcf-8fbc-accca06410bf" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

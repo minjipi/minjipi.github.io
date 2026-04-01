@@ -1,0 +1,154 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222643752134 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-13312ae9-b751-4a9a-a455-c48b99d45b21">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-350d2ded-845a-4940-94d9-4f2dcedd1aae" style=""><span class="se-fs- se-ff-" id="SE-8a3426da-e8f9-41b3-822d-1ba4eaa9cba1" style="">데이터 일부를 수정할 때 사용하는 HTTP </span><span class="se-fs- se-ff-" id="SE-4c41e824-93f4-4c71-bf86-bb52e0570c0c" style=""><b>PATCH 메소드.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d2f2e68b-0d66-42a5-9a78-1b6c69535ed0" style=""><span class="se-fs- se-ff-" id="SE-a969df48-f8ab-4fb1-b179-5ab29fc33f35" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c2f26dcc-5ba5-42ce-b8bb-c5783ff1e2c1" style=""><span class="se-fs- se-ff-" id="SE-3f7fc0af-bbf4-4725-b48e-4c5e06766c82" style="">HTTP PATCH 메소드는 데이터 일부를 수정할 때 사용한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2497831f-705c-4d23-9876-403eef3a2d31" style=""><span class="se-fs- se-ff-" id="SE-1e35c0ab-8944-4946-a353-295f9a312e0d" style="">HTTP PUT 메소드와 다른 점은 HTTP PATCH 메소드의 경우, 수정하기로 명시한 데이터만 갱신되고 나머지 데이터는 그대로인데</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f298cf29-8d5f-4ba7-9e39-9b2cae8f39ee" style=""><span class="se-fs- se-ff-" id="SE-e88faab5-408e-466d-80c0-67851d107fdb" style="">HTTP PUT의 경우 수정하기로 명시되지 않은 나머지 데이터는 모두 "빈 값"이 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-49b833bc-c88c-40bc-a2aa-f6b8b00ad83c" style=""><span class="se-fs- se-ff-" id="SE-583a95ba-b8ad-4e2e-bcda-e61b00bede0f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0d1bcebd-d373-4101-a6ce-94a526a0a9a2" style=""><span class="se-fs-fs24 se-ff-" id="SE-f5a54cdb-14ea-4187-8eb0-bd1cf243bf1e" style="">@PatchMapping 사용하기</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-81472e52-be8e-43a9-b538-5da4583f5573" style=""><span class="se-fs- se-ff-" id="SE-56585ffa-05ce-4deb-a5d7-7d63ce15a27b" style="">1. 컨트롤러 클래스안에 요청 처리 메소드를 작성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-715916da-42a5-4f0a-8740-45cb44392b50" style=""><span class="se-fs- se-ff-" id="SE-40c38ed8-fd2b-4369-9463-f14d7d341813" style="">SampleController.java</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c5fadfae-2a54-4e05-833b-9478bc19be87">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">PatchMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/sample/patch-mapping/{id}"</span><span class="token se-code-punctuation">)</span>  
+@ResponseBody  
+<span class="token se-code-keyword">public</span> String <span class="token se-code-function">samplePatchMapping</span><span class="token se-code-punctuation">(</span>  
+    @<span class="token se-code-function">PathVariable</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"id"</span><span class="token se-code-punctuation">)</span> Integer id<span class="token se-code-punctuation">,</span>  
+    @RequestBody SampleRequestDTO sampleRequestDTO  
+<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"this is patch mapping example. id = "</span> <span class="token se-code-operator">+</span> String<span class="token se-code-punctuation">.</span><span class="token se-code-function">valueOf</span><span class="token se-code-punctuation">(</span>id<span class="token se-code-punctuation">)</span>
+<span class="token se-code-operator">+</span> <span class="token se-code-string">"\n"</span>
+<span class="token se-code-operator">+</span> sampleRequestDTO<span class="token se-code-punctuation">.</span><span class="token se-code-function">toString</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c5fadfae-2a54-4e05-833b-9478bc19be87"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ace6a2c9-3677-4616-b705-13e9413096f7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b4c8f688-95f9-4fa9-8de4-c7f1ee924221" style=""><span class="se-fs- se-ff-" id="SE-6c53072c-6a6a-42c8-833f-8a2ac7b51f01" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ed7316fb-891e-449e-a546-557edae37777" style=""><span class="se-fs- se-ff-" id="SE-704b8e0a-7c15-4eff-9e52-f1abd7879463" style=""><b>@RequestBody </b></span><span class="se-fs- se-ff-" id="SE-d18fc161-011d-4539-a9ed-e72a0f3109ce" style="">어노테이션으로 JSON 파라미터를 전달받는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be43f0af-6585-4759-9c63-d22ef3b032a6" style=""><span class="se-fs- se-ff-" id="SE-363296d2-2db7-4bbd-865d-f2c65ee90521" style="">ex)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-dc5fb8bd-1764-4fab-b7a4-0fb90bfab186">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@RequestBody SampleRequestDTO sampleRequestDTO</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-dc5fb8bd-1764-4fab-b7a4-0fb90bfab186"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2f74b60e-f74f-4dd6-82f6-af02d400c307">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d8c1359f-485c-4318-9141-7d701bc4663e" style=""><span class="se-fs- se-ff-" id="SE-94901a16-04d4-4cd5-9000-44fcc1927af0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a3d8d20-6c67-42f7-bd6f-8e24430968b1" style=""><span class="se-fs- se-ff-" id="SE-2c301cda-5695-4298-a74a-ac52aefe4aa4" style="">HTTP PATCH 요청이 올 때만 자바 메소드가 실행된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c979a926-7104-4a19-aaed-c7765911394c" style=""><span class="se-fs- se-ff-" id="SE-5bf928ec-437e-4958-b6d8-49a68a5cf7d0" style="">ex)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e11f68a1-ba76-47c1-aa81-f3887146c56e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">PatchMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/sample/patch-mapping/{id}"</span><span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e11f68a1-ba76-47c1-aa81-f3887146c56e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-64cb4064-067e-434c-a36d-dd7751b64739">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a005c5c2-0a31-42f0-896e-d5989ecaf4e8" style=""><span class="se-fs- se-ff-" id="SE-571a8cea-6e6a-45fb-b1f3-5c728eadde03" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6249d11f-0898-4a54-ab2e-b7f1b37d089c" style=""><span class="se-fs- se-ff-" id="SE-3afd4d3a-52b1-40be-b33a-6be4de4dc056" style="">2. POSTMAN을 통해 실행.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-712a3a4d-214f-40fb-9b9c-a647c96c373d" style=""><span class="se-fs-fs13 se-ff- se-style-unset" id="SE-b6ea7c90-2384-4c91-b342-2d6f95065362" style="color:#880000;">PATCH http:</span><span class="se-fs-fs13 se-ff- se-style-unset" id="SE-7b468e21-c48e-4bef-9ec7-af98be75e79b" style="color:#008800;">/localhost:8080/sample/patch-mapping/3</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-20cf9937-813a-41ee-a3f4-e9849437c6ee" style=""><span class="se-fs- se-ff-" id="SE-20e1705d-aad6-4508-b9c9-35d52ae43bc5" style="">content-type: application/json </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-7653cb54-d47a-4ffc-bb83-4c6440d9605b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"age"</span> <span class="token se-code-operator">:</span> <span class="token se-code-number">1000</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-string-property property">"hobby"</span> <span class="token se-code-operator">:</span> <span class="token se-code-string">"sleep"</span>
+<span class="token se-code-punctuation">}</span> </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7653cb54-d47a-4ffc-bb83-4c6440d9605b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f09ba7ea-ebb9-4321-a1b4-0cc76f5fea44">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b3720630-5950-4f87-b091-82064cb44352" style=""><span class="se-fs- se-ff-" id="SE-d7bfcf16-b2aa-4b11-a0e0-79cdab3fc1b9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a217e135-fc10-4a09-a748-b8a506ce7c74" style=""><span class="se-fs- se-ff-" id="SE-63a6b451-e308-4509-bfa0-35e2194a1037" style="">3. 실행 결과</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-37d8f129-4a93-405c-b1c0-2614d10a2a08">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">this</span> is patch mapping example<span class="token se-code-punctuation">.</span> id <span class="token se-code-operator">=</span> <span class="token se-code-number">3</span>
+<span class="token se-code-literal-property property">name</span> <span class="token se-code-operator">:</span> <span class="token se-code-keyword">null</span><span class="token se-code-punctuation">,</span> <span class="token se-code-literal-property property">age</span> <span class="token se-code-operator">:</span> <span class="token se-code-number">1000</span><span class="token se-code-punctuation">,</span> <span class="token se-code-literal-property property">hobby</span> <span class="token se-code-operator">:</span> sleep  </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-37d8f129-4a93-405c-b1c0-2614d10a2a08"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f0d6ba8e-e760-485d-b5e2-9642d6acbeb4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f5920ba8-343b-4493-a8d2-595e26c189ec" style=""><span class="se-fs- se-ff-" id="SE-d53a748d-c170-4d94-be4e-e8fa6b282d1d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ad38fa31-17dc-4fb6-a1f4-069885536c16" style=""><span class="se-fs- se-ff-" id="SE-a3a99848-9902-4d68-96b1-d531fa52839e" style="">쇼핑몰 수정 메소드에서의 PatchMapping 사용:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-6406b260-e482-4a75-877a-aabc064799ca">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-6406b260-e482-4a75-877a-aabc064799ca", "src" : "https://postfiles.pstatic.net/MjAyMjAyMTBfMjkz/MDAxNjQ0NDU4MDE2NTA3.pzHvPgi8Zs26UH3od41V2Xkr1Ie6RX1rjxL0CuRDjeAg.7Fy_rRvXUSvUr8vg6wCRfj6a03KzYYV-aa8q6CHU0Fgg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-02-10_%EC%98%A4%EC%A0%84_10.53.33.png", "originalWidth" : "2018", "originalHeight" : "556", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="190" data-width="693" id="SE-6406b260-e482-4a75-877a-aabc064799ca_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8182ca57-5ff4-495a-a86a-e9963c783b7c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-021a794b-2f43-4f27-978b-1fc1f206ebd2" style=""><span class="se-fs- se-ff-" id="SE-3e8d2674-9e44-4181-ba51-f9d6eec52afb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0b10291b-8c4e-49ba-89db-185200ce6f28" style=""><span class="se-fs- se-ff-" id="SE-6e5a9f25-bd4d-4214-9669-0b8a03f2af6c" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1" id="SE-0b4f5cfa-7d00-4fcd-85e8-93c680af9783">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-01203d99-08cd-47b4-9871-e6dbd589c3b6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-956e0c39-5cf5-4895-9e74-cfab060726f1" style=""><span class="se-fs- se-ff-" id="SE-8320f674-d306-4bba-abe3-1be7552f7de6" style="">참고 : </span><span class="se-fs- se-ff-" id="SE-af8b714b-12c9-439c-811b-009412e7f075" style=""><a class="se-link" href="https://wikidocs.net/154748" target="_blank">https://wikidocs.net/154748</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

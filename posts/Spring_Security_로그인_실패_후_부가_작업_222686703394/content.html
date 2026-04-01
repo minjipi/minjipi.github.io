@@ -1,0 +1,32 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222686703394 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-cd023454-60b6-4643-a822-423d2081811d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0761e6d5-72aa-475a-943c-7523c77f4c6e" style=""><span class="se-fs- se-ff-" id="SE-d32e0004-655b-4c32-9f35-60fe9b818763" style="">로그인에 실패했을 때 에러 메시지만 보여줘도 되지만, 추가적인 부가 작업을 해보려고 한다. 로그인에 실패했을 때 부가적인 작업을 할 수 있는 인터페이스를 Spring Security 에서 제공한다. 마찬가지로 로그인 실패 작업을 커스터마이징 한다고 생각하면 된다. 물론 필요가 없으면 사용하지 않아도 되지만, 대부분은 부가 작업을 하게 될 것이다. 아래의 3개의 작업을 할 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e935269a-d534-4de7-988b-344f62b7a40c" style=""><span class="se-fs- se-ff-" id="SE-510f2db3-ecde-478b-ae17-fd9a471880d0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2dfbe315-fdeb-4350-9a28-6b89f8ed29c2" style=""><span class="se-fs- se-ff-" id="SE-93145c41-cd0e-483c-9d02-706d0690a569" style=""><b>1. 로그인 실패시 입력한 로그인 정보 띄우기</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2646213f-fd9a-4b49-b9c3-518a290ef4df" style=""><span class="se-fs- se-ff-" id="SE-6a263ffb-1913-4c12-8e78-c84c66773e3f" style=""><b>2. 세션을 이용하지 않고 에러 메시지 보여주기</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a694529b-8bca-4288-be09-279b5c6469e8" style=""><span class="se-fs- se-ff-" id="SE-c63f78a8-074a-4cce-abfb-16a537f0199d" style=""><b>3. 비밀번호를 3번 이상 틀릴시 계정 잠금 처리</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4e205707-8d7c-45d6-a24a-d8abd8596b15" style=""><span class="se-fs- se-ff-" id="SE-8365c999-a722-4a69-b69f-68adb00817d3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-90263b84-4841-4695-98bf-1026928c1f53" style=""><span class="se-fs- se-ff-" id="SE-ed71ef63-f81b-4d2f-9691-a8c583701ab2" style="">Spring security 에서 제공하는 AuthenticationFailureHandler 인터페이스를 구현하게 되면 onAuthenticationFailure() 메서드를 오버라이드 받게 된다. 즉, 로그인에 실패하게 되면 해당 메서드가 실행이 되는 것이다. 해당 메서드에서 넘어오는 객체는 3가지가 있다. 해당 객체들을 이용해서 정보를 가져오고 추가작업들을 하면 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-312f73a4-4036-4783-8a88-69dd287bd51f" style=""><span class="se-fs- se-ff-" id="SE-005e9998-947b-46d2-8ae2-a652fa07be2a" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component" id="SE-47c645e2-c6d6-49d1-8421-26f76f21d4c8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">HttpServletRequest 객체<span class="token se-code-operator">:</span> 웹에서 넘어온 Request 값을 가지고 있는 객체
+HttpServletResponse 객체<span class="token se-code-operator">:</span> 출력을 정의할 수 있는 객체
+AuthenticationException 객체<span class="token se-code-operator">:</span> 로그인 실패 정보를 가지고 있는 객체</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-47c645e2-c6d6-49d1-8421-26f76f21d4c8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-bb2d7ba4-187d-4e49-85fe-a883bfc44785">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2bf66815-b970-4d81-86eb-19b7c42d5666" style=""><span class="se-fs- se-ff-" id="SE-189f0c0c-b8fc-4b41-b907-8098bf150062" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e789fdb-8ecc-4422-87ee-b23e9ff95084" style=""><span class="se-fs- se-ff-" id="SE-b1d02ce5-862e-4076-ae77-c428594083b3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2bec7dd1-96a6-48a3-be07-04d4ee22f042" style=""><span class="se-fs- se-ff-" id="SE-a404e499-8336-433b-9aa6-d473633b109f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-aa913228-97e6-4736-a314-917e3132e7e1" style=""><span class="se-fs- se-ff-" id="SE-3cdcb63f-0652-4c20-862b-3b3cf912d104" style="">출처 : </span><span class="se-fs- se-ff-" id="SE-a887f163-29ab-4eae-98cf-247652be2054" style=""><a class="se-link" href="https://to-dy.tistory.com/92" target="_blank">https://to-dy.tistory.com/92</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-217bbefe-627c-457f-8c4b-c314a9161980" style=""><span class="se-fs- se-ff-" id="SE-20a02dcf-d5f3-4de8-8cc1-9529e75c96a0" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

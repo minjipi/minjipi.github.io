@@ -1,0 +1,522 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222087760628 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-9d10864e-8793-4602-a956-b8d65117c1ec">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67221898-e620-446f-b75f-3eca85f002ca" style=""><span class="se-fs-fs30 se-ff-system se-style-unset" id="SE-ecb851ba-a9f7-451b-b677-f8fd6fbdd628" style="color:#000000;"><b>파이썬 비지도 학습 클러스터링 (K-Means),</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-61ca832c-a2ae-4ca4-a594-b2727466226a" style=""><span class="se-fs-fs30 se-ff-system se-style-unset" id="SE-09822fee-25fa-4a83-9898-bdd794e79812" style="color:#000000;"><b>Matplotlib 연동 예제</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c1162663-d1c4-401d-a397-9a760970fc3d" style=""><span class="se-fs-fs30 se-ff-system se-style-unset" id="SE-403f2989-245f-4cef-9b2a-c9e92696821d" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f97b3e40-775f-4817-affd-5fb143ccc9e4" style=""><span class="se-fs- se-ff-system" id="SE-6c04b0ca-65a1-4a00-813b-42765beb8f8d" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222086147547" target="_blank">https://blog.naver.com/ghdalswl77/222086147547</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component" id="SE-861c4c5f-b952-4c56-8040-9bbb16d5e5df">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail" href="https://blog.naver.com/ghdalswl77/222086147547" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMDA5MTBfMjI5%2FMDAxNTk5NzQ5MjAyODAx.3Dm_bxW5KOhTjwfQkEHRmppyvpBhAZb8fwQUd0dLPgkg.KPj95hzBVq89xfllo8A3i37Muthlck0qHt0JKbCiycAg.PNG.ghdalswl77%2Fimage.png%3Ftype%3Dw2%22&amp;type=ff120"/>
+</a>
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222086147547" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Python 머신러닝 예제 :: 비지도 학습 클러스터링 (K-Means)</strong>
+<p class="se-oglink-summary">파이썬 비지도 학습 클러스터링 (K-Means) 예제비지도 학습이란?머신러닝을 세 가지 종류로 나누어 볼 수...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-861c4c5f-b952-4c56-8040-9bbb16d5e5df", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222086147547", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMDA5MTBfMjI5%2FMDAxNTk5NzQ5MjAyODAx.3Dm_bxW5KOhTjwfQkEHRmppyvpBhAZb8fwQUd0dLPgkg.KPj95hzBVq89xfllo8A3i37Muthlck0qHt0JKbCiycAg.PNG.ghdalswl77%2Fimage.png%3Ftype%3Dw2%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-90a8d0b3-bb08-468a-b55b-0f3b2b37c254">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a1b52c1b-0895-4325-a8a7-488f3339bcf5" style=""><span class="se-fs- se-ff-system" id="SE-ab351c4d-b66f-49e5-82cf-959cf4fe33f9" style=""><i><b>======= 위 포스팅과 이어지는 내용입니다!</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-59881659-0b2a-483a-b8ed-8cb2f123fa5a" style=""><span class="se-fs- se-ff-system" id="SE-0c4b5df2-3a62-47f1-9369-1d7ad128c41f" style=""><i><b>​</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fce3a4a4-ddb2-491c-b710-fc61074542d2" style=""><span class="se-fs- se-ff-system" id="SE-9ebd3eef-461c-407f-b16f-15c24f99c577" style="">저번 포스팅에서는</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-92d819d3-9b88-443d-9e16-f61b611e4424" style=""><span class="se-fs- se-ff-system" id="SE-5ebc0a4c-369c-4ec9-9e40-a266d947fcf8" style="">머신러닝 비지도 학습, 클러스터링에 대한 이론적인 부분만을 다루었습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c848a613-318b-454a-b774-d3a0e3ee88b2" style=""><span class="se-fs- se-ff-system" id="SE-3194789a-22fe-4b20-aa61-02d93363c4d9" style="">이번 포스팅에서는 Matplotlib 를 이용한 3차원 그래프로</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c33eab7f-2010-43f5-9efb-fa7cfad55ecc" style=""><span class="se-fs- se-ff-system" id="SE-7226adf8-8214-4ea6-829b-a1de3f4953c9" style="">조금 더 눈에 보이는 클러스터링 실습을 해보려고 합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-396c1800-fe31-40d4-9bac-ecd3c6e19d2f" style=""><span class="se-fs- se-ff-system" id="SE-ae69294c-2c58-4275-8edf-0a2fccff19d8" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4c580a02-01a7-4440-bb09-f6d2dca4e3f9" style=""><span class="se-fs- se-ff-system" id="SE-8220ff96-892a-4622-95b8-21c9178ff672" style="">저번 포스팅 요약 ::</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component" id="SE-9283d2e1-f2e9-4e67-aabf-24b72b17fa48">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.85%; height: 43.0px;  background-color: #f7ffe6;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b27aa99f-7f5f-4d29-a8f9-31d6f6a3dad1" style=""><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-d9992bf6-7244-4909-9505-ec91d171ace1" style="color:#000000;"><b>비지도 학습</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2d71b993-c33e-4e98-b3c0-bc72bc98819b" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" id="SE-d63b89fd-126f-4a62-8e1c-874d18fc86b7" style="color:#000000;">(unsupervised learning) </span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.15%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5bb1ce28-1edd-4ad3-9af1-636f9a2bc5eb" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-0113f537-5b11-492a-95c4-a73630583b96" style="color:#494e52;">알고 있는 출력값이나 정보 없이 학습 알고리즘을 가르쳐야 하는 모든 종류의 머신러닝을 가리킵니다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5e99be16-63bb-475f-8cfb-ec3064f4ca24" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-d61e9454-675a-4ca1-adad-57413e599518" style="color:#494e52;">비지도 학습에서 학습 알고리즘은 입력 데이터만으로 데이터에서 지식을 추출할 수 있어야 합니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.85%; height: 43.0px;  background-color: #daf8ff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9a12eb67-9ed5-4db2-a6a4-7cd34a78c12e" style=""><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-cc3d7074-a78f-41cb-9295-f5d3c5e35e56" style="color:#000000;"><b>군집 알고리즘</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd75366d-b7c2-4e8d-9589-5a8fce16ade8" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" id="SE-502cb48d-a166-4af4-a647-b976bbac11dd" style="color:#000000;">(clustering)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.15%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a6e64ea-dc1e-4a6f-b0a3-c3d2a353b376" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-9566503f-8bc9-471d-8730-5d1e279e2736" style="color:#494e52;">데이터를 비슷한 것끼리 그룹으로 묶는 것입니다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-df0cfd29-43a5-4dac-8ced-62494430964a" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-8ca6ece3-674f-427c-8189-318df579767b" style="color:#494e52;">label이 없어도 사진 등에 나타나는 공통적인 특징으로 그룹화를 하는 것입니다. </span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_table", "id" : "SE-9283d2e1-f2e9-4e67-aabf-24b72b17fa48", "data": { "columnCount" : "3" }}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c4d80d26-8dbc-41a6-b5ef-93f121e8000e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2af64f0d-54a8-41f4-b5a0-32f1cdd6d5d8" style=""><span class="se-fs- se-ff-system" id="SE-0aa365a5-662d-4b4b-a3b1-da19a06bcb0f" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-79fdff1a-47f8-4d2a-b1ca-d9c2bfc4c469">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a125888a-fa09-4f65-9a2c-137de6a8428a" style=""><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-1c42b65b-a354-4c60-a264-1dcc8db17bcb" style="color:#000000;"><b>0. 시각화 패키지 Matplotlib</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e4628f08-e68f-4215-bd9d-724053389985">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-064ec88d-ce0e-4d70-bb0c-c549ff97129e" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-4f70cd0d-2c4b-4184-ad0b-3d2c01baccb0" style="color:#000000;">Matplotlib는 파이썬에서 데이타를 차트나 플롯(Plot)으로 그려주는 라이브러리 패키지로서 가장 많이 사용되는 데이타 시각화(Data Visualization) 패키지로 알려져 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5b93a1f9-e2f9-4dac-90a4-725db950d204" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-54997f76-79dc-4d40-9de5-920d04869606" style="color:#000000;">Matplotlib는 라인 플롯, 바 차트, 파이차트, 히스토그램, Box Plot, Scatter Plot 등을 비롯하여 다양한 차트와 플롯 스타일을 지원하며,Matplotlib.org 갤러리 웹페이지에서 다양한 샘플 차트를 볼 수 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3c24f147-e772-451d-8442-76712eec6700" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-638fa9f4-d0b6-4fcc-a85a-89c7542743fb" style="color:#000000;">Matplotlib를 이용하여 데이타 시각화(Data Visualization)를 사용하기 위해서는 아나콘다-주피터를 사용하면 편리하..지만</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c33e79b-7749-42b9-8d32-53e5a84309b8" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-3602d176-bb28-4b4e-a0cd-0f5c0c340c26" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c034094d-0d6a-463a-889a-6e33bb811f30" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-a2b598ec-74d7-4eaa-86cf-b72d7d84f531" style="color:#000000;">저는 </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-ea9af7cf-aa7a-4fb8-ad14-9856cdb064b0" style="color:#000000;"><b>파이참 환경</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-5e844ea6-0101-46d0-9a35-170d9c1daf89" style="color:#000000;">에서 실습을 진행하려고 합니다!!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a010f09c-8a17-4e37-999d-299868dc18b7" style=""><span class="se-fs- se-ff-system" id="SE-a8cb5ef4-e0e0-4562-adf5-8d58aafec58d" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-5526b3b6-f769-47fa-b278-6aa055c6b281">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2bdf071e-bb61-418e-9d98-7c9cb43e11ee" style=""><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-57e8e080-3848-48f8-8f0b-de9931822c8a" style="color:#000000;"><b>1. Matplotlib 사용법</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a38f620c-6d4b-4ba3-9a69-965b2d4ab4a1" style=""><span class="se-fs- se-ff-" id="SE-c1352694-b693-4b94-9c8f-985b45bf8afd" style="">간단한 Matplotlib 2차원 그래프 사용 실습.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7c6c2c6e-e8bd-4e9f-ad6a-9a81cb49d875">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bbcda8fc-5b37-4d7e-b59c-50c8787300fa" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-6748b634-08b5-45d5-b45c-cf8e83f50a3e" style="color:#000000;"><b>0. 역시 라이브러리 설치 먼저</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4a44d818-fdcb-44f0-a2e1-ed758d3768dc" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-591880ee-1805-42a6-80bf-a111e8030b3e" style="color:#000000;">콘솔에 아래와 같이 입력해주세요.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f86f2f88-dfa3-421b-99ba-48b7ca2a8bfe">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">﻿pip install matplotlib</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f86f2f88-dfa3-421b-99ba-48b7ca2a8bfe"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-22bc1c77-9143-42cf-ab28-c21d72ba8fbf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c447349d-e650-4df1-b9c7-54f6dc01b2ba" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-6623d6b5-b827-4b34-a8a0-5dc815e001fb" style="color:#000000;">안될시에는 lib 없이!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-4c9bcb50-444f-4d40-b11d-814d2130eadb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">﻿pip install matplot</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4c9bcb50-444f-4d40-b11d-814d2130eadb"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f03179d4-1ed8-4951-bc47-3ce42a9495d6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-596b8c47-ccbe-485b-b59a-994ff0afdb47" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-981c9bbb-9d5f-4635-a0e9-4256c4303937" style="color:#000000;">설치가 되었다면,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-37aa9a58-2feb-4da7-a91d-e861c69b9d22">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">﻿from sklearn<span class="token se-code-punctuation">.</span>cluster <span class="token se-code-keyword">import</span> KMeans <span class="token se-code-keyword">import</span> matplotlib<span class="token se-code-punctuation">.</span>pyplot <span class="token se-code-keyword">as</span> plt <span class="token se-code-keyword">import</span> pandas <span class="token se-code-keyword">as</span> pd</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-37aa9a58-2feb-4da7-a91d-e861c69b9d22"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-cdedd959-1e7a-4a00-a768-87d99b5720e0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-88b0b91f-b5d2-4c0d-b116-a7f6129b5e56" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-9ddb5377-f3e5-4ca6-86da-ff3ebb21e682" style="color:#000000;">저번 예제에서 설치한 사이킷런을 import하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f90be160-baa3-45aa-8dde-0a679aa006b1" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-4d6f3bc7-f59b-435d-8e3a-690acb3e714b" style="color:#000000;">Matplotlib를 사용하기 위해서는 먼저 matplotlib.pyplot 을 아래와 같이 import.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80b8018d-f56f-4651-b319-bca173ac1c36" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-1e10cccb-3de6-40b2-9027-d2cf65b17787" style="color:#000000;">pyplot을 다른 이름으로 사용할 수 있지만, 통상 plt 라는 alias를 사용합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58b42fde-814f-43c3-bf2d-c9d1c82f6697" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-8bc05eb5-17da-4bd5-9c17-45b2f428c56a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7f969788-0225-47b4-9e65-2e5d3eff931b" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-b1734be6-51b2-4469-874b-fc937ceb6c0f" style="color:#000000;">그리고 아래의 코드를 .. 입력합니닷</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f8c03c1b-be12-4160-8122-fe4cf6784e10" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-bac1a185-22b6-4a72-afdf-3035c2150119" style="color:#000000;">그냥 간단하게 저번시간에 배운 사과와 오렌지 예제를</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-829af5e3-494a-4c38-af9e-1af36fe074d3" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-27516bd3-8529-4212-b117-4eecf3c9d2c7" style="color:#000000;">2차원 그래프로 출력만 해보겠습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5ba1b082-98ac-417b-bad0-c7e2ac24958b" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-79775e06-8777-42ec-a97a-6da14ae3e705" style="color:#000000;">(</span><span class="se-fs- se-ff-system" id="SE-e7a247c8-518a-4789-948b-faf760c96591" style="color:#000000;">그냥 간단한 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-c8a75551-445d-46d9-b6f3-525590a402b7" style="color:#000000;"><b>Matplotlib</b></span><span class="se-fs- se-ff-system" id="SE-d8f0dc69-a63b-4f1e-962f-99e92b5b6389" style="color:#000000;">사용 실습 입니다.</span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-34a83750-3758-4a36-9604-a8ee0b40b364" style="color:#000000;">)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-1a86ecfd-d07c-439d-9d43-f275c9a3f4b4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"># <span class="token se-code-number">3</span>
+from sklearn<span class="token se-code-punctuation">.</span>cluster <span class="token se-code-keyword">import</span> KMeans
+<span class="token se-code-keyword">import</span> matplotlib<span class="token se-code-punctuation">.</span>pyplot <span class="token se-code-keyword">as</span> plt
+<span class="token se-code-keyword">import</span> pandas <span class="token se-code-keyword">as</span> pd
+
+features <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">140</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">130</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">160</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">170</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">]</span>
+data <span class="token se-code-operator">=</span> pd<span class="token se-code-punctuation">.</span><span class="token se-code-function">DataFrame</span><span class="token se-code-punctuation">(</span>features<span class="token se-code-punctuation">)</span>
+data<span class="token se-code-punctuation">.</span>columns <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">'kg'</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">'surface'</span><span class="token se-code-punctuation">]</span>
+feature <span class="token se-code-operator">=</span> data<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">[</span><span class="token se-code-string">'kg'</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">'surface'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">]</span>
+feature<span class="token se-code-punctuation">.</span><span class="token se-code-function">head</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+#################<span class="token se-code-operator">:</span> 전 포스팅에서 했던 내용
+
+model <span class="token se-code-operator">=</span> <span class="token se-code-function">KMeans</span><span class="token se-code-punctuation">(</span>n_clusters<span class="token se-code-operator">=</span><span class="token se-code-number">2</span><span class="token se-code-punctuation">)</span>
+model<span class="token se-code-punctuation">.</span><span class="token se-code-function">fit</span><span class="token se-code-punctuation">(</span>features<span class="token se-code-punctuation">)</span>
+
+predict <span class="token se-code-operator">=</span> pd<span class="token se-code-punctuation">.</span><span class="token se-code-function">DataFrame</span><span class="token se-code-punctuation">(</span>model<span class="token se-code-punctuation">.</span><span class="token se-code-function">predict</span><span class="token se-code-punctuation">(</span>feature<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+predict<span class="token se-code-punctuation">.</span>columns <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">'predict'</span><span class="token se-code-punctuation">]</span>
+r <span class="token se-code-operator">=</span> pd<span class="token se-code-punctuation">.</span><span class="token se-code-function">concat</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">[</span>feature<span class="token se-code-punctuation">,</span> predict<span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> axis<span class="token se-code-operator">=</span><span class="token se-code-number">1</span><span class="token se-code-punctuation">)</span>
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">scatter</span><span class="token se-code-punctuation">(</span>r<span class="token se-code-punctuation">[</span><span class="token se-code-string">'kg'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> r<span class="token se-code-punctuation">[</span><span class="token se-code-string">'surface'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> c<span class="token se-code-operator">=</span>r<span class="token se-code-punctuation">[</span><span class="token se-code-string">'predict'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> alpha<span class="token se-code-operator">=</span><span class="token se-code-number">0.5</span><span class="token se-code-punctuation">)</span>
+#scatter <span class="token se-code-operator">&lt;</span><span class="token se-code-operator">-</span> 요게 표를 그려줌<span class="token se-code-operator">!</span>
+             # kg 가 x축 값<span class="token se-code-punctuation">,</span> surface가 y축 값<span class="token se-code-punctuation">,</span> predict가 투명도<span class="token se-code-punctuation">.</span>
+
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">xlabel</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"kg"</span><span class="token se-code-punctuation">)</span>
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">ylabel</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"surface"</span><span class="token se-code-punctuation">)</span>
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">legend</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">show</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> # 파이참 환경인 경우 <span class="token se-code-punctuation">.</span>show를 해야함<span class="token se-code-operator">!</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1a86ecfd-d07c-439d-9d43-f275c9a3f4b4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-bd034d7e-dff3-4053-a188-d862468c19c2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6fad413e-0857-4e62-9c5d-5e8fa91628fd" style=""><span class="se-fs- se-ff-system" id="SE-8cf8d24f-eb19-48ad-b28f-495708d82109" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9d1fb410-e22d-428d-bcd8-039acdcae135" style=""><span class="se-fs- se-ff-system" id="SE-7032f649-1551-491c-a493-48238f7962c3" style="color:#ffffff;background-color:#000000;">model =</span><span class="se-fs- se-ff-system" id="SE-3b742fe2-dfa2-44f6-943a-fb1d0740f89c" style="color:#b0f1ff;background-color:#000000;"> KMeans</span><span class="se-fs- se-ff-system" id="SE-c409bd3f-f269-438c-905c-532f3b39a2bc" style="color:#ffffff;background-color:#000000;">(n_clusters=2) </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-57022828-67be-4f87-bcd3-afa1938ab1d5" style=""><span class="se-fs- se-ff-system" id="SE-f755e8f6-c802-4641-a9d1-21a013933d32" style="">-&gt; KMeans 의 객체를 생성하고, 찾고자 하는 클러스터 수를 지정.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b4d79f3d-60c2-44f9-93f2-e9ca0d7fbb1b" style=""><span class="se-fs- se-ff-system" id="SE-3a076a5e-d7cf-4d7a-9e21-eaa6eb0370cb" style="color:#ffffff;background-color:#000000;">model.</span><span class="se-fs- se-ff-system" id="SE-f75bf746-1ab3-4b8c-87a4-29cf9469a9f2" style="color:#b0f1ff;background-color:#000000;">fit</span><span class="se-fs- se-ff-system" id="SE-2d933a53-fba7-4060-b873-7abb945d9842" style="color:#ffffff;background-color:#000000;">(features)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80f1f06f-96d2-4c58-a5e5-012f237c516c" style=""><span class="se-fs- se-ff-system" id="SE-4c163339-2edd-4a25-9068-df13d9120ea5" style="">그런 다음 fit 메서드 호출.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f48274da-092f-46a2-b7c1-150d26a196bc" style=""><span class="se-fs- se-ff-system" id="SE-80bb7cd0-28bc-4507-9e5f-85aa2c4b64e4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c6816557-f1a0-4d57-a158-e18635e15b3a" style=""><span class="se-fs- se-ff-system" id="SE-ecbc0180-ce3b-4e71-8f98-84bf1d7b4018" style="">결과 :</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-imageStrip se-imageStrip2 se-l-default" id="SE-ad04efbe-6421-4e68-b2a3-3638deb28e41">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:46.666666666666664%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-735faf80-3ec8-43a7-b3fd-e91919b7f68b", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTFfMjYy/MDAxNTk5NzUwMjU5MDI2.elCxdt8qGxStC6LJju-qDt3Ndnm_4p-WGaCDJtPTC88g.1fmX2RCYdneSG9-LE_h_AAoV_FcCTDrswUgLXp5vI-gg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="594" data-width="693" id="SE-ad04efbe-6421-4e68-b2a3-3638deb28e41_0" src="images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:53.333333333333336%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4f11af4a-377f-4e92-a793-6d33ad249738", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTFfMjc4/MDAxNTk5NzUwMjI5MzU1.EucUSm451tS8U7Bz-W5EuzjIeBVBem78b1r5cq_-QY4g.EMFRXHxZjwZIhS_QKUBQbHGmDwFalI6YuU8BRSxgj6Qg.PNG.ghdalswl77/aS.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="480" data-width="640" id="SE-ad04efbe-6421-4e68-b2a3-3638deb28e41_1" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-cb49a3a7-d1e0-47c5-a844-e704dc0bd474">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dc848de1-a484-4c92-b20d-ecdce0e24c83" style=""><span class="se-fs- se-ff-system" id="SE-5e10046a-a488-4489-8a99-34ad36220afd" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-01c839b7-2eca-4983-a6ac-f9cc1f8b99b8" style=""><span class="se-fs- se-ff-system" id="SE-b8d04805-2173-4aa9-a6b0-fc2f44852d8d" style="">이 간단한 그래프를 짧게 설명하자면..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c4a471fb-e8b1-4d20-ab9e-f58043cda282" style=""><span class="se-fs- se-ff-system" id="SE-6d9981fe-62fb-4fe0-be52-b95ae84e8a72" style="color:#000000;">마지막 줄의 show()는 :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-64d74bfb-52b8-4275-9f59-9c35566199ae" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5525c4db-3f97-40bf-a688-d5ae489733b5" style="color:#000000;">시각화 명령을 실제로 차트로 렌더링(rendering)하고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-05151d31-054f-4c59-907d-e8f5597278ee" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-7e3daec1-32f7-4d08-a703-b27d5544864b" style="color:#000000;">마우스 움직임 등의 이벤트를 기다리라는 지시입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-886fb1ed-a4d9-497e-9595-e491366748ba" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-1e866eb1-7e45-40f6-8a2e-3af0c5342daa" style="color:#000000;">주피터 노트북에서는 셀 단위로 플롯 명령을 자동 렌더링 해주므로 show 명령이 필요없지만~</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-5d858d04-0c49-47e4-90ad-1006a58b9f6f" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-84d542b3-ab8e-40dd-a72e-ec3ca5068fff" style="color:#000000;">일반 파이썬 인터프리터로 가동되는 경우를 대비하여 항상 마지막에 실행하도록 해요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-2e1fa533-08e9-453d-95c5-30a223cf5337" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-3ce03d27-c28d-48d0-94d3-f0240960f3d9" style="color:#000000;">show 명령을 주면 마지막 플롯 명령으로부터 반환된 플롯 객체의 표현도 가려주는 효과도 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-923e2be4-928a-4234-9bb1-3d9597660552" style=""><span class="se-fs- se-ff-system" id="SE-2e0b0952-7f11-4121-b1c2-10a51fb100cf" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f74c193d-6256-4b4c-9745-763e75cf0877" style=""><span class="se-fs- se-ff-system" id="SE-f1797a4a-a2e0-495e-b904-8b16e6444a55" style="color:#000000;">어쨌든 이제 3차원 그래프를 그려보도록 합니다!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-default" id="SE-70ef0c30-4399-4bfe-8982-7c2df30bd912">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-f295c226-8432-433e-a393-c328df425732">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5924a7fe-b508-45bd-a0d8-3098bf59b951" style=""><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-486ba335-107e-4294-8d87-6a2fe368b614" style="color:#000000;"><b>2. Matplotlib 3차원 그래프 그리기</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2459699d-6e5c-476e-8f74-fc34d4d09971" style=""><span class="se-fs- se-ff-" id="SE-8552ac2a-3f2a-4819-af9d-78015c1e21f5" style=""> iris 데이터 로 3차원 그래프 그려보기</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-b801aae8-5f16-478f-9bc1-4b8bc8c4696d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">import</span> numpy <span class="token se-code-keyword">as</span> np
+<span class="token se-code-keyword">import</span> matplotlib<span class="token se-code-punctuation">.</span>pyplot <span class="token se-code-keyword">as</span> plt
+from sklearn <span class="token se-code-keyword">import</span> datasets
+
+iris <span class="token se-code-operator">=</span> datasets<span class="token se-code-punctuation">.</span><span class="token se-code-function">load_iris</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+
+data <span class="token se-code-operator">=</span> iris<span class="token se-code-punctuation">.</span>data
+target <span class="token se-code-operator">=</span> iris<span class="token se-code-punctuation">.</span>target
+
+fig <span class="token se-code-operator">=</span> plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">figure</span><span class="token se-code-punctuation">(</span>figsize<span class="token se-code-operator">=</span><span class="token se-code-punctuation">(</span><span class="token se-code-number">10</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">7</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+ax <span class="token se-code-operator">=</span> plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">axes</span><span class="token se-code-punctuation">(</span>projection<span class="token se-code-operator">=</span><span class="token se-code-string">"3d"</span><span class="token se-code-punctuation">)</span>
+
+ax<span class="token se-code-punctuation">.</span><span class="token se-code-function">scatter3D</span><span class="token se-code-punctuation">(</span>data<span class="token se-code-punctuation">[</span><span class="token se-code-operator">:</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">3</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> data<span class="token se-code-punctuation">[</span><span class="token se-code-operator">:</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> data<span class="token se-code-punctuation">[</span><span class="token se-code-operator">:</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">2</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> c<span class="token se-code-operator">=</span>target<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+                                                 #c<span class="token se-code-operator">=</span>color<span class="token se-code-punctuation">.</span> 꽃마다 색 다르게
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">show</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b801aae8-5f16-478f-9bc1-4b8bc8c4696d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f22ad7ed-c64d-4b07-8d08-c224a794694a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9638b9e5-692d-4155-8828-2d88c5064151" style="line-height:1.5;"><span class="se-fs- se-ff-system se-style-unset" id="SE-b91ff5d1-d3c7-4454-9ef3-808ab5773052" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63593da1-185c-4c96-bfbe-24692e35e01a" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-616d6880-c76a-4f86-8bed-2cc646644a50" style="color:#000000;">위 코드를 간단히 설명하자면,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-af1cc545-6d5a-4131-a4e2-392dd72d4f67" style=""><span class="se-fs- se-ff-system" id="SE-d5ed6923-0486-4e17-afd0-20d1d54704de" style="">iris = datasets.load_iris()</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1dec7523-f115-4338-8ddf-f0598d5ea04e" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-bf4696b6-3b88-4884-b3a8-05dbd4a219dc" style="">로 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-1d733e81-e569-4e42-99fa-5cadc5936944" style="color:#000000;"> Iris dataset 를 불러온 것을 볼 수 있는데요,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-22fb799a-c572-44ab-be58-0fe4a4d5c45b" style="line-height:1.5;"><span class="se-fs- se-ff-system se-style-unset" id="SE-1f92c4c9-9c3b-45fd-88d4-ed71ff9688ba" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b704c867-c7e6-403b-bf3b-9fdb5cbc99b2" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-7448c7cb-8ce4-4c9c-8f85-0fcedb7c3787" style="color:#000000;"><b>Iris Dataset 란?</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f1f52b29-6f59-4781-8799-d72cbca403dc" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-51a2efd6-f06d-4850-a291-567310cbbe3a" style="color:#000000;"><b>sklearn</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-bd89bcff-bc4e-448f-b702-b42941c5f926" style="color:#000000;"> 에서 제공하는 데이터셋인 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-b1794936-02ee-499e-aa2f-bec46109bd59" style="color:#000000;"><b>Iris dataset</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-ff9b9dca-072c-4e1b-afe9-c7541746bc1d" style="color:#000000;"> 으로써,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be29c8d4-3b53-4220-9512-1337e156e9c1" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-dd678364-fe54-4e82-9ce2-d7f779571a0e" style="color:#000000;">위 데이터셋은 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-d62891cb-1f74-4e33-ba12-ca6f6b6ea4f3" style="color:#000000;">Iris,</span><span class="se-fs- se-ff-system se-style-unset" id="SE-3b59f241-f0cb-4daf-9274-15842ddbe1e1" style="color:#000000;"><b> </b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-72b9bee3-a152-4045-8962-b5b48212ef8a" style="color:#000000;">붓꽃의 서로 다른 3가지 종(setosa, versicolor, virginica)의</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-aa88eac6-0fb5-4564-9bba-25e05d9f5873" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-99b5cba3-b9e9-4d70-9698-0d99cd697333" style="color:#000000;">sepal(꽃받침), petal(꽃잎) feature를 포함하고 있습니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-4a1d392c-71ef-497a-8205-61d7138c01c6">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4a1d392c-71ef-497a-8205-61d7138c01c6", "src" : "https://s3.amazonaws.com/codecademy-content/programs/machine-learning/k-means/iris.svg", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-4a1d392c-71ef-497a-8205-61d7138c01c6_0" src="https://s3.amazonaws.com/codecademy-content/programs/machine-learning/k-means/iris.svg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4bc67454-9b13-4e07-9117-6e362f6bb76a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a87a8a2-0b7d-41e8-90fe-907e9bfdec51" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-04db105a-6434-47cd-a400-bf7275965071" style="color:#000000;">데이터셋은 다음과 같은 내용을 포함하고 있습니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-fa641187-52f0-4425-b0e5-dd974819804f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-function">array</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">5.1</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">3.5</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1.4</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0.2</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-punctuation">[</span><span class="token se-code-number">4.9</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">3.</span> <span class="token se-code-punctuation">,</span> <span class="token se-code-number">1.4</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0.2</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-operator">...</span>
+<span class="token se-code-punctuation">[</span><span class="token se-code-number">5.9</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">3.</span> <span class="token se-code-punctuation">,</span> <span class="token se-code-number">5.1</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1.8</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-fa641187-52f0-4425-b0e5-dd974819804f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-291f6d2f-74c2-4b6d-af96-765b9c481866">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15d1ba64-fb1a-405b-8b60-87eb06f27956" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-e4ba938d-bc29-4b16-b804-25e29c725293" style="color:#000000;">각 row는 하나의 데이터 </span><span class="se-fs- se-ff-system" id="SE-afb5adc5-24b3-40a0-bd8a-bf6bc3996739" style="color:#000000;"><i>sample</i></span><span class="se-fs- se-ff-system se-style-unset" id="SE-7785174e-175a-43b5-8ce4-b86ef0536782" style="color:#000000;"> 을 나타냅니다. 각 column은 feature를 나타내며</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6072b80b-cee9-4503-9fcb-bd1c4bbfb8f9" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-dda02f72-1829-4a4b-a597-74c432cbf997" style="color:#000000;">순서대로 sepal length(꽃받침의 길이), sepal width(꽃받침의 넓이), petal length(꽃잎의 길이), petal width(꽃잎의 넓이) 를 의미합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0f5ed011-2a08-4bcd-845c-be17c23423ca" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-6623736a-a2e8-4252-a33d-1b4d320d7637" style="color:#000000;">이렇게 load한 데이터는 </span><span class="se-fs- se-ff-system" id="SE-e11af2ad-5146-4c23-a21e-c844eb828f86" style="color:#000000;"><i>Bunch</i></span><span class="se-fs- se-ff-system se-style-unset" id="SE-594c182c-411d-43af-94b0-66c4863c0aa3" style="color:#000000;"> 라는 객체로 생성되며,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bedd234a-1821-45ca-99ee-2db2596d0a23" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-11e50c66-8ee5-4900-ae05-69b628697a5a" style="color:#000000;">이 객체의 속성으로 .data 이외에 데이터의 label인 .target 과 데이터에 대한 설명인 .DESCR 등이 있는데</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-29f08475-8049-4d34-8cd5-c7b11a50b441" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-37af0fb5-a3aa-4bf4-b5c3-ef0b077af42e" style="color:#000000;">자세한 설명은 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-f270aea3-d492-4659-9ec1-7606f36fd3a9" style="color:#000000;"><a class="se-link" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" target="_blank"><b>공식 문서</b></a></span><span class="se-fs- se-ff-system se-style-unset" id="SE-7fc0eeec-26fd-4e4c-84cb-6f0b5ecc0f62" style="color:#000000;">를 참조하시기 바랍니다ㅎㅎ</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9d85895c-d195-4a40-8342-593ef1874b76" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-d49393ae-a1a7-4387-802e-5f89c965d066" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-810633ef-46ae-48d7-bc44-fc5bd70b17ea" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-cf785ab9-d9ca-4f28-b1f4-965b2b1d0723" style="color:#000000;">어쨌든 위 코드의 결과로 아래와 같은 3차원 그래프가 나오는 것을 확인합니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-be838ea6-1c18-4696-bdb8-a35fb37a3262">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-be838ea6-1c18-4696-bdb8-a35fb37a3262", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMTcw/MDAxNTk5NzAxODk0NjI0.wBUtyDsifA9EW__CYDTu5IM0icU1JUQSkUE-KpJIU2Qg.l1f4SOgdTGD64SdFtBrGijyhf5wk-V9zy_pKUCIT0H8g.PNG.ghdalswl77/Figure_3.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="485" data-width="693" id="SE-be838ea6-1c18-4696-bdb8-a35fb37a3262_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-95c973fd-6b3d-4e16-b691-ecb858173d00">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ab0cd19d-2a8e-43ef-a883-0e02dd3896d9" style=""><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-1a64ca0c-591e-42e8-82e5-cc99a6536f5c" style="color:#000000;">이제 이 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-b7a3e797-272f-432c-8e00-feb8555b87aa" style="color:#000000;"><b>Iris dataset</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-ab14595d-bbf9-469a-964f-88ca0a490aa7" style="color:#000000;"> 로 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-8d1d7022-15af-459e-b49d-1f8943ba7ac8" style="color:#000000;">k-Means 알고리즘과 3차원 그래프를 연동하는 예제를 해봅시다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-ffd284fa-76c2-4528-baf6-b0f12429e6b3">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eac32199-0989-4503-a16d-c8cbd05c6671" style=""><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-031ca91c-8f11-4661-9e7c-370c39655b83" style="color:#000000;"><b>3. k-Means 알고리즘 + Matplotlib 연동 예제</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f310e142-4463-40c4-a636-6b69d1cb43e9">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-83a3db49-08b9-44bf-9fe4-0ee9dce35e08" style=""><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-215f3efc-b09c-417e-ab89-7f6c2621f0c2" style="color:#000000;">아래 코드를 입력해 주세요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b38091bf-f096-42fe-bf1f-a3b2e1afb9e2" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-9729a7d5-319e-4d09-9d51-c9502653416a" style="color:#000000;">K-Means 알고리즘 순서 입니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-ec18eb0b-5d8c-443d-923b-57b787c4ae4f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"># <span class="token se-code-number">3</span>
+from sklearn<span class="token se-code-punctuation">.</span>cluster <span class="token se-code-keyword">import</span> KMeans
+
+k_means <span class="token se-code-operator">=</span> <span class="token se-code-function">KMeans</span><span class="token se-code-punctuation">(</span>n_clusters<span class="token se-code-operator">=</span><span class="token se-code-number">3</span><span class="token se-code-punctuation">)</span>
+k_means<span class="token se-code-punctuation">.</span><span class="token se-code-function">fit</span><span class="token se-code-punctuation">(</span>data<span class="token se-code-punctuation">)</span>
+k_means_predicted <span class="token se-code-operator">=</span> k_means<span class="token se-code-punctuation">.</span><span class="token se-code-function">predict</span><span class="token se-code-punctuation">(</span>data<span class="token se-code-punctuation">)</span>
+centroids <span class="token se-code-operator">=</span> k_means<span class="token se-code-punctuation">.</span>cluster_centers_
+target_names <span class="token se-code-operator">=</span> iris<span class="token se-code-punctuation">.</span>target_names
+
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">figure</span><span class="token se-code-punctuation">(</span>figsize<span class="token se-code-operator">=</span><span class="token se-code-punctuation">(</span><span class="token se-code-number">10</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">7</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+ax <span class="token se-code-operator">=</span> plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">axes</span><span class="token se-code-punctuation">(</span>projection<span class="token se-code-operator">=</span><span class="token se-code-string">'3d'</span><span class="token se-code-punctuation">)</span>
+
+ax<span class="token se-code-punctuation">.</span><span class="token se-code-function">scatter</span><span class="token se-code-punctuation">(</span>data<span class="token se-code-punctuation">[</span>k_means_predicted <span class="token se-code-operator">!=</span> target<span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span>
+           data<span class="token se-code-punctuation">[</span>k_means_predicted <span class="token se-code-operator">!=</span> target<span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span>
+           data<span class="token se-code-punctuation">[</span>k_means_predicted <span class="token se-code-operator">!=</span> target<span class="token se-code-punctuation">,</span> <span class="token se-code-number">3</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> c<span class="token se-code-operator">=</span><span class="token se-code-string">'k'</span><span class="token se-code-punctuation">,</span> s<span class="token se-code-operator">=</span><span class="token se-code-number">50</span><span class="token se-code-punctuation">)</span>
+
+ax<span class="token se-code-punctuation">.</span><span class="token se-code-function">scatter</span><span class="token se-code-punctuation">(</span>centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">0</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">0</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">0</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">3</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> c<span class="token se-code-operator">=</span><span class="token se-code-string">'r'</span><span class="token se-code-punctuation">,</span> s<span class="token se-code-operator">=</span><span class="token se-code-number">50</span><span class="token se-code-punctuation">,</span> label<span class="token se-code-operator">=</span><span class="token se-code-string">'centroid1'</span><span class="token se-code-punctuation">)</span>
+ax<span class="token se-code-punctuation">.</span><span class="token se-code-function">scatter</span><span class="token se-code-punctuation">(</span>centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">1</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">1</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">1</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">3</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> c<span class="token se-code-operator">=</span><span class="token se-code-string">'g'</span><span class="token se-code-punctuation">,</span> s<span class="token se-code-operator">=</span><span class="token se-code-number">50</span><span class="token se-code-punctuation">,</span> label<span class="token se-code-operator">=</span><span class="token se-code-string">'centroid2'</span><span class="token se-code-punctuation">)</span>
+ax<span class="token se-code-punctuation">.</span><span class="token se-code-function">scatter</span><span class="token se-code-punctuation">(</span>centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">2</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">2</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> centroids<span class="token se-code-punctuation">[</span><span class="token se-code-number">2</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">3</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> c<span class="token se-code-operator">=</span><span class="token se-code-string">'b'</span><span class="token se-code-punctuation">,</span> s<span class="token se-code-operator">=</span><span class="token se-code-number">50</span><span class="token se-code-punctuation">,</span> label<span class="token se-code-operator">=</span><span class="token se-code-string">'centroid3'</span><span class="token se-code-punctuation">)</span>
+
+ax<span class="token se-code-punctuation">.</span><span class="token se-code-function">legend</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+plt<span class="token se-code-punctuation">.</span><span class="token se-code-function">show</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span>k_means_predicted<span class="token se-code-punctuation">)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ec18eb0b-5d8c-443d-923b-57b787c4ae4f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d75fc0f1-f477-4689-b1cd-005358c004bb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7b7a10e8-424c-49d5-bf56-c75d5db74ebf" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-cc47d7e3-f128-48aa-8467-ed7701bf7434" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-59434c96-fec4-4816-adc0-c55529c0c8c8">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e4a71e03-964e-4172-98da-4b5d9c3d81af" style=""><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-62128983-22e9-4efd-b771-64d6ea012ed2" style="color:#141414;">K-Means 알고리즘 수행 과정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-1873322f-4f5f-4230-825f-1af923a4b2a4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-95ad4b9a-ae1a-4bf7-a5fc-d056a622f459" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-0892e3d4-71e7-46ec-b1cc-72b23ae74427" style="color:#000000;">1. 모든 샘플들을 공간상에 뿌리고 k개(우리가 분류하고 싶은 데이터 갯수=3개)의 중심점 위치를 랜덤하게 잡습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a55a6837-f71e-42ac-bc19-50d0000aa563" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-1a18fcfb-8034-454b-9264-9902931cc02c" style="color:#000000;">2. 그리고 k개의 중심점을 기준으로 공간을 나눈 다음,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-032cdac0-d3ee-4491-a908-9866d8a26c9d" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-1cbac1fe-ee03-4bab-bd79-288721bf4d01" style="color:#000000;">나누어진 각 공간에 속한 점들의 평균 위치로 중심점을 이동시켜서</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-efc15dec-57e9-4666-857b-c6159e4aaf43" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-c2d52de8-177a-4ebd-9a52-c11facba7105" style="color:#000000;">3. 각 데이터들을 가장 가까운 centroids가 속한 그룹에 할당합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4d0c6e40-0be2-4136-9c96-b977c94fa83d" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-a6b6e796-6ba8-4d8c-a729-60dacb8527d3" style="color:#000000;">4. 2번 과정에서 할당된 결과를 바탕으로 centroids를 새롭게 지정합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ba24d0a0-7992-4ff8-818b-3490150ecd68" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-9cc2a12f-9085-45cb-b393-79227e0b4ca1" style="color:#000000;">   이런 과정을 반복하여 k개의 최종 중심점 위치를 찾아냅니다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5acaca71-4972-4f74-8ac8-3e1613b0d7d6" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-aa50766a-dca8-49d1-b597-b6c98562d8cc" style="color:#000000;">결과가 어떻게 나왔나요~~?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9acb03fa-6f02-465d-84ab-7038e5885ff6" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5f7eaa0e-052d-42fc-9950-79f40892090f" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-e0ecd197-3b07-46a7-aa29-fbc8ae960f8b">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6dcebacf-3144-4faa-b7ce-5c6daeb7fdf3" style=""><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-0008629c-3e1f-4db0-baeb-4390cff0cf18" style="color:#000000;"><b>3.5 k-Means 알고리즘 결과</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-2acbbf89-ad1f-4560-8fff-bf66ef488bdd">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2acbbf89-ad1f-4560-8fff-bf66ef488bdd", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjE1/MDAxNTk5NzA0NDMzMTg1.vRs_jpOxQGnV6eqetQaCtpAE4hDfiatCA0kZCNQgnz8g.g2mCFJToSJJGRasEHSWSw1GqfoLi5EheSiLoIqzCaiIg.PNG.ghdalswl77/Figure_4.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="485" data-width="693" id="SE-2acbbf89-ad1f-4560-8fff-bf66ef488bdd_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-2475b3ca-2dfa-47b0-b75b-6555b08b6b4f">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2475b3ca-2dfa-47b0-b75b-6555b08b6b4f", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTJfMzkg/MDAxNTk5OTExNTg3MDQ3.p5KkT2UpWq17ul5EJCNUnR04CpNFhHUgucWmb6FyFF4g.bA0eBmSYyvipk25O7JlR8gIN-M87cfyXdftWW3y9nxcg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="175" data-width="693" id="SE-2475b3ca-2dfa-47b0-b75b-6555b08b6b4f_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a449a895-a9e1-4955-a802-d6047530ee37">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-869796b3-3928-4843-9c1d-57857be15bb1" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-e55e5fa8-6249-431e-9111-0ef7ba743e1d" style="color:#000000;">위 사진의 결과가 나오나요?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0cf57c05-ec0f-4173-bf3c-fa71d48b8efa" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-bed33c1f-9598-4606-95d3-3707dc345422" style="color:#000000;">혹은 아래와 같이 나오나요?</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1ad38fba-3a22-4014-9c3e-38d5619961dd">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1ad38fba-3a22-4014-9c3e-38d5619961dd", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTJfMTQ4/MDAxNTk5OTExNDY0ODAx.TsQ7w-BO_kOghOat0WNbTdRtVzqMOnu6QYz_xVjyN4Ag.Tx6UZjWgpTiqOJcRboYuajJe-VRtxeE97HkRtqcBESQg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="176" data-width="693" id="SE-1ad38fba-3a22-4014-9c3e-38d5619961dd_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-89ede419-33cf-4d53-84ec-c48f2fb74b89">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39c4da5a-ca6e-4551-bda7-717c6318467f" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-8a5b57b5-5687-4182-ad50-23ceab6d2994" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-71c4c145-41e9-4f01-a5e8-b9aacc93665a" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-854f56e8-626b-4d7b-80ca-f224de9c0076" style="color:#000000;background-color:#ffffff;">이렇게 다양한 결과가 도출되는 이유는,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6dacebb6-097e-45ad-bbe7-222cf40d0112" style=""><span class="se-fs-fs16 se-ff-system" id="SE-990a3156-6a86-4af2-be4c-12d9052e5e0e" style=""><b>비지도 학습에서는 사과가 0이다 라고 알려준 적이 없으니까</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3d01ca0d-ac7c-4ec2-af09-768e603060a3" style=""><span class="se-fs- se-ff-system" id="SE-60885d12-dfb8-44fe-8a9e-1a669696f6a8" style="">비지도 학습에서는 사과가 0이다 라고 알려준 적이 없기 때문에,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ba10c1ea-8024-41e1-a289-cf124a12b5b8" style=""><span class="se-fs- se-ff-system" id="SE-889fb1c1-6864-4ef7-90da-f8ed30817089" style="">예를 들어서 사과를 1이라고도 답했다가 0이라고도 답했다가</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3c3a26e4-70c6-4929-9f79-e4c168dd568f" style=""><span class="se-fs- se-ff-system" id="SE-21dc64a9-64a9-477c-b291-c35d604f9fd5" style="">실행할 때마다 바뀌는 결과가 나오는 것 입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd995db3-a244-4809-925f-ea3031e2e41f" style=""><span class="se-fs- se-ff-system" id="SE-dd1e0340-603e-4fd7-9ae9-c5d7ba7f8d16" style="">답을 뱉어주는 것이 아니라</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-49842c44-317d-4e63-82de-65f80cf2a019" style=""><span class="se-fs- se-ff-system" id="SE-7ecf04f7-53df-4ebf-9563-19dee52b58b2" style="">그냥 0과 1을 '구분'만 하는 상황!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1781ede2-a96c-4d31-9a90-03d7e509795f" style=""><span class="se-fs- se-ff-system" id="SE-b3d0f402-c4b7-4fa7-a94e-956305a4a829" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67048787-91b6-42fd-8c09-3733cebb58e7" style=""><span class="se-fs- se-ff-system" id="SE-182b5bec-fabc-4970-866f-7ee5d8267721" style="">아이리스 데이터니까 우리가 원하는 답은 0 1 2 이런건데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1281007-5db2-4bd4-959c-255efb0ede4f" style=""><span class="se-fs- se-ff-system" id="SE-0a9a9739-f798-45a5-a81b-25c8d9dc7994" style="">1 0 2 이렇게도 답하고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33d9f915-f84b-4807-89c3-72c41f3b6e37" style=""><span class="se-fs- se-ff-system" id="SE-33026704-4d56-460e-917b-b8f0173a544d" style="">1 2 0 이렇게도 답하고 하는 상황이죠</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f6e0e757-14b7-4367-ba00-0e8751046fae">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">결과</span> <span class="token se-code-operator">:</span>
+﻿<span class="token se-code-punctuation">[</span><span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span>
+<span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">0</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span>
+<span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span>
+<span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">2</span> <span class="token se-code-number">1</span> <span class="token se-code-number">2</span>
+<span class="token se-code-number">2</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f6e0e757-14b7-4367-ba00-0e8751046fae"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d8695f1d-be06-40e5-9a3f-7d8c849af2bf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ec75218-506a-4515-bb33-3a5b9fb7d01f" style=""><span class="se-fs- se-ff-system" id="SE-3644d559-4f90-4c9a-84f1-2cb0e378aead" style="color:#141414;">그리고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21482c48-2c29-4d7c-afe3-c92a04d4b435" style=""><span class="se-fs- se-ff-system" id="SE-d4fbea25-22ce-447a-a920-1f3d86d8f65a" style="color:#141414;">111111 중간에 2나 0이 들어간 부분은 오차라고 불 수 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-27ee2168-9013-4755-9224-2899a5abab34" style=""><span class="se-fs- se-ff-system" id="SE-d05d326f-745a-45c3-bc7c-0ed86a8af4ee" style="color:#141414;">근데 중간중간 다른 값이 섞이면 오차인데 이건 데이터가 많아지면 줄어 듭니다</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-6c542a83-2f9a-4991-968e-41dcd5fc3ad3" style="line-height:1.5;"><span class="se-fs- se-ff-system" id="SE-b46f4276-7116-491a-8725-1bf4ae9644d9" style="color:#141414;">1111 사이에 2 가끔 있는 것들 틀린 것.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-374bf66a-4fae-4350-9d04-f37bd51cd388" style="line-height:1.5;"><span class="se-fs- se-ff-system" id="SE-fadb62b8-0589-4663-8205-cc82056790f9" style="color:#141414;">(</span><span class="se-fs- se-ff-system" id="SE-c8579203-acba-49df-8c23-8efe913dafad" style="">0 50개 1 50개 2 50개 가 나와야 합니다)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-a8da1de8-b31e-482a-9281-6965eddbe750" style="line-height:1.5;"><span class="se-fs- se-ff-system" id="SE-9c52f33a-9345-48ec-b412-d51045aeb325" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-ec6390da-9465-478e-95bf-5f7b54fcbc92" style="line-height:1.5;"><span class="se-fs- se-ff-system" id="SE-7f3cf6c5-96a9-4f2e-a475-1ac26a3e6abe" style="">그래서 중요한 것은</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-7755fc58-6adb-42c9-b3ed-a27315276133" style="line-height:1.5;"><span class="se-fs- se-ff-system" id="SE-1c8f0d1f-2cf7-4e1f-8d17-0b2a87007dd6" style=""> 사과랑 오렌지를 구분하느냐 인건데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-3afa34a9-d754-4658-9042-8898a2c719a4" style="line-height:1.5;"><span class="se-fs- se-ff-system" id="SE-e2d041a9-261b-4773-8197-c4adab3ef2a5" style="">아직 머신이 사과를 사과라 말할 줄 모르는 상황인 것이죠 !!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-9b744b1a-65b2-40a7-904e-d842ffa5d490">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-9b744b1a-65b2-40a7-904e-d842ffa5d490", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTJfNSAg/MDAxNTk5OTEyMjc5ODc0.8jzKm7yMYI-_z09AbrkwHb0be1TePjnN0nysZW7Bll0g.o4F18gSB4v4mDGOlcEbyvgI0mGtX7JGp3Iwsoq0PPfQg.PNG.ghdalswl77/pngwing.com.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="693" data-width="693" id="SE-9b744b1a-65b2-40a7-904e-d842ffa5d490_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-horizontalLine se-l-default" id="SE-29da9c27-e721-466b-bca3-0143849179a5">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-58c73a45-8db9-4b3c-a634-1d276d4c8350">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fd68f5ad-daa3-40d5-afb8-ff0b9f64414c" style=""><span class="se-fs- se-ff-system" id="SE-84379c49-d9fb-4d23-8922-d177099571fd" style="">참고자료 :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1625867-d9c3-486f-aba1-32c142caaf80" style=""><span class="se-fs- se-ff-system" id="SE-3ab3d767-5ea9-4a77-b4e0-38eee69e4ba7" style=""><a class="se-link" href="https://www.youtube.com/channel/UCl9zTDOvOxdCfUt1HqVwwdg" target="_blank">https://www.youtube.com/channel/UCl9zTDOvOxdCfUt1HqVwwdg</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ecac438c-17b7-487a-8669-5675b82ef2a4" style=""><span class="se-fs- se-ff-system" id="SE-5d47e967-7cb2-41a3-9164-35ecd03c4dd8" style=""><a class="se-link" href="https://eunsukimme.github.io/ml/2019/12/16/K-Means/" target="_blank">https://eunsukimme.github.io/ml/2019/12/16/K-Means/</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-176f571a-94df-494f-854c-82f318dfce38" style=""><span class="se-fs- se-ff-system" id="SE-affc1f1e-b306-4e5f-a6e3-5e20d5a45300" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

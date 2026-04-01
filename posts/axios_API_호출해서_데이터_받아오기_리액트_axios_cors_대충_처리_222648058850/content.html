@@ -1,0 +1,181 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222648058850 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-7e0d3fdb-6447-4ee1-aaab-2c740d5e5e16">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-99b2be0f-c0e3-4284-8d42-f769ee44927b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2677beca-337f-47b8-b237-20b8bcce170b" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-966520ef-9d61-4379-ba63-a865f586f5c1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-6919aa36-545c-42b0-a25b-1ae8e32ef990" style="">1. </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-73726561-136b-4aba-89d3-36e71b70bf30" style=""><b>프로젝트 폴더에서 axios 설치</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-eb14d8d0-1c3e-4918-901b-dd7b6d2db08d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs15">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">yarn add axios</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-eb14d8d0-1c3e-4918-901b-dd7b6d2db08d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-fec9744f-46fd-463f-b6d8-685601b1621e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-72641770-f5f6-4868-bd4f-7a2b9268526a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-dc76ea5a-12e0-4df4-a750-bb3de0efc7e5" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9b84d7c6-c0ce-4863-931c-e25fca868451" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-bc6578bf-33ab-4756-9283-5851c2520dfa" style="">2. </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-fd7d52bc-f37c-4da3-8850-10d12982efb9" style=""><b>API 데이터 받아오기</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-edb4a55a-e2a0-4a89-823b-5998b4292e02" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-03f6976d-28d0-4199-b5cb-15d912bb15e1" style="">API를 호출해서 데이터를 받아와보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8852f8b8-829c-4c3f-b43f-99f6662828d4" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7c35e583-423c-4cf0-a63f-5224a5e06429" style="">react APP을 하나 생성하고 Test.js를 다음과 같이 작성한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-28af946b-d151-4797-be95-9bb424836d2d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs15">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">import</span> React<span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">{</span> useState <span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">from</span> <span class="token se-code-string">"react"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">import</span> axios <span class="token se-code-keyword">from</span> <span class="token se-code-string">"axios"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-function-variable function">Test</span> <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-operator">=&gt;</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-punctuation">[</span>data<span class="token se-code-punctuation">,</span> setData<span class="token se-code-punctuation">]</span> <span class="token se-code-operator">=</span> <span class="token se-code-function">useState</span><span class="token se-code-punctuation">(</span><span class="token se-code-keyword">null</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-function-variable function">onClick</span> <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-operator">=&gt;</span> <span class="token se-code-punctuation">{</span>
+    axios<span class="token se-code-punctuation">.</span><span class="token se-code-function">get</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"http://localhost:8080/product/1"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">then</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">response</span><span class="token se-code-punctuation">)</span> <span class="token se-code-operator">=&gt;</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-function">setData</span><span class="token se-code-punctuation">(</span>response<span class="token se-code-punctuation">.</span>data<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-punctuation">(</span>
+<span class="token se-code-operator">&lt;</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span>button onClick<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span>onClick<span class="token se-code-punctuation">}</span><span class="token se-code-operator">&gt;</span>불러오기<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>button<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-punctuation">{</span>data <span class="token se-code-operator">&amp;&amp;</span> <span class="token se-code-punctuation">(</span>
+<span class="token se-code-operator">&lt;</span>textarea
+          rows<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span><span class="token se-code-number">7</span><span class="token se-code-punctuation">}</span>
+          value<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span><span class="token se-code-constant">JSON</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">stringify</span><span class="token se-code-punctuation">(</span>data<span class="token se-code-punctuation">,</span> <span class="token se-code-keyword">null</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">2</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">}</span>
+          readOnly<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span><span class="token se-code-boolean">true</span><span class="token se-code-punctuation">}</span>
+<span class="token se-code-operator">/</span><span class="token se-code-operator">&gt;</span>
+<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">}</span>
+<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">export</span> <span class="token se-code-keyword">default</span> Test<span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-28af946b-d151-4797-be95-9bb424836d2d"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-7f911689-5724-4bd8-9d93-4bd62cc978bd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f80ce269-100c-48dc-b9b0-324379f25bf5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-53cd21a1-8488-4c01-8b8d-431011703868" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-faa3837d-2b9d-40f1-92c0-dc0e689af62b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-d6a8f981-ffea-4aeb-a0c4-f8e8084cc46a" style="">코드를 보면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c2dda4f9-7b54-4170-98b6-d401eebc4cf3" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-722e01d5-4039-4683-999b-ecb10403d6f7" style="">버튼을 클릭했을 때(onClick) api에 연결해 가져온 값을 setData로 data에 새로 집어넣고 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c5e1637a-4b2e-401c-882e-e38d549f8784" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-01df9c5e-a7b8-448c-9eb6-18140b19012e" style="">onClick함수에서 사용한 axios.get 함수가 파라미터로 전달된 주소에 GET요청을 하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d4db5f28-94c0-439d-aee5-1ba2251f9d70" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-afc42e1a-813a-40cd-9737-12bcd8429855" style="">그 결과를 .then을 통해 비동기적으로 확인한다. 결과는 다음과 같다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1e10187b-8ee4-4c03-9596-ed08d568eb88">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1e10187b-8ee4-4c03-9596-ed08d568eb88", "src" : "https://postfiles.pstatic.net/MjAyMjAyMTVfMjky/MDAxNjQ0ODg3NzA4ODgw.l-YpBtlIJxFfLrpxv7lgsuZM97k7INWm2paT0gNtI7gg.cotEXhf4OBmY_mOcMim8TIcqKj2xr40NCNJQ8NLmCd0g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-02-15_%EC%98%A4%EC%A0%84_10.15.01.png", "originalWidth" : "2342", "originalHeight" : "1650", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="488" data-width="693" id="SE-1e10187b-8ee4-4c03-9596-ed08d568eb88_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-3be84a84-0caa-4fe3-9068-46bedf768bba">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4151bc6e-dc9f-46af-9be8-f26bee1142a7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-28936a21-1cae-4cc2-812e-9e7e849430b3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e40e03db-eac8-4e82-b7f3-3b75c3eda684" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ef19c0b4-ce22-4f45-b731-484006cda4db" style="">그럼 위 코드에 async를 적용해보자. async/await 에 대한 글은 </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-6f5449a0-ccfd-4ced-8f2a-f0d5e476d244" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222644064881" target="_blank">링크</a></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-ca0f28a3-ec06-4bc4-80e4-6536072fd93f" style="">를 참고.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component" id="SE-0e39ed28-f318-40d7-b8ca-c5bde9dceb5e">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222644064881" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">promise, await, async, axios 정리</strong>
+<p class="se-oglink-summary">REST API 를 사용해 백엔드와 프론트를 완전히 분리(주소로만 통신해서 역할분리)했다. 이 때 리액...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-0e39ed28-f318-40d7-b8ca-c5bde9dceb5e", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222644064881", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjAyMTBfMjI4%2FMDAxNjQ0NDc5NjA3Mjg5._7j4zBPNZMqWeF-ofuVOQ49Mq2o5yG-V-H0dSd9pcj4g.XE3XI73iF6tJPlym_Y34hnS2NUJ3I69d6klhjdJzqEsg.JPEG.ghdalswl77%2Faxios.jpeg%3Ftype%3Dw2%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1a9ba0e7-4657-437b-8f00-359b8a4ee5d4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5b7e0491-d85e-4068-963b-0de159602457" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-76908828-7674-4cca-b4f2-ecf84c78d2ac" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-884c814d-90bf-40ea-919e-0dbcbf408039" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-bb40f8d9-74f9-4140-9e52-2cbfc826a414" style="">3. </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-b40c34c7-6dae-4761-8949-bc5f9ddb9b24" style=""><b>async/await</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-19cba0a9-65b0-4d47-ac6b-1a1c859f3da5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-31a14637-0c60-43f3-ab1a-9e384c4beff0" style="">async/await는 Promise를 더욱 쉽게 사용할 수 있도록 해주는 ES8문법이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f64cada3-aa4a-4b75-98a2-021238dbbf69" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8a3d6102-6cd3-472c-9f42-2eea975dcb02" style="">이 문법을 사용하려면 함수의 앞부분에 async키워드를 추가하고, 해당 함수 내에서 promise의 앞부분에 await키워드를 사용한다. 이렇게 하면 Promise가 끝날 때까지 기다리고, 결과 값을 특정 변수에 담을 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b01eb41-ae4c-4573-9fd2-dd19bba6aa73" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-dd492b27-2558-4ad6-8762-f7de02ca3668" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-615ffbef-1b8e-4e74-a595-2f77fc8c7511" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2ded7552-d111-48c3-9b96-bd2a7d8daf4a" style="">위 코드에 async를 적용하려면 onClick 시작부분에 async를 추가하고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eabf49e9-a78f-42f3-b623-a3bec5b9282c" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2c7bcda8-6f38-432b-92e3-9aa4df47cd7d" style="">promise 부분에 await를 추가하면 끝이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e369ab7-e1fd-4b83-bbcd-1add27a77172" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8fe351f0-ac38-49c9-b5a5-bbc00beb05e8" style="">그리고 에러를 처리하기 위해 try/catch구문을 사용했다</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-e4871076-fd92-4394-8fc6-544cacb64d7c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs15">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">import</span> React<span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">{</span> useState <span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">from</span> <span class="token se-code-string">"react"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">import</span> axios <span class="token se-code-keyword">from</span> <span class="token se-code-string">"axios"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-function-variable function">Test</span> <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-operator">=&gt;</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-punctuation">[</span>data<span class="token se-code-punctuation">,</span> setData<span class="token se-code-punctuation">]</span> <span class="token se-code-operator">=</span> <span class="token se-code-function">useState</span><span class="token se-code-punctuation">(</span><span class="token se-code-keyword">null</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-function-variable function">onClick</span> <span class="token se-code-operator">=</span> <span class="token se-code-keyword">async</span> <span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-operator">=&gt;</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">try</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">const</span> response <span class="token se-code-operator">=</span> <span class="token se-code-keyword">await</span> axios<span class="token se-code-punctuation">.</span><span class="token se-code-function">get</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"http://localhost:8080/product/1"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-function">setData</span><span class="token se-code-punctuation">(</span>response<span class="token se-code-punctuation">.</span>data<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">catch</span> <span class="token se-code-punctuation">(</span>e<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+      console<span class="token se-code-punctuation">.</span><span class="token se-code-function">log</span><span class="token se-code-punctuation">(</span>e<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-punctuation">(</span>
+<span class="token se-code-operator">&lt;</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span>button onClick<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span>onClick<span class="token se-code-punctuation">}</span><span class="token se-code-operator">&gt;</span>불러오기<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>button<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-punctuation">{</span>data <span class="token se-code-operator">&amp;&amp;</span> <span class="token se-code-punctuation">(</span>
+<span class="token se-code-operator">&lt;</span>textarea
+          rows<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span><span class="token se-code-number">7</span><span class="token se-code-punctuation">}</span>
+          value<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span><span class="token se-code-constant">JSON</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">stringify</span><span class="token se-code-punctuation">(</span>data<span class="token se-code-punctuation">,</span> <span class="token se-code-keyword">null</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">2</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">}</span>
+          readOnly<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span><span class="token se-code-boolean">true</span><span class="token se-code-punctuation">}</span>
+<span class="token se-code-operator">/</span><span class="token se-code-operator">&gt;</span>
+<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">}</span>
+<span class="token se-code-operator">&lt;</span><span class="token se-code-operator">/</span>div<span class="token se-code-operator">&gt;</span>
+<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">export</span> <span class="token se-code-keyword">default</span> Test<span class="token se-code-punctuation">;</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e4871076-fd92-4394-8fc6-544cacb64d7c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d0f04149-870e-4042-a9ed-2279b33444da">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dbfd6531-d0b2-477f-82c5-bdb9461d8fd5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-a5314d9d-b09a-4948-a6ac-931efb680955" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c7605ca-2e07-4268-9646-0f99394a70b5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-559acd5a-c03e-487c-b21b-a1c196ff43ff" style="">* </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-703e9412-6253-4b48-89ef-b7008fd1168e" style=""><i><b>리액트 axios cors</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9d4d5de9-8194-4224-b62f-987ce27ddf28" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-31ff074d-f051-4faf-a02d-b54b6e577119" style="">웹에서는 다른 출처로의 리소스 요청을 제한하는 것과 관련된 두 가지 정책 CORS와 SOP(Same-Origin Policy)가 있다. SOP(Same-Origin Policy)는 같은 출처에서만 리소스를 공유할 수 있다”라는 규칙을 가진 정책이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-351f3e88-b5fd-468d-9ddf-af1ee2ea269e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cc1e2cde-571f-463c-9509-d998775f3c49" style="">그러나 웹에서 다른 출처에 있는 리소스를 가져와서 사용하는 일은 굉장히 흔한 일이라 무작정 막을 수도 없는 노릇이라 몇 가지 예외 조항을 두고 이 조항에 해당하는 리소스 요청은 출처가 다르더라도 허용하기로 했는데, 그 중 하나가 “CORS 정책을 지킨 리소스 요청”이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-11fa904b-7418-48cf-a599-205c12085752" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-0c870503-6910-4d00-94e8-d71fea36b585" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd7a1ca2-2f35-465e-b244-4d43075e2882" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e0b32a19-2159-494c-b0ef-af2d4d2eb408" style="">CORS란 Cross Origin Resource Sharing의 약자로, 도메인이 다르더라도 데이터를 공유할 수 있게 해주는 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39472ae0-0ff4-4290-af2f-1283200cb47d" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-319e63bd-cafb-4e7d-b762-f9bfe0113aeb" style="">쉽게 말해서 백엔드를 호출하는 애가 아무나 호출하면 안되니까 호출하는(오리진)이 누군지 확인하는 것,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f68b6f1d-c847-4f99-b069-3adc4cde992b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-abf02359-9234-4c53-b101-07c77424d9be" style="">특정한 것만 허용시켜서 받아갈 수 있게 해주는 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-76da1b32-0ee8-4ada-9182-50df3959dc78" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e64f737f-7050-4563-b61d-5eaf16cb79c9" style="">(error: 405 Method Not Allowed)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-25824fd8-0363-44c5-a554-e80f13b419b9" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-4c279a1c-4956-4817-86c3-f8141d9e32a7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e66cc7a-6989-4e11-ba93-0c5e9570f517" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3c6909de-e7fa-465d-927a-020ac330ce60" style="">정석적인 해결방안이 있지만(</span><span class="se-fs- se-ff-nanumbarungothic" id="SE-20adb43b-f82c-48ef-ae1f-b09b05204be7" style=""><a class="se-link" href="https://evan-moon.github.io/2020/05/21/about-cors/" target="_blank">https://evan-moon.github.io/2020/05/21/about-cors/</a></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-d82db1d9-60af-4095-be9f-ab60b79cff8c" style="">),</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e7f3e406-9b51-4a27-b000-0359ed5bcb8a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8938aae2-2254-41e4-8a70-e6bef76d3319" style="">난 일단 </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-d5d6701f-b804-4484-b226-0118bd02ca81" style="color:#9c9c9c;">가라로</span><span class="se-fs- se-ff-nanumbarungothic" id="SE-25324fbb-3f16-481e-af06-c06f1dcc625e" style=""> 이렇게 해줬다. 리액트에서 해주는건 없고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-02545bb2-4f97-4ced-8141-211f7b266f63" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-206efb66-2497-4d9f-9564-4d690f03327d" style="">백엔드인 스프링부트의 controller에 아래 한 줄을 추가했다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-bf433a27-21d0-4e17-be9d-85e7553b9622">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">CrossOrigin</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"http://localhost:3000/"</span><span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bf433a27-21d0-4e17-be9d-85e7553b9622"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b0299db4-3b18-49cb-8977-ab8c513d11b6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-31f1929a-3302-4919-b8ac-530bed240117" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b12873c0-004a-4105-b44c-688c2c527656" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8c14a7a9-d974-438a-94c5-b71feaf02e92" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-d9eb5d74-6766-4b6f-ab9c-8face046fc31" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

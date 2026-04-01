@@ -1,0 +1,424 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222451012403 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default" id="SE-a10c2e9a-7dde-4df4-87b7-1a58524b7434">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-1730943e-6979-4e8a-91a3-50f36192e737" style=""><span class="se-fs- se-ff-" id="SE-b5d2c3c7-87e4-46c8-8f1c-4bf77d9335ce" style=""><b>인텔리제이(IntelliJ) 프로젝트와 깃(Git) 연동하기</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e2ebd9fa-26ae-4f04-954d-af2f849a9b59">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:228px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e2ebd9fa-26ae-4f04-954d-af2f849a9b59", "src" : "https://postfiles.pstatic.net/MjAyMTA3MzBfNjcg/MDAxNjI3NjI2NzU4MTkw.eMjlAyUGxZz1sU4UMS3wWK7UmozR2xgDnaLMEOoiK58g.FdmYYbu7F1MwB2KrMWMScZ6N3E7MQaRtvvvsyPT84M8g.PNG.ghdalswl77/1.png", "originalWidth" : "228", "originalHeight" : "221", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="221" data-width="228" id="SE-e2ebd9fa-26ae-4f04-954d-af2f849a9b59_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b0f31560-5f52-47dd-a0fe-965fcaa1d003">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-10775af8-09aa-453f-98c6-2080b0303790" style=""><span class="se-fs- se-ff-" id="SE-73e31646-f55d-40a2-8c51-98d7f93c1077" style="">GitHub에 새로운 remote repository를 만들고 기존 IntelliJ 프로젝트(모듈)을 연동하는 방법에 대해 다룬다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-65b96428-6b3c-4d31-ad3f-6dd03d0f10c4" style=""><span class="se-fs- se-ff-" id="SE-65f8e87f-4833-4e95-b14e-9634899499bc" style="">과정은 다음 순서로 진행된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eb0594b1-ae83-433b-8236-bac47596b891" style=""><span class="se-fs- se-ff-" id="SE-1f9cfc80-a61d-42bb-b35f-6d19c54416bb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-60768dc9-3b29-4fd2-83cc-2bd00568f1bb" style=""><span class="se-fs- se-ff-" id="SE-41a7a8f7-75d3-4af0-a6c7-e136234c86fa" style=""><i>1)</i></span><span class="se-fs- se-ff-" id="SE-a76cb349-7487-41d6-b3c4-a9b9491aec55" style=""><i><b> IntelliJ에 GitHub 계정 연동</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cb40a1c7-ee5c-4a68-b0f1-47984882caa9" style=""><span class="se-fs- se-ff-" id="SE-b4afdfb7-716a-48ba-ad4c-1adedb6159f4" style=""><i>2) </i></span><span class="se-fs- se-ff-" id="SE-7d215745-2af2-4878-995d-a049e1955917" style=""><i><b>Git에서 새 레포지토리 만들기 (GitHub Remote Repository 생성)</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d05f2bae-260a-4b06-ac5d-9436b4801f4d" style=""><span class="se-fs- se-ff-" id="SE-c0bd1ff1-6d92-4a71-aee3-821c3fb77804" style=""><i>3) </i></span><span class="se-fs- se-ff-" id="SE-b69d33c2-e961-44e8-8f08-0efa855e627e" style=""><i><b>리모트 레포지토리 등록하기</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-685f2c69-5b2b-4660-88ca-e7553cb7331a" style=""><span class="se-fs- se-ff-" id="SE-76062d18-149a-4669-9160-c11d83a99757" style=""><i>4) </i></span><span class="se-fs- se-ff-" id="SE-c55b2a25-c953-4b36-8b72-a7d3e04af8fc" style=""><i><b>로컬 레포지토리 만들기</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b68bfcad-d11d-4e0b-b6c5-760eb8868ebb" style=""><span class="se-fs- se-ff-" id="SE-ad5b8bc8-0201-454b-8fea-731eece48824" style=""><i>5) </i></span><span class="se-fs- se-ff-" id="SE-0ef9ab74-82a5-40b4-9d40-ed3529b27c6b" style=""><i><b>commit, push</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58d00773-a3ca-48b1-8bed-a2f9251da342" style=""><span class="se-fs- se-ff-" id="SE-cc1d3b9f-6335-46b3-a412-63efd76fe0e6" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-714feac8-bcf3-4cb6-b83c-b706223980e1">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-81eef711-3997-4473-9423-dcba3fb8376e" style=""><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-f8f11a93-8483-449d-bb13-3e67d2c7533f" style="">1.</span><span class="se-fs-fs24 se-ff-" id="SE-c237b85b-0623-40f7-b3b6-4be5e3cb3472" style=""><b> IntelliJ에 GitHub 계정 연동</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6c512410-0290-4335-bf00-491552b8118b" style=""><span class="se-fs- se-ff-" id="SE-84c1f576-5781-4ab2-adde-75e408f68c0f" style="">깃 계정 연동</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-23c2c87d-e853-4790-8fc9-ea832fc7b71c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-030a1731-7fa0-4e37-98e1-75f4dcf0de63" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-3f3b53e9-a84e-4d75-898b-6bfe6ac371b7" style="">맥에서의 Preferences, 윈도우에서 Settings 를 클릭한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-c3bb977e-0062-4a49-87cb-e4d3ee2401ad">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:476px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-c3bb977e-0062-4a49-87cb-e4d3ee2401ad", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMjYy/MDAxNjI3Mzg5OTkzMjYy.oq58esQsYp7dzTXchhzbtHpXLLMbPzpxTI6HvDQjxJEg.7D4yti2U5_llbPkpmD0wXTl9WDKP3dFaZJOIBgLZNAQg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_9.46.28.png", "originalWidth" : "476", "originalHeight" : "468", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="468" data-width="476" id="SE-c3bb977e-0062-4a49-87cb-e4d3ee2401ad_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-632b9f10-76c0-4142-87bb-233e06e52a60">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-60c6a422-fbf8-44b7-94f2-81b063d00f1b" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-db25000f-e5e6-4eed-aa1a-9c4e39e5caa2" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c13b7522-4a8c-46f8-992c-d2d738931355" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-57915294-32b4-4c02-9d84-e4d83fba6400" style="">좌측의 GitHub 탭을 클릭하고,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-7f5cb59b-7734-48e7-82cb-9297e3fad237">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7f5cb59b-7734-48e7-82cb-9297e3fad237", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfNiAg/MDAxNjI3Mzg5ODY2MDE3.p7xyj2nSP0MHKfthKEhF2aw2gAvvQ_o85CcqWnFqc4og.ozYYJGefN_8R0PgPa7DnTMnUnQUU9V3KiAdNy6elaMEg.PNG.ghdalswl77/image.png", "originalWidth" : "1998", "originalHeight" : "1494", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="518" data-width="693" id="SE-7f5cb59b-7734-48e7-82cb-9297e3fad237_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-c3f5543c-3690-42bb-817e-fe9f13e14ee3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d4165132-0f1d-4f98-8f09-98796b90d829" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-16b9e87b-0780-4a9a-bec7-3e8d59ed52bb" style="">계정 정보를 입력 후 [Log In]을 클릭한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-853db882-5db7-406d-8a6c-ef32521320d4" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-9ef3287e-de4d-4bb9-8cb5-e6daf9a593ec" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-3587502a-54fe-419e-967d-18586e604d45">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-3587502a-54fe-419e-967d-18586e604d45", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMjc0/MDAxNjI3Mzg5OTA3MDAx.7yXJsqg9bxDl-ITaJQ1iasSUB8FTq260ZmEi4LfUCBMg.NupdlkXNV7C9n4a9r_zBvLHXqAiidUrtBFPELWUPK1Eg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_9.45.04.png", "originalWidth" : "2390", "originalHeight" : "964", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="279" data-width="693" id="SE-3587502a-54fe-419e-967d-18586e604d45_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-684276e5-7026-46a6-bb03-59e7bbdcee78">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0899f3cc-7074-4601-ac28-7610d1ae23b1" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-32899794-0a4b-4764-aca7-cab70a85a2a9" style="">버튼을 눌러 깃에 로그인 혹은 회원가입 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e0362fe6-0080-4c3c-af7a-308f2862b16e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-931b0802-9d17-4c42-99f3-95139de42a30" style="">그리고 다시 인텔리제이로 돌아와 GitHub 탭에서</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8b4ec13e-5557-4cce-b1d0-f05f8d55d672" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-27b9d092-19b1-47b7-b459-3567510a931c" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-d8dc5bd6-0d7d-4a1f-9cb6-44b85aa91406">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d8dc5bd6-0d7d-4a1f-9cb6-44b85aa91406", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfOTgg/MDAxNjI3Mzg5OTQ1Njg5.D1uY4tcC_4VrP-Uz-6gphxHhnt30M9jHnedE-r7xPPYg.ZhD3FpbAEd3JM4_Q6N02wrYPGYNOpV0aSxGIUpao8Log.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_9.45.43.png", "originalWidth" : "2004", "originalHeight" : "1498", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="518" data-width="693" id="SE-d8dc5bd6-0d7d-4a1f-9cb6-44b85aa91406_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-462f45b9-5268-4b38-a49e-65c04a084387">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-85682014-2f97-4747-bddc-0e6c280a5a67" style=""><span class="se-fs- se-ff-" id="SE-a5c4bfb3-a80e-4118-a93a-40d85f5d29df" style="">등록된 것을 확인한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a88acef8-54ff-408d-b57e-ad78ebdadf14" style=""><span class="se-fs- se-ff-" id="SE-28ce2242-2d99-4a68-b495-c8a0354dc474" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9e0f8804-6093-49aa-b63e-fc115aedada3" style=""><span class="se-fs- se-ff-" id="SE-0edc54f1-dea1-4760-afd4-9e6c6861fdbd" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-6ee94683-9886-42ef-af99-363260383fd7">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c523625d-83c7-40e6-97fa-c14b94ca7b86" style=""><span class="se-fs-fs24 se-ff-" id="SE-2fe9a482-bac9-430c-bccf-116d3105b3a3" style="">2.</span><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-88f42522-6b44-42d1-bf50-40ce388ad4ff" style=""> </span><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-b9213141-8996-4899-bdc0-412141933f62" style=""><b>Git</b></span><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-f15cb50a-ed12-4d2d-b09d-e3b30a6c9e04" style="">에서 </span><span class="se-fs-fs24 se-ff- se-style-unset" id="SE-6bcc65bd-3a15-4437-9b6b-3c0e62ad3079" style=""><b>새 레포지토리 만들기</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-c9ba4c6b-f261-4316-8053-ce468bd9993b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eccbe392-5d0d-46f3-b5eb-818a986e9b78" style=""><span class="se-fs- se-ff-" id="SE-f52c6b78-e7c5-4838-acfd-97affa387a04" style="">Git은 로컬 repository가 있어서 원격 repository가 반드시 필요한건 아니지만 Git 사용자들은 대부분 원격 repository를 사용한다. GitHub에서 무료 원격 repository를 제공하므로 이를 이용하도록 하겠다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7bfd6e48-407c-4182-b201-2b5c062c0326" style=""><span class="se-fs- se-ff-" id="SE-3454d77b-3d2a-4fb8-a79a-a5e9630553d0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c3f2de6f-fd5d-49a9-93f8-447fa7dcf768" style=""><span class="se-fs- se-ff-" id="SE-c20fdf1d-78a3-477b-9d3b-55022de794a3" style="">GitHub 계정이 없으면 생성하고 </span><span class="se-fs- se-ff-" id="SE-fd075f15-dfba-46c0-99a2-2579cc35b8e6" style=""><a class="se-link" href="https://github.com/new%EB%A1%9C" target="_blank">https://github.com/new로</a></span><span class="se-fs- se-ff-" id="SE-9392ac4b-71e7-4840-aa8d-b96e55ea7787" style=""> 접속해서 GitHub repository를 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a241e23b-efcd-4e8d-a449-c6731d232fb1" style=""><span class="se-fs- se-ff-" id="SE-b79f0257-45bb-46b2-82d2-f30e40b0607a" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-d5d23d59-c48d-436e-817f-42603f7d59b6">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d5d23d59-c48d-436e-817f-42603f7d59b6", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMjM1/MDAxNjI3MzkwNjYxNzg5.NZRUp0_Xt8nTpgjxvcw1o1-V379AvTgBDMOCbvPGG6Eg.C_rlvRWZcEoXScwh680S_ul4pVdSxxDkRz1pR5XKGo4g.PNG.ghdalswl77/image.png", "originalWidth" : "2390", "originalHeight" : "882", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="255" data-width="693" id="SE-d5d23d59-c48d-436e-817f-42603f7d59b6_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-437dbee4-e6f3-4ce8-b858-b34649145605">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-437dbee4-e6f3-4ce8-b858-b34649145605", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfODYg/MDAxNjI3MzkwNjg1NDEy.YjQ_LCq66cM3IFlF4kLWa6YOrUrSWR1iuSH8Dzvd-9sg.3aDE_il930ZPN9mi6PLCRWDnczfgLaFxU6Eb5KiP1tAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_9.57.59.png", "originalWidth" : "1494", "originalHeight" : "1218", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="564" data-width="693" id="SE-437dbee4-e6f3-4ce8-b858-b34649145605_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-23a6f134-cb72-454a-8c16-fcd8c494056d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c4dd7436-a1cc-4cdb-bf86-8ba0c6e85fb8" style=""><span class="se-fs- se-ff-" id="SE-4aaabd60-4137-4516-b2ca-a70bb76fb67f" style="">Public 체크하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a478184d-c0d1-4320-be5d-0c1364f4caf6" style=""><span class="se-fs- se-ff-" id="SE-2f31596e-d030-4dd6-be93-417ef8540f91" style=""><b>[Create repository]</b></span><span class="se-fs- se-ff-" id="SE-0cc75f6d-c337-4711-987b-c4665d42d2b2" style="">를 클릭하여 새 레포지토리를 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-13897ede-b402-4436-ac92-369d132fdf17" style=""><span class="se-fs- se-ff-" id="SE-c55d14fb-70bd-4019-bd8b-841007516b9c" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ff174b48-302f-4c65-99cb-ec7caf1d3199">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ff174b48-302f-4c65-99cb-ec7caf1d3199", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMjMy/MDAxNjI3MzkwNzI3MDQ5._RPain-m2HJ_8EVPdZgTUTAMYGhlPqyvVZa9eRueylgg.Ah9HWP_AS0MmPRofFf4R2hHiJgMxwsdMqkTtcp4fLgog.PNG.ghdalswl77/image.png", "originalWidth" : "2324", "originalHeight" : "536", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="159" data-width="693" id="SE-ff174b48-302f-4c65-99cb-ec7caf1d3199_0" src="images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-aca778a0-1cdf-4b71-9e33-2e4d4d8733cc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-706f5156-dcf4-4291-bd55-4640a5962ae6" style=""><span class="se-fs- se-ff-" id="SE-2b3149c4-187e-40ad-8128-c9f7dfec6501" style="">그리고 생성한 레포지토리 url을 복사해둔다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3a3831ed-721e-42a0-8465-f090abceda0d" style=""><span class="se-fs- se-ff-" id="SE-0e5c5e80-b589-4234-a543-dbbb45370e45" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-e44851ee-61bb-4430-b322-5f4d0cbba2ab">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c77ff96c-d379-4a04-85e9-a416613d0e83" style=""><span class="se-fs-fs24 se-ff-" id="SE-69c3a80f-24f6-411f-90d2-87c0e05acecb" style="">3. </span><span class="se-fs-fs24 se-ff-" id="SE-e9e136c2-5c9e-47df-bdf1-88b4d3ed80f5" style=""><b>리모트 레포지토리 등록하기</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-d68d0df8-faed-4cc3-9df7-795008289acb">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d68d0df8-faed-4cc3-9df7-795008289acb", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMjY1/MDAxNjI3MzkwNTU5MTIz.5ekvx6TjojP5vdwxozysJVvx48_u1VuQmkwPtEbDgAsg.8EgSbnl4x9CP7YlSF3lHWme9sJDnJ6oqfPDe2vNnKqMg.PNG.ghdalswl77/image.png", "originalWidth" : "1888", "originalHeight" : "934", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="342" data-width="693" id="SE-d68d0df8-faed-4cc3-9df7-795008289acb_0" src="images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-41299638-3cfb-4b41-bc22-392c445fa449">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fb413fb3-4444-4d41-827a-b21a0a80b8e2" style=""><span class="se-fs- se-ff-" id="SE-9c65c88b-3d15-437b-b4d1-57c6f5a5863a" style="">Git탭의 Manage Remotes.. 클릭</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7e91ba1a-2cf3-4c85-a260-d4facb6a5b27" style=""><span class="se-fs- se-ff-" id="SE-25992f13-7276-4074-864d-a9b52971e143" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-0bda073d-5719-4e78-9e5a-acc5ac88b167">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-0bda073d-5719-4e78-9e5a-acc5ac88b167", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMjYg/MDAxNjI3MzkwOTU4NDkw.dB6Dly8TweqMCCREFYDC0zkSRDQx_mmDImTtYLimgfUg.6pPJorM276MbA_2lZ4SdkDSLpWUqR0Xz0FJo7NZFOmAg.PNG.ghdalswl77/image.png", "originalWidth" : "1214", "originalHeight" : "434", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="247" data-width="693" id="SE-0bda073d-5719-4e78-9e5a-acc5ac88b167_0" src="images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a4910313-f94b-4a70-9b04-55424725f2e5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0cc981c8-1ce2-485d-a825-b2a950ce9510" style=""><span class="se-fs- se-ff-" id="SE-12cb5a3c-8807-4fbb-b21b-10e8d346fc0e" style="">복사해둔 url을 넣고 OK.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b0d29490-4061-43fb-9475-981dc1d58780" style=""><span class="se-fs- se-ff-" id="SE-85f4ed7a-255e-4615-9cf6-07726f0b425b" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-d142a6c9-d8ad-4809-801f-c1d8c2b180ff">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d142a6c9-d8ad-4809-801f-c1d8c2b180ff", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMTM0/MDAxNjI3MzkwOTc3ODUy.hbQy3tGGOW7bEL6LbxOj_qJQaz5vqREqvgRsPR0YCw8g.lMo7V_UcQiFnY0vw8tZjvB7XOndWcttBv0snnP8ICKIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_10.02.53.png", "originalWidth" : "1200", "originalHeight" : "400", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="231" data-width="693" id="SE-d142a6c9-d8ad-4809-801f-c1d8c2b180ff_0" src="images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9dfcd1e6-da00-4529-9132-9b8540fa8b4c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2960df74-db64-4940-8b2b-b0a989d7da97" style=""><span class="se-fs- se-ff-" id="SE-7389db91-eaa2-4582-a7aa-d612b97aff88" style="">OK</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-88d55e71-0638-4f4d-ae07-3b1092488f96" style=""><span class="se-fs- se-ff-" id="SE-09e37fa1-0b90-4409-b4ee-295277c3a5af" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-fd5d36df-5ab4-4512-be25-4e8b756ed070">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-13c22e2d-315b-4e62-8fbe-43845e920773" style=""><span class="se-fs-fs24 se-ff-" id="SE-79d20c93-f8dd-4b1a-b8c8-3e9aad7003b9" style="">4. </span><span class="se-fs-fs24 se-ff-" id="SE-208479a6-fcf9-4787-9dc0-783a4efb0fc0" style=""><b>로컬 레포지토리 만들기</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-14120b73-a6d2-4c8c-8344-fc7b087f19b3">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-14120b73-a6d2-4c8c-8344-fc7b087f19b3", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfOTMg/MDAxNjI3MzkwMTUxOTAy.4v3k3kVXO-FKSnj1K6vj2Ah1OeRK5Zr8wvwZXcwUfPUg.dBy8wVh-YdGZbRz2GNoJR2R0cFRJ5DHVAYL_mCa6LBEg.PNG.ghdalswl77/image.png", "originalWidth" : "1984", "originalHeight" : "588", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="205" data-width="693" id="SE-14120b73-a6d2-4c8c-8344-fc7b087f19b3_0" src="images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-873c1b45-015d-47cb-9af4-73cb83329b43">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3b7e5d24-5cd2-4971-857f-b76a192813f5" style=""><span class="se-fs- se-ff-" id="SE-9c904c3f-b7fb-40d3-abfe-e10c6bef9e5c" style="">VCS탭의 Create Git Repository 클릭.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c31ff13d-465a-4bba-a8f1-b2e2f71c7edd" style=""><span class="se-fs- se-ff-" id="SE-53dc39b6-d8cd-43cd-8d08-7e8bc62b65db" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e39f7b6b-7546-44ad-9985-21c1d77be754">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e39f7b6b-7546-44ad-9985-21c1d77be754", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMzYg/MDAxNjI3MzkwMTc4NDc2.zrwg8uMNCKig3gpZb06r2UfVJVrjpkzIK3CUkvyK3Igg.VTExA8_PEVyH8iYYNQSM8w1SdrToyimAYjeRSu_l9Tog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_9.49.34.png", "originalWidth" : "2328", "originalHeight" : "928", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="276" data-width="693" id="SE-e39f7b6b-7546-44ad-9985-21c1d77be754_0" src="images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-6c69c3c1-9bc7-4ed3-a5cf-a2360d9016bb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eb8ddef1-b6ad-4aba-b808-70b80b0ee5a9" style=""><span class="se-fs- se-ff-" id="SE-73738071-f00c-4624-a422-ead69c8fddf6" style="">생성한 새 프로젝트를 선택하고 Open 클릭.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d4b76e8a-a7cd-42f7-8e45-9bda01225a08" style=""><span class="se-fs- se-ff-" id="SE-bbda73c5-4b99-4491-a40e-0194306dbbdd" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-b167d190-dfe0-4647-b1c4-b6af227b10a9">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09446d8e-228e-460c-9888-11f88d1dfaff" style=""><span class="se-fs-fs24 se-ff-" id="SE-61cdbe7a-e041-49f8-8727-ee7aad259a87" style="">5.</span><span class="se-fs-fs24 se-ff-" id="SE-288da59c-dd67-4beb-b4c1-4899b6e2d149" style=""><b> commit, push</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-dcc6fa68-4f01-40e5-af77-862910ccfc4d">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-dcc6fa68-4f01-40e5-af77-862910ccfc4d", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMTEz/MDAxNjI3MzkwMjU5ODQ5.gyHEQiTEX8ujIBdkv0cb7ASk9eOI3dIwjvhVve-fZtUg.bFkmMaW_D5bm72Ma4ls5jBcfS18WWTu5aCpNJekZxbcg.PNG.ghdalswl77/image.png", "originalWidth" : "1876", "originalHeight" : "1184", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="437" data-width="693" id="SE-dcc6fa68-4f01-40e5-af77-862910ccfc4d_0" src="images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b2578bdd-c331-4c12-b212-5ba742874cf6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9aea524a-d945-4e4d-9671-22e1e64a66e7" style=""><span class="se-fs- se-ff-" id="SE-3a7efd8d-0f78-4f8c-8ac0-619e630945f1" style="">Git 탭의 Commit 클릭.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0d360acb-2625-4cf2-ab75-d1c89e76865a" style=""><span class="se-fs- se-ff-" id="SE-8739005f-b64f-40ce-9a07-ca605ff33a39" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-7ed513d2-4b2e-4214-83fb-92ec2772f139">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7ed513d2-4b2e-4214-83fb-92ec2772f139", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMTUx/MDAxNjI3MzkwMzY2MzE5.FGsuFP-KEdEPJaiS3Gz-ktxul-5xhRZLA7gQB7q-bBQg.iNQooTbvfGCeq0YvfMrqjv7xtNi0TzKdrHQfdxiZs7Qg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_9.52.42.png", "originalWidth" : "1698", "originalHeight" : "1664", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="679" data-width="693" id="SE-7ed513d2-4b2e-4214-83fb-92ec2772f139_0" src="images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9f625c66-11a7-416b-949e-a6cb26873d96">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cb4abb49-fb99-4e0b-9164-520a3e233ea5" style=""><span class="se-fs- se-ff-" id="SE-a6976169-086d-47a8-ae3b-b43efb31a123" style="">커밋메시지를 아무거나 써두고 Commit.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5ac1df19-a85f-4536-a703-c7574ef2ded1" style=""><span class="se-fs- se-ff-" id="SE-e4a32c0a-9e70-46c8-93e3-99150bef798e" style="">(커밋 메시지를 작성하지 않으면 반려된다. )</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9aca7a63-7f1d-4f76-8792-5d7f287779e5" style=""><span class="se-fs- se-ff-" id="SE-16344c10-a225-45b1-a672-7c8c09173049" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-c2f17a21-9b67-4182-b413-40036cfadf2e">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-c2f17a21-9b67-4182-b413-40036cfadf2e", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMTAy/MDAxNjI3MzkxMDQ2Mzk0.R9FZzZtLiMJGwm8xM2F3ck9UeiLT7IzjmtDbgLCwEUAg.2bausastpD9G6DnEApWzWCv795UCMDBNdLB6kbYtclEg.PNG.ghdalswl77/image.png", "originalWidth" : "1888", "originalHeight" : "142", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="52" data-width="693" id="SE-c2f17a21-9b67-4182-b413-40036cfadf2e_0" src="images/image_17.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8ab85e21-3b0e-4d81-8547-acd64e996572">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be92ef20-0599-4c18-9d72-c5baddd02d11" style=""><span class="se-fs- se-ff-" id="SE-31a546d5-2c08-4048-8233-bb97c6e0af21" style="">Git 탭에서 Push.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ded131e5-139b-46e0-87a2-367f9f5ad4ac" style=""><span class="se-fs- se-ff-" id="SE-7a084274-7d7a-420d-a813-3fda35179e06" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-7e23f6cb-a536-4eb4-a7ee-6595fc3e316b">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7e23f6cb-a536-4eb4-a7ee-6595fc3e316b", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMTEz/MDAxNjI3MzkxMDY5MzA0.QQhIZJOe05g2vnqmF4N2Ub5HeCQQ7yDaSFu4Db7rYjYg.F8qLW_h0jQC2ZahEvCSVzPdLDAE472zJZG4oy1rh_DQg.PNG.ghdalswl77/image.png", "originalWidth" : "1598", "originalHeight" : "1036", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="449" data-width="693" id="SE-7e23f6cb-a536-4eb4-a7ee-6595fc3e316b_0" src="images/image_18.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-cbde497a-5211-4bdc-aab6-3f273b0a1284">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2043cb5c-4008-4d6c-86a0-4cd5f988d2e6" style=""><span class="se-fs- se-ff-" id="SE-d38f7f62-707a-4fc8-9654-b6d3a4b5f7ac" style="">Push.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd3a4fa7-f48a-47f4-8625-083c8e5bd60f" style=""><span class="se-fs- se-ff-" id="SE-5288676e-62de-4e09-bf0e-ff6369bee7c4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cac0eea8-ee30-43fc-be22-25c236696702" style=""><span class="se-fs- se-ff-" id="SE-31af6823-ca21-4ff2-9afa-11978f68dcce" style="">이제 깃의 레포지토리 페이지로 가서 정상적으로 Push 되었는지 확인한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-096e9236-c6ea-4b85-99eb-6e12f9161223">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-096e9236-c6ea-4b85-99eb-6e12f9161223", "src" : "https://postfiles.pstatic.net/MjAyMTA3MjdfMTky/MDAxNjI3MzkxMDg5MDA5.TmQOdoYlgZN6uTKMW6aAVLcyBsBT_ajDvMYKJL-opNog.SMgRtYnUBX8dz__NEmNeRhhhW4O3XcuAy5EhCxgP6VYg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-07-27_%EC%98%A4%ED%9B%84_10.04.46.png", "originalWidth" : "1714", "originalHeight" : "1174", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="474" data-width="693" id="SE-096e9236-c6ea-4b85-99eb-6e12f9161223_0" src="images/image_19.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-110b5d99-b696-40b8-a97f-79c7c67c10bc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3333dd81-925c-4637-99d2-fb65a5eade18" style=""><span class="se-fs- se-ff-" id="SE-ac478bd3-e83b-4eaa-8d3a-6f03015af356" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c12de689-5750-473a-90f1-79f40580842c" style=""><span class="se-fs- se-ff-" id="SE-1dbc0b44-aa53-4733-8126-af5191b0c650" style="">이렇게 GitHub repository에 기존 모듈이 정상적으로 연동되었다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c073c67-7d6b-4fc4-8680-cc326c8cc917" style=""><span class="se-fs- se-ff-" id="SE-5a85ac2b-39e3-48c5-9ebd-5e432cf547fd" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6067df3b-d1bd-4b4a-91ab-14f6335c4199" style=""><span class="se-fs- se-ff-" id="SE-f32ca4be-ec33-4e3f-903c-4d51d92c9674" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2a39e652-8dde-4351-847d-c85521cec422" style=""><span class="se-fs- se-ff-" id="SE-f26a7613-73f6-497d-96c0-e1a1793b93f5" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58c43904-2191-47d3-a796-c38d669b1bf6" style=""><span class="se-fs- se-ff-" id="SE-828758c1-34d1-4985-b671-781ed97d6d2d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8846791e-e2aa-4b51-9b41-9f364d6429e8" style=""><span class="se-fs- se-ff-" id="SE-2aaf3c2b-a9a4-4014-be23-950e79684e84" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-a4952bd0-b03e-413f-a864-bd0c3bb426b8">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a4952bd0-b03e-413f-a864-bd0c3bb426b8", "src" : "https://postfiles.pstatic.net/MjAyMTA3MzBfNCAg/MDAxNjI3NjI2ODQ3NzY1.FPwxmE3mGrA9gUH73pNEvhmMO0oCVMFw9HRA5Rl6F50g.QKVJJAeZLVzQ1XFqr_24EeI0JWzDPRGsMoo1u9D0hOcg.PNG.ghdalswl77/image.png", "originalWidth" : "1324", "originalHeight" : "792", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="414" data-width="693" id="SE-a4952bd0-b03e-413f-a864-bd0c3bb426b8_0" src="images/image_20.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e8b9900a-d6c7-425a-abe2-ee9b881b4627">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b9f22db9-ea59-4cb9-8a6a-a5345454f81b" style=""><span class="se-fs- se-ff-" id="SE-c366e4b9-7d6f-44d3-b41b-429e5b277568" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

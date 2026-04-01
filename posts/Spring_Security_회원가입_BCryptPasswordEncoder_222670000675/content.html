@@ -1,0 +1,246 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222670000675 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-69cbf001-bf1c-4f2a-8f5c-002009dd1e70">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-acfa5606-5527-4f6a-a894-83d2ef852410" style=""><span class="se-fs- se-ff-" id="SE-C0815216-1AC5-4B5D-8291-77F7648CBC0F" style=""><i>스프링부트 환경에서 BCryptPasswordEncoder를 이용한 회원가입 암호화 구현</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-78874149-51AE-4529-929A-675CF720787E" style=""><span class="se-fs- se-ff-" id="SE-EE6E386A-5D65-4C80-AA7D-2D99C3D08788" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D729E6C3-FB20-4279-AADD-906C2D5A56EC" style=""><span class="se-fs-fs19 se-ff-" id="SE-1AFC0DF0-2B13-419E-83A2-168A3CB119CB" style=""><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-61FEC6BC-9D80-43AC-8BAF-5880DE1F46DF" style=""><span class="se-fs-fs19 se-ff-" id="SE-75219CC1-4934-4FBB-9214-B7E251A7A02C" style=""><b>시큐리티의 구조</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D9F21559-9FD4-4FFF-AE99-BCB90CDBDA35" style=""><span class="se-fs- se-ff-" id="SE-F5A99D24-B86D-4FD2-813B-B8D8C9466AA6" style="">웹에서 스프링 시큐리티는 기본적으로 아래와 같이 필터 기반으로 동작한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7DA9AFBC-76EF-4E2C-BF2A-F0F126338B66" style=""><span class="se-fs- se-ff-" id="SE-18668AFB-C052-4B0D-B299-C1CDA06B0B20" style="">많은 필터들이 존재하며, DispatcherServlet 을 호출하기 전에 거치게 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A90BFA13-5231-4FE7-B257-C11C2A1BB5BB" style=""><span class="se-fs- se-ff-" id="SE-A265103D-A9E8-4C71-8FDC-D83E5F94F0B8" style="">자세한 동작 구조는.. </span><span class="se-fs- se-ff-" id="SE-178DAA80-4385-458C-98AA-C64E77A576EC" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222498106263" target="_blank">Spring Security 스프링시큐리티 동작 구조</a></span><span class="se-fs- se-ff-" id="SE-62738324-A93D-474B-9EA5-44FE58345A23" style=""> 링크에 잘 설명되어 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-dd2fbedb-88fd-4fb3-90ce-76f2a814379f">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-dd2fbedb-88fd-4fb3-90ce-76f2a814379f", "src" : "https://postfiles.pstatic.net/MjAyMjAzMTBfNjIg/MDAxNjQ2ODk3MDIwNDkz.D3RM1clsLOGKOxrNWFXeRsoqpHdEJ7xqVGLZzohxmr8g.Arb2VANT5DvFRBUTam5oxvdp5e8bcJHxgaf-suJ5SWIg.PNG.ghdalswl77/security-filters.png", "originalWidth" : "1190", "originalHeight" : "839", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="423" data-width="600" id="SE-dd2fbedb-88fd-4fb3-90ce-76f2a814379f_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-73dc150b-794f-454b-8a5f-c2e85ce074de">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DEDF7D9B-4CB2-41D2-AC54-F1A40688B4D8" style=""><span class="se-fs- se-ff-" id="SE-05E62B62-00EA-42E5-9289-8A9CAB436E88" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D7269C94-0862-4A32-9C19-651C917BAD78" style=""><span class="se-fs-fs19 se-ff-" id="SE-DF4FC437-D948-4FDC-BA6D-58BC74B029DA" style="">프로젝트에 Spring Security 적용하기</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-25EE2E2C-429F-41D4-8E8F-A0B817402EE2" style=""><span class="se-fs- se-ff-" id="SE-B215B878-E042-4771-93D2-CDCD85C35E5F" style="">(Gradle)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7cd5c75a-9a5f-4605-9173-83b02082a15b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">implementation <span class="token se-code-string">'org.springframework.boot:spring-boot-starter-security'</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7cd5c75a-9a5f-4605-9173-83b02082a15b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-58cd1564-22a9-4c47-8e45-03228fafe08d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B197CF9E-54F6-4C10-B414-4C99B0D4C08F" style=""><span class="se-fs- se-ff-" id="SE-C6880A3D-BF9F-4BB9-A67E-7B770FEC58E9" style="">dependencies를 추가한 다음에 적절한 패키지를 생성하고, WebSecurityConfig 클래스를 추가한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1B5A5324-5AE4-4AD2-BD31-80EDCAD67A6A" style=""><span class="se-fs- se-ff-" id="SE-96B84D33-FBE8-44E5-8B18-9CDE3D17FFF7" style="">패키지는 스프링 프로젝트의 패키지 하부에 있어야 한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-467478ac-b8fc-406b-9931-6513acf75efa">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Configuration
+@EnableWebSecurity
+@<span class="token se-code-function">EnableGlobalMethodSecurity</span><span class="token se-code-punctuation">(</span>prePostEnabled <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">WebSecurityConfig</span> <span class="token se-code-keyword">extends</span> <span class="token se-code-class-name">WebSecurityConfigurerAdapter</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-467478ac-b8fc-406b-9931-6513acf75efa"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f77a9820-a3cf-4ee1-9f7b-b9b2a1840b10">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-68D2637A-2A4B-47C1-8C12-4B2B9F64A3A1" style=""><span class="se-fs- se-ff-" id="SE-5BC327D3-BB9F-4E3C-A22A-A0F05AD14B87" style="">위와같이 설정해주면, 이제 사이트 전체가 잠겨서 비밀번호를 쳐야 접근할 수 있게 된다. 원활한 프로젝트 진행을 위해 일단 페이지의 인증을 몇가지 해제한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-b8268551-2aaa-46b7-9a51-e4b0a6e8353b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Override
+    <span class="token se-code-keyword">protected</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">configure</span><span class="token se-code-punctuation">(</span>HttpSecurity httpSecurity<span class="token se-code-punctuation">)</span> throws Exception <span class="token se-code-punctuation">{</span>
+        httpSecurity<span class="token se-code-punctuation">.</span><span class="token se-code-function">cors</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">configurationSource</span><span class="token se-code-punctuation">(</span>request <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">CorsConfiguration</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">applyPermitDefaultValues</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">// CSRF 해제</span>
+        httpSecurity<span class="token se-code-punctuation">.</span><span class="token se-code-function">csrf</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">disable</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">authorizeRequests</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">antMatchers</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/member/*"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">permitAll</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">antMatchers</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/product/**"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">permitAll</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b8268551-2aaa-46b7-9a51-e4b0a6e8353b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-6bf33133-bb9b-49fd-9b86-7dd475419946">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1CCB3262-BB8E-4E39-94AF-AB5D7B2CB1EE" style=""><span class="se-fs- se-ff-" id="SE-24F25ABA-D261-41C3-A577-732ED285C8E2" style="">자원에 대한 접근을 풀고, 밑에서는 세부적인 설정을 따로 넣어준다. 일단은 원활한 진행을 위해 product/아래 경로에 대해 permitAll을 줬다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7E959B5C-BE5F-46E4-BAED-8791DD3AC1BB" style=""><span class="se-fs- se-ff-" id="SE-288E5605-3057-4258-AED4-2B4F7DF1331F" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-111760D1-31CA-4890-910A-90BF8F60B176" style=""><span class="se-fs-fs19 se-ff-" id="SE-5B9BC384-2310-4FFF-A55D-F2184FE0FEAD" style="">회원가입 로직</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-34830F21-7741-4EB8-A925-6EFFE834329C" style=""><span class="se-fs- se-ff-" id="SE-2E4D2256-5748-4F7A-8C58-D5E53BBAC81F" style="">MemberDao.java</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e9d017b8-7120-40fd-a7d8-48e5b66f26d0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">MemberDao</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> JdbcTemplate jdbcTemplate<span class="token se-code-punctuation">;</span>
+
+    @Autowired
+    <span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">setDataSource</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">DataSource dataSource</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">JdbcTemplate</span><span class="token se-code-punctuation">(</span>dataSource<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> PostMemberRes <span class="token se-code-function">createMember</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">PostMemberReq postMemberReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        String createMemberQuery <span class="token se-code-operator">=</span> <span class="token se-code-string">"insert into Member (email, password, nickname) VALUES (?, ?, ?)"</span><span class="token se-code-punctuation">;</span>
+        Object<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span> createMemberParams <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Object</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">{</span>postMemberReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getEmail</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span> postMemberReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getPassword</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span> postMemberReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getNickname</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate<span class="token se-code-punctuation">.</span><span class="token se-code-function">update</span><span class="token se-code-punctuation">(</span>createMemberQuery<span class="token se-code-punctuation">,</span> createMemberParams<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        String getLastInsertIdxQuery <span class="token se-code-operator">=</span> <span class="token se-code-string">"select last_insert_id()"</span><span class="token se-code-punctuation">;</span>
+        int lastInsertIdx <span class="token se-code-operator">=</span> <span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>jdbcTemplate<span class="token se-code-punctuation">.</span><span class="token se-code-function">queryForObject</span><span class="token se-code-punctuation">(</span>getLastInsertIdxQuery<span class="token se-code-punctuation">,</span> int<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">PostMemberRes</span><span class="token se-code-punctuation">(</span>lastInsertIdx<span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e9d017b8-7120-40fd-a7d8-48e5b66f26d0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-30953bf5-63aa-42b4-9ec7-4107def4d75a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ADFFEC49-5EB4-408A-99A6-F81E27C402EA" style=""><span class="se-fs- se-ff-" id="SE-147351CB-249F-4B4E-A6D6-20A4781F6023" style="">email, password, nickname을 디비에 저장하는 createMember 메소드 구현.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-148A275A-60FA-40E3-ACD7-9C5B6DA805E8" style=""><span class="se-fs- se-ff-" id="SE-52213C5E-440D-4B1D-BB02-C3C7899770C7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-AEF6D52A-2F24-48E8-8D74-79E411E65030" style=""><span class="se-fs- se-ff-" id="SE-7BCC99EA-AE34-4E75-84F3-CA552E544528" style="">MemberService.java</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7288c870-06b8-4b07-9beb-bd13bb7042fb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Service
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">MemberService</span> <span class="token se-code-punctuation">{</span>
+    @Autowired
+    MemberDao memberDao<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">public</span> PostMemberRes <span class="token se-code-function">createMember</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">PostMemberReq postMemberReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> memberDao<span class="token se-code-punctuation">.</span><span class="token se-code-function">createMember</span><span class="token se-code-punctuation">(</span>postMemberReq<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7288c870-06b8-4b07-9beb-bd13bb7042fb"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-faa0a50e-b7ba-4ced-8cdf-698454d00a1a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BB239C8B-C4B5-4BFB-ABE8-E6565C0EFCBE" style=""><span class="se-fs- se-ff-" id="SE-8B23A76D-0B53-4814-972E-3FB9A93F7DB5" style="">서비스에서 createMember 메소드 호출.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D361AFE8-9324-4B7F-89CC-30D71D9B0649" style=""><span class="se-fs- se-ff-" id="SE-56272374-2B96-4A7A-AA2B-D503A1C5AAAB" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CEBB50CF-A981-41FE-9CA1-488D07C75335" style=""><span class="se-fs- se-ff-" id="SE-3942A80C-3E78-414F-B4FD-94961F242741" style="">MemberController.java</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-c96f6bdf-4919-4601-9aa7-1b0bac794490">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@RestController
+@<span class="token se-code-function">RequestMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/member"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">MemberController</span> <span class="token se-code-punctuation">{</span>
+
+    @ResponseBody
+    @<span class="token se-code-function">PostMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/signup"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> BaseResponse<span class="token se-code-operator">&lt;</span>PostMemberRes<span class="token se-code-operator">&gt;</span> <span class="token se-code-function">createMember</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">@RequestBody PostMemberReq postMemberReq</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">try</span> <span class="token se-code-punctuation">{</span>
+            BCryptPasswordEncoder passwordEncoder <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">BCryptPasswordEncoder</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+            postMemberReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">setPassword</span><span class="token se-code-punctuation">(</span>passwordEncoder<span class="token se-code-punctuation">.</span><span class="token se-code-function">encode</span><span class="token se-code-punctuation">(</span>postMemberReq<span class="token se-code-punctuation">.</span><span class="token se-code-function">getPassword</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+
+            PostMemberRes postMemberRes <span class="token se-code-operator">=</span> memberService<span class="token se-code-punctuation">.</span><span class="token se-code-function">createMember</span><span class="token se-code-punctuation">(</span>postMemberReq<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">BaseResponse</span><span class="token se-code-operator">&lt;</span><span class="token se-code-operator">&gt;</span><span class="token se-code-punctuation">(</span>postMemberRes<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">catch</span> <span class="token se-code-punctuation">(</span>Exception exception<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+            System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span>exception<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">BaseResponse</span><span class="token se-code-operator">&lt;</span><span class="token se-code-operator">&gt;</span><span class="token se-code-punctuation">(</span>BaseResponseStatus<span class="token se-code-punctuation">.</span><span class="token se-code-constant">FAIL</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c96f6bdf-4919-4601-9aa7-1b0bac794490"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4fe55877-1e8c-4a88-9d6d-8484154b3913">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4B0D92E5-0E4C-44C7-B2B1-917D687C1355" style=""><span class="se-fs- se-ff-" id="SE-EAE5AEBA-73D2-476D-B3B2-17A8BC3B872C" style="">스프링 시큐리티에서 지원해주는 BCryptPasswordEncoder를 이용해 회원 비밀번호를 암호화하고, setPassword로 postMemberReq.getPassword에 저장.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1CFF6ACA-1687-4AF2-ADF8-3E0D9872CCDA" style=""><span class="se-fs- se-ff-" id="SE-2D486ACF-8764-4127-97F9-C0D6FAFA175F" style="">memberService의 createMember 메소드에 postMemberReq 전달하고 이를 저장한 postMemberRes를 반환.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15ACE9B9-C517-44FA-824D-FD8FA37A33E6" style=""><span class="se-fs- se-ff-" id="SE-0905261A-C859-4E6C-A72F-1ABD08572C4F" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-62C19E9A-1F36-4518-962B-851ADE9DA5D6" style=""><span class="se-fs- se-ff-" id="SE-CC27BA82-8E6D-4D89-9F83-6A04AEE5BCA5" style="">프론트는 리액트로 구현했다. 비밀번호 입력 후 가입 버튼을 누르면 정상적으로 회원가입이 된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1CD43A59-DEF4-4EB9-9E97-809667F7F7D6">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image" style="">
+<a class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1CD43A59-DEF4-4EB9-9E97-809667F7F7D6", "src" : "https://postfiles.pstatic.net/MjAyMjAzMTFfMTUz/MDAxNjQ2OTkyNDI1MTE2.G5mnlDUw-zhCA6NzRo6-TJk4KoNiHy2ShvhvWDiLMI8g.Y0zH9XD7fZqvLI7uVyOgZ9-8wYr_l0wq5t9ryfl3Gpwg.GIF.ghdalswl77/2371294242.gif", "originalWidth" : "500", "originalHeight" : "375", "linkUse" : "false", "link" : ""}' data-linktype="img" href="#" onclick="return false;" style="">
+<video class="_gifmp4 custom-se-image-video-resource egjs-visible" data-gif-url="https://postfiles.pstatic.net/MjAyMjAzMTFfMTUz/MDAxNjQ2OTkyNDI1MTE2.G5mnlDUw-zhCA6NzRo6-TJk4KoNiHy2ShvhvWDiLMI8g.Y0zH9XD7fZqvLI7uVyOgZ9-8wYr_l0wq5t9ryfl3Gpwg.GIF.ghdalswl77/2371294242.gif?type=w773" id="SE-1CD43A59-DEF4-4EB9-9E97-809667F7F7D6_0" loop="loop" muted="muted" playsinline="" poster="https://postfiles.pstatic.net/MjAyMjAzMTFfMTUz/MDAxNjQ2OTkyNDI1MTE2.G5mnlDUw-zhCA6NzRo6-TJk4KoNiHy2ShvhvWDiLMI8g.Y0zH9XD7fZqvLI7uVyOgZ9-8wYr_l0wq5t9ryfl3Gpwg.GIF.ghdalswl77/2371294242.gif?type=w80_blur" src="https://mblogvideo-phinf.pstatic.net/MjAyMjAzMTFfMTUz/MDAxNjQ2OTkyNDI1MTE2.G5mnlDUw-zhCA6NzRo6-TJk4KoNiHy2ShvhvWDiLMI8g.Y0zH9XD7fZqvLI7uVyOgZ9-8wYr_l0wq5t9ryfl3Gpwg.GIF.ghdalswl77/2371294242.gif?type=mp4w800"></video>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-23a5dc20-b5ee-47cd-ad05-73ad5e966dfb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"> <span class="token se-code-keyword">const</span> <span class="token se-code-punctuation">[</span>email<span class="token se-code-punctuation">,</span> setEmail<span class="token se-code-punctuation">]</span> <span class="token se-code-operator">=</span> <span class="token se-code-function">useState</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">""</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-punctuation">[</span>password<span class="token se-code-punctuation">,</span> setPassword<span class="token se-code-punctuation">]</span> <span class="token se-code-operator">=</span> <span class="token se-code-function">useState</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">""</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-punctuation">[</span>nickname<span class="token se-code-punctuation">,</span> setNickname<span class="token se-code-punctuation">]</span> <span class="token se-code-operator">=</span> <span class="token se-code-function">useState</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">""</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">let</span> body <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-literal-property property">email</span><span class="token se-code-operator">:</span> email<span class="token se-code-punctuation">,</span>
+<span class="token se-code-literal-property property">password</span><span class="token se-code-operator">:</span> password<span class="token se-code-punctuation">,</span>
+<span class="token se-code-literal-property property">nickname</span><span class="token se-code-operator">:</span> nickname
+  <span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">const</span> <span class="token se-code-function-variable function">onSubmit</span> <span class="token se-code-operator">=</span> <span class="token se-code-keyword">async</span> <span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-operator">=&gt;</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">try</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">const</span> response <span class="token se-code-operator">=</span> <span class="token se-code-keyword">await</span> axios<span class="token se-code-punctuation">.</span><span class="token se-code-function">post</span><span class="token se-code-punctuation">(</span>
+<span class="token se-code-string">"http://localhost:8080/member/signup"</span><span class="token se-code-punctuation">,</span>
+        body<span class="token se-code-punctuation">,</span>
+<span class="token se-code-punctuation">{</span>
+<span class="token se-code-literal-property property">headers</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">{</span> <span class="token se-code-string-property property">"Content-Type"</span><span class="token se-code-operator">:</span> <span class="token se-code-string">"application/json"</span> <span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">catch</span> <span class="token se-code-punctuation">(</span>e<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+      console<span class="token se-code-punctuation">.</span><span class="token se-code-function">log</span><span class="token se-code-punctuation">(</span>e<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-23a5dc20-b5ee-47cd-ad05-73ad5e966dfb"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e62568d2-87a8-437d-9740-add9bacef1f8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-EF6F0DB6-209C-4A4D-A778-266DE85ADAB4" style=""><span class="se-fs- se-ff-" id="SE-AFBF4CF9-1F4E-4ACC-B4D5-C6E56272B7D1" style="">정상적으로 구현했다면, 위와같이 암호화된 비밀번호가 저장된것을 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C7804FE9-7F62-4032-80E4-9A426E588A30" style=""><span class="se-fs- se-ff-" id="SE-E28E7771-D67D-4BDC-BD9F-E737D54CD049" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

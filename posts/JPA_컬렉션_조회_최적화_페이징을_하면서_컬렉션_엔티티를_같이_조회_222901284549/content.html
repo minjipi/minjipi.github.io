@@ -1,0 +1,282 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222901284549 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-c981c35f-0d01-461c-814a-de7a1daa9e29">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-b8f1cc40-5f36-41aa-92ca-889f8a382bfa" style=""><span class="se-fs-fs13 se-ff-" id="SE-8bf96199-1926-4e32-9c5e-7efc7e91e82e" style=""><i>이전 글</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-e2522893-24ac-4334-8538-de87728a5a79" style=""><span class="se-fs- se-ff-" id="SE-4aeb8829-a541-46d4-a683-206a35d4a230" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222900622339" target="_blank">컬렉션 조회(일대다 관계) 최적화</a></span></p><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-b7af5e86-708a-4f01-a29b-67d0ba06eb03" style=""><span class="se-fs- se-ff-" id="SE-ecccad32-45ac-486d-97a2-84cd6053bdcb" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-704597df-4426-4677-8029-d6f408b5a05f" style=""><span class="se-fs- se-ff-" id="SE-fe23ff06-e232-4a2b-ad35-47fe0486bae6" style="">페이징을 하면서 컬렉션 엔티티를 같이 조회하려면 어떻게 해야할까?</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ae4b4388-bf4f-41bc-a990-1e7e464c52a1" style=""><span class="se-fs- se-ff-" id="SE-da3f654e-1f44-4d8b-968e-0a81034c1765" style="">​</span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93d7d677-3dd7-4518-ad39-575b44e8eecd" style=""><span class="se-fs- se-ff-" id="SE-46cc3469-4f43-47b2-8038-bcc7a980ff4c" style="">XToOne 관계는 모두 fetch join. (toOne 끼리는 fetch join을 해도 문제없음. 데이터 row수가 변하지 않음.)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fdb291f3-e187-4b3e-b535-2cb4d2372101" style=""><span class="se-fs- se-ff-" id="SE-fd765e70-aa24-4043-92bd-8d89fae02620" style="">컬렉션 조회는 지연로딩으로. 여기서 지연 로딩 성능 최적화를 위해, @BatchSize 혹은 hibernate.default_batch_fetch_size 옵션을 사용한다. (후자는 글로벌/전자는 특정 엔티티에만) 적어둔 갯수만큼 미리 땡겨오는 녀석이다.</span></p></li></ol><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33f87cca-8733-4048-ab0b-6470cf4016db" style=""><span class="se-fs- se-ff-" id="SE-f1a37196-709e-48f7-aca6-7a214f41f369" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e2509b6-6e1d-4c4a-bd70-b05552653c2a" style=""><span class="se-fs- se-ff-" id="SE-2b990dbc-433b-47ed-959b-95dbf6ca2560" style="">[OrderController]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-7df82f2b-ef85-4fb6-b45d-b6b0e0d476de">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">    @<span class="token se-code-function">GetMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/orders"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> List<span class="token se-code-operator">&lt;</span>OrderDto<span class="token se-code-operator">&gt;</span> <span class="token se-code-function">orders</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+
+        List<span class="token se-code-operator">&lt;</span>Order<span class="token se-code-operator">&gt;</span> orders <span class="token se-code-operator">=</span> orderRepository<span class="token se-code-punctuation">.</span><span class="token se-code-function">findAllWithMemberDelivery</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        List<span class="token se-code-operator">&lt;</span>OrderDto<span class="token se-code-operator">&gt;</span> result <span class="token se-code-operator">=</span> orders<span class="token se-code-punctuation">.</span><span class="token se-code-function">stream</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">map</span><span class="token se-code-punctuation">(</span>o <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">OrderDto</span><span class="token se-code-punctuation">(</span>o<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">collect</span><span class="token se-code-punctuation">(</span><span class="token se-code-function">toList</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> result<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7df82f2b-ef85-4fb6-b45d-b6b0e0d476de"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3f60d285-38da-4908-8d90-45fbf117ad16">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4e1cfdb7-c052-4a3e-976e-32313b8bbede" style=""><span class="se-fs- se-ff-" id="SE-3d35f1fb-db2e-4fa3-904e-e996df71f928" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bb03b5f1-1cab-4e66-8920-c4a620e505ba" style=""><span class="se-fs- se-ff-" id="SE-8f52e3ff-5d50-47c3-899d-eeccf67a9e0f" style="">[OrderRepository]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-0274452d-d52d-479a-81a5-d9e4eeb9910c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"> <span class="token se-code-keyword">public</span> List<span class="token se-code-operator">&lt;</span>Order<span class="token se-code-operator">&gt;</span> <span class="token se-code-function">findAllWithMemberDelivery</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">createQuery</span><span class="token se-code-punctuation">(</span>
+<span class="token se-code-string">"select o from Order o"</span> <span class="token se-code-operator">+</span>
+<span class="token se-code-string">" join fetch o.member m"</span> <span class="token se-code-operator">+</span>
+<span class="token se-code-string">" join fetch o.delivery d"</span><span class="token se-code-punctuation">,</span> Order<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">getResultList</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0274452d-d52d-479a-81a5-d9e4eeb9910c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-587a05ed-9712-459c-a602-e92cdbc7a647">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67f33ccb-ef69-4323-adf5-94c872151758" style=""><span class="se-fs- se-ff-" id="SE-aa51779c-25fe-491a-b6c0-f1dc9383766c" style="">위에서 설명했듯이, XToOne 관계인 member와 delivery는 그냥 페치조인으로 가져온다. 하지만 orderItems는 ToOne 관계가 아니라 페치조인을 하면 성능최적화가 불가능 하다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f4dbfe1d-ceb4-4ab4-9ec6-95680b596cee" style=""><span class="se-fs- se-ff-" id="SE-0d86f3dc-10cd-4902-8a8d-bc4ef2fb62ab" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-fcb0cccc-aae3-41b1-a6cf-734823b753c5">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a9af8fac-e7f1-424b-a60c-f3272e803f7f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d413ce7a-fb73-457e-87d5-60a8e420140b" style=""><span class="se-fs- se-ff-" id="SE-e94af5cf-13ee-4d05-b0ce-d5261af9a8f1" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-829f4b97-aa2f-4b2a-8f90-3755fdda7c0d" style=""><span class="se-fs- se-ff-" id="SE-1863989d-0a43-4aa6-866c-b44b49aa4b67" style="">모든 쿼리문을 보기엔 너무 길어서 이 한 장만 첨부했지만 굉장히 길고 N+1 문제가 생긴 상황이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dab96b50-761c-40d9-ba13-f5bfb37cdad2" style=""><span class="se-fs- se-ff-" id="SE-2ddc8478-a0aa-4c2f-9107-a89324e93291" style="">해결해보자..</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_stripe __se-component" id="SE-847fdecc-98ee-4485-b201-ee74200b6fe3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">GetMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/orders"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> List<span class="token se-code-operator">&lt;</span>OrderDto<span class="token se-code-operator">&gt;</span> <span class="token se-code-function">orders</span><span class="token se-code-punctuation">(</span>@<span class="token se-code-function">RequestParam</span><span class="token se-code-punctuation">(</span>value <span class="token se-code-operator">=</span> <span class="token se-code-string">"offset"</span><span class="token se-code-punctuation">,</span> defaultValue <span class="token se-code-operator">=</span> <span class="token se-code-string">"0"</span><span class="token se-code-punctuation">)</span> int offset<span class="token se-code-punctuation">,</span>
+                                        @<span class="token se-code-function">RequestParam</span><span class="token se-code-punctuation">(</span>value <span class="token se-code-operator">=</span> <span class="token se-code-string">"limit"</span><span class="token se-code-punctuation">,</span> defaultValue <span class="token se-code-operator">=</span> <span class="token se-code-string">"100"</span><span class="token se-code-punctuation">)</span> int limit<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+
+        List<span class="token se-code-operator">&lt;</span>Order<span class="token se-code-operator">&gt;</span> orders <span class="token se-code-operator">=</span> orderRepository<span class="token se-code-punctuation">.</span><span class="token se-code-function">findAllWithMemberDelivery</span><span class="token se-code-punctuation">(</span>offset<span class="token se-code-punctuation">,</span> limit<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        List<span class="token se-code-operator">&lt;</span>OrderDto<span class="token se-code-operator">&gt;</span> result <span class="token se-code-operator">=</span> orders<span class="token se-code-punctuation">.</span><span class="token se-code-function">stream</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">map</span><span class="token se-code-punctuation">(</span>o <span class="token se-code-operator">-</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">OrderDto</span><span class="token se-code-punctuation">(</span>o<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">collect</span><span class="token se-code-punctuation">(</span><span class="token se-code-function">toList</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> result<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-847fdecc-98ee-4485-b201-ee74200b6fe3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-25c9f4bd-1ef1-4394-9b15-738affaf37ef">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ed429407-f9fd-4869-be10-5397470afd32" style=""><span class="se-fs- se-ff-" id="SE-497756de-0d81-4ee5-9372-c3a342741009" style="">offset limit 옵션을 주고, repository에 이 파라미터를 받게 구현한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-bcd5d614-31e7-4542-88be-24dae93bc5bd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> List<span class="token se-code-operator">&lt;</span>Order<span class="token se-code-operator">&gt;</span> <span class="token se-code-function">findAllWithMemberDelivery</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">int offset, int limit</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">createQuery</span><span class="token se-code-punctuation">(</span>
+<span class="token se-code-string">"select o from Order o"</span> <span class="token se-code-operator">+</span>
+<span class="token se-code-string">" join fetch o.member m"</span> <span class="token se-code-operator">+</span>
+<span class="token se-code-string">" join fetch o.delivery d"</span><span class="token se-code-punctuation">,</span> Order<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">setFirstResult</span><span class="token se-code-punctuation">(</span>offset<span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">setMaxResults</span><span class="token se-code-punctuation">(</span>limit<span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">getResultList</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bcd5d614-31e7-4542-88be-24dae93bc5bd"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-12ad7f52-2b62-4ba7-acab-1c128f413e1d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8f3f09e4-15b2-4153-be3b-761b13b70a8d" style=""><span class="se-fs- se-ff-" id="SE-34d9cbf1-3443-4805-b068-90d69c43b6fb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-25efcb8f-473e-4cc6-94bb-350ce104a7dc" style=""><span class="se-fs- se-ff-" id="SE-c3cfe25a-b21a-4715-8c5e-b4655bd5e11b" style="">그리고 yml 파일에 다음과 같이 </span><span class="se-fs- se-ff-" id="SE-c6ef6163-b196-419e-997a-0dbe80f76281" style=""><b>default_batch_fetch_size: 100</b></span><span class="se-fs- se-ff-" id="SE-576caf3d-b3ee-4519-879b-e53b931b69c2" style=""> 를 추가한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-61b063ea-6ef9-4cfa-8c9a-c8551641f594">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">jpa</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">hibernate</span><span class="token se-code-operator">:</span>
+      ddl<span class="token se-code-operator">-</span>auto<span class="token se-code-operator">:</span> create
+    <span class="token se-code-literal-property property">properties</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">hibernate</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">show_sql</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+<span class="token se-code-literal-property property">format_sql</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+<span class="token se-code-literal-property property">default_batch_fetch_size</span><span class="token se-code-operator">:</span> <span class="token se-code-number">100</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-61b063ea-6ef9-4cfa-8c9a-c8551641f594"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-af840db6-324b-4b10-a32d-a564a35095c8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-556248dd-d0e7-4fd4-a667-5b2bdc4966a0" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-fb6e539a-ff6b-4fad-bcf3-e93d239b61bf" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9619966e-f1de-42ee-8c50-337e15206619" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-3b10f1d4-da9a-49e2-9c04-d411f946d72a" style="">여기서 100으로 설정해둔 부분이  in 쿼리의 갯수를 정하는 건데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-97e8aa4d-a1af-445f-864c-8c668d77b8ac" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-e526525b-5fdc-4bfc-abf2-5b442a4ba0d5" style="">여기를 10으로 해두고 총 데이터 수가 100개면 10개 날아가는 식이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a4ca3a55-279b-47cd-968a-1126c1f8f661" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-2b539019-1b9b-4e64-afda-2ddfdbb44015" style="">(일단 이는 global하게 설정하는 방법이고, 엔티티에 @BatchSize(size=[]) 옵션을 주면 더 세세하게 설정할 수 있다.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ef96fd5a-e71c-4020-99b1-0d4f0b04be76" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-652a8a36-6e1b-461d-95a4-6ccf10b741b3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5034822d-d684-4cea-8955-62ba879a5bc6" style=""><span class="se-fs- se-ff-" id="SE-c13791ff-e35f-45a5-9e68-2ad5fcdb40ef" style="">api를 호출해서 결과를 확인해보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-524798b3-a908-4ec8-ab71-1a17825b69d8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">http</span><span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>localhost<span class="token se-code-operator">:</span><span class="token se-code-number">8080</span><span class="token se-code-operator">/</span>orders<span class="token se-code-operator">?</span>offset<span class="token se-code-operator">=</span><span class="token se-code-number">0</span><span class="token se-code-operator">&amp;</span>limit<span class="token se-code-operator">=</span><span class="token se-code-number">100</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-524798b3-a908-4ec8-ab71-1a17825b69d8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-26198d9d-e95a-4f00-8a4b-4dd5dc6f99d5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a03e4894-2f17-4adb-adaf-7a76a3adb584" style=""><span class="se-fs- se-ff-" id="SE-e7923824-53fe-4037-868c-a95b095ba2ed" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-02b715fd-9b05-458c-9a24-e6473e1adc99" style=""><span class="se-fs- se-ff-" id="SE-c2745634-6169-4d94-9816-2f4efb69a335" style="">결과 쿼리가 굉장히 짧아진 것을 확인할 수 있다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f03fa2ca-9dd9-4daa-82ec-5dfa7b98ea27" style=""><span class="se-fs- se-ff-" id="SE-7fc1d13c-bea8-4625-be98-32990bdbb5b1" style="">이 전 쿼리는 맴버 각각 쿼리를 날렸는데 지금은 in 쿼리로 한번에 날려서 가지고 온다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-cd64c885-85e0-47ed-a635-bc20ef9473aa">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-cd64c885-85e0-47ed-a635-bc20ef9473aa", "src" : "https://postfiles.pstatic.net/MjAyMjEwMTZfMTA4/MDAxNjY1ODUyMjAwMzA3.iZQcgwJrbqK4dacw6q7LvL5_T8QxUL7FE-282PHO8Z4g.ewaoXOh2gxNboO_Rfw-jTNglcNZA_sDqEy04I0DweXcg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-16_%EC%98%A4%EC%A0%84_1.43.15.png", "originalWidth" : "1006", "originalHeight" : "264", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="181" data-width="693" id="SE-cd64c885-85e0-47ed-a635-bc20ef9473aa_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f3e8279d-68cb-4125-8e65-4d2f6fbb7bc2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7e96e5a1-219a-4f8d-bfef-f27c66257a6e" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-a479b64c-d86f-4a3f-9cf4-2bffae9541ad" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a732effb-d785-4afd-98e6-b92c25850e66" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-d737aee9-b9ec-4377-a319-cd4448098663" style="">그리고 product도 한번에 4개를 다 가져온다. 이게 지금은 4개지만, 100개라면? ^^ 대박!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-3e49809a-b27b-486f-a393-2c2cbbe08a7c">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-3e49809a-b27b-486f-a393-2c2cbbe08a7c", "src" : "https://postfiles.pstatic.net/MjAyMjEwMTZfMTI0/MDAxNjY1ODUzMTQ4ODU4.1Kb3RsgzdRLlZuF_aWu_W98FNi_OBXkRKuEB7LyjQjcg.8Cg_qkuKqzF3h3o_VHExobu-0Y9y5IJNL94_C4VocsYg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-16_%EC%98%A4%EC%A0%84_1.59.06.png", "originalWidth" : "1404", "originalHeight" : "600", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="296" data-width="693" id="SE-3e49809a-b27b-486f-a393-2c2cbbe08a7c_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-2e993162-321b-43f8-a7ab-245cc980f545">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21f210bf-f786-4c0b-b213-05a470c90f86" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-832c4a47-bcf3-48ac-b6cc-4e6c7b86bd45" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5ed347e7-ad3d-49a7-922c-156e7eae10d7" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-a739096e-d87f-4724-8478-3ea3c10e75fe" style="">그래서 이렇게 하면 1:M:N 이 1:1:1이 되는 최적화가 가능한 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09391b7a-8ba3-478b-bf3b-76529368f30b" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-98df2c0d-f9cf-41d5-b6fb-c1d3ead1604c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cab5ddf2-e518-46c2-8743-76e3568d569e" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-f63c8fc1-9927-43dc-8ad8-588343dce18d" style="">그런데, 사실 쿼리 수만 따져보면 한번에 조회됐던 모두 fetch join한 버전이 쿼리 1번으로 가장 적긴하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21acf062-1f72-484c-a65e-a4e795d3c290" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-133f8d1d-0068-4722-b60a-a3e92c436a06" style="">하지만 뽑은 데이터만 살펴보면 중복된 데이터가 많다는 문제가 있다. </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-a0a58238-6b82-4931-a69f-b2c8e857bd6b">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a0a58238-6b82-4931-a69f-b2c8e857bd6b", "src" : "https://postfiles.pstatic.net/MjAyMjEwMTZfNDAg/MDAxNjY1ODUzOTEzMzIz._Y0TBmCCbeek_jDu7WpEzlKm5mwn3kPdpYgnZKkgOxYg.htf5iyBI5NG9wMHv5HbEmOpfhErERxS8S0svMaNl6gog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-16_%EC%98%A4%EC%A0%84_2.11.45.png", "originalWidth" : "1782", "originalHeight" : "1712", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="665" data-width="693" id="SE-a0a58238-6b82-4931-a69f-b2c8e857bd6b_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-67fd521b-1e7c-4810-a0a7-84b05d52f989">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6a68d276-50dc-4167-b8b9-0b963af9b79c" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-ee4ec4a1-b53b-43db-b273-940983acf28a" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e15f4357-f9dd-4464-b26e-0489a5d97e19" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-850fe780-c7c7-4ff5-93d0-c3ad5ef11893" style="">이 중복 데이터를 디비에서 어플리케이션으로 다~ 가져오는건데.. 데이터 전송량이 많아지는 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-73aa7596-6fd0-40df-bbeb-8be1307d486d" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-a98a2c67-8ea6-4117-b0b6-8bda68c7a9e0" style="">그에 비해 이번 포스팅에서 한 방식을 보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-621abe33-263b-4e5e-96f4-a1a6f33e8ea1" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-8abca5dd-94cb-4532-86f5-8213551b5746" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1ae05092-3f2e-470f-acc2-03fe39d9e411">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1ae05092-3f2e-470f-acc2-03fe39d9e411", "src" : "https://postfiles.pstatic.net/MjAyMjEwMTZfMTY0/MDAxNjY1ODU0Mjg3ODky.3sKb8NAuJ0TJLSZvPfUKmmkXYatPWz31uiMRHZ7QRkIg.AU-Mx7eo565WSUR2VxK2lhPgiFcFQKgVOff5EaZFGEAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-16_%EC%98%A4%EC%A0%84_2.18.04.png", "originalWidth" : "1870", "originalHeight" : "568", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="210" data-width="693" id="SE-1ae05092-3f2e-470f-acc2-03fe39d9e411_0" src="images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-26be9a87-2d88-4480-bce2-3ba9c81b2b7d" style=""><span class="se-fs- se-ff-" id="SE-b0dc7391-ce2a-4370-9cbf-853034abf4bd" style="">쿼리를 H2 디비에 복붙해서 확인!</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-1912cec0-afbd-4c40-a733-afcd606e481b">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1912cec0-afbd-4c40-a733-afcd606e481b", "src" : "https://postfiles.pstatic.net/MjAyMjEwMTZfOTQg/MDAxNjY1ODU0MTI2MDcw.KMfx-974zclsNAdCVTNOZeJFSqwzZT0wlRqgdyqQs98g.eNeUUP1Hei55GOOPPG580V-Iq6CRmmFe7W0jtvH59UEg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-16_%EC%98%A4%EC%A0%84_2.15.22.png", "originalWidth" : "1544", "originalHeight" : "644", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="289" data-width="693" id="SE-1912cec0-afbd-4c40-a733-afcd606e481b_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-3d33c85b-7430-462c-ad89-3b1e1d0aed8a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-88ff3ff2-7f49-430d-afb3-6c5198c309bc" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-32892da5-5c60-44ae-b08c-11639225cece" style="">중복 없는 데이터가 나온다. (이 역시 2건, 4건이라 와닿지 않을 수 있지만 100개 1000개 라면!)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4128c699-85f9-4c97-855d-09d813b0eaee" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-9a7b7f68-87bb-4ebd-a8a8-7dde93978a67" style="">default_batch_fetch_size 덕분에.ㅎㅎ</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-36a8d090-c460-469d-90e7-4a1c29822959" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-997d80ba-1f52-48f6-a5f1-2f623645284d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6dde3a1d-db45-4db5-97be-a602cd8fc29d" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-13906f6c-8609-4ce7-abc1-cb474aa34adb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db8e35f5-0d3e-443b-91fd-823458d7dfa8" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-9758a516-b1c9-416e-8d0b-2a7130895d90" style="">📍 그래서 이번 포스팅 결론:</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6635fdec-19c9-427c-8526-27c9531ca728" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-ffd26bfc-b301-4f9b-a0b3-8ae72f64c14e" style="">- default_batch_fetch_size 으로, 1:M:N 이 1:1:1이 되는 최적화가 가능하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c5e0d648-8232-43a1-9c5f-aca1500369a1" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-8e592b7f-8221-46a5-b2cc-c5bfd0aabd8d" style="">- 컬렉션 페치 조인은 페이징이 불가능하지만 이 방법은 페이징이 가능하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-00e38b26-1705-4e66-a323-4e41ed88c34c" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-836ca209-9752-4496-8796-763860819dd2" style="">- </span><span class="se-fs- se-ff-" id="SE-3c6cdfa2-862f-4970-b700-82ab825a06b9" style=""><b>ToOne 관계는 페치조인을, 나머지는 default_batch_fetch_size 로 최적화 하자.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d5be3601-b002-4426-9104-ff8267847fef" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-a5c837eb-ebdc-40b5-a37e-b393e6451df9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8889ee50-3c90-4ae4-bcfd-c257c572e66e" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-c0dd0b2d-3593-4fbf-9927-be4ba772d0cb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0c8e52ad-13e0-4fc4-947d-202237eb6fdf" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-201cd921-4f90-49c0-af3b-5e12238a5550" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e7d31b8e-353c-478b-b1e0-7a08871c56d0">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-right" style="max-width:200px;">
+<div class="se-module se-module-image" style="">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e7d31b8e-353c-478b-b1e0-7a08871c56d0", "src" : "https://blogfiles.pstatic.net/MjAyMjEwMTVfMTk1/MDAxNjY1NzY1NTU4MjY0.WblZk22_Y0l2vTlT0E0LMkrhjy67PW_cnMz-UCMqLUUg.-NhWNxBurBYvRJoeCllmkA0tyY3au5pez2ldYuelqMAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-15_%EC%98%A4%EC%A0%84_1.39.15.png?type=w1", "originalWidth" : "312", "originalHeight" : "189", "linkUse" : "true", "link" : "https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-API%EA%B0%9C%EB%B0%9C-%EC%84%B1%EB%8A%A5%EC%B5%9C%EC%A0%81%ED%99%94/dashboard"}' data-linktype="img" href="#" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-e7d31b8e-353c-478b-b1e0-7a08871c56d0_0" src="https://blogfiles.pstatic.net/MjAyMjEwMTVfMTk1/MDAxNjY1NzY1NTU4MjY0.WblZk22_Y0l2vTlT0E0LMkrhjy67PW_cnMz-UCMqLUUg.-NhWNxBurBYvRJoeCllmkA0tyY3au5pez2ldYuelqMAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-15_%EC%98%A4%EC%A0%84_1.39.15.png?type=w1"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-13DB265B-4329-42BB-9AEC-AC0CCCE11054" style=""><span class="se-fs- se-ff-" id="SE-CF8E2A84-A437-4195-B35E-16CBB32BC7A3" style="">참고</span></p></div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

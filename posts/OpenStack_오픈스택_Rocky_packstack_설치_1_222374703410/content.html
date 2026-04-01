@@ -1,0 +1,781 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222374703410 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-cec140c2-a463-4b1c-addf-8aabbef535ac">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-a6ac1f70-c746-4b97-b382-0876fa0d82e7" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanummyeongjo se-style-unset" id="SE-57854cda-f222-4083-9b92-c685ca5f809b" style="color:#000000;"><b>[OpenStack - Rocky]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-cc32a7bd-eab4-4f3a-adc3-e7242f4c58cd" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" id="SE-f7b36a70-85df-47f3-bd48-58fc1c990d13" style="color:#000000;">오픈스택 로드밸런스</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-b78293a8-2d10-4442-bbd1-b3e5d9891463" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" id="SE-abe4c21c-19f0-46ed-bd1e-dbb83a65efb9" style="color:#000000;">-</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-d69c34e9-1a13-4559-a9cf-0b0f941005c6" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" id="SE-619bdee3-d908-4f49-add7-0bf079235942" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-f9623ab0-2c46-4ed8-ae77-111aa7b2052e" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-9dd51c86-797a-42ab-bd01-185e61524e82" style="color:#700001;"><b>:: </b></span><span class="se-fs-fs30 se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-115bffc9-d80f-4987-9add-399f6b6942a0" style="color:#700001;">OpenStack </span><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-342d94e0-1002-4a21-8f01-97a2080af780" style="color:#700001;"><b>Load balancer </b></span><span class="se-fs-fs30 se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9f75310c-f1b9-4845-af0b-f8f1f0df7989" style="color:#700001;">::</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-506ca8ef-709c-4df4-a67e-10e622d34cf0" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-a54ef171-23a6-4f45-97eb-a64723032a40" style="color:#700001;"><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-921a6c5d-ba32-4c3f-b7b0-dbe4b88855c4">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e368d961-ec0d-4915-b9fe-ac7910c61ce0" style=""><span class="se-fs- se-ff-" id="SE-6ca66de3-87e7-4c3d-960c-9090031fdd93" style=""># 서론</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-96ac57eb-88a6-4437-a722-1db49a428e3a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8336d2e2-ef17-424b-9a5f-4f23c1c78eb0" style="line-height:1.5;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-ce70118a-d104-4bc0-8e5a-04f2a82d4040" style="color:#000000;">Octavia 버전 오픈스택에서 로드밸런스 실습이 이루어 지지 않아</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a1b76ee8-c1dc-40bd-980a-ac99b62baf4a" style="line-height:1.5;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-f2cc8ce2-688e-4253-a73d-686ec2d7349b" style="color:#000000;">오픈스택 Rocky 버전으로 수동 설치 후 재시도.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1bcedfd6-aaa8-4ea9-b0a0-7fc1ade32acf" style="line-height:1.5;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-a7b1c517-a0a6-4aa5-83c4-fe9cdba6d9b6" style="color:#000000;">그런데 여기서도 로드밸런스 서비스가 잘 이루어지지 않아</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-819f175e-1000-4ba1-aef8-288ddfbe22a8" style="color:#000000;"><i>(수동 설치 시, 각 프로그램들의 버전 차이가 원인인듯)</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c2b08cb9-bfe3-402e-a4d3-814825775155" style="line-height:1.5;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-68b2eaa9-de50-4844-b127-eac72040f7b2" style="color:#000000;"><b>오픈스택 Rocky 버전 packstack 설치하여 실습.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-872c4442-fcef-4bff-9ea0-afa4333f7ca1" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-ea132d82-03ec-4d72-9f08-277bedc65a90" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-632e493b-95ee-420f-b979-54c045a7a355" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-d68150d2-9503-43b2-9398-bb915ede81a9" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e3c137b-24f4-429c-83b8-203f5a37047e" style=""><span class="se-fs- se-ff-" id="SE-da3927b2-3a05-4ac3-9b01-120a4a78880f" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-dcfd20da-fbe3-4dc4-9b4f-0c7adc8ec243">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-97a43b55-a5f0-41a2-96e4-2a44fb7754bd" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-dad849e8-2ea1-451f-9602-3bed81b9b954" style="color:#000000;">1. 오픈스택 Rocky 버전,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-34d153dd-db7a-4625-bdf2-84eae87ce3e3" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-19d49af1-f4bd-4fda-ba95-b8de553ec611" style="color:#000000;"> </span><span class="se-fs- se-ff- se-style-unset" id="SE-5e6e9ead-b744-44ac-b796-245a8e5c87c0" style="color:#000000;"><b>Packstack 설치</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-quotation se-l-quotation_line" id="SE-82259031-6b76-4a15-bac7-39ce41a4577b">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-18c8b6a9-2cf7-4381-b8de-ac41c2e99d6e" style=""><span class="se-fs- se-ff-" id="SE-9498dd47-993c-41aa-8a38-c637cdf7e40d" style="">(1) 호스트명 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ac3e6f85-43ca-45c4-b8b7-c49bf205e739">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4ae60a97-462c-4639-a2d9-d05ef92bf092" style=""><span class="se-fs- se-ff-" id="SE-9106bd83-abcb-4deb-a5ad-82462a7038d9" style=""><i><b>[controller 노드]   [compute 노드]   [network 노드] 3대 다 설정.</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f3f33f53-0a28-4054-820b-e891c77e8c0f" style=""><span class="se-fs- se-ff-" id="SE-4ac61686-4022-4418-b613-9a0787d355c6" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0c14e3c7-8bc1-4693-8915-4b5efefef465" style=""><span class="se-fs- se-ff-" id="SE-457ec5c8-2d00-4636-94b8-bb9e0e91f0e4" style="">(1) vi /etc/hosts 아래에 다음 내용 추가</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d5f91d67-48b3-4288-b96f-12295986aacf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">컨트롤러노드<span class="token se-code-operator">-</span><span class="token se-code-constant">IP</span> controller
+컴퓨트노드<span class="token se-code-operator">-</span><span class="token se-code-constant">IP</span> compute
+네트워크노드<span class="token se-code-operator">-</span><span class="token se-code-constant">IP</span> network
+
+# 예시<span class="token se-code-operator">:</span> <span class="token se-code-number">10.10</span><span class="token se-code-number">.10</span><span class="token se-code-number">.1</span> controller</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d5f91d67-48b3-4288-b96f-12295986aacf"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ad2a19d1-b427-4db0-bcad-996c987291fe">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-582a6dd5-5928-422a-adae-62c301888582" style=""><span class="se-fs- se-ff-" id="SE-b1becc49-b341-4714-b13c-e129129778a2" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-30a1d402-bf49-4c2b-9727-2441236fcb52" style=""><span class="se-fs- se-ff-" id="SE-fd904a85-1797-46a1-a68e-3448223c175c" style="">(2) vi /etc/hostname 파일에 기존 내용 지우고 다음과 같이 수정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-aea94ffa-e341-40f2-a83c-760ee89832fb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">controller
+
+ ## 컨트롤러면 controller
+ ## 컴퓨트면 compute
+ ## 네트워크면 network 작성 <span class="token se-code-operator">!</span><span class="token se-code-operator">!</span><span class="token se-code-operator">!</span><span class="token se-code-operator">!</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-aea94ffa-e341-40f2-a83c-760ee89832fb"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ce50f5a6-47c6-49a5-ae9c-2ad5ac92a3ec">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-95496fdf-65b6-4fc9-8161-c77299f55abc" style=""><span class="se-fs- se-ff-" id="SE-7e42f51f-c2ac-45c5-87c7-eb799111ef02" style="">저장 및 종료.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b12266f1-3520-4118-8add-927c92e86b1b" style=""><span class="se-fs- se-ff-" id="SE-46420395-cb9e-48c5-889e-405f8e6a6d53" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2cc9ebc1-ba1d-4c73-a4cc-59536685d9fa" style=""><span class="se-fs- se-ff-" id="SE-72e2edac-5764-4125-9edf-3d5ebf173814" style="">init 6 로 재시작.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5426f576-86e3-4970-91e1-12a109fabd5f" style=""><span class="se-fs- se-ff-" id="SE-f2d513af-8511-4600-8c33-26577b07b81e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cf8e3546-8e8c-423a-903b-b11bcbf6d664" style=""><span class="se-fs- se-ff-" id="SE-ea5b7df3-16f8-459d-bd0e-e4f6c2cda70b" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-65970ad6-ed42-4e6f-80d7-d6be8576a8f4">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fa9e3d4f-ad74-44a4-9239-f43411634a85" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-06400284-3bd0-4a62-b61b-9315591e5614" style="color:#000000;">(2) 네트워크 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-77a450be-7849-49ca-af30-7cdf70a9b91d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1c3cb382-53b2-43f2-87ae-4e16adc30b78" style=""><span class="se-fs- se-ff-" id="SE-7ebe9024-ad9e-44ae-bcfe-0a1f5d1ba8ce" style=""><i><b>[controller 노드]   [compute 노드]   [network 노드] 3대 다 설정.</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ad243cdb-2eef-497f-bcae-19173dd64a3a" style=""><span class="se-fs- se-ff-" id="SE-75e186e0-f6b6-457d-9f4c-50250d7c27b9" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-1fbeb6a3-a987-431e-8467-ec2d182c3487">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>sysconfig<span class="token se-code-operator">/</span>network<span class="token se-code-operator">-</span>scripts<span class="token se-code-operator">/</span>ifcfg<span class="token se-code-operator">-</span>ens33</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1fbeb6a3-a987-431e-8467-ec2d182c3487"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f5f9e879-f74d-43e4-9c89-c420d93c4588">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">BOOTPROTO</span><span class="token se-code-operator">=</span><span class="token se-code-keyword">static</span> 으로 수정
+<span class="token se-code-constant">ONBOOT</span><span class="token se-code-operator">=</span>yes 로 수정
+마지막 줄 밑에 다음 내용 추가
+<span class="token se-code-constant">IPADDR</span><span class="token se-code-operator">=</span><span class="token se-code-punctuation">[</span><span class="token se-code-constant">IP</span>주소<span class="token se-code-punctuation">]</span>
+<span class="token se-code-constant">NETMASK</span><span class="token se-code-operator">=</span><span class="token se-code-number">255.255</span><span class="token se-code-number">.255</span><span class="token se-code-number">.0</span>
+<span class="token se-code-constant">GATEWAY</span><span class="token se-code-operator">=</span><span class="token se-code-punctuation">[</span>게이트웨이 주소<span class="token se-code-punctuation">]</span>
+<span class="token se-code-constant">DNS1</span><span class="token se-code-operator">=</span><span class="token se-code-number">8.8</span><span class="token se-code-number">.8</span><span class="token se-code-number">.8</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f5f9e879-f74d-43e4-9c89-c420d93c4588"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1fab6114-2905-4a3b-9037-94275becbdfb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eafb3cf1-bc9a-435b-8648-945dab260fb1" style=""><span class="se-fs- se-ff-" id="SE-db97d294-b56d-44d8-bcc0-70c0c9be958a" style="">저장 및 종료</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-cdce1e9b-e1b2-4e68-a395-aebe0792b09c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart network</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-cdce1e9b-e1b2-4e68-a395-aebe0792b09c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5d0bf7df-644f-410d-a1c3-4ba0c5ca4c82">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1bf83197-fc59-40eb-ad23-64d18f5a6dad" style=""><span class="se-fs- se-ff-" id="SE-dd2f91d2-bd1b-4ae9-b8c3-925d71e2e27f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-45d4f004-4a18-4c5f-b781-5f0aafaf7b2c" style=""><span class="se-fs- se-ff-" id="SE-44bde25e-f0a5-467f-95aa-3132538ebaec" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-34eb5ad4-9233-40e5-9a10-7dcd0342460f">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2dbb391f-eb54-43db-a1c5-272695c2b310" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-6b1a104b-f077-4a0f-bd33-2ab23bc3d647" style="color:#000000;">(3) 방화벽 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d58ae9a0-012b-4611-9bb0-57f14d53d559">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-40c4ca5c-0b87-4941-b6c9-bb9f13e359f2" style=""><span class="se-fs- se-ff-" id="SE-61e4aa80-3d32-41e3-b72a-59935f964183" style=""><i><b>[controller 노드]   [compute 노드]   [network 노드] 3대 다 설정.</b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-b8c79c74-85e0-43ef-8e5d-ed70f2912d2d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl stop firewalld
+systemctl disable firewalld
+systemctl stop NetworkManager
+systemctl disable NetworkManager
+
+setenforce <span class="token se-code-number">0</span>
+sed <span class="token se-code-operator">-</span>i <span class="token se-code-string">'s/=enforcing/=disabled/g'</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>sysconfig<span class="token se-code-operator">/</span>selinux</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b8c79c74-85e0-43ef-8e5d-ed70f2912d2d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7223c885-d237-4438-b240-10d3ce51927d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f1583c09-5193-46a2-8845-657dc4f26b06" style=""><span class="se-fs- se-ff-" id="SE-604fc258-afcf-4a6e-9116-f04e4d3e1745" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2fa88fce-a631-4439-972c-8cd0fb1a5f2d" style=""><span class="se-fs- se-ff-" id="SE-7f24687f-9585-437b-9e90-f2d00022c558" style="">init 6 재시작</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5accdca2-bbc3-4262-ad02-74d5c6aef98a" style=""><span class="se-fs- se-ff-" id="SE-330fc110-f0a3-41cc-89aa-14d5012b37a0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-68767cfa-c7af-487b-8f04-eb23476fb3e6" style=""><span class="se-fs- se-ff-" id="SE-c9e204a5-e824-4801-9bf1-26af1c74c907" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-38784978-dd87-43ee-a238-9c69f0c6d020">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fce53800-56d1-4cb9-9c52-11769993fd5a" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-79dfc800-4d54-4bbf-9806-2da39bc2bf00" style="color:#000000;">(4) ssh 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-da25c8e9-268e-4d97-b8c0-e0f9ae63bb4b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3404a1d4-bf2a-4f13-9357-1196b85bf383" style=""><span class="se-fs- se-ff-" id="SE-32592e71-982c-44b3-afe7-f00fd573df21" style=""><i><b>[controller 노드] </b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-327792dd-cf85-49f8-9479-9bd9fc62e5a5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">ssh<span class="token se-code-operator">-</span>keygen
+	엔터 <span class="token se-code-number">3</span>번</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-327792dd-cf85-49f8-9479-9bd9fc62e5a5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c480db43-80be-4b00-95fb-bc5fceb633e3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-01c4d11d-28b1-46cf-9807-b4a9e526aead" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-98a2bb5f-c8b8-402d-ae99-ea7861001e2e" style="">엔터 3번.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2753f002-c2ee-4eb6-b021-f07fc880bd12" style=""><span class="se-fs- se-ff-" id="SE-51b305b0-8e7f-4abb-bc09-062700a57d4e" style=""><i><b>​</b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8eff3201-2f33-42b0-810f-0946c034a046">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">ssh<span class="token se-code-operator">-</span>copy<span class="token se-code-operator">-</span>id root@controller
+패스워드 입력
+ssh<span class="token se-code-operator">-</span>copy<span class="token se-code-operator">-</span>id root@compute
+패스워드 입력
+ssh<span class="token se-code-operator">-</span>copy<span class="token se-code-operator">-</span>id root@network
+패스워드 입력</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8eff3201-2f33-42b0-810f-0946c034a046"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b650f1f4-b932-4032-8ac6-b2b633c5a2ad">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cb3e6678-7867-4f62-9e1b-8e55a61314c0" style=""><span class="se-fs- se-ff-" id="SE-ea9370c3-09e7-4d96-8227-67ae0722870f" style=""><i><b>​</b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-e1899151-83cc-4d00-b4a9-6389be75077f">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-31300907-99a6-4200-b16b-8edac51f015d" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-1ae6b2e1-f0d1-409a-9724-942a02b6f2a5" style="color:#000000;"><b>(5) 오픈스택 설치 파일 다운</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-fdae0e66-0b8f-4d11-b0d5-4dd8e1981ed7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-77818d75-d3f7-4bb4-9fcd-132e3bc2a79d" style=""><span class="se-fs-fs19 se-ff-" id="SE-7ea26682-0494-4501-849b-39ae863e61e1" style=""><i><b>설치는 쭉 [controller 노드] 에서 진행.</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c560ce72-734c-4e11-b5c7-5caeea9854ad" style=""><span class="se-fs- se-ff-" id="SE-f527fbed-2d29-49f9-844e-6c4ffda07f70" style=""><i><b>​</b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7e598d65-8ce3-4c8d-8382-36b8f0eb04a5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">yum update <span class="token se-code-operator">-</span>y
+yum install centos<span class="token se-code-operator">-</span>release<span class="token se-code-operator">-</span>openstack<span class="token se-code-operator">-</span>rocky <span class="token se-code-operator">-</span>y
+yum install openstack<span class="token se-code-operator">-</span>packstack <span class="token se-code-operator">-</span>y
+yum install openstack<span class="token se-code-operator">-</span>utils <span class="token se-code-operator">-</span>y
+yum install chrony ntp <span class="token se-code-operator">-</span>y</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7e598d65-8ce3-4c8d-8382-36b8f0eb04a5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f65f0f19-17f9-4d87-9def-3b6fb5dca9f3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7d918243-421e-41ae-b83c-98356c50e5ae" style=""><span class="se-fs- se-ff-" id="SE-4d4305ab-cf37-4dd0-afeb-9bdcc97d4618" style=""><i><b>​</b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-c2d05be8-3b7e-42b2-a088-ba83c39adbf3">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ed50f0f4-9495-4e7d-8982-7e3d823854ad" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-afd3254f-9369-4a3c-96d3-cae0780c8f78" style="color:#000000;"><b>6) 오픈스택 설치 파일 설정</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-a4b3efdf-00d6-412f-a12b-98422fa58a4b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">packstack <span class="token se-code-operator">--</span>gen<span class="token se-code-operator">-</span>answer<span class="token se-code-operator">-</span>file<span class="token se-code-operator">=</span><span class="token se-code-operator">/</span>root<span class="token se-code-operator">/</span>rocky<span class="token se-code-operator">-</span>answer<span class="token se-code-punctuation">.</span>txt</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a4b3efdf-00d6-412f-a12b-98422fa58a4b"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f95ecdbb-1f76-41d4-a5c2-e7031a89c580">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>root<span class="token se-code-operator">/</span>rocky<span class="token se-code-operator">-</span>answer<span class="token se-code-punctuation">.</span>txt</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f95ecdbb-1f76-41d4-a5c2-e7031a89c580"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6be39fa7-4d29-4465-8462-7c18544418a6">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">CONFIG_CONTROLLER_HOST</span><span class="token se-code-operator">=</span><span class="token se-code-punctuation">[</span>컨트롤러 노드 <span class="token se-code-constant">IP</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-constant">CONFIG_COMPUTE_HOSTS</span><span class="token se-code-operator">=</span><span class="token se-code-punctuation">[</span>컴퓨트 노드 <span class="token se-code-constant">IP</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-constant">CONFIG_NETWORK_HOSTS</span><span class="token se-code-operator">=</span><span class="token se-code-punctuation">[</span>네트워크 노드 <span class="token se-code-constant">IP</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-constant">CONFIG_PROVISION_DEMO</span><span class="token se-code-operator">=</span>n
+<span class="token se-code-constant">CONFIG_NTP_SERVERS</span><span class="token se-code-operator">=</span><span class="token se-code-number">0</span><span class="token se-code-punctuation">.</span>centos<span class="token se-code-punctuation">.</span>pool<span class="token se-code-punctuation">.</span>ntp<span class="token se-code-punctuation">.</span>org iburst<span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">.</span>centos<span class="token se-code-punctuation">.</span>pool<span class="token se-code-punctuation">.</span>ntp<span class="token se-code-punctuation">.</span>org iburst<span class="token se-code-punctuation">,</span> <span class="token se-code-number">2</span><span class="token se-code-punctuation">.</span>centos<span class="token se-code-punctuation">.</span>pool<span class="token se-code-punctuation">.</span>ntp<span class="token se-code-punctuation">.</span>org iburst<span class="token se-code-punctuation">,</span> <span class="token se-code-number">3</span><span class="token se-code-punctuation">.</span>centos<span class="token se-code-punctuation">.</span>pool<span class="token se-code-punctuation">.</span>ntp<span class="token se-code-punctuation">.</span>org iburst
+<span class="token se-code-constant">CONFIG_CINDER_VOLUMES_SIZE</span><span class="token se-code-operator">=</span>200G
+<span class="token se-code-constant">CONFIG_DEFAULT_PASSWORD</span><span class="token se-code-operator">=</span> 비번
+<span class="token se-code-constant">CONFIG_MARIADB_PW</span><span class="token se-code-operator">=</span> 비번
+<span class="token se-code-constant">CONFIG_LBAAS_INSTALL</span><span class="token se-code-operator">=</span>y
+<span class="token se-code-constant">CONFIG_SWIFT_INSTALL</span><span class="token se-code-operator">=</span>n
+<span class="token se-code-constant">CONFIG_HEAT_INSTALL</span><span class="token se-code-operator">=</span>y
+<span class="token se-code-constant">CONFIG_STORAGE_HOST</span><span class="token se-code-operator">=</span> 컴퓨트노드 <span class="token se-code-constant">IP</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6be39fa7-4d29-4465-8462-7c18544418a6"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d28849c1-f2d2-4ac9-9653-2102dfd48e1d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6dcdad85-0e3c-456d-bfa3-ed9b3436eeec" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-8795ee5a-1c72-42d9-87a9-edb4bb4d2fd5" style="color:#000000;">저장 및 종료</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be805799-70a9-4205-ae08-0db17ff15ae8" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-c361066e-3bee-48e1-bfbb-2f0717e3c958" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd44fc44-5ca2-4d02-aa5f-354e50276ef3" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-acb47f18-b1be-4d98-8193-0f7685a91296" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-25568030-6bcc-4963-9727-b0cce82ce6be">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6c4596d1-601e-4916-b941-f4a4aecac5de" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e62aab88-4c22-426e-9e55-b52b6606a1a4" style="color:#000000;"><b>(6) 오픈스택 설치 진행</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-7d716f9e-8add-4877-b2cc-7c21cd37aa44">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">packstack <span class="token se-code-operator">--</span>answer<span class="token se-code-operator">-</span>file<span class="token se-code-operator">=</span><span class="token se-code-operator">/</span>root<span class="token se-code-operator">/</span>rocky<span class="token se-code-operator">-</span>answer<span class="token se-code-punctuation">.</span>txt</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7d716f9e-8add-4877-b2cc-7c21cd37aa44"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5e339e0f-6250-4197-90f9-83c2ac41d9c9">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b39104f2-d479-4f6a-bd9b-ea85066db7df" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-b1952f4d-28f3-4838-95e4-a8bd54979a2c" style="color:#000000;"># 꽤 오래 걸려요 !</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sticker se-l-default" id="SE-a93578a1-f0a8-4982-8ce5-c6d50f6c78ec">
+<div class="se-component-content">
+<div class="se-section se-section-sticker se-section-align- se-l-default">
+<div class="se-module se-module-sticker">
+<a class="__se_sticker_link __se_link" data-linkdata='{"src" : "https://storep-phinf.pstatic.net/ogq_56b02308689ea/original_28.png", "packCode" : "ogq_56b02308689ea", "seq" : "28", "width" : "177", "height" : "155"}' data-linktype="sticker" href="#" onclick="return false;">
+<img alt="" class="se-sticker-image egjs-visible" src="https://storep-phinf.pstatic.net/ogq_56b02308689ea/original_28.png?type=p100_100"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-8d182437-1d71-48f1-8e61-3ab38e863907">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd834ea1-4344-4c26-948f-ff1f5772a5ee" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-62112eef-c2cc-45e3-8be8-1f20b526bfa2" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4f0be714-2a2c-4cb4-8ed9-752a850572e3" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-6a441f9e-7040-4520-b264-cca67e508d65" style="color:#000000;"># 오픈스택 팩스택 설치 중 에러, 해결.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-27a689a0-1d2e-4698-912c-fb761d3b9b3b">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e233c65-4f3d-4011-91aa-57278cb1fc12" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-2552493e-87ca-4540-990e-f9368cf3d49c" style="color:#e0422e;">ERROR : </span><span class="se-fs- se-ff- se-style-unset" id="SE-3c93aa1a-d733-46cd-801e-d70026e7de81" style="color:#e0422e;"><b>Error appeared during Puppet run: controller.pp</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b3e10e07-3a91-4246-a552-3250a9332206" style=""><span class="se-fs- se-ff-" id="SE-67876d7f-3760-4c05-83ba-12d5b329a84b" style="">오픈스택 팩스택 설치 에러</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-0960c206-c191-406f-b117-9d9ffacac19b">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-0960c206-c191-406f-b117-9d9ffacac19b", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjhfMjA3/MDAxNjIyMTgxOTkxMzY0.3RC_NpHTdWzRRFG0QD7zpt1a-zgUN8JyRVUJ4s3OfQQg.C-a6bN79-eh1MljMP21PBzQN9hwBCphXAgpoGt-XYBkg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-28_%EC%98%A4%ED%9B%84_3.06.27.png", "originalWidth" : "1031", "originalHeight" : "113", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="75" data-width="693" id="SE-0960c206-c191-406f-b117-9d9ffacac19b_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-b371c651-8e49-4051-a4c0-4f500ba0b38b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-466d3abd-c357-46b1-9e7d-ed2dad0f579e" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-837c350e-43e3-41e8-9a64-f0618f3e573a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bdddab1d-43a6-49a5-a4e1-1329bb7a4ae4" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-3fee4e78-f18d-4b65-8975-266982952d2d" style="color:#000000;">해결 :: 그냥 한 번 더 설치 명령어 입력하니 되었다..</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-5ec96a48-d906-4908-bd6d-2a744fa9c652">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">packstack <span class="token se-code-operator">--</span>answer<span class="token se-code-operator">-</span>file<span class="token se-code-operator">=</span><span class="token se-code-operator">/</span>root<span class="token se-code-operator">/</span>rocky<span class="token se-code-operator">-</span>answer<span class="token se-code-punctuation">.</span>txt</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-5ec96a48-d906-4908-bd6d-2a744fa9c652"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-53cdf700-4297-4a3c-9666-1f8e63690319">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39d999e2-dcb4-4ef6-b72f-a10eec8c3318" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-43465131-835d-485c-a154-9dd8746422a6" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-3cd53372-f507-4d95-b743-b95efda7da8d">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-11d7eeba-2990-4d3b-87eb-0c160dbd5966" style=""><span class="se-fs- se-ff-" id="SE-a2528ad6-3a18-4e2f-9c38-92ecc5d00059" style="">2. </span><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-0cbf5542-b942-432e-9f01-af20fac4c464" style="color:#000000;">초기 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-quotation se-l-quotation_line" id="SE-0331276c-34a4-41d2-9479-5b0053851302">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-715a386e-616d-4732-8669-03a9c387add8" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-8ef8c0a9-c2ab-4a12-a513-c5e035bb3034" style="color:#000000;">1) 데시보드 세션 타임아웃 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ef5b22ad-43e7-45b3-a950-61d36fb1eecf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3a8a65ad-a60b-461d-a062-b1c4ff053dbc" style=""><span class="se-fs- se-ff-" id="SE-186667e2-9646-4b97-b403-0186e4aa05c0" style="color:#000000;"><i><b>[controller 노드] </b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7d5253c7-5b39-405d-8c3d-4b6dd206fad3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>openstack<span class="token se-code-operator">-</span>dashboard<span class="token se-code-operator">/</span>local_settings</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7d5253c7-5b39-405d-8c3d-4b6dd206fad3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c089601a-557e-4fa3-8e23-d0e326495c0c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-aab0ac98-83b4-41cc-9456-2130c5d2c4ec" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-b3624f51-ae63-4338-b1a5-08366f2cf41c" style="color:#000000;">위 파일에서 아래 세션타임아웃 부분을 찾아</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-f7f0351d-a70b-4a6b-9f43-502332681d20">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">SESSION_TIMEOUT</span> <span class="token se-code-operator">=</span> <span class="token se-code-number">1800</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f7f0351d-a70b-4a6b-9f43-502332681d20"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5b48ef18-ca56-448a-a55c-dc0c3615d6ed">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2a2eccad-04c9-4c1d-b4e9-9cb73a01d749" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-d23c03ca-0456-4a75-8946-9e89a78e109e" style="color:#000000;"> SESSION_TIMEOUT = 36000 이렇게 수정한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2871b7c8-1993-4ba0-9249-adefcc4de103" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-34a8d45f-20b6-47ad-8dd0-f8e3cbb008f7" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4005fa3d-be86-40c0-b31e-63733d8da9f8" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-155d4ddd-935b-4d88-b0fc-47ae539340d0" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-68ac4db6-b47a-4ce7-a035-5aacf3cebb69">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-128aa0ed-2890-479c-98fe-c6a6ddaa747e" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-00da491e-57d8-4ab8-b4ee-3037caa67998" style="color:#000000;">2) 네트워크 노드 네트워크 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ad0392a9-d857-46a5-ab77-1157b6f31769">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f8d905d4-3756-4550-8fad-1efa303c9cde" style=""><span class="se-fs- se-ff-" id="SE-712a3d3e-6e03-4dd8-930d-7e5fafe1cad2" style="color:#000000;"><i><b>[network 노드] </b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-0062a15f-2c1a-4005-a337-6afc2d45b011">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>sysconfig<span class="token se-code-operator">/</span>network<span class="token se-code-operator">-</span>scripts<span class="token se-code-operator">/</span>ifcfg<span class="token se-code-operator">-</span>ens33
+		<span class="token se-code-constant">DEVICE</span><span class="token se-code-operator">=</span>ens33
+		<span class="token se-code-constant">TYPE</span><span class="token se-code-operator">=</span>OVSPort
+		<span class="token se-code-constant">DEVICETYPE</span><span class="token se-code-operator">=</span>ovs
+		<span class="token se-code-constant">OVS_BRIDGE</span><span class="token se-code-operator">=</span>br<span class="token se-code-operator">-</span>ex
+		<span class="token se-code-constant">ONBOOT</span><span class="token se-code-operator">=</span>yes</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0062a15f-2c1a-4005-a337-6afc2d45b011"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-ec2e1de1-b85e-49b8-828b-15e0f2fa7686">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>sysconfig<span class="token se-code-operator">/</span>network<span class="token se-code-operator">-</span>scripts<span class="token se-code-operator">/</span>ifcfg<span class="token se-code-operator">-</span>ens33
+		<span class="token se-code-constant">DEVICE</span><span class="token se-code-operator">=</span>br<span class="token se-code-operator">-</span>ex
+		<span class="token se-code-constant">DEVICETYPE</span><span class="token se-code-operator">=</span>ovs
+		<span class="token se-code-constant">TYPE</span><span class="token se-code-operator">=</span>OVSBridge
+		<span class="token se-code-constant">BOOTPROTO</span><span class="token se-code-operator">=</span><span class="token se-code-keyword">static</span>
+<span class="token se-code-constant">IPADDR</span><span class="token se-code-operator">=</span>네크워크 노드 <span class="token se-code-constant">IP</span>
+<span class="token se-code-constant">NETMASK</span><span class="token se-code-operator">=</span><span class="token se-code-number">255.255</span><span class="token se-code-number">.255</span><span class="token se-code-number">.0</span>
+<span class="token se-code-constant">GATEWAY</span><span class="token se-code-operator">=</span>게이트웨이
+		<span class="token se-code-constant">ONBOOT</span><span class="token se-code-operator">=</span>yes</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ec2e1de1-b85e-49b8-828b-15e0f2fa7686"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c5839e91-ac6e-42ae-b29c-353c21ca81a2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart network</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c5839e91-ac6e-42ae-b29c-353c21ca81a2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9a0151ff-2f3d-4ee7-b46e-a429e873459a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e4d9d90e-19cf-4667-80cd-40524fc0a798" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-fc035e87-3b1f-41d8-a6e2-2e78853f1821" style="color:#040404;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-51fd652c-a77e-42a6-93bc-85b17f9365ae" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-67a90da6-b6f8-4a56-a8e5-eacef133d460" style="color:#040404;">* 이 부분에 대한 자세한 포스팅 👇🏻</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-052399b1-5547-4f08-b3fb-50f00c5cfd02" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-7fbf9447-12ba-4d02-bf8d-b8d9c31f44f2" style="color:#040404;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222355855761" target="_blank">https://blog.naver.com/ghdalswl77/222355855761</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component" id="SE-048fa3d0-b3e2-4fc5-b2e1-c7dd6c531f02">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-right">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail" href="https://blog.naver.com/ghdalswl77/222355855761" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMTA1MTdfNTAg%2FMDAxNjIxMjI4NzgyNzg4.PQmZxfez-REKQP50OL7LfxhRc6VnuYIkCdVATh_vnKEg.JqWepb7INzaV2oMrs7ysl7NgU8t2vBVdKWQeaO_lJpsg.PNG.ghdalswl77%2Fimage.png%3Ftype%3Dw2%22&amp;type=ff500_300"/>
+</a>
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222355855761" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">[OpenStack] Linuxbridge agent를 OVS agent로 바꾸기 'OVS 설정' + 인스턴스 SSH 접속</strong>
+<p class="se-oglink-summary">OVS 설정 [ controller ] * ifcfg 는 빼고... 네트워크 재시작하면 원격 연결 접속 끊어지고 다시 접속 ...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-048fa3d0-b3e2-4fc5-b2e1-c7dd6c531f02", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222355855761", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMTA1MTdfNTAg%2FMDAxNjIxMjI4NzgyNzg4.PQmZxfez-REKQP50OL7LfxhRc6VnuYIkCdVATh_vnKEg.JqWepb7INzaV2oMrs7ysl7NgU8t2vBVdKWQeaO_lJpsg.PNG.ghdalswl77%2Fimage.png%3Ftype%3Dw2%22&amp;type=ff500_300"}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2c02de38-4697-4326-9f9f-c85753025157">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-f641ffab-5e0a-4dac-b7a9-7da2c7b27c00" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-d454e87f-93ce-42ca-852e-0fe6e24c0f65" style="color:#040404;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-b6b73c86-f9a5-4090-bdfb-12c8b3d93871">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2868dc9e-26b8-428d-852a-a439ac3f3578" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-735b6a1c-068d-4f1b-8b3c-1ffb0aa8a17c" style="color:#000000;">3) 노바 인스턴스 생성 타임아웃 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f3dd364c-e211-4b78-8428-dd19940ab0de">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-199cbc3f-b26c-47a3-b286-702d5a1df311" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-83fd3668-9b63-41a9-85a6-22b349a3068a" style="color:#040404;"><i><b> [compute 노드]</b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-67e86b64-53eb-4980-ab83-1256bc6b5912">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>nova<span class="token se-code-operator">/</span>nova<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-67e86b64-53eb-4980-ab83-1256bc6b5912"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-286be62e-7317-4b41-88ad-23f749c0e418">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-32253ad7-1ff0-47c2-8824-beaa2d9dbf4f" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-198598b1-5595-465b-a229-80d914908b25" style="color:#040404;">위 파일에서 맨 앞 </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-920b63ea-2b57-4da7-95b9-ab248fd5aafb" style="color:#000000;">[DEFAULT] 섹션에 아래 내용을 추가한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-19944b6b-0c4d-4a98-8316-e0f4cd6d0dec">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">instance_build_timeout <span class="token se-code-operator">=</span> <span class="token se-code-number">3600</span>	
+block_device_allocate_retries<span class="token se-code-operator">=</span><span class="token se-code-number">1200</span>
+block_device_allocate_retries_interval<span class="token se-code-operator">=</span><span class="token se-code-number">3</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-19944b6b-0c4d-4a98-8316-e0f4cd6d0dec"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-015a4ef8-856b-45ea-935f-9ac19e786cd4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3d6f762b-1e36-474a-bd22-699eaa1376a7" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-a602d22c-c768-407f-9fa2-3837842b35a6" style="color:#000000;">설정 저장 후, systemctl restart openstack-nova-탭으로 관련 프로그램들 재시작 해준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6d54b1de-6fed-4971-9d81-194aef86eee7" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-746ca8ce-7df1-4caa-84d7-3569ea42cae5" style="color:#000000;">탭이 안되는 경우 아래 명령어로 찾아 재시작 해주세요.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-eba992e2-32fa-47a0-a3a1-b76ec31e95bd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl list<span class="token se-code-operator">-</span>unit<span class="token se-code-operator">-</span>files <span class="token se-code-operator">|</span> grep nova</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-eba992e2-32fa-47a0-a3a1-b76ec31e95bd"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8b858e12-fad8-48c1-b38c-456ced5f98fa">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2c87fb3c-9d17-4362-9261-df43b4ae5622" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-3558fc53-88cd-427e-ac31-4269c33959ef" style="color:#000000;">나의 경우 아래 하나 나와서 재시작 해주었다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d8869184-bfe7-45ec-a4cb-63af492b8e7a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>compute<span class="token se-code-punctuation">.</span>service </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d8869184-bfe7-45ec-a4cb-63af492b8e7a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2fe7cc1b-7ef3-4035-a0ca-38649d7c1ba2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0505d3dc-a142-47c9-91e2-241339804ba2" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0236ab4c-925a-43c0-b3d6-643f5e2ca4db" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-258fa608-c0a8-4e99-97fe-f30934217321">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d8a3ef85-af75-4182-a2ad-35cee4b4cf3d" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-b0bd4627-bbcb-4694-9d02-b68efe8c248d" style="color:#000000;">* 4) swift 꺼두기</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f8119dbc-b1b0-4f35-8d4d-ec1a8c71e4aa">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6a05099a-48d5-4892-abe8-aeb6c2f26727" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5afed2c8-8824-427f-a54d-98b6282032b3" style="color:#000000;"><i><b>[controller 노드] </b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3a36a73a-d24d-4382-8971-2c089aa152dc" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-5792288d-eac8-4b7c-9e2b-ad4dbecb5e12" style="color:#000000;">혹시 컨트롤러가 너무 느리다면..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-38ec031e-ca7c-4a82-bbc8-4d555147ee42" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-d4fdbb32-2215-479d-907d-c7c9f81ae2ed" style="color:#000000;">팩스택으로 자동 설치할 때 깔린 swift 서비스를 꺼주자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f069a692-2249-4094-a366-0c6947830929" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-092b7ff5-0322-4365-a978-df09775a8527" style="color:#000000;">여기서는 swift 서비스를 사용하지 않을 것이기 때문에 아래 명령어로 관련 프로그램 다 꺼준다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-413f9e33-fd1b-48b8-916d-6d83d61742b1">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl stop openstack<span class="token se-code-operator">-</span>swift<span class="token se-code-operator">*</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-413f9e33-fd1b-48b8-916d-6d83d61742b1"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-968a3bb9-4b67-40c1-abbc-a812412483eb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c2df2566-8b5a-4d9a-88fd-1eb17da33ad6" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-1ebf99cf-26f0-40ed-95ef-b1b8bb0b4846" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-61f47f2e-8e8c-4cb8-bdce-8f88453e02fe" style=""><span class="se-fs- se-ff-" id="SE-9c9a4667-c687-4f83-95cd-2eaca865933b" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-95ab433c-7565-470c-9d5d-24e9e4fe9414" style=""><span class="se-fs- se-ff-" id="SE-841a39e4-8ac0-405e-bae1-3d52d3ac6a81" style="">여기까지</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-df3bed70-e2ce-42a3-8701-09120d989a6b" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-1dbd4e8e-7ced-43a4-ad69-0be93c4c2de8" style="color:#000000;"><b>오픈스택 Rocky 버전, Packstack 설치 및 설정이 끝났다.</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sticker se-l-default" id="SE-b55d37db-2495-4a99-9206-136380645be3">
+<div class="se-component-content">
+<div class="se-section se-section-sticker se-section-align- se-l-default">
+<div class="se-module se-module-sticker">
+<a class="__se_sticker_link __se_link" data-linkdata='{"src" : "https://storep-phinf.pstatic.net/linesoft_01/original_17.gif", "packCode" : "linesoft_01", "seq" : "17", "width" : "185", "height" : "160"}' data-linktype="sticker" href="#" onclick="return false;">
+<img alt="" class="se-sticker-image egjs-visible" src="https://storep-phinf.pstatic.net/linesoft_01/original_17.gif?type=pa50_50"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-d353100d-d58c-44a2-9b45-6fd59204786f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1a981da4-f130-475e-9431-a39b34e177e7" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-b20021e1-c01d-45b7-9e48-f6325dcffbeb" style="color:#000000;">다음 포스팅에서</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b36cfa8a-f37d-428e-90d5-36c4db72adb2" style=""><span class="se-fs- se-ff-" id="SE-287f1ab5-a1ee-4787-977f-998c424275fa" style="color:#000000;"><i><b>로드 밸런스 agent 설정</b></i></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-6ab83f5a-046c-4abd-9e5b-ab0310c80640" style="color:#000000;"> 부터 이어가도록 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-497ed2b0-3e45-40cb-8564-fa259fcc8783" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-cb9d2efc-c079-482b-b728-9b0919253069" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

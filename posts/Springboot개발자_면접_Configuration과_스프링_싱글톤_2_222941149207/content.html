@@ -1,0 +1,173 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222941149207 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-cd14b632-f334-4406-a72f-42022f09a997">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-b0687ff6-5b4e-4aff-9cec-cf62ae2948b0" style="line-height:1.5;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c4a6dc9e-c93e-4ee2-a92f-1233c28aac03" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222940107954" target="_blank">[Java/개발자면접] 디자인패턴 싱글톤</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-058dd9d2-5b24-4e0a-87e2-bd0b9ff47852" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-ab2f0658-097b-4c1e-bedc-ed6af7a4ebde" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-a564aba8-19a0-49f7-9870-90c53f955cc7" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-53f8e63d-9af7-4ae5-bb54-ec329665a24a" style="color:#000000;">저번 글에서는 디자인패턴 싱글톤에 대해 알아보았습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-d659e6f2-dada-4d30-b9f8-8719123fb56b" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-71ffffe9-0a1f-40de-a883-96503dc55aad" style="color:#000000;">싱글톤 객체는 전역에서 공유되는 객체이므로 멀티스레드 환경에서 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-f9c66af4-a090-4d6a-9cb1-d0bd77dc70db" style="color:#000000;"><b>동시성 문제</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-50a431cc-a153-4869-a3fa-4e2efcb0b324" style="color:#000000;">가 있었는데요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-1cbc8043-f7b7-40f6-8dc5-32ba541f2878" style="line-height:1.5;"><span class="se-fs-fs11 se-ff-system se-weight-unset se-style-unset" id="SE-fb17a923-f312-44e7-82dd-db4cd12946e2" style="color:#000000;">'전역에서 공유된다 = 메모리 영역에서 프로세스 전체 공유 = 생성된 인스턴스는 JVM 메모리의 힙 영역에 할당 된다'</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-ec9f4c2c-2f8a-4678-a1ff-8db0177c524b" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-31b4e0b7-e5e6-44ed-9f12-2c825a99ee8b" style="color:#000000;">이렇게 스프링 빈이 필드에 공유 값을 가지게 되면 시스템 운영 중 큰 장애가 발생하게 됩니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-3ba6a2d1-a095-49c6-b0ba-b125d4b2eda1" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-377c2136-196c-4350-a157-c5b03a02853c" style="color:#000000;">싱글톤 빈이라고도 하는 스프링 빈은 어떻게 이 문제를 해결하고 있었던 걸까요?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67772bad-ad96-4573-b33f-980a8cd1b4cc" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-0e20223a-9a91-4ef5-867b-7625e4d8acb3" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-4b493c5d-aef2-40fa-9ed2-8f62aa34dbfc">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee0aafc9-4f79-4876-ada1-b8df7ae0990b" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-161a8b8a-5bec-409d-9213-5c98f5d3e91e" style="color:#000000;">@Configuration 과 싱글톤</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-1268d579-8e80-4b3a-8161-b938fb7a0ba4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-03498847-3317-4cb8-859a-4447964660c1" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-e1ae6b35-1a07-44e2-b421-4b4b6e4cff74" style="color:#000000;">스프링에서 Bean을 등록하는 방법 중 @Configuration과 @Bean으로 구현한 코드 입니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-b67bf635-0cce-4009-8dc9-896df196d4b3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Configuration
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">AppConfig</span> <span class="token se-code-punctuation">{</span>
+
+    @Bean
+    <span class="token se-code-keyword">public</span> MemberService <span class="token se-code-function">memberService</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">MemberServiceImpl</span><span class="token se-code-punctuation">(</span><span class="token se-code-function">memberRepository</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+    
+    @Bean
+    <span class="token se-code-keyword">public</span> OrderService <span class="token se-code-function">orderService</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">OrderServiceImpl</span><span class="token se-code-punctuation">(</span><span class="token se-code-function">memberRepository</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">,</span> <span class="token se-code-function">discountPolicy</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+    
+    @Bean
+    <span class="token se-code-keyword">public</span> MemberRepository <span class="token se-code-function">memberRepository</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">MemoryMemberRepository</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b67bf635-0cce-4009-8dc9-896df196d4b3"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-f164d2b8-85fd-4f4a-8cd6-40b92c6f3315">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bd28aaa9-91ea-4c2c-a331-d9852baebe42" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-f9542f37-3cda-4585-ab8a-ca95cc815718" style="color:#000000;">코드를 봅시다. AppConfig의 자바 코드를 보면 memberRepository는 memberService 빈 등록될 때 한 번, orderService 빈 등록될 때 한 번, 마지막으로 memberRepository 자체로 등록될 때 한 번, 총 3번 호출되어야한다. 하지만 호출 결과 확인해보면 총 1번만 호출되는 것을 알 수 있습니다. 즉, memberRepository빈은 모두 같은 인스턴스를 참조하고 있는 것 입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-268442ef-dfb6-4da1-9e40-c56c460488f4" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-a9770934-11f3-4f22-8230-80dba67e93af" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-635bceb4-c309-4061-a1db-e8880d4dbbf0" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-6f3c96b9-3e77-476e-b8c5-0d0cdcbbf6d0" style="color:#000000;">이유는 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-a4296f5e-8027-46ef-9b9a-47bb3244408b" style="color:#000000;"><b>@Configuration</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-27620a00-e471-4866-b143-456d3d176ffb" style="color:#000000;">을 적용한 AppConfig에 있습니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-f8aec39b-2e2f-4a7c-8740-aadc263a067a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Test
+<span class="token se-code-keyword">void</span> <span class="token se-code-function">configurationDeep</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+
+    ApplicationContext ac <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">AnnotationConfigApplicationContext</span><span class="token se-code-punctuation">(</span>AppConfig<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">//AppConfig도 스프링 빈으로 등록</span>
+
+    AppConfig bean <span class="token se-code-operator">=</span> ac<span class="token se-code-punctuation">.</span><span class="token se-code-function">getBean</span><span class="token se-code-punctuation">(</span>AppConfig<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+    
+    System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"bean = "</span> <span class="token se-code-operator">+</span> bean<span class="token se-code-punctuation">.</span><span class="token se-code-function">getClass</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">// bean = class hi.core.AppConfig$$EnhancedBySpringCGLIB$$bqa026d13</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f8aec39b-2e2f-4a7c-8740-aadc263a067a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-0d6a1233-6eed-40de-8fba-6804465480d1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-680b617e-45d1-4c5f-b93b-4ba8f82f85ae" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-79948508-cf31-4e62-9054-13ec0baee271" style="color:#000000;">스프링 빈으로 등록한 Appconfig 빈을 조회해보니 순수한 객체가 아니라 EnhancedBySpringCGLIB.. 같은 것이 붙은것을 알 수 있습니다. 이는 내가 만든 클래스가 아니라 스프링이 CGLIB이라는 바이트조작 라이브러리를 사용해 AppConfig 클래스를 상속받은 임의의 다른 클래스를 만들고, 그 다른 클래스를 스프링 빈으로 동록 했기 때문이었습니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ebd28468-0b46-4c45-980a-f45800bf27f0">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ebd28468-0b46-4c45-980a-f45800bf27f0", "src" : "https://postfiles.pstatic.net/MjAyMjExMjhfNzAg/MDAxNjY5NjI5NDY4NDI4.FbbbBLnjNnqf84zdzC4a3ugB_1DhZGN_XfL1t8BmM98g.O11xPKRiVPEzBuuziz6OGm-GCd68o96-AKTwtj8ta5og.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-11-28_%EC%98%A4%ED%9B%84_6.57.45.png", "originalWidth" : "1452", "originalHeight" : "760", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="313" data-width="600" id="SE-ebd28468-0b46-4c45-980a-f45800bf27f0_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-c986b2a9-5b8d-4e89-9d3f-3f67f87eb909">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4f98c920-d516-4ff8-b1f2-cc21d8a7be75" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-d2a1b5df-10f3-426f-9278-11b54af11c73" style="color:#000000;">이름은 appConfig 이름을 가져가고, 실제 등록되는 스프링 빈은 @CGLIB 클래스의 인스턴스가 등록되는 것입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ef000ed6-8c95-4409-85ff-476c79affb4e" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-81f32ee2-521d-41d2-b136-d1f3faaf2794" style="color:#000000;">스프링이 @CGLIB 바이트코드 조작 라이브러리를 사용해서 만든 클래스가 바로 스프링 빈이 싱글톤이 보장되도록 해주는 거였어요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-456f04be-6f5c-4015-9108-f94d0748607d" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-3a07754c-144f-4f97-b70e-1c1a50fc48d8" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ab9f9f0e-f194-453b-bfc9-dc85eca0aa78" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-d2f4a2b6-f8f2-4ca7-b603-6045f4f1be0c" style="color:#000000;">&lt; AppConfig@CGLIB 예상 코드&gt;</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e6586ecd-8ba5-4036-a117-9e3c6eb8b4f2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Bean
+<span class="token se-code-keyword">public</span> MemberRepository <span class="token se-code-function">memberRepository</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">if</span><span class="token se-code-punctuation">(</span>memorymemberRepository가 이미 스프링 컨테이너에 등록되어있으면<span class="token se-code-operator">?</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> 스프링 컨테이너에서 찾아서 반환<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">else</span> <span class="token se-code-punctuation">{</span> 스프링 컨테이너에 없으면
+        기존로직을 호출해서 MemoryMemberRepository를 생성하고 스프링 컨테이너에 등록
+        <span class="token se-code-keyword">return</span> 반환<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e6586ecd-8ba5-4036-a117-9e3c6eb8b4f2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-a737c717-07b4-4c0c-930f-25fd1b6cf955">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-57e6a711-c082-45f0-8b7d-2f6cafa7bf7f" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-48d8c848-f42c-436e-b06d-ffeaa9a82b95" style="color:#000000;">@Bean이 등록된 메서드마다 이미 스프링빈이 존재하면?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1747ea9a-d440-4d4f-9613-ff3586ac55dc" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-23580edc-6156-48ed-8dd4-1105043a6402" style="color:#000000;">존재하는 빈을 반환하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f8a644e2-3080-4bd7-bdcd-6e1c46de8ca5" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-4a577c22-d7f8-4d22-bfac-a82e1977e393" style="color:#000000;">없으면?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bae32973-377b-4e48-ba8e-442e83f43611" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-e47e1c44-d34d-44dc-9b60-5783250558bf" style="color:#000000;">생성해서 스프링 빈으로 등록 후 반환하는 코드가 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-03469da2-d5be-449b-81e0-b43913406fa3" style="color:#000000;"><b>동적</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-fb2cfe2c-c83f-4470-9097-a2288a44d4cf" style="color:#000000;">으로 만들어집니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d53735da-019a-40ad-9014-a36086d30283" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-4de2a766-c7fb-4831-ae43-cc062151fa09" style="color:#000000;">이 덕분에 싱글톤이 보장되는 것이었습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-40e50faa-0083-440b-a701-48d0497bdc2e" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-e493c061-cd72-41c8-bcdf-d052115ab5f8" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c238368e-0503-4817-ab53-5dbdd2dbd669" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-cb6bb486-977c-4b31-8536-4c7726e9cdf6" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-e2e03c9b-1703-4aba-a48b-ee9bc8b52060">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a6f29e1-70d8-4091-b3ba-eb8c615950e7" style=""><span class="se-fs- se-ff-" id="SE-39f98d07-3d5d-4629-b041-495057495e29" style="">@Configuration 없이 @Bean만 적용하면?</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ba2c5902-9418-4d12-8320-dacd3a663258">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3554e0bf-8c79-4951-b3c1-bb673c4ae7b4" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-9eab5462-06c8-458e-81d1-c61656d5ef33" style="color:#000000;">@Configuration을 붙이면 바이트 코드를 조작하는 CGLIB 기술을 사용해서 싱글톤을 보장하지만, 만약 @Bean만 적용하면 어떻게 될까요? @Configuration을 지우고 테스트를 다시 실행해보면, 스프링 빈이 등록되긴 하지만, CGLIB으로 바이트코드 조작되어 싱글톤을 보장하는 빈이 등록되지 않고, 순수 자바 객체가 등록된다. 싱글톤이 보장되지 않는다. 스프링 빈 등록시 아까와 다르게 memberRepository가 3번 호출된다. memberService와 orderService에 주입되는 memberRepository 객체는 스프링에 등록된 빈 객체가 아닌, 메서드 호출로 새.로.생.성.된 인스턴스가 주입된다. 이는 스프링 컨테이너가 관리하지 않는 객체다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-47dd359c-1676-418b-abff-832f4a02e90b" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-ce89bd89-b0f2-41fe-9548-b15654ba75ed" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4712f149-299a-400e-a704-a30dfc68a06f" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-67578b0a-c3f2-4d60-9223-ce137a6ce562" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-3f6534a2-bd61-4267-b358-cd57fc97051a">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d8c956e5-d780-4a11-a887-bc378dc48aa2" style=""><span class="se-fs- se-ff-" id="SE-4ca9410b-8562-4051-923f-f49e0eb372f1" style="">결론</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e1c774bc-a065-48a7-9e88-b1a6f900c61d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2dd92361-f9d5-48e2-a871-d0f22fd56cbc" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-3a2f2bfa-c32a-4a48-a0be-7666c6b107e0" style="color:#000000;">@Configuration없이 @Bean만 사용해도 스프링 빈으로 등록은 되지만, 싱글톤을 보장하지 않습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3143da13-748b-4f0d-9cc5-0b135896e248" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-7351120c-5479-46cd-86e9-d97ff14abaa4" style="color:#000000;">스프링은 클래스 자체에 의해서가 아니라 스프링 컨테이너(Bean Factory/Application Context)에 의해 구현 됩니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-01b41179-1f52-4c15-8aca-44d5445772b7" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-35ef8557-a621-47e9-b444-c82838d2527e" style="color:#000000;">스프링에 의해 구현되는 싱글톤패턴은 Thread safety를 자동으로 보장합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7dcffa15-f8db-4d15-b51e-6eaec4c3f017" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-3280b88f-0c94-4aae-a529-0f6fb2aa9310" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-680f878e-f80d-431a-bc3d-ac600a083a1f" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-8f958968-0f1e-4820-97bf-e5f6e83dbb64" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-b78ba05b-ccaa-458f-9e35-311398c7f2d4" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-ddbbce0a-13e7-4066-8e03-6320c6bb3064" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6b535b4d-ab11-47b3-be53-39be76dc6525" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-4879bfd2-60de-4637-a104-7ccc5bce491d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f4d12f3c-e30b-4ae2-89d4-986b9100ecd3" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" id="SE-1c2dbdcc-7faa-4d52-801b-8e7957973282" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-c8100012-abb9-4dfd-b158-9a8e6de06380" style="line-height:1.7;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset" id="SE-807b9f85-26d8-4624-97be-87733f4528c5" style="color:#777777;">참고:</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-f6a20b54-4040-4c00-99cc-b994d221291d" style="line-height:1.7;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset" id="SE-d285d3c7-c0e8-4825-87f8-0bc86411cca0" style="color:#777777;"><a class="se-link" href="https://better-dev.netlify.app/java/2020/09/05/thejava_15/" target="_blank">https://better-dev.netlify.app/java/2020/09/05/thejava_15/</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-228b3058-b03f-4cd3-be7b-7ca96ec93f71" style="line-height:1.7;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset" id="SE-77eb34fa-1693-4e54-b1e3-ab1c26a87ca5" style="color:#777777;">인프런 김영한님의 &lt;스프링 핵심 원리 - 기본편</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-3e66b948-3d01-439f-9030-aec25541de00" style="line-height:1.7;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset" id="SE-d4e19f5a-b4fd-413e-a9cc-855b83911acd" style="color:#777777;"><a class="se-link" href="https://velog.io/@syleemk/Spring-Core-%EC%8B%B1%EA%B8%80%ED%86%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88" target="_blank">https://velog.io/@syleemk/Spring-Core</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

@@ -1,0 +1,813 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222406068747 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-801e5a93-fda6-4808-ad20-47977bc53ab5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-7d030c22-96e7-45d6-860b-210bb7409613" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" id="SE-60377899-329e-452c-8cbe-eb42f651ff5e" style="color:#000000;"><b>[Kubernetes]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-ef6da318-dc91-4389-9a42-1b0afb28d1bc" style=""><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-5918b355-4bdd-48a5-9fc0-0f28a79c7bfc" style="color:#000000;"><b>Autoscaling 오토스케일링</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-aab785a5-eacf-4b25-bbf7-90b93564b516" style=""><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-cb028016-cc7f-48a4-803c-462fd9463ff4" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52db0fa3-6b2e-417b-99f8-048d9f04219f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a56f4cab-f617-43d2-a8d8-ff6a8c45a582" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2195144b-c702-4c6d-b2be-478b2fea4f05" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-109dae79-6c3d-4abe-8af9-ebb9ffcb3924" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f76893c4-b5c7-4dfc-8b14-ca91ca394c10" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a1f7e77a-48be-45e1-be1e-ab92545eb3b6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a9b0ab61-4d70-4772-8e55-440270be0e6e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-536b227e-8333-4fec-b93e-348101e7655f" style="color:#000000;"><span class="__se-hash-tag">#오토스케일링</span> 이란,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee33b832-f055-4505-9338-c814687a3c83" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-1e6dd9af-7080-480b-aeb1-b68845ef94f1" style="color:#000000;">CPU와 메모리 사용률에 따라 파드나 노드의 수를 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-25285327-1505-4e83-8d55-90351f48dd6c" style="color:#000000;"><b>자동으로 늘리고 줄이는 기능.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e0f5ed8f-dc7d-4425-8430-c913756e5c9b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-57f5084e-3f25-4f7b-9330-90f5575bbfeb" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default" id="SE-560f2115-408e-419c-98ce-e607bf2b4836">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:36.213235294117645%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-9ae387e8-a9d6-41a8-af93-8773e2752788", "src" : "https://postfiles.pstatic.net/MjAyMTA2MjJfMTg2/MDAxNjI0Mjk3Mjc2MDkz.kNltWkG-NLS7txPswe0mtuRcOaj6y_0t5lhcYDeRx_gg.qZ3nj8EmUlwc_WliYOCaPpHQ7DaLaGNKuO8J1qNiUlUg.PNG.ghdalswl77/img_(1).png", "originalWidth" : "742", "originalHeight" : "744", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="694" data-width="693" id="SE-560f2115-408e-419c-98ce-e607bf2b4836_0" src="images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:63.78676470588235%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ed813d03-528a-4cd4-9dc6-a9864c8234c2", "src" : "https://postfiles.pstatic.net/MjAyMTA2MjJfOTUg/MDAxNjI0Mjk3MjgyMDUx.Mo2w15FpHBo_ciHR7qH3SlUTBlqxWSNUIco7-Ia91qsg.IJ20dxqOmPsjS372wGEBVPaK1b5iYxXWZzG3QnEHmP0g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-22_%EC%98%A4%EC%A0%84_2.41.01.png", "originalWidth" : "1078", "originalHeight" : "614", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="394" data-width="693" id="SE-560f2115-408e-419c-98ce-e607bf2b4836_1" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-76841e49-a9a5-4047-b725-7a6a254f965f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b809458e-c3f8-4074-a75d-54aa7b845cc1" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-3c173c33-5493-4760-a408-550c6075bac1" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-d8fa1c69-d0e9-4bd7-8aac-ce9059a069df">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-69b2a792-8198-4948-b371-80ea54472a67" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-cc71c83c-78f7-4582-abfc-d9ac56fd9097" style="color:#000000;">1) 쿠버네티스의 오토스케일 서브 프로젝트</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-821e6f3f-0742-4439-ba40-86a58fceb694">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-53ceca26-1901-415d-b838-4ca03cf286bf" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e1d391c8-248e-4fc5-8a0f-1c137f4168dc" style="color:#000000;">쿠버네티스의 오토스케일을 개발하는 여러 서브 프로젝트가 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a018c69-693b-4480-ac9e-d7166afa880f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-db72bf5b-82ac-4e2f-b556-9553821d82e2" style="color:#000000;">그 중에서도 특히 주목할 만한 것이 다음 두 가지다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-45f74630-d9ef-43fd-a9c2-33f4ba154b3a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-23845e66-657e-463d-911b-b13d85d8b97d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-04142977-e886-4a96-96e5-023cc8945ae3" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3b394fa7-7d1b-4ba5-b2b4-88cf03a90757" style="color:#000000;"><b>(1) 수평 파드 오토스케일러 ✅</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bb3f2994-27a5-463e-b2e6-bd6492030a78" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4b66eec9-c9c2-4253-bf4c-1dabfa6fd8ef" style="color:#000000;"><b>(Horizontal Pod Autoscaler, HPA)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4796d80a-5ee7-47a2-b758-2d2d4139abac" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c824bd42-b173-4dc4-905b-8504d5a3e0bc" style="color:#000000;">- 루프를 돌면서 대상이되는 파드의</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4a63249e-0bfc-4334-a0c8-102d58bcf208" style="color:#000000;"><b> CPU 사용률을 정기적으로 수집</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bc2c1e14-fb34-41b9-a2e9-8405fa3613b5" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-52ed1dfb-d426-4cca-8dd3-479ff7710f21" style="color:#000000;">- 파드들의 CPU 평균을 목표값이 되도록 레플리카 수를 조절</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-735269f6-332b-4111-9bd5-75f92ec7b00a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-11f70240-46a4-4a5a-9ed0-101c05e370a6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1d02ad54-0b60-43e4-9858-3551b82b5065" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-26fe220c-95f2-4226-8330-ba5558bd6400" style="color:#000000;"><b>(2) 클러스터 오토스케일러 (Cluster Autoscaler, CA)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-49bc2322-89b7-469d-b857-0d99c71b44cb" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-99399489-6ba1-47e7-95bd-06844e5a5ccf" style="color:#000000;">- 필요할 때 노드를 자동으로 추가.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5ee0aed3-91ae-4e30-8f0c-b05da4b515e2" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-2b97c146-0755-4f0b-89db-c8d546bf22da" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4984fa8b-00e6-4bdd-97dc-263c8e46c479" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-89fe865e-fa39-4228-a5e9-59d7072a3194" style="color:#000000;">HPA는 파드의 개수를 조절하지만 새로운 노드를 추가하진 않는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7ce19b12-db91-4e18-9271-4bbc6f21440b" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0a048d92-0b89-481a-a2b6-5682cd974358" style="color:#000000;">CA는 클라우드 API와 연동해서 노드를 늘리거나 줄여 비용 절약 가능.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f984d56e-696f-439c-93d1-819795219a80" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2cf85e3d-7567-4bee-8057-da32c279cf57" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-34b74b36-0eb6-4718-8649-9f3bbabbe712">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1f591c8-9ee2-4cd9-8579-bceead85535e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-24e307d9-bd07-42b3-8f39-74a8f2a35c74" style="color:#000000;">2) HPA 실습</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8a52062a-0a60-40a7-95ba-7bf003263266">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15f92508-4979-4245-941d-38aaecc06d64" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6a2cc4f5-976d-4580-b376-5feabd64c112" style="color:#000000;">(1) 부하 테스트용 컨테이너 준비</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-dcc9d14e-0cd5-408d-bc79-8738d56f9714">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi Dockerfile</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-dcc9d14e-0cd5-408d-bc79-8738d56f9714"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-cf4f93cb-443e-448b-ad69-67f25ba48d22">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">FROM</span> <span class="token se-code-literal-property property">php</span><span class="token se-code-operator">:</span><span class="token se-code-number">7.0</span><span class="token se-code-operator">-</span>apache
+<span class="token se-code-constant">ADD</span> <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>index<span class="token se-code-punctuation">.</span>php <span class="token se-code-operator">/</span><span class="token se-code-keyword">var</span><span class="token se-code-operator">/</span>www<span class="token se-code-operator">/</span>html<span class="token se-code-operator">/</span>index<span class="token se-code-punctuation">.</span>php
+<span class="token se-code-constant">RUN</span> chmod a<span class="token se-code-operator">+</span>rx <span class="token se-code-operator">/</span><span class="token se-code-keyword">var</span><span class="token se-code-operator">/</span>www<span class="token se-code-operator">/</span>html<span class="token se-code-comment">/*.php
+</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-cf4f93cb-443e-448b-ad69-67f25ba48d22"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-099d54ac-4780-4273-afab-4dfe4be55b5f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1b1b3794-ba15-48d5-8e6d-1296da1ccc9f" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e7bb2dc1-c649-494d-ba64-4dffe463132c" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-b2068554-5c41-4b0d-a943-0669e46ca54d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi index<span class="token se-code-punctuation">.</span>php</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b2068554-5c41-4b0d-a943-0669e46ca54d"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-5a16efd1-7413-43fc-8fa3-42f6726c03df">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-operator">&lt;</span><span class="token se-code-operator">?</span>php
+  $x <span class="token se-code-operator">=</span> <span class="token se-code-number">0.0001</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">for</span> <span class="token se-code-punctuation">(</span>$i <span class="token se-code-operator">=</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">;</span> $i <span class="token se-code-operator">&lt;=</span> <span class="token se-code-number">200000</span><span class="token se-code-punctuation">;</span> $i<span class="token se-code-operator">++</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+    $x <span class="token se-code-operator">+=</span> <span class="token se-code-function">sqrt</span><span class="token se-code-punctuation">(</span>$x<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+  echo <span class="token se-code-string">"OK!"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-operator">?</span><span class="token se-code-operator">&gt;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-5a16efd1-7413-43fc-8fa3-42f6726c03df"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-50bd4252-8b9f-45d5-9776-bf0b6d83e572">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-84b81c1a-ae0f-44dc-979f-9d2b12298596" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-977ec8e6-1e62-4106-9cf4-b488d55bb688" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3cc8e54c-f429-468a-8183-08502734d2e2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-151e0623-f344-4b6e-a1b8-6c5aa968c476" style="color:#000000;">이미지 생성</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-094a1f37-0315-405a-8dc3-6fd008d1bfc0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker build <span class="token se-code-operator">--</span>tag minji<span class="token se-code-operator">/</span>auto<span class="token se-code-operator">:</span><span class="token se-code-number">1.0</span> <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-094a1f37-0315-405a-8dc3-6fd008d1bfc0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e30e3f60-b360-4e24-bb1b-6437fb840aac">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c0ec9a15-253e-4d47-9977-f3dd42ae5d3b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4b3caafb-84c7-467f-8ec7-ed92f482e2fe" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5bd19950-f186-489d-b75f-18ac8cc68866" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-11db3cb9-20ff-4ed7-8329-be4f8e174493" style="color:#000000;">이미지 허브에 업로드</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f5b79f08-6d3f-4c4d-8e88-67ac52888f81">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">docker push minji<span class="token se-code-operator">/</span>auto<span class="token se-code-operator">:</span><span class="token se-code-number">1.0</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f5b79f08-6d3f-4c4d-8e88-67ac52888f81"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ec8d8b26-709f-4708-b69f-8bf404d1fdc1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e9cd9573-bfcc-4578-8e2d-1350da24f175" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-0224fbab-92a7-4953-871a-95ce20c6346e" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-138561df-a97f-499f-9624-ce1f942aa3dd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">auto<span class="token se-code-operator">-</span>deploy<span class="token se-code-punctuation">.</span>yml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-138561df-a97f-499f-9624-ce1f942aa3dd"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-0855343a-886b-4a1c-b34b-c2718a584c55">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">apiVersion</span><span class="token se-code-operator">:</span> apps<span class="token se-code-operator">/</span>v1
+<span class="token se-code-literal-property property">kind</span><span class="token se-code-operator">:</span> Deployment
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>php
+<span class="token se-code-literal-property property">spec</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">replicas</span><span class="token se-code-operator">:</span> <span class="token se-code-number">1</span>
+<span class="token se-code-literal-property property">selector</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">matchLabels</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">run</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>php
+  <span class="token se-code-literal-property property">template</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">labels</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">run</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>php
+    <span class="token se-code-literal-property property">spec</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">containers</span><span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> image<span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span>허브에 업로드한 이미지<span class="token se-code-punctuation">]</span>  ex<span class="token se-code-punctuation">)</span> minji<span class="token se-code-operator">/</span>auto<span class="token se-code-operator">:</span><span class="token se-code-number">1.0</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>php
+        <span class="token se-code-literal-property property">resources</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">requests</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">cpu</span><span class="token se-code-operator">:</span> 200m</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0855343a-886b-4a1c-b34b-c2718a584c55"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7995ebf5-9853-4ef7-a00a-a59892094f9c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"> <span class="token se-code-literal-property property">spec</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">containers</span><span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> image<span class="token se-code-operator">:</span> ghdalswl77<span class="token se-code-operator">/</span>auto<span class="token se-code-operator">:</span><span class="token se-code-number">1.0</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>php
+        <span class="token se-code-literal-property property">resources</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">limits</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">cpu</span><span class="token se-code-operator">:</span> 500m
+          <span class="token se-code-literal-property property">requests</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">cpu</span><span class="token se-code-operator">:</span> 200m</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7995ebf5-9853-4ef7-a00a-a59892094f9c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-353eba19-10b5-41e1-a381-756680f7dc97">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b0863758-08c4-463a-9354-cac06208c093" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-36059a23-8d26-4429-9fcc-6cfeca5b587b" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-02996bca-4dac-4715-9ef0-eae1f8f5dded" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-83aa1330-716a-47c8-a3e6-55cc2108bc30" style="color:#000000;"><i>📍오토스케일링에서 중요한 것 : </i></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-660e7559-0c0e-4e1d-94e5-26c88c0ca03c" style="color:#000000;"><i><b>resources</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-25dc3c4e-fb76-43c5-b107-7ce5eae63c6e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3baaaa7c-7929-4fcf-b8a7-01a5035689dd" style="color:#000000;"><i>수평 파드 오토스케일러가 'cpu: 200m' 부분 등을 체크한다.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a59f2457-a174-4edf-8b68-1f71c82bbcf9" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-803cfa20-d82f-45f6-b8de-75f597ce6eef" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-e9e9a421-b991-4fd3-92a3-466e53b6a491">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">auto<span class="token se-code-operator">-</span>svc<span class="token se-code-punctuation">.</span>yml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e9e9a421-b991-4fd3-92a3-466e53b6a491"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8a11b297-2f60-4f53-b8e1-3b9d12c55e98">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">apiVersion</span><span class="token se-code-operator">:</span> v1
+<span class="token se-code-literal-property property">kind</span><span class="token se-code-operator">:</span> Service
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>php
+<span class="token se-code-literal-property property">spec</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">type</span><span class="token se-code-operator">:</span> NodePort
+  <span class="token se-code-literal-property property">selector</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">run</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>php
+  <span class="token se-code-literal-property property">ports</span><span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> port<span class="token se-code-operator">:</span> <span class="token se-code-number">80</span>
+<span class="token se-code-literal-property property">protocol</span><span class="token se-code-operator">:</span> <span class="token se-code-constant">TCP</span>
+<span class="token se-code-literal-property property">nodePort</span><span class="token se-code-operator">:</span> <span class="token se-code-number">31446</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8a11b297-2f60-4f53-b8e1-3b9d12c55e98"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7fa882dc-c7f3-4b11-bdac-f93b4a420c00">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-94c0d066-879d-450d-b1f2-109ab9532acd" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-26958b8c-6e30-4a36-8a78-8687ce41c40a" style="color:#000000;">(노드 포트 30000~32767 번 사이의 포트를 지정해줬다. 지정하지 않으면 이 사이 임의의 수가 포트 지정된다.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-66d4bb1d-05be-4508-8fe0-d83d1be6fabd" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7a0f437a-0f1c-496c-b744-9cdff75f3b16" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-946aacf3-42d4-44d8-9f69-c4ceae1f3667">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl apply <span class="token se-code-operator">-</span>f auto<span class="token se-code-operator">-</span>deploy<span class="token se-code-punctuation">.</span>yml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-946aacf3-42d4-44d8-9f69-c4ceae1f3667"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d1c02aa9-f782-49e9-8e0b-87f031be2fc8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl apply <span class="token se-code-operator">-</span>f auto<span class="token se-code-operator">-</span>svc<span class="token se-code-punctuation">.</span>yml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d1c02aa9-f782-49e9-8e0b-87f031be2fc8"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-68bbfc68-424e-4b61-9cf0-a6061d7b520f">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:410px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-68bbfc68-424e-4b61-9cf0-a6061d7b520f", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMjYg/MDAxNjIzMDUwMDIwODEy.3BOLaP4e_oBKyzpD22zanun4LyZQju3_8r68-nOzuWUg.zkfxZbEgn3z19RLzdNXy2CA7v2Osfw6J205O0taaSjIg.PNG.ghdalswl77/image.png", "originalWidth" : "410", "originalHeight" : "75", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="75" data-width="410" id="SE-68bbfc68-424e-4b61-9cf0-a6061d7b520f_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4f180157-bc8a-4c0b-841c-c57601eb4109">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b15b7390-e922-40f5-adbb-0ad3314fda6e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-53d305fa-dab6-4670-972d-cdc627c63d59" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c97f83eb-699e-4993-9afc-621f9cab2457" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8ee70eaa-7098-4d43-b7c9-61b97f61a79a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9a0da4bb-108a-42a8-9bc2-35c036bd6477" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-1c514182-b619-4af5-a0e5-254f025ee603" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b655831c-731b-4996-a2d2-ffa84ca19ced" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7b998a5f-3291-4d77-8e45-897cbe77150a" style="color:#000000;">서비스 생성 확인:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-882c44cb-3af9-41ed-9da9-bada26d83f7f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl <span class="token se-code-keyword">get</span> service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-882c44cb-3af9-41ed-9da9-bada26d83f7f"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-9d437ade-da46-41be-ae88-e9bf6cda80bf">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:535px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-9d437ade-da46-41be-ae88-e9bf6cda80bf", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMTQg/MDAxNjIzMDUwMTA5NDU0.3sgZf7XjGrOj1K1Vy5tyO4zxsEDJcRzF04zPYpTCcXQg.B_pFuU9y6G3bV9uVA0_rel9HupLUUQmAK6cVEZ9tFlAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%ED%9B%84_4.15.06.png", "originalWidth" : "535", "originalHeight" : "61", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="61" data-width="535" id="SE-9d437ade-da46-41be-ae88-e9bf6cda80bf_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-53334a48-05ee-4701-a50d-5c298b2af851">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-133d4724-009c-40a6-99c7-15ffec56252c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b23605b0-6cc8-4450-9665-3d254ebd5744" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d40a3c4a-b784-4666-93ed-35afed0d04fd" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5fc5bb39-8a4e-44f8-99bb-754f54583d06" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-331dc196-ef53-4cc4-8e31-795aab444844" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-35a135ea-a2b1-4753-99ed-9418fdb65856" style="color:#000000;">접속해서 확인:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7fafb2b5-a888-429c-b946-d88758c59f61">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl <span class="token se-code-keyword">get</span> pods <span class="token se-code-operator">-</span>o wide</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7fafb2b5-a888-429c-b946-d88758c59f61"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-79e511bc-acc0-4c06-b452-161514749747">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:640px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-79e511bc-acc0-4c06-b452-161514749747", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfNDYg/MDAxNjIzMDUwMDgxNTc5.cX1z-3TLi4o_SqoPjGVMwxrEbfXLDE4dyVeERHWO6Rkg.Ub5qU38m-U1O4CAMjC_is7Ic8ZB8kKBv-ICaZtUCrp4g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%ED%9B%84_4.14.39.png", "originalWidth" : "640", "originalHeight" : "91", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="91" data-width="640" id="SE-79e511bc-acc0-4c06-b452-161514749747_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-28c7f933-5bb2-438e-b7bb-c6a236125e99">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a93f1421-50ce-4176-9a1f-710ac9ff6ee3" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-883395dd-c880-458f-b67d-bcf908c81074" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-1e8a758e-9bf3-4aaa-9246-1b6199011807">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl exec <span class="token se-code-operator">-</span>it web<span class="token se-code-operator">-</span>php<span class="token se-code-operator">-</span>55c5d596fb<span class="token se-code-operator">-</span>ntpdn bash</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1e8a758e-9bf3-4aaa-9246-1b6199011807"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-41204df3-0918-4cd9-9870-0c71e5d676de">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:427px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-41204df3-0918-4cd9-9870-0c71e5d676de", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMTk2/MDAxNjIzMDUwMTgwNzIz.m1jvIZ0gJDF-RT5FPhHTCbqRYyGXheb81JUk3IVwlnUg.IOppTgeoYf3J-I8txmkkcNBITbuhHMHdpOlZWTFjLMkg.PNG.ghdalswl77/image.png", "originalWidth" : "427", "originalHeight" : "145", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="145" data-width="427" id="SE-41204df3-0918-4cd9-9870-0c71e5d676de_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-61b967e0-e4cb-4297-9d92-61ae6fb86ef3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4db91251-b47e-4b60-865a-63cbc4f998ec" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-849427ed-fc5b-475d-8b41-e770e33d3f50" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cdb5880b-6806-4654-bcb6-0656323e9991" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a987ba50-0c46-4085-a81d-06ff5e546b88" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8d8721be-96b5-4201-8a93-6dd9122611ba" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-4e45b90e-d539-43e0-b38c-8a22bb835080" style="color:#000000;"><i><b>수평 파드 오토스케일러 </b></i></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-30deae95-d95a-45cc-9c1d-1ad63ff0891c" style="color:#000000;">생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2403bce0-c00d-4ac4-b02e-e24e199618ab" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-78a14397-0302-4d69-900a-0c632b359ea6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-45dd63a0-47d8-4d0a-aca6-ace734f8ff41" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-9b1b985d-6caa-4842-a3f9-ecd403aae4f7" style="color:#000000;">[생성 전 확인]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-97b858e8-2f98-4af0-8a6b-75aaf074d91c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl <span class="token se-code-keyword">get</span> hpa</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-97b858e8-2f98-4af0-8a6b-75aaf074d91c"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-b77c34c6-9069-49bb-8912-55a88dd9a85b">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:321px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-b77c34c6-9069-49bb-8912-55a88dd9a85b", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfNCAg/MDAxNjIzMDUxNzU5MzU0.ncvsprKdu0OFLRO1a6JtUcYri9ZO3l9lk0YRguSK_SYg.7Gq3-Rf1Ct3Ofo3xr7vsm6mzRfMKUhGPPGdyLi2tiY4g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%ED%9B%84_4.42.36.png", "originalWidth" : "321", "originalHeight" : "35", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="35" data-width="321" id="SE-b77c34c6-9069-49bb-8912-55a88dd9a85b_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a209b898-e809-436e-b95d-4c89ba19169e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8aaa4b75-b8b1-4e05-8580-27e5538c8fc8" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e7d1274e-fcac-4683-b3b7-0504ced74c6e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-20c58337-1041-4fdd-845d-0f42ac6bfd6b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b4dcde01-a07a-44a4-b812-f581b05f62a7" style="color:#000000;">[생성]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-62d2ec91-304c-4afb-99e2-9724ad7fa4f7">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl autoscale deployment web<span class="token se-code-operator">-</span>php <span class="token se-code-operator">--</span>cpu<span class="token se-code-operator">-</span>percent<span class="token se-code-operator">=</span><span class="token se-code-number">50</span> <span class="token se-code-operator">--</span>min<span class="token se-code-operator">=</span><span class="token se-code-number">1</span> <span class="token se-code-operator">--</span>max<span class="token se-code-operator">=</span><span class="token se-code-number">10</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-62d2ec91-304c-4afb-99e2-9724ad7fa4f7"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-da33378b-8494-44fd-a0a2-690a19689366">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2dc8540c-8e49-477c-a559-217f36d1738b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c67d3660-b504-4ad3-99e8-cdfde359782e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6736c23c-540d-44c5-b3c7-d5fed9837e18" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e103cfa9-1b39-49db-bf9d-b786457da8b3" style="color:#000000;">다시 확인:</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3730479b-97fc-4a08-9dd6-6109efcd24e4" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2cbf68fe-80b7-48eb-a7f5-548fe64d0b7b" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-ed6e99d5-a0f5-4715-b133-0c509a050803">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:683px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ed6e99d5-a0f5-4715-b133-0c509a050803", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMTgw/MDAxNjIzMDUxOTM5ODIw.BgQJDv20Kg9wxc0ixcjgq2Rke6RNMpmn-hvmEY_75E8g.KxyH7aCq9xcVFedBtaimqp6cY0n1-MZA85pagacTZd0g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%ED%9B%84_4.45.36.png", "originalWidth" : "683", "originalHeight" : "36", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="36" data-width="683" id="SE-ed6e99d5-a0f5-4715-b133-0c509a050803_0" src="images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-31640012-9cb5-49ba-901d-9302878ca889">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:618px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-31640012-9cb5-49ba-901d-9302878ca889", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMjY3/MDAxNjIzMDUxOTU2NjQz.SBF_rdRqci8mKWO3aQhuz93ZslLX9qx_kGWfGWYCX78g.dSaP7Row9JGU0yTkIcGIYRFUfnpZpbLvqOgTDY-4-Twg.PNG.ghdalswl77/image.png", "originalWidth" : "618", "originalHeight" : "47", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="47" data-width="618" id="SE-31640012-9cb5-49ba-901d-9302878ca889_0" src="images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d8525a4e-1b9f-47c6-beb7-56683b0fc507">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6a73b514-5183-4f3e-9319-e07f2ac7e2cf" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-5f45b625-96b0-4953-8d78-8d4ad5be0f87" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-0f0c51f4-e395-4091-812b-9e99c4e29605">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a2725189-afaa-4b2d-b21e-43e0530493b1" style=""><span class="se-fs- se-ff-" id="SE-af6731cb-2617-468a-b359-3e9ac52ef4d7" style="color:#000000;">📍 </span><span class="se-fs- se-ff- se-style-unset" id="SE-99890b71-f949-4d03-9902-817246ae0009" style="color:#000000;">kube-system/metrics-server false (missingendpoints),</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8c78f7b5-e4bf-493a-813e-8144068eb90f" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-65e0aef7-e14c-4043-86a6-deba4431b3cf" style="color:#000000;"> </span><span class="se-fs- se-ff- se-style-unset" id="SE-99f0f609-a1fd-4391-a737-f4b4d9f3569f" style="color:#000000;"><b> kubectl get hpa &lt;unknown&gt; 에러 해결</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-6892022b-4f50-4243-aa9a-e567e4150821">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-43265a1b-5d2a-486a-92a2-3d7f1d7c8a3f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3aea82d4-4f94-4e9f-9d29-65cc26cf234c" style="color:#000000;">위 에러의 원인은 ssl 인증서와 관련이 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c89d1f63-31c0-4047-b6d5-401c3f255531" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f6068b74-2729-4b83-ab27-74dd35821ba2" style="color:#000000;">해결 방법은 두 가지가 있지만, 우선 여기선 둘 중 간단한 방법으로 해결한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3154470c-5648-4469-9fbe-33f88120c412" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-1bca3b36-5183-4d3a-8974-0ad491da4a20" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222406070496" target="_blank"><i>해당 에러 해결에 대한 자세한 글</i></a></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-2a26e0b8-507b-417b-98bf-a73bd0453569" style="color:#000000;"><i> 은 여기를 참고해주세요!!</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1dbaf633-4327-4b60-8bad-23a4a0b0e5e0" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a7319c5e-a0d5-42af-a5bc-fa7fff7a0f8a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0b00dd18-05ea-4656-9144-9cd3e87588c5" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2a77d01f-8440-47ba-bac3-be2a2c8b8ff0" style="color:#000000;">아래 명령어로 metric 서비스를 관련 사항을 뽑아보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-143c8dda-f647-4b1f-a53c-145e72cf1743">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl <span class="token se-code-keyword">get</span> apiservices <span class="token se-code-operator">|</span> grep metric</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-143c8dda-f647-4b1f-a53c-145e72cf1743"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-c3b14d61-f277-4a7f-a96d-d1344fd182ae">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-c3b14d61-f277-4a7f-a96d-d1344fd182ae", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMTc3/MDAxNjIzMDcyMjAxMTEw.SRgJBVFa1qZVOz4IP1mm8gL_z7zYRLN3hMnFMW3hypIg.fwVGc4LKDLfhH3xR6GQK1wPHuoqcILemgYB-tldKblMg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%ED%9B%84_10.23.18.png", "originalWidth" : "1408", "originalHeight" : "66", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="32" data-width="693" id="SE-c3b14d61-f277-4a7f-a96d-d1344fd182ae_0" src="images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-2186a5a5-fd20-4c7f-b7dd-2cd9d8d3baa3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7c795f4d-85b9-4416-9ee2-3e2f427ccf69" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-098ffb7f-b314-4962-8380-65144d0a5c5f" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c28bee5-fecd-48fc-86f5-262ae4f72945" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f5e064eb-50e8-4bdb-bdb3-f514046b8d9c" style="color:#000000;">여기서 False 가 뜬다면, 아래를 따라하면 해결될 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4a4fb77e-ca65-45a6-bf5a-59d3fdd23194" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c23d9e00-fda1-45f0-b749-998da23d16c9" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-16f1a4cf-b66a-40fd-afaa-1c7eba89562e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d7fa5aa0-617a-4796-8a9d-25fceb7e6621" style="color:#000000;">아래 사이트에서 4.0 버전의 components.yaml 파일을 받는다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b220332e-6abe-486e-acfc-a69677925e94">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">wget https<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>github<span class="token se-code-punctuation">.</span>com<span class="token se-code-operator">/</span>kubernetes<span class="token se-code-operator">-</span>sigs<span class="token se-code-operator">/</span>metrics<span class="token se-code-operator">-</span>server<span class="token se-code-operator">/</span>releases<span class="token se-code-operator">/</span>download<span class="token se-code-operator">/</span>v0<span class="token se-code-punctuation">.</span><span class="token se-code-number">4.0</span><span class="token se-code-operator">/</span>components<span class="token se-code-punctuation">.</span>yaml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b220332e-6abe-486e-acfc-a69677925e94"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-27692678-e284-42a0-a067-b5abfa7c61f0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dbf59279-2563-4866-b57b-4abf269ea992" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-529bd7de-93ca-466f-964a-76f5892dcac5" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ed29e44-7684-47b7-8d58-36de36b9f0dd" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f9972a43-6c34-4b9d-b87e-85952386e428" style="color:#000000;">파일에서 몇 가지 수정한다. </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-17d92f0e-16b5-4236-8b50-3807bf4327d4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi components<span class="token se-code-punctuation">.</span>yaml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-17d92f0e-16b5-4236-8b50-3807bf4327d4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e46c14a7-11a1-4c6c-ac9b-d9e4a3dcab3b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be9f1061-de03-4e50-87da-399187217565" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7fac71bd-bd46-4fe2-bd43-dbd2668ddd0c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6305bcc0-91b8-43ba-84d5-e79fc7771cc4" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-14317f3b-71c5-4956-b8fc-df716ba5c2d8" style="color:#000000;">133번 라인쪽에 아래 두 줄 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-1fb5d890-1f61-487b-84a4-43966557f560">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-operator">-</span> <span class="token se-code-operator">--</span>kubelet<span class="token se-code-operator">-</span>insecure<span class="token se-code-operator">-</span>tls
+<span class="token se-code-operator">-</span> <span class="token se-code-operator">--</span>kubelet<span class="token se-code-operator">-</span>preferred<span class="token se-code-operator">-</span>address<span class="token se-code-operator">-</span>types<span class="token se-code-operator">=</span>InternalIP</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1fb5d890-1f61-487b-84a4-43966557f560"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-12dcf5e4-d985-45b8-8cc5-77c8fddc062e">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-12dcf5e4-d985-45b8-8cc5-77c8fddc062e", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDhfMTAy/MDAxNjIzMTE1Mjg2MzI5.sp5cfnRSqXhPakdfMRVSK6HoA56AyoPmK2OTKH2Nnx8g.aUrKNd7mEIXX2hFTHUwtMXerbAEedQbQU1R3dkBbklcg.PNG.ghdalswl77/image.png", "originalWidth" : "996", "originalHeight" : "256", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="178" data-width="693" id="SE-12dcf5e4-d985-45b8-8cc5-77c8fddc062e_0" src="images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-36b8c425-48d3-4307-977f-b4e95f4c75b4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de90d400-cacb-4d30-8b7f-8a6658dfcd86" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2069dd2e-dd91-42f9-b395-a1bc070d269d" style="color:#000000;">'insecure-tls'.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-94788fa0-d96e-4435-b4e9-c13aa84e047b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-37a0c6c7-5fe2-468c-81ac-bbf9593f7e60" style="color:#000000;">ssl 인증 방식을 사용하지 않겠다고 설정해주는 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c56337dc-f5ca-4b74-9dcc-e0043c5fb870" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e35c6674-0785-4e9a-8947-47b664b3bd55" style="color:#000000;">야매스럽지만 우선 hpa 실습을 위해 이렇게 하고 넘어가도 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cae5d6f0-8ab6-4f17-a3ff-5b0195be8325" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2ab830ae-985c-4b3b-9bc4-b36cc54fb216" style="color:#000000;">정석스럽게 ssl 인증서를 생성해주는 해결 방법은 다음 포스팅을 참고해 주세요!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d01f8252-7856-4caf-b0a8-0a5815c16749" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-bc537ee8-cb17-42f0-822b-d41a697b5b8a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-107510bb-ad20-4514-a1d5-cfc5637a4f3d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-dfe0fbb2-b7f7-41ee-8908-76f64e302fa0" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67384b2b-de18-40fb-bc5c-6cf99e0ddeef" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ed8cc281-b07e-4017-b9dc-c8ced09af4b2" style="color:#000000;">그리고 165번 쪽에 아래 한 줄 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-4763214b-1e4b-4701-bc95-101538f65e3f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">hostNetwork</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4763214b-1e4b-4701-bc95-101538f65e3f"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-d90ebac4-9905-44b0-bb66-cd60224f0055">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d90ebac4-9905-44b0-bb66-cd60224f0055", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDhfMjgz/MDAxNjIzMTE1Mzk4OTYw.RdaPogG0DObhOWtip40oQ2ynG4kliurrJARJeXpSw30g.V1WwQWPFgHvhsauZDmHVgrhNnBeSDc5da_BJS-32MLQg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-08_%EC%98%A4%EC%A0%84_10.23.16.png", "originalWidth" : "832", "originalHeight" : "94", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="78" data-width="693" id="SE-d90ebac4-9905-44b0-bb66-cd60224f0055_0" src="images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-6ab54fc8-bc7f-4ce7-96ef-bf559f4d3b1c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21cd3d81-23f1-4755-b1b4-fff97c9a3c63" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-691fd57b-dbc5-4392-8141-bb7752fbcb5f" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-97890781-50b5-4689-9e29-036d8836d42d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-af5e366d-29d2-40df-98af-ec55b2eca002" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-4c8c79e3-c617-4871-95a1-8ff7363a64b4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl apply <span class="token se-code-operator">-</span>f components<span class="token se-code-punctuation">.</span>yaml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4c8c79e3-c617-4871-95a1-8ff7363a64b4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4c83967f-db86-40bd-9923-9d744e0652c8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9b6fcf5c-c13e-4832-84e0-4152047fc35a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-363f1bfb-3f66-4ed1-bcc1-3eb3fd5bbfce" style="color:#000000;">다시 파일을 적용해주고 확인해보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7312422e-1a35-40ff-abee-451b37053029" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-06174f5c-3964-4dbe-9f00-019e56e810f5" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-810179ac-9f2e-4a1b-813a-2122415a4d94">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-810179ac-9f2e-4a1b-813a-2122415a4d94", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfNTcg/MDAxNjIzMDcyMjg0ODQy._vuHSY1RE4xiV2V_E_JnJMzKPSvWdXtKNKi4qmLgGscg.tYIumxCPmVof69QTQdRfHkjh_SLQlUlEobbfaC4tHdog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%ED%9B%84_10.24.40.png", "originalWidth" : "1190", "originalHeight" : "60", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="34" data-width="693" id="SE-810179ac-9f2e-4a1b-813a-2122415a4d94_0" src="images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4dfcb2e0-c4a0-4d10-b3c9-580291d2e6ac">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4991de31-499d-47d2-9737-1e994adaa8ec" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2966703a-c482-4225-ab9e-2efa202dee4d" style="color:#000000;">그럼 이제 metrics-server : True가 되어 있을 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b4db0703-b1ba-4a69-b5d9-7473dea9c324" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2eb5e0c8-b915-4c5f-919b-18f15abce081" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-468afa76-875e-48c1-bcb1-fb44787a0f2c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7a159a88-92f2-4670-9010-fa68cacda5c7" style="color:#000000;">다시 web-php라는 이름의 hpa를 생성한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-68b70e89-c7c3-4f9c-a09e-fba8cfe47ca1">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c5312c3d-791f-4d84-a93d-f36a862cea46" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-5be37392-53cb-4686-80d1-71dd47bd8c30" style="color:#000000;"><b>hpa 생성</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-050dbb26-40dd-4cab-8e9f-3e7f7ee5dd70">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">autoscale deployment web<span class="token se-code-operator">-</span>php <span class="token se-code-operator">--</span>cpu<span class="token se-code-operator">-</span>percent<span class="token se-code-operator">=</span><span class="token se-code-number">50</span> <span class="token se-code-operator">--</span>min<span class="token se-code-operator">=</span><span class="token se-code-number">1</span> <span class="token se-code-operator">--</span>max<span class="token se-code-operator">=</span><span class="token se-code-number">10</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-050dbb26-40dd-4cab-8e9f-3e7f7ee5dd70"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-7b1b97b5-bb21-48df-a8aa-f5ae3af9baa1">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7b1b97b5-bb21-48df-a8aa-f5ae3af9baa1", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMTU1/MDAxNjIzMDcyNDE3NzA1.UHyeMqQOpZWobv4ciKZpc7Gi60mpdozfq14wrRY-5K4g.mIgBkqBdXJG42DePaXzTjCj9h9wrlAN9FWIjqbJ28YYg.PNG.ghdalswl77/image.png", "originalWidth" : "1095", "originalHeight" : "94", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="59" data-width="693" id="SE-7b1b97b5-bb21-48df-a8aa-f5ae3af9baa1_0" src="images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-78529752-adc2-4a80-b456-93a05342dbcd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-51054a2a-a603-4c54-b5e9-6e643b1a9c27" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c6642bf7-768a-458f-8091-0ed07901aaa3" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ba306d9d-8ed8-44ab-ba17-a5e5d4e51114" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-eb645cc7-6d01-4f85-a631-3a94ff065654" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b93032f-35be-4bc2-a124-638e7d063504" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-07050ff7-69be-4724-9e14-ee0b089ae4dc" style="color:#000000;">터미널 창 하나 더 띄워서 부하 주기.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-3602ba33-c66d-4dc2-8029-ce900372b6c0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl run <span class="token se-code-operator">-</span>it busybox <span class="token se-code-operator">--</span>restart<span class="token se-code-operator">=</span>Never <span class="token se-code-operator">--</span>image<span class="token se-code-operator">=</span>busybox sh
+
+# <span class="token se-code-operator">--</span>restart<span class="token se-code-operator">=</span>Never 옵션<span class="token se-code-operator">:</span> 컨테이너 생성하지 않고 pod 실행<span class="token se-code-punctuation">.</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-3602ba33-c66d-4dc2-8029-ce900372b6c0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ef50cf08-a7b6-4923-b010-6b0e2faa084c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0b32aacc-362d-48cb-ba96-2cc0c88d8dc0" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-bf7bdb7b-3c1a-4917-9ac1-02ec9fc360b8" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-098c5909-a9c7-4b4b-9cf0-7b6f2ffdd5f6" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0d264353-29dd-44a7-ab2f-3006a1be2ca8" style="color:#000000;">부하 주기</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8c43e8bd-fca1-4e2a-830f-7af25261a8df">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">while</span> <span class="token se-code-boolean">true</span><span class="token se-code-punctuation">;</span> <span class="token se-code-keyword">do</span> wget <span class="token se-code-operator">-</span>q <span class="token se-code-operator">-</span><span class="token se-code-constant">O</span> <span class="token se-code-operator">-</span> http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>web<span class="token se-code-operator">-</span>php <span class="token se-code-operator">&gt;</span> <span class="token se-code-operator">/</span>dev<span class="token se-code-operator">/</span><span class="token se-code-keyword">null</span><span class="token se-code-punctuation">;</span> done</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8c43e8bd-fca1-4e2a-830f-7af25261a8df"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7a128323-12e8-430a-9248-352e5f38dc9c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1993a1dd-729e-4674-8c1d-6b34d5a4bd95" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ee2659f6-0081-4fc1-95c1-d058ee14b102" style="color:#000000;">http://web-php 사이트 내용을 /dev/null로 보내는(거의 받고 그냥 다시 버리는) 행동을 무한 반복해서 부하를 준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8c8c7f74-bc6a-4c1b-8ff5-fc145bdbc08f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-333d238b-0c00-4e84-9afa-b275bfc98411" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-25bf5c22-318e-4869-bf00-8c157321eb8f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d70cb22f-c765-4327-bc86-7b0cd73edcbc" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0c1338c6-4a6c-4e42-9f43-8ac225dc9899" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a7393c8e-deaf-4ece-96d5-d87c57c26e15" style="color:#000000;">터미널 창  또 하나 띄워서 상태 확인.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-629d4516-45db-4bf6-b134-ce7a06ea25c6">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl <span class="token se-code-keyword">get</span> hpa <span class="token se-code-operator">-</span>w</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-629d4516-45db-4bf6-b134-ce7a06ea25c6"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d69aaddb-3ec2-4a92-90df-7d5e58d8a7b5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a0cbacf7-9b10-4821-87f7-295c27ecd27a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-23d1ac44-6281-4932-b460-951a94eb693b" style="color:#000000;">💡</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-50d070a2-c3c6-48af-a769-306e132d0dc2" style="color:#000000;"><b> kubectl get hpa '-w옵션' :</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-91cd1ad4-57c8-448a-948d-9658f57297ab" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8a388c02-cc9e-4bab-9475-6a2151b040b3" style="color:#000000;">-w 또는 --watch 플래그를 지정하여 특정 오브젝트에 대한 업데이트 진행과정을 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dda1762f-aa49-458e-85e4-9acdbb65ba5d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-86014e2a-9a2b-449c-9327-3b4667287702" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e9ad8412-82b0-47ed-8d00-1942b9a24da4">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e9ad8412-82b0-47ed-8d00-1942b9a24da4", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDhfMTk2/MDAxNjIzMTE0NjQ1Mjc2.d9fnAnVMYUgL4apIoOTW4rmV1f6JJpboerGA02m5oncg.IDBlcXf0v7aoQRS6LsZG9OZLrOfKcLKaQG2Yu8muWjgg.PNG.ghdalswl77/image.png", "originalWidth" : "1108", "originalHeight" : "617", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="385" data-width="693" id="SE-e9ad8412-82b0-47ed-8d00-1942b9a24da4_0" src="images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9d0177be-4f02-46df-b6bc-2bb67c54f45f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7e92036b-2704-42f7-afac-ab1ccf5289c2" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-ee85714a-791c-4c16-a2c6-3f6b1c804360" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b8ae5059-edf1-40db-958f-ccc93e5d7df7" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-ad3d1e5b-63ce-4758-811e-a72ab66e5142" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fda429da-ad81-405f-9153-2ae1ca34f0c3" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-da3d83b8-b230-42e2-b2a3-03b9031bf714" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1" id="SE-572475bc-4ad6-458c-8104-1ce7013774ed">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-83d17e29-3d51-4bb4-8466-6d3d0e9f302a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-f34ed8e5-1e51-4378-a7f8-c91a98a33c82" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-617e2db9-9251-4b17-b87f-d6c4f0e002f0" style="color:#000000;">참고 :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-cd2fdd3f-535a-4608-9c17-db6f2b56a96a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8f190615-9f38-4ae3-b200-dc2490edc8a4" style="color:#000000;"><a class="se-link" href="https://www.linuxsysadmins.com/service-unavailable-kubernetes-metrics/" target="_blank">https://www.linuxsysadmins.com/service-unavailable-kubernetes-metrics/</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-65e79e1e-1c4e-4381-a21a-d805aaf50a1e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b7ac1c02-3964-44ff-8463-dbbfa8752b90" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

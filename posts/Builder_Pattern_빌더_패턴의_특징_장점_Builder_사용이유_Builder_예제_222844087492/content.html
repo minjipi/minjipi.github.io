@@ -1,0 +1,285 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222844087492 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-f664addf-4287-4b5c-93ea-93f86757df41">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-599b9175-8f72-4d64-a58b-f423341e9318" style=""><span class="se-fs- se-ff-system" id="SE-5e4dc9c9-5dfb-405f-9bd5-2f32b0486cf5" style="color:#555555;">스프링 시큐리티 쓰면서 왜 빌더를 쓸까 궁금했었는데, 이제야 공부하고 정리해본다..^^</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-81af6660-fd87-4d88-a737-2eaf1886fe8c" style=""><span class="se-fs- se-ff-system" id="SE-23e8f6e0-1b13-411d-af1c-fd8ab730cd81" style="color:#555555;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c75371ca-0dc4-4c07-a95e-fb7463d09061" style=""><span class="se-fs- se-ff-system" id="SE-66e42047-87a3-4c8a-b7d2-c93575a98639" style="">entity나 Dto객체에 값을 넣어줄때, 롬복의 빌더 애노테이션(@Builder)을 사용하는 예제들이 많다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3c66452c-306e-441c-ba11-84b7c3f19fe5" style=""><span class="se-fs- se-ff-system" id="SE-b907635c-d71b-4785-af77-c26a035b2453" style="">객체를 생성하기 위해서는 생성자 패턴, 자바빈 패턴, 빌더 패턴 등을 사용할 수 있는데</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-da22605a-07db-492c-bfaf-1bac7e0e0841" style=""><span class="se-fs- se-ff-system" id="SE-e1021ea1-1e06-4198-870c-4b3cbea1942f" style="">이 빌더 패턴을 쓰는 이유가 무엇일까?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3b011067-a7c7-4b20-a355-a65c0d2d9c73" style=""><span class="se-fs- se-ff-system" id="SE-947003c5-7303-4b8c-84b0-965b0e0be88a" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e287ad1-1357-4b23-bd46-ab0f1c7b4bf5" style=""><span class="se-fs- se-ff-system" id="SE-78d4e105-1279-41a8-91a2-df7bb27c203e" style="">우선 빌더 패턴이란 디자인패턴중 하나로, 생성과 표현의 분리다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0f227bd6-b923-4253-928a-6364bb49a86b" style=""><span class="se-fs- se-ff-system" id="SE-567ed470-1866-40cd-b0a1-c191011e7f42" style="">클래스를 설계하다보면 필수로 받야할 인자들이 있고 선택적으로 받야할 인자들이 있는데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8d0d80f1-28b8-48f1-a9ca-fc03fa3b4053" style=""><span class="se-fs- se-ff-system" id="SE-84f70ad6-ea71-4d09-b672-9c51a12906ca" style="">쉽게 말해 </span><span class="se-fs- se-ff-system" id="SE-9a6737c6-cf08-40c0-9591-83644e1670d9" style=""><b>생성자에서 인자가 많을때</b></span><span class="se-fs- se-ff-system" id="SE-0cd64662-8ff2-4407-b367-bb38de8b9687" style=""> 고려해 볼수있는것이 바로 이 빌더패턴이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d725f652-3780-4bd9-a65f-8319e520895d" style=""><span class="se-fs- se-ff-system" id="SE-26834a47-88fa-41e8-8435-420a2d15dbc8" style="">왜 그런 것인지 다른 패턴들과 함께 비교해보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-980f9b79-aba5-4ab8-bbcb-d0fbce013849" style=""><span class="se-fs- se-ff-system" id="SE-d359dc94-32d1-49d8-920c-d296ec37175b" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-f5b05a38-322b-47a6-b893-1010d10400f6">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de2b8c0c-a6b9-4c68-a9d0-ba5425ad4c5b" style=""><span class="se-fs- se-ff-" id="SE-d231674c-dfaf-49e4-b719-20676f5cec2f" style=""><b>Telescoping Constructor Pattern</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9e45bc1e-a732-471a-a9c9-e5578b409de3" style=""><span class="se-fs-fs24 se-ff-" id="SE-7ace42be-e96c-4702-8598-4b7b43a08326" style="">점층적 생성자 패턴</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-5772fa98-d150-45d8-8519-8144772a65de">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-29ffc0ff-7d06-4aa4-97eb-0323013f48e6" style=""><span class="se-fs- se-ff-system" id="SE-8a3d9e69-6d54-434f-93c4-26be03048647" style="">각 생성자를 오버라이딩 해서 만드는 기초적인 방식이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b7fe0f60-8a6e-41ae-9e96-06ffb1163e30" style=""><span class="se-fs- se-ff-system" id="SE-0f0c7c98-2b1d-4a9e-8039-a6e663baa69b" style="">필수적으로 값이 있어야할 멤버변수를 위해 생성자에 매개변수를 넣는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b99b43f-f23a-4dd7-a7a9-788de3d8db94" style=""><span class="se-fs- se-ff-system" id="SE-a9fca77d-35be-47b2-8d81-ab5e4cabccc8" style="">또한 선택적 인자를 받기위해 추가적인 생성자를 만든다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93df8870-5663-4b31-a2ce-4a64541c2659" style=""><span class="se-fs- se-ff-system" id="SE-9c3aa2c4-a712-48f4-b2ac-914341b35b0e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6ac21fc0-498c-43a8-aacc-101ea7ecde73" style=""><span class="se-fs- se-ff-system" id="SE-82588be6-3126-4545-a2c3-b3b8c6c87152" style="">쉽게 짤수 있다는 장점이 있지만,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1822041f-96f9-4f67-8110-66e384b8581b" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-b96b2223-91e6-456d-a272-ffbe78862d2c" style="color:#333333;background-color:#ffffff;">인자들이 많아질수록 생성자가 많아지고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8beae203-eaf1-4454-b9e9-a14ca0239feb" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-f2eb15d1-a3e5-4298-a4f1-bfdafaf16ef1" style="color:#333333;background-color:#ffffff;">매개변수의 정보를 설명할 수 없으므로 어떤 객체에 어떤 인자가 들어갔는지 알기어렵다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09c5c2f5-55e4-4e8d-ab11-e21138021b56" style="line-height:1.25;"><span class="se-fs- se-ff-system se-style-unset" id="SE-7a000535-bd58-4e4f-ad7d-a04375eea7de" style="color:#333333;background-color:#ffffff;">그래서 코드 수정(필드 추가 등)이 필요한 경우 수정이 복잡하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-351f264d-5446-4fee-985c-66874f9f2b9c" style="line-height:1.25;"><span class="se-fs- se-ff-system se-style-unset" id="SE-68a8bc9d-0d52-4602-9f64-be4999238de5" style="color:#333333;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-aadc88a9-74cb-413f-929a-739e9dd8e2cb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Member</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> String nickname<span class="token se-code-punctuation">;</span> <span class="token se-code-comment">//필수</span>
+<span class="token se-code-keyword">private</span> String password<span class="token se-code-punctuation">;</span> <span class="token se-code-comment">//필수</span>
+<span class="token se-code-keyword">private</span> Gender gender<span class="token se-code-punctuation">;</span> <span class="token se-code-comment">//선택</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String nickname</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>nickname <span class="token se-code-operator">=</span> nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String nickname, String password</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>nickname <span class="token se-code-operator">=</span> nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>password <span class="token se-code-operator">=</span> password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String nickname, String password, Gender gender</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>nickname <span class="token se-code-operator">=</span> nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>password <span class="token se-code-operator">=</span> password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>gender <span class="token se-code-operator">=</span> gender<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-aadc88a9-74cb-413f-929a-739e9dd8e2cb"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-9b29700e-d4a9-4e75-ab9e-06bf7b78a43e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Member member <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"minji"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">"123"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-constant">F</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9b29700e-d4a9-4e75-ab9e-06bf7b78a43e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-6dc687e6-6b95-4c48-a886-ca333e942c0d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6b3037cb-cbde-4052-ac2f-00c6dfea45e9" style=""><span class="se-fs- se-ff-system" id="SE-b47f2f93-41a6-4eb6-b942-d1484bcb549b" style="">매개변수의 어떤 위치에 어떤타입과 값을 넣어줘야하는지 개발자가 알고있어야하고, 가독성도 떨어진다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bde5c9ac-fca8-48d5-bf1f-dd507c6af2b8" style=""><span class="se-fs- se-ff-system" id="SE-f7ee5b2e-2b29-44a6-b13d-0c57c0a834dc" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9939e4e4-e368-44ce-878d-54ae1ffe6e62" style=""><span class="se-fs- se-ff-system" id="SE-6738bb19-7190-4fde-8ad8-2557fa71d85d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fa803a67-42a9-415a-b1f1-5f97e989e053" style=""><span class="se-fs-fs24 se-ff-system" id="SE-4aa6ed71-d9f2-4aed-8315-b6b49e95ee6d" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-b61093d8-cc84-4f68-a264-733fbcb22e1e">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-64c45b3a-e5d2-430c-92dd-3867124084f8" style=""><span class="se-fs- se-ff-" id="SE-523ee540-7cef-41b6-8fe9-e87971eb11a1" style=""><b>Java Beans Pattern</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-78f2fa78-c228-49be-9b97-0e564ce99d3d" style=""><span class="se-fs-fs24 se-ff-" id="SE-9e8e03dc-5ae2-4eb9-8c46-dbbe8182ad89" style=""><b>자바 빈 패턴</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-eaa40577-60e0-4e9d-84f3-4a3877905c5e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-faa73b47-7bc4-437a-b771-d9a2016727aa" style=""><span class="se-fs- se-ff-system" id="SE-3f05bc38-f35b-45ca-a6f8-454fd98659b6" style="">가장 익숙한 getter/setter를 이용하여 객체를 생성할때 필드를 주입하는 방식이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6fa2dc3a-8501-409d-bce7-bd6765375c02">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Member</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> String nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> Gender gender<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">setNickname</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String nickname</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>nickname <span class="token se-code-operator">=</span> nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">setPassword</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String password</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>password <span class="token se-code-operator">=</span> password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">setGender</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">Gender gender</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>gender <span class="token se-code-operator">=</span> gender<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6fa2dc3a-8501-409d-bce7-bd6765375c02"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3d43db34-f744-49f2-a8d4-d024f0064afd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a638ec42-f4e2-4432-9ef7-7d308fee8d53" style=""><span class="se-fs- se-ff-system" id="SE-31f3a5e3-f825-4d80-ae70-acad61e4a184" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0e0e5a16-128b-4789-8ce3-620040eedc16" style=""><span class="se-fs- se-ff-system" id="SE-c61c10a0-3701-4b21-b9bc-a59073437c9a" style="">자바 빈즈패턴을 사용하면 가독성이 어느정도 해결된다. 하지만 코드량이 늘어나는 단점이 존재하고, 가장 문제가 되는점은 setter 메소드를 통해 값이 계속 변할 수 있기 때문에, 객체일관성이 깨진다는 것이다. 객체일관성이 깨진다는것은 한번 객체를 생성할때 그 객체가 변할 여지가 있다는 것이다. (이는 쓰레드간의 공유 가능한 상태가 존재한다는 것이기 때문에 immutable 객체를 생성할 수 없다.)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c63f7efd-6091-4af6-9a45-625240a54b2e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Member member <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+member<span class="token se-code-punctuation">.</span><span class="token se-code-function">setName</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"minji"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+member<span class="token se-code-punctuation">.</span><span class="token se-code-function">setPassword</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"123"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+member<span class="token se-code-punctuation">.</span><span class="token se-code-function">setGender</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"F"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c63f7efd-6091-4af6-9a45-625240a54b2e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-096394c9-f13e-447b-86f0-9ba3fa0e13e6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6a3ea484-cebf-4052-9362-6db7fb39da9c" style=""><span class="se-fs- se-ff-system" id="SE-34ecd6dd-89ec-4aab-a362-661c65da7714" style="color:#555555;">이렇게 객체 생성을 하고나서, 값을 부여하고 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-748ab9c5-7b71-4087-87f3-7c0b439882d3" style=""><span class="se-fs- se-ff-system" id="SE-a6147619-148b-4bb7-9d38-36999d08d112" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-35cb1647-d0f3-4025-a5f5-159a1609ad67" style=""><span class="se-fs- se-ff-system" id="SE-32655c8b-e786-4eaf-9cbd-21d2f9cd6df5" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-6a5a1298-90b8-49e1-8f15-c17507b93282">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f185fe65-e9b3-4887-b08b-948285e2756a" style=""><span class="se-fs- se-ff-" id="SE-2e85b6b1-c0cf-4165-a2da-3c25cc9b970d" style=""><b>Builder Pattern</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c6c97f49-ff9e-4f6b-9291-9ed944d7f7e0" style=""><span class="se-fs-fs24 se-ff-" id="SE-8e362345-9658-4b5b-b580-91e9f655ead1" style=""><b>빌더 패턴</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4206056d-a5b1-4af1-a941-bc60179b8ad3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-07473fd2-ee61-4e48-9271-c731c10b4bb4" style=""><span class="se-fs- se-ff-system" id="SE-6177ee49-2eb4-4b47-98b2-12955af0babb" style="">위 둘의 단점을 모두 보완해서 나타난것이 바로 빌더패턴이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7e5b7973-cf48-43fa-9569-62bdb2555a04" style=""><span class="se-fs- se-ff-system" id="SE-f1e04cd4-c4a2-4d78-afd9-632e98ece536" style="">정보들은 자바빈즈패턴처럼 받되, 데이터 일관성을 위해 정보들을 다 받은 후에 객체를 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-755ca75c-1755-49b6-8208-6e278e291ffc" style=""><span class="se-fs- se-ff-system" id="SE-cff1ca09-5db6-491c-9ca8-4b2ab5167025" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-35e7f121-aaf2-4a87-8c95-84c62ec12938" style=""><span class="se-fs- se-ff-system" id="SE-52b6f91d-9a06-41da-a3fb-f89717d14ebd" style="">i) 빌더패턴을 적용하면 다음과 같은 장점이 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-abdc8fbe-2a88-4ff1-8a9c-911332256789" style=""><span class="se-fs- se-ff-system" id="SE-a880a785-3cc3-4375-a28c-bee762f9aaa4" style="">- 불필요한 생성자의 제거</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-515588e3-524e-420a-969d-533f7c66ec69" style=""><span class="se-fs- se-ff-system" id="SE-010d6225-46b7-4292-8347-6f2a8c87fc38" style="">- 데이터의 순서에 상관없이 객체생성 가능</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-846167a1-8374-4f19-afa4-581e162ba105" style=""><span class="se-fs- se-ff-system" id="SE-42349570-9090-451a-9f8a-2fa5d43bf139" style="">- 명시적 선언으로 이해하기가 쉽고 각 인자가 어떤 의미인지 알기 쉽다.(</span><span class="se-fs- se-ff-system" id="SE-f505013a-56fa-4407-95dd-ad3bab02d830" style=""><b>가독성</b></span><span class="se-fs- se-ff-system" id="SE-9a064c5e-082d-4cda-b018-2674bdf3ab3f" style="">)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dbf49e3f-1d64-40d2-b1cb-505ede0ea4ab" style=""><span class="se-fs- se-ff-system" id="SE-14842cea-7b01-4c62-965c-5f5335ed9692" style="">- setter 메서드가 없으므로 변경 불가능한 객체를 만들수있다.(</span><span class="se-fs- se-ff-system" id="SE-ae0246c3-2f44-472c-8adf-9b5dbdefb2b7" style=""><b>객체불변성</b></span><span class="se-fs- se-ff-system" id="SE-e5056b01-463b-46d5-a2f5-6e0725ae2c5f" style="">)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e773c96f-4a53-413e-8c33-a030133b328c" style=""><span class="se-fs- se-ff-system" id="SE-e650afac-beba-4a4d-96a2-65674959fcbd" style="">- 한번에 객체를 생성하므로 </span><span class="se-fs- se-ff-system" id="SE-7ce941d3-0723-4afa-93cd-66218a18d3d6" style=""><b>객체 일관성이 깨지지 않는다</b></span><span class="se-fs- se-ff-system" id="SE-82200518-8729-40e8-9d8e-5211bae73790" style="">.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1743bcc7-8408-4163-bfcf-23be673f8f27" style=""><span class="se-fs- se-ff-system" id="SE-ca871db4-9de0-4b1b-a2bb-bf8bf29db424" style="">- build() 함수가 null인지 체크해주므로 검증이 가능한다. (안그러면 set하지않은 객체에대해 get을 하게되는경우 nullPointerExcetpion발생 등등의 문제가 생김)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7494918e-606a-4dcd-b8bf-8d0b1fd0c945" style=""><span class="se-fs- se-ff-system" id="SE-e8ebaff9-ac70-402a-b723-dce81ca98e71" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c4a4e663-f2c1-498a-85f7-743c1608b4f1" style=""><span class="se-fs- se-ff-system" id="SE-de786195-201a-46f3-9c74-c4d17df004e3" style="">ii) 빌더패턴은 다음과 같이 만들어진다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-19f259d3-a2f0-4bf9-a89b-68588057a2a1" style=""><span class="se-fs- se-ff-system" id="SE-faf13b86-9679-4f3e-a1d2-77a4ce7ab235" style="">- Member 클래스 내부에 빌더클래스 생성.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-88fb40f0-9c76-430f-b63e-649602d9ab2b" style=""><span class="se-fs- se-ff-system" id="SE-ae8d47bc-5d1d-45d5-956e-ca144a166edb" style="">- 각 멤버 변수별 메서드를 작성, 각 메소드는 변수에 값을 set하고 빌더객체를 리턴한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-034052ca-d96e-4689-9182-36f4ddf7ed4a" style=""><span class="se-fs- se-ff-system" id="SE-84b6ee9d-52fa-4ff0-9e0b-8bedfb18cf53" style="">- build() 메서드는 필수 멤버변수의 null체크를 하고 지금까지 set된 builder를 바탕으로 Member 클래스의 생성자를 호출하고 인스턴스를 리턴.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-f0e78ee2-ecf1-4bca-91e2-fba8e1ff58cf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Member</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> String nickname<span class="token se-code-punctuation">;</span> <span class="token se-code-comment">//필수</span>
+<span class="token se-code-keyword">private</span> String password<span class="token se-code-punctuation">;</span> <span class="token se-code-comment">//필수</span>
+<span class="token se-code-keyword">private</span> Gender gender<span class="token se-code-punctuation">;</span> <span class="token se-code-comment">//선택</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">static</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Builder</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> final String nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> final String password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> Gender gender<span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">// 필수변수는 생성자로 값을 넣는다.</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">Builder</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String nickname, String password</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>nickname <span class="token se-code-operator">=</span> nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>password <span class="token se-code-operator">=</span> password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-comment">// 멤버변수별 메소드: 빌더클래스의 필드값을 set하고 빌더객체를 리턴한다.</span>
+<span class="token se-code-keyword">public</span> Builder <span class="token se-code-function">gender</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">Gender gender</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>gender <span class="token se-code-operator">=</span> gender<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">this</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-comment">// 빌더메소드</span>
+<span class="token se-code-keyword">public</span> Member <span class="token se-code-function">build</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-keyword">this</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">Builder builder</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>nickname <span class="token se-code-operator">=</span> builder<span class="token se-code-punctuation">.</span>nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>password <span class="token se-code-operator">=</span> builder<span class="token se-code-punctuation">.</span>password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>gender <span class="token se-code-operator">=</span> builder<span class="token se-code-punctuation">.</span>gender<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f0e78ee2-ecf1-4bca-91e2-fba8e1ff58cf"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-33a69a26-639f-4f05-88f1-7f9dd0d40324">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Member memberEntity <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Builder</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"minji"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">"1234"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">gender</span><span class="token se-code-punctuation">(</span>Gender<span class="token se-code-punctuation">.</span><span class="token se-code-constant">F</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">build</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-33a69a26-639f-4f05-88f1-7f9dd0d40324"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-52de58bf-b70d-47a5-b53a-b1d3ce02cb03">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1c76361a-6f88-4a22-9409-fc3308000575" style=""><span class="se-fs- se-ff-system" id="SE-c3739221-2e7f-40d1-bdf9-197bea9704ac" style="">하지만 빌더 패턴도 역시 단점이 존재한다. 객체를 생성하려면 우선 빌더객체를 생성해야 하고, 보다시피 다른 패턴들보다 많은 코드를 요구하기 때문에 인자가 충분히 많은 상황에서 이용할 필요가 있다..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e02c2f90-f759-4e52-a2ff-98f4fd0eef3d" style=""><span class="se-fs- se-ff-system" id="SE-b03dd76d-7a14-493a-9980-73c5a36bd328" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-da3232d0-fd26-4f41-8fcb-38f79219b78d">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-56243ab5-f010-4eba-ae79-051b784742d5" style=""><span class="se-fs- se-ff-" id="SE-645e78c8-4839-4ad9-bada-c55134583e9f" style=""><b>Lombok @Builder</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8a113084-a1db-4d92-99ce-a5a602aac0c1" style=""><span class="se-fs-fs24 se-ff-" id="SE-308025ea-5645-4127-b4fc-30903c7f1e16" style=""><b>@Builder</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-407c4d15-1824-4216-8473-f9f2cb1c8cd5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0f4bc4ea-5e11-4b82-b7a7-d67fbf095c38" style=""><span class="se-fs- se-ff-system" id="SE-2922ed4b-33af-4653-ada6-f4ecf05bc7b6" style="">..는! 이제 위에서 만든 빌더클래스를 직접 만들지 않아도 롬복이 지원해주는 어노테이션 하나로 클래스를 생성할 수 있다. 클래스 또는 생성자 위에 @Builder 어노테이션을 붙여주면 빌더패턴 코드가 빌드된다. 생성자 상단에 선언시 생성자에 포함된 필드만 빌더에 포함된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6cd923f6-9b7c-4ca5-8dea-17337b803daf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">import</span> lombok<span class="token se-code-punctuation">.</span>Builder<span class="token se-code-punctuation">;</span>
+
+@Builder
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Member</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> String nickname<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> String password<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">private</span> Gender gender<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6cd923f6-9b7c-4ca5-8dea-17337b803daf"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-92e0fc35-227e-43ad-913d-aebc69e1bb4b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">static</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">main</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String[] args</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        Member memberEntity <span class="token se-code-operator">=</span> Member<span class="token se-code-punctuation">.</span><span class="token se-code-function">builder</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">nickname</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"minji"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">password</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"123"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">gender</span><span class="token se-code-punctuation">(</span>Gender<span class="token se-code-punctuation">.</span><span class="token se-code-constant">F</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">build</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-92e0fc35-227e-43ad-913d-aebc69e1bb4b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-196f5e66-3cf8-4435-99a1-a65635dc00ec">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ed934a10-c5a5-4ee1-8972-42bc5b6ce117" style=""><span class="se-fs- se-ff-system" id="SE-f003964c-478f-4624-9fc9-5d1ea0aba458" style="">정말 간단하고 좋은 빌더패턴!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-69607862-a957-4bcf-9add-be145c81e05d" style=""><span class="se-fs- se-ff-system" id="SE-600b9eda-1923-4f59-92e7-94e3876b008e" style="">하지만 변수의 개수가 2개 이하이거나, 변경 가능성이 없을 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7d721e71-a8da-4419-baa0-34cfc0115e3b" style=""><span class="se-fs- se-ff-system" id="SE-d634e5a3-7dcc-41b4-9079-8fa4fade0d02" style="">경우에는 필더 패턴의 장점을 누릴 수 없을테니 사용하지 않아도 될 것 같다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8213bd13-abc8-4962-8dfb-bcf116623d73" style=""><span class="se-fs- se-ff-system" id="SE-ead27202-3e91-4614-bd94-55f7f30887ac" style="color:#777777;">(이럴 경우는 별로 없겠지만..//)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d50d2274-6426-415a-b754-607aa72e6c38" style=""><span class="se-fs- se-ff-system" id="SE-84bd6f64-327a-4e30-a8d6-d543a04b7d48" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4409bdb0-8c05-4df4-8305-7a691e7a2d8f" style=""><span class="se-fs- se-ff-system" id="SE-02946668-33dc-49e9-b00c-639edfd83b8c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58745e18-7999-4c4f-a76a-931988f662b0" style=""><span class="se-fs- se-ff-system" id="SE-b90763d4-3789-4f9b-90de-dd3ba198684e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-17a88d23-af1b-4b2d-b051-b56f7d87b011" style=""><span class="se-fs- se-ff-system" id="SE-11efa24f-3692-49e2-b840-33098ea7318e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-92fe3015-0ece-4dd4-b3dc-fab6c35add5e" style=""><span class="se-fs-fs13 se-ff-system" id="SE-d5756cae-7d9e-4e39-a72a-cc154c014207" style="">참고: </span><span class="se-fs-fs13 se-ff-system" id="SE-3983ccfe-5ae9-46b3-a90f-9047a92f9659" style=""><a class="se-link" href="https://devlog-wjdrbs96.tistory.com/207" target="_blank">https://devlog-wjdrbs96.tistory.com/207</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-9f40b7bd-202a-48bd-971c-666d046c03ff" style=""><span class="se-fs-fs13 se-ff-system" id="SE-f8bad364-188b-4721-855e-1bb1fde0f6de" style=""><a class="se-link" href="https://johngrib.github.io/wiki/builder-pattern/" target="_blank">https://johngrib.github.io/wiki/builder-pattern/</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8abe6c82-f979-49e7-baa5-53e877324845" style=""><span class="se-fs- se-ff-system" id="SE-06bf3182-b94f-4208-99ad-d10eabe357fe" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

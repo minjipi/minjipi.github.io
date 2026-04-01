@@ -1,0 +1,283 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222711099525 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-1a9a2ac6-d97f-4fc9-9ad5-8a592255b075">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a8d51aa-c8fc-41a6-b0ba-636c48d036e6" style=""><span class="se-fs-fs13 se-ff-system" id="SE-73b5a64b-c5b8-417f-9dba-bfbb8f4294c3" style="color:#000000;"><i>순환 참조 에러 덕분에 자주쓰는 @Autowired 어노테이션과 @RequiredArgsConstructor에 대해 찾아보고 정리한 글.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-72fde210-0def-499c-9994-062323357456" style=""><span class="se-fs-fs13 se-ff-system" id="SE-5d51588a-3382-4d2c-b6be-4166da80d0b6" style="color:#000000;"><i>이 글에서 일반 메서드 주입 방법은 의존성 주입 방법에서 제외한다.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ac0585fa-8073-4dbb-8cd9-6b394f872630" style=""><span class="se-fs-fs13 se-ff-system" id="SE-3399eac0-3975-4c89-9079-54b908c8d894" style="color:#000000;"><i>​</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-270435c3-080d-4bab-b785-79463aa100fb">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67a07415-b082-46b9-b303-8aed3f311233" style=""><span class="se-fs-fs19 se-ff- se-style-unset" id="SE-6797643b-8525-4dad-9bed-afabd8406899" style="color:#000000;"><b>1. 의존성이란?</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component" id="SE-9db8406b-8192-48e3-8f2e-9d0ca09de664">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">class</span> <span class="token se-code-class-name">HiWorld</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> SayHi sayHi<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">HelloWorld</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>sayHi <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">SayHi</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">startHelloWorld</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>sayHi<span class="token se-code-punctuation">.</span><span class="token se-code-function">hello</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9db8406b-8192-48e3-8f2e-9d0ca09de664"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9a03e4df-582b-46be-8bf7-3f98100f2952">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-76d73109-5361-432b-93c2-99fc5c897a09" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-083ea424-7fd4-4b5c-b447-20a502c012b2" style="color:#000000;">HiWorld 클래스에서 hello함수가 호출되기 위해서는 SayHi 클래스가 필요하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-d9f00fb7-ffbd-4a12-9f7f-b8e0647f74d2" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-0370c601-e861-4a59-8052-a4e088a1e1e9" style="color:#000000;">이 때 HiWorld 클래스는 SayHi 클래스의 의존성을 가진다고 말한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-54c16688-fff9-471e-b1dc-64de15ee6245" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-be698aa7-cd7c-4db9-899d-1dffb26ed23f" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ef2d2a81-386e-421d-bca3-67ac962cfc92" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-19c197e6-43a9-4bd6-955e-22ccaeaebd63" style="color:#000000;">의존성 주입에는 크게 3가지 방법이 존재한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b091e879-d767-47b7-a050-b0a5e6ce4356" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-28fc42ca-7965-40ee-9dc4-cf00c19bbbdc" style="color:#000000;">1) </span><span class="se-fs- se-ff-system se-style-unset" id="SE-314f1630-d960-4092-a20b-bd720e941dc8" style="color:#000000;"><b>필드 주입</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f28df8e1-f0a9-47e2-8016-e05e80b17b70" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-e609cc14-0e9d-4e3a-bd86-937e3fe019b6" style="color:#000000;">2) </span><span class="se-fs- se-ff-system se-style-unset" id="SE-846b90ac-d657-4156-ac9c-866bcffed69f" style="color:#000000;"><b>setter 주입</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9862072b-b660-4d80-8234-baf389f636de" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-edd2aa4f-a6f9-44db-8613-6242910e0b55" style="color:#000000;">3) </span><span class="se-fs- se-ff-system se-style-unset" id="SE-7903f6b0-a33b-4999-b464-25b1492867dd" style="color:#000000;"><b>생성자 주입</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-75d44fc9-c5d2-4aac-86b2-2a2b31f14646" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-77d14cd5-b205-48c6-adf0-221fed65ed54" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-b6d37ee6-e666-4c33-8d79-16c6a89966dd">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-058f95d4-12b8-494f-8305-e731375a2b41" style=""><span class="se-fs-fs19 se-ff- se-style-unset" id="SE-9769548f-8623-4183-a6ee-e2c19fcde055" style="color:#000000;"><b>2) 필드주입, @Autowired 예시</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component" id="SE-90df417c-5b10-40cc-bdc6-7bbfc888239f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Controller
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">BoardController</span> <span class="token se-code-punctuation">{</span>
+    @Autowired <span class="token se-code-keyword">private</span> IBoardItemService boardItemService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">[</span> 생략 <span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-90df417c-5b10-40cc-bdc6-7bbfc888239f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-68677bbc-4c89-4ac9-b662-e6d363ae2d6b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-bbf1840f-aeef-47fb-ab37-39f8e00054dd" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-9a6586f7-09f7-4aa9-a10c-8ee19a6f2750" style="color:#000000;">@Autowired를 활용한 의존성 주입을 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-5f7ae012-40a9-4184-b729-c232ded82710" style="color:#000000;"><b>필드 주입</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-62140268-460d-4741-9136-7f14436ee164" style="color:#000000;"> 이라고 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-865771c5-ec41-41aa-8107-23043535954d" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-2855bca7-c8cb-4453-98e7-264d4c413952" style="color:#000000;">이 @Autowired 필드 주입은 사용법이 간단해서 대부분 의존성 주입을 필드 주입으로 접하지만, intelliJ에서는 이 방식을 추천하지 않는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ea8b9d56-b33b-49b6-8bf9-ab29587a8a9e" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-f5dee893-a23a-42a3-9adc-18822d073677" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67c44cb3-199b-4b34-8997-c59234d74b20" style=""><span class="se-fs- se-ff-system" id="SE-9ec2fa9d-ec13-41c5-a42b-7fd0b8553dd0" style="color:#000000;"><i><b>intelliJ</b></i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b2357faf-38e5-4f07-8353-6a2a3bc7489c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Field injection is not recommended
+Inspection info<span class="token se-code-operator">:</span> Spring Team recommends<span class="token se-code-operator">:</span> <span class="token se-code-string">"Always use constructor based dependency injection in your beans. Always use assertions for mandatory dependencies"</span><span class="token se-code-punctuation">.</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b2357faf-38e5-4f07-8353-6a2a3bc7489c"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-7a4c1ef8-6d84-4851-91e4-4add6a2efdfe">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-20ee1413-d1f9-416d-a458-3ac40dc913b7" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-0e89a477-5b27-4207-8fe6-8c7c2e6feff5" style="color:#000000;">Always 생성자 주입을 권장한다. 생성자 주입에 대해서는 아래에서 자세히 설명한다. 필드 주입을 권장하지 않는 이유는 순환 참조 방지 때문이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-54c3be39-86e6-448c-8fc2-8d0dd02f80cc" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-bd0a4d75-c46a-4200-92d2-a53aebd74779" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-988e9b40-8967-49dc-aec0-9cde17960ae0" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-bfe0c4ed-5e33-403e-a44a-ecb83709b7e7" style="color:#000000;">순환 참조 에러 예시:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-cf099ea4-5c97-4046-bf57-3c41e8995bb1">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">CodeInputFileService<span class="token se-code-punctuation">.</span>class
+
+@Service
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">codeInputFileService</span> <span class="token se-code-punctuation">{</span>
+    @Autowired
+    <span class="token se-code-keyword">private</span> BoardService boardService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-operator">...</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-cf099ea4-5c97-4046-bf57-3c41e8995bb1"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-1c0d2c2a-0c31-498b-91ab-6c7d0d28b10c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">CodeInputFileService<span class="token se-code-punctuation">.</span>class
+
+@Service
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">BoardService</span> <span class="token se-code-punctuation">{</span>
+    @Autowired
+    <span class="token se-code-keyword">private</span> CodeInputFileService  codeInputFileService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-operator">...</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1c0d2c2a-0c31-498b-91ab-6c7d0d28b10c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-0ed040fd-9e0b-4304-88f5-73803c820f3b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2cee51a0-e719-45c3-bdb3-07a138117710" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-82615f1a-6512-42c5-92c1-3e0cd7587e4b" style="color:#000000;">위와 같이 서로 순환 참조하는 구조가 되었을 때, 필드 주입으로 구현했다면, 해당 참조가 실행돼 StackOverflowError가 발생하기 전까지는 알 수 없다. 하지만 생성자 주입으로 구현되어있다면 어플리케이션이 구동조차 되지 않고, 다음과 같이 에러가 나오는 것을 볼 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6bbfbdd2-ceeb-4644-8b36-397fc4e290a9">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">*</span>
+<span class="token se-code-constant">APPLICATION</span> <span class="token se-code-constant">FAILED</span> <span class="token se-code-constant">TO</span> <span class="token se-code-constant">START</span>
+<span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">**</span><span class="token se-code-operator">*</span>
+<span class="token se-code-literal-property property">Description</span><span class="token se-code-operator">:</span>
+
+The dependencies <span class="token se-code-keyword">of</span> some <span class="token se-code-keyword">of</span> the beans <span class="token se-code-keyword">in</span> the application context form a cycle<span class="token se-code-operator">:</span>
+<span class="token se-code-function">mainController</span> <span class="token se-code-punctuation">(</span>field <span class="token se-code-keyword">private</span> com<span class="token se-code-punctuation">.</span>wcp<span class="token se-code-punctuation">.</span>board<span class="token se-code-punctuation">.</span>BoardService com<span class="token se-code-punctuation">.</span>wcp<span class="token se-code-punctuation">.</span>board<span class="token se-code-punctuation">.</span>main<span class="token se-code-punctuation">.</span>MainController<span class="token se-code-punctuation">.</span>boardService<span class="token se-code-punctuation">)</span>
+┌─────┐
+<span class="token se-code-operator">|</span>  boardService defined <span class="token se-code-keyword">in</span> file <span class="token se-code-punctuation">[</span><span class="token se-code-constant">C</span><span class="token se-code-operator">:</span>\git\<span class="token se-code-number">2021</span>\WebCompile\Toy<span class="token se-code-operator">-</span>Project\core\out\production\classes\com\wcp\board\BoardService<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">]</span>
+↑     ↓
+<span class="token se-code-operator">|</span>  codeInputFileService defined <span class="token se-code-keyword">in</span> file <span class="token se-code-punctuation">[</span><span class="token se-code-constant">C</span><span class="token se-code-operator">:</span>\git\<span class="token se-code-number">2021</span>\WebCompile\Toy<span class="token se-code-operator">-</span>Project\core\out\production\classes\com\wcp\coding\inputFile\CodeInputFileService<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">]</span>
+└─────┘</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6bbfbdd2-ceeb-4644-8b36-397fc4e290a9"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-507f03e5-3e55-466e-96f2-1f7abc06cf4a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-96805699-5992-4a2b-85df-9e1fc936f681" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-601da2ae-8fe7-47ad-93f0-ae2a6bba5172" style="color:#000000;">발생할 수 있는 오류를 사전에 알 수 있는 것이다. 그럼 다른 방법들을 알아보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7f7c48b6-f74d-4b25-b124-81a867ee8967" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-660e520f-01d7-4096-83f2-d17f15a7b6b2" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0afb4a66-932b-4c6e-8c18-e7b3b47c7369" style=""><span class="se-fs-fs16 se-ff-system se-style-unset" id="SE-4b6288f2-ad19-4bc4-8fa7-df42655010e2" style="color:#000000;"><b>Setter 주입</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_stripe __se-component" id="SE-6ccb1540-ef6a-4b32-b29e-4f3a5e1ce39c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Service
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">CodeInputFileService</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> CodeInputFileManager codeInputFileManager<span class="token se-code-punctuation">;</span>
+
+    @Autowired
+    <span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">setCodeInputFileManager</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">CodeInputFileManager codeInputFileManager</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>codeInputFileManager <span class="token se-code-operator">=</span> codeInputFileManager<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-operator">...</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6ccb1540-ef6a-4b32-b29e-4f3a5e1ce39c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9884fa59-86ce-4bf2-8282-caa78ef2638a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c5c1d007-9cbc-41aa-82fa-8942c27f3312" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-178fd160-e6d4-4e11-9aad-38b28731afc8" style="color:#000000;">Setter 주입은 생성자 주입과 다르게 주입받는 객체가 변경될 가능성이 있는 경우에 사용한다. 주로 사용하지는 않는 방법이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9fffca1f-4a31-4adb-b689-f85efd5f0492" style=""><span class="se-fs-fs16 se-ff-system se-style-unset" id="SE-c9441a8d-4c89-4bbb-a39e-fea2015fd983" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-54157a0b-83b1-43a6-baed-f4bd08823081">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-90c34b13-2ee3-47f6-9a5d-66f47bc31ff4" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-ede4cddc-e281-4a3d-a8dc-53b8867b6415" style="color:#000000;"><b>🤔 그럼 뭘 써야 할까?</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b72523f6-aa68-4efd-a36f-f73b954338da">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b9f750d2-ac22-4021-a2d1-dcee8829d687" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-2b5a348f-14b5-4aba-aa24-4f1ac2e1d4a6" style="color:#000000;">스프링에서 공식적으로 추천하는 방법은 생성자 주입이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-6e77e916-5997-4f62-abaa-3d9bd989f548">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Controller
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">BoardController</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> final IBoardItemService boardItemService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">BoardController</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">IBoardItemService boardItemService</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>boardItemService <span class="token se-code-operator">=</span> boardItemService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">[</span> 생략 <span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6e77e916-5997-4f62-abaa-3d9bd989f548"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ce56b498-5950-4270-a5d6-190616d48fa8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e71e97b9-7ee2-484d-a658-8f2a5d9871bf" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-41fe7261-e35d-4793-90bc-41a331e07bad" style="color:#000000;">근데 그럼 매번 생성자 주입으로 작성하게 되면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8f057753-6412-4417-9afc-55a85619a3ee" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-81c6b843-ff00-4ad5-af00-d05c1fabf1bc" style="color:#000000;">객체가 추가될 때마다 선언을 하고 생성자를 수정해줘야 하는데..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-504ef663-245c-4448-a529-28723821f68e" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-c780523a-4d25-4f4f-adf5-9cd7ac4e35ef" style="color:#000000;">너무 번거롭기 때문에 @RequiredArgsConstructor 가 탄생했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bf74634d-6c7a-44c8-87f5-d5aff34ffb33" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-8e890dce-4f79-44cc-be10-33965fefd4b4" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-efc61477-11a6-40d8-a54e-9235a44686cd">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ec45ccd5-1869-4855-b59b-b576aadf9e20" style=""><span class="se-fs-fs19 se-ff- se-style-unset" id="SE-ea94b8b1-c3a8-4dc5-8e69-7c3f47a0d59e" style="color:#000000;"><b>3)  생성자 주입, @RequiredArgsConstructor 권장</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1af553ca-5b0a-409d-96e1-46500a87548e" style=""><span class="se-fs- se-ff-" id="SE-76a135eb-4eb4-452a-9543-148affbbc39f" style="">final 필드에 대해 생성자를 만들어주는 lombok의 annotation.</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-add6cf50-011c-4b85-8633-11ade45499e7" style=""><span class="se-fs- se-ff-" id="SE-6553a637-f70b-4923-9335-f4c3ca1ed975" style="">Spring Framework의 DI(의존성주입) 중 Constructor Injection(생성자 주입)을 임의의 코드 없이 자동으로 설정.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-2f703af1-4580-4d7a-9b74-629ee19029ff">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9efe682d-fd8e-4f98-852e-980b7a752953" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-910a9aee-02e4-41e5-8ceb-afda14880e59" style="color:#000000;">위 코드를에 @RequiredArgsConstructor를 활용해서 수정하면 다음과 같다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-ed731959-c855-4f96-8022-c0a331478125">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Controller
+@RequiredArgsConstructor
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">BoardController</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> final IBoardItemService boardItemService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">/* 이하 생략 */</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ed731959-c855-4f96-8022-c0a331478125"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-eb154c74-97e4-4505-be9e-d1e5d5aff0a2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-0aeee30c-7104-4570-8fc8-0ff1d3bc8896" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-74c19c38-f1f8-4c3e-baf7-b2e628731aaf" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-a488cc18-d198-4ed0-81f1-f3e848a85a2f" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-312ad773-412e-44bd-86f0-d64290e61bc6" style="color:#000000;">Lombok에서 지원하는 @RequiredArgsConstructor 어노테이션을 사용하여 의존성을 주입 하는 것을 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-b41e4b5f-d833-4cb8-ae4d-1cc950086858" style="color:#000000;"><b>생성자 주입</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-34153f27-7e18-4965-b25b-4bda74d90ca1" style="color:#000000;">이라고 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3989065a-0429-421d-af65-b2d626eb1c36" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-817f251c-7bb2-4b69-b045-07ab35f18fb1" style="color:#000000;">이렇게 RequiredArgsConstructor만 선언하면 알아서 final 키워드가 붙은 필드에 대해 생성자를 만들어준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8ad4000f-1598-4312-a196-7a8d77d9a558" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-587929bc-ce28-446a-89aa-603b1c9dfee6" style="color:#000000;">또 생성자가 하나만 선언 되어있어도 @Autowired 어노테이션을 생략할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-df198e10-5994-4b90-b392-5d5966766b1b" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-2f48af62-f861-4ff0-af66-2bf627ef6479" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-c2b2e75f-6950-4c2c-8eea-6031302b6da2" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-ddbedce1-03b6-4c8d-ae8f-b5cb8d84c3b3" style="color:#000000;">스프링 팀이 생성자 주입을 사용할 것을 권장하는 이유는 한번 의존성을 주입받은 객체는 프로그램이 끝날때 까지 변하지 않는 특징을 가지므로 불변성을 표시해주는 것이 좋기 때문이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db331d6b-a46a-4d70-9569-095d7d8e5cb3" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-3f3257d2-9bfb-4848-8a7e-c230a0eecba5" style="color:#000000;">그래서 의존성을 주입할 객체에 final 키워드를 사용한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0e40c2b6-67f4-4fb8-a889-bec330ba04b3" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-83195711-d6e1-40cb-95ba-0e07ffffd5ca" style="color:#000000;">(</span><span class="se-fs- se-ff-system se-style-unset" id="SE-90a97eed-69e7-4ec7-969c-95d780e36824" style="color:#000000;"><a class="se-link" href="https://mangkyu.tistory.com/131" target="_blank">왜 불변객체(immutable object)를 사용하는 것이 좋을까?</a></span><span class="se-fs- se-ff-system se-style-unset" id="SE-2e1127da-ef4a-49cd-ab86-bc04370b9fa2" style="color:#000000;">)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-4a2555ec-a914-455f-8aa1-79a8499ef63e" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-494bfd07-a45a-471f-b0a3-1fef2e676034" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-f008d695-173f-4042-89f3-f98c4bc1f52e" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-8029ddce-b4e1-42cf-9841-7e697eb44b43" style="color:#000000;">생성자 주입을 사용할 경우 장점</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-37c74f00-3b9a-4b9d-904f-53f17378baa2" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-abb91353-1488-4f2d-b1f4-c3c6bf3ae254" style="color:#000000;">① 순환 참조 방지</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-84d632c1-8c47-49a8-8b5a-ca4d244a3b50" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-a1560c6c-2a01-418b-a6ec-6e96d985d32a" style="color:#000000;">② 테스트 코드 작성 용이</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-c83840d1-26fd-4655-9adb-8e538301406f" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5ab601ae-e821-49d2-92d1-b5114e4680ce" style="color:#000000;">③ 객체 변이 방지 (final 가능)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-6ad54fd9-88ad-43af-ba51-8d43a7b463d8" style=""><span class="se-fs-fs16 se-ff-system se-style-unset" id="SE-c1a31f95-617e-43d3-af7b-400daf81ad55" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2db8dc18-6dfa-404d-83fe-f27a172ed77b" style=""><span class="se-fs- se-ff-" id="SE-611e3ffa-7cc2-49cd-8f2b-125d6e91058d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-848b6018-0d8b-4122-9370-11b52423fa4e" style=""><span class="se-fs- se-ff-" id="SE-5182bbb5-db8f-40a9-adc9-34bb527ac3d1" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-91bfd74b-9419-44ea-b11c-5f4341616f30" style=""><span class="se-fs-fs13 se-ff-" id="SE-291c3dfe-a1a7-480a-8310-50fad4954883" style="color:#000000;">참고:</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-874d23b9-3c40-4c97-8c36-174fced828f0" style=""><span class="se-fs-fs13 se-ff-" id="SE-f61d4143-d310-464b-a3fb-22d3ae9e5d34" style="color:#000000;"><a class="se-link" href="https://upcake.tistory.com/417" target="_blank">https://upcake.tistory.com/417</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-3f09c684-6c8a-4699-afcc-60672d07a03c" style=""><span class="se-fs-fs13 se-ff-" id="SE-e1174950-2515-404b-9a99-01f6f70ee44a" style="color:#000000;"><a class="se-link" href="https://velog.io/@cham/Spring-Field%EC%99%80-Constructor-Injection" target="_blank">https://velog.io/@cham/Spring-Field%EC%99%80-Constructor-Injection</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-befbd41e-c97a-4ef6-8128-a443911f8af6" style=""><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-bcc76bb1-ecc8-4328-ad5c-8595c4da0073" style="color:#000000;"><a class="se-link" href="https://madplay.github.io/post/why-constructor-injection-is-better-than-field-injection" target="_blank">https://madplay.github.io/post/why-constructor-injection-is-better-than-field-injection</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-93580033-77c5-47df-90ec-7ac4ed2c604b" style=""><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-7bcfbdac-6a5e-4dfc-8176-15ae8e1a725c" style="color:#000000;">생성자 주입을 @Autowired를 사용하는 필드 주입보다 권장하는 하는 이유</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-13157e7f-3dcc-4476-8eb7-0ba81d7cbc4d" style=""><span class="se-fs-fs13 se-ff-" id="SE-00a5472a-2a65-40f8-a4db-42a0a1f183b8" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

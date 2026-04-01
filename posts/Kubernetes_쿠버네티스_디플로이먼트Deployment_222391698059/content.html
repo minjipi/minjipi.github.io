@@ -1,0 +1,478 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222391698059 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-dcfaf218-1914-4f87-8cca-ac84effd4559">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-0925d12e-9520-4ed8-909d-978705c870fa" style=""><span class="se-fs- se-ff-nanummyeongjo" id="SE-59746e0e-03fb-4092-b073-3a8942388ffb" style="color:#000000;"><b>[Kubernetes]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-61953692-99f3-4f55-9cc5-b90d3d5bd6b9" style=""><span class="se-fs-fs30 se-ff-" id="SE-47f4e3b5-36b2-4466-9d7a-9218f38e0e10" style="color:#000000;"><b>디플로이먼트(Deployment)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-2bf89b2f-a415-45b7-89bc-9a76018cab74" style=""><span class="se-fs- se-ff-" id="SE-c40df77d-47cf-49e3-8d9f-d680e99bc4d6" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6151e3e3-7b97-4bef-ba0b-16188abca6eb" style=""><span class="se-fs- se-ff-" id="SE-d37ca5f4-9d9f-486f-bb1a-cdf1b3c538e8" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-592cc492-ed74-438e-bb5b-7d5b128d4f44" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-f94c8e5d-033d-419c-a7f9-1b27bbbb0054" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-19f827e6-8e8a-4df5-8569-da64909f5ce2">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ced34cd4-6a0c-4d06-86fa-800726177313" style=""><span class="se-fs-fs19 se-ff- se-style-unset" id="SE-b8e9b20f-6efc-44e2-982f-52794e659d4f" style="color:#000000;"><b>디플로이먼트(Deployment)?</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e366f4b2-ed48-4525-911f-7c47c23c40cb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-aa8c6786-2c7d-4fff-a203-1a0db0cc3da4" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-1f32a319-d736-4ccc-9696-a35a00204cd6" style="color:#000000;">로드밸런서와 로드밸런서에 연결된 서버들처럼 시스템의 처리 능력을 분산시키고 장애가 발생한 서버들을 제외한 나머지 서버에게 부하를 분산하는 기능을 하는 오브젝트.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-0682cac0-2225-40af-b175-047018cfdc1e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-f56b5437-724c-4577-ba50-dd48948f6832" style="color:#000000;">파드의 수를 유지시키기도하며 애플리케이션의 버전을 업그레이드할 때 새로운 버전의 파드로 조금씩 바꾸며 업그레이드를 진행할 수 있기 때문에 무중단 없그레이드 가능하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-cb535698-075e-408c-b8e5-34dfa789c193" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-1497c827-78c4-4e8b-81d0-3beb50559de2" style="color:#000000;"> 보통 디플로이먼트가 생성되면 해당 디플로이먼트에 대응하는 레플리카셋도 함께 생성된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-3c751970-1b6c-4c45-a8c3-1621d68d6034" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-6886485a-27e7-4e41-9c34-fb04ce83dd08" style="color:#000000;">따라서, 디플로이먼트를 사용하면 파드와 레플리카셋을 직접 생성할 필요가 없다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c47168cb-7d0c-4262-a9eb-64ee1045249f" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-7f7aca7f-ea1e-42d9-96f1-2948243b6c11" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b8befb79-8524-4b01-82a3-9f2c5ab75907" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-cea171ae-864d-413b-9efe-9f279f507a87" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-45978dc0-5757-4e9b-9852-9c10fae9b0b6">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b9928314-b8ac-43cf-82f3-b02673595994" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-808b9242-81a9-424e-8372-9fac6689b5ea" style="color:#000000;">1) </span><span class="se-fs- se-ff- se-style-unset" id="SE-80d71fdc-3fd1-4c2c-b7a6-a4018d2103e6" style="color:#000000;"><b>디플로이먼트의 생성과 삭제</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b2bce5f6-4471-4fc9-9762-6857a780254f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e1c22f20-e32b-4a01-9f11-0ae5f0578459" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-afec51f7-9d59-41a2-a0dc-aef714222a43" style="color:#000000;">생성 명령어:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f83f2f42-73d4-4058-b934-b1e76ddf95b8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl apply <span class="token se-code-operator">-</span>f <span class="token se-code-punctuation">[</span>yaml 파일<span class="token se-code-punctuation">]</span> </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f83f2f42-73d4-4058-b934-b1e76ddf95b8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2af1bc4f-04ff-4ec4-aa41-c78fb6201f9a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80f46db8-4b67-41ee-86c5-d5514a14cc0b" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-9ae1363b-46b0-46de-a895-f84b32c7f3c8" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0a0bb3d8-9cd3-4573-b0ba-4c2b265295f2" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-4d0c1dc8-b474-4ef1-bcfd-4a919d57e7bb" style="color:#000000;">삭제 명령어 :</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8348dbf1-02f7-4f09-8549-729fdc8dd7ee">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl <span class="token se-code-keyword">delete</span> <span class="token se-code-operator">-</span>f <span class="token se-code-punctuation">[</span>yaml 파일<span class="token se-code-punctuation">]</span> </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8348dbf1-02f7-4f09-8549-729fdc8dd7ee"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e6555bc4-9869-4858-98d2-8168ff87ed5b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-870c363f-a6fb-4788-b056-2956be37ae6c" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-3ad700ef-0c72-4af5-a183-c9eb396f246e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ff554f77-495e-480c-8b1b-28ec3ebd731e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-12610668-5cc9-4cac-a89a-11acae857859" style="color:#000000;">Deployment 생성 yaml 템플릿:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-4bf806e9-cbfe-4066-8133-488344a54a8e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">apiVersion</span> <span class="token se-code-operator">:</span> apps<span class="token se-code-operator">/</span>v1 설정
+<span class="token se-code-literal-property property">kind</span> <span class="token se-code-operator">:</span> Deployment
+<span class="token se-code-literal-property property">metadata</span> <span class="token se-code-operator">:</span> name에 오브젝트의 이름을 설정
+<span class="token se-code-literal-property property">spec</span> <span class="token se-code-operator">:</span> 디플로이먼트의 사용을 기술
+	<span class="token se-code-literal-property property">replicas</span> <span class="token se-code-operator">:</span> 파드 템플릿을 사용해서 가동할 파드의 수를 지정
+	<span class="token se-code-literal-property property">selector</span> <span class="token se-code-operator">:</span> matchLabels의 라벨을 통해 실행할 템플릿을 찾는다<span class="token se-code-punctuation">.</span> template<span class="token se-code-punctuation">.</span>metadata<span class="token se-code-punctuation">.</span>labels의 값과 일치하지 않으면 에러 발생
+	<span class="token se-code-literal-property property">template</span> <span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">labels</span><span class="token se-code-operator">:</span> selector에서 지정한 matchLabels의 값과 같은 값을 입력
+		<span class="token se-code-literal-property property">spec</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">containers</span><span class="token se-code-operator">:</span> 컨테이너 스펙을 작성</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4bf806e9-cbfe-4066-8133-488344a54a8e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f7cf4491-613e-400a-8b19-8ff0bcc577b0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b9a3bac4-ec34-486b-9f2f-9bc78f86894e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-4c485abd-8994-4609-a7d8-b7bc41d652fc" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8024febd-0460-45b7-8eee-28b8128ffde5" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-d2b022f3-d677-4ef7-b292-f1748606a2f7" style="color:#000000;">위를 참고하여 nginx-deployment를 생성해 실습을 진행한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-497d95e8-71c6-4852-a72f-a3535f09b35a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi nginx<span class="token se-code-operator">-</span>deployment<span class="token se-code-punctuation">.</span>yml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-497d95e8-71c6-4852-a72f-a3535f09b35a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ef67260b-8a5d-4942-ac34-b5a1cc6c5e21">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d6f727de-1e62-4992-b5e3-5d7d658fddcd" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-bff665dc-2fca-44dc-8bfd-10974eefb076" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0462d2b6-08c1-40ee-9fbe-8010740d4b9c" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-785df923-edbc-4b31-afb8-0fedec449ab4" style="color:#000000;">내용:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-0f02bc8f-ab2c-4d90-9909-cf297209d282">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">apiVersion</span><span class="token se-code-operator">:</span> apps<span class="token se-code-operator">/</span>v1
+<span class="token se-code-literal-property property">kind</span><span class="token se-code-operator">:</span> Deployment
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> web<span class="token se-code-operator">-</span>deploy
+<span class="token se-code-literal-property property">spec</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">replicas</span><span class="token se-code-operator">:</span> <span class="token se-code-number">3</span>
+<span class="token se-code-literal-property property">selector</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">matchLabels</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">app</span><span class="token se-code-operator">:</span> web
+  <span class="token se-code-literal-property property">template</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">labels</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">app</span><span class="token se-code-operator">:</span> web
+    <span class="token se-code-literal-property property">spec</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">containers</span><span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> name<span class="token se-code-operator">:</span> nginx
+        <span class="token se-code-literal-property property">image</span><span class="token se-code-operator">:</span> nginx<span class="token se-code-operator">:</span><span class="token se-code-number">1.16</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0f02bc8f-ab2c-4d90-9909-cf297209d282"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-96ddb9a2-695d-489b-b125-1b172057c2bb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c14bf1e8-efb1-4705-99f2-b6561ad85d64" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-bf11327d-cd6e-4e59-85a0-50bae15f8757" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c3a8632-73ef-4fc9-9719-c2c14711a9e8" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-6b2ba8b9-8631-4d70-80c9-e6688f16e78e" style="color:#000000;">nginx-deployment 생성.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-05b0c022-adc8-4721-8d28-9bacdc5c25c9">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl apply <span class="token se-code-operator">-</span>f nginx<span class="token se-code-operator">-</span>deployment<span class="token se-code-punctuation">.</span>yml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-05b0c022-adc8-4721-8d28-9bacdc5c25c9"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-37ef9570-60fb-4e19-8c6e-3a2afada06b7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-81a7dcd4-42a5-4f43-b2aa-f6bee625e91d" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-a8604bf6-5d18-4924-a46d-e941c28e3696" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a706a506-5c82-4681-9709-1b972274dc23" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-ca5b7a75-c01f-48a0-88ce-365d29df72bd" style="color:#000000;">생성 확인:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8451eff1-0ac1-4a67-bfbd-2f275d2e93f6">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"> kubectl <span class="token se-code-keyword">get</span> deployment</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8451eff1-0ac1-4a67-bfbd-2f275d2e93f6"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-1ed109e8-0c2f-4e77-be15-f78ff3eba1c1">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:364px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1ed109e8-0c2f-4e77-be15-f78ff3eba1c1", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMTUw/MDAxNjIzMDI5OTIxMDUx.RbdqUTrBf6bHovKOmnAfEZ9FpvraJEtj3rBgM6cmyyAg.oP8Ofxur-ttdGzE34Tb4GDVTtVo4R04DiknkaQm8_-Eg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%EC%A0%84_10.38.39.png", "originalWidth" : "364", "originalHeight" : "46", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="46" data-width="364" id="SE-1ed109e8-0c2f-4e77-be15-f78ff3eba1c1_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-209a2777-0603-4c62-89c8-d681e7531fb1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-945ac068-2e3c-4c75-bb9f-06507c1b95eb" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-ba3afd8c-8062-40d5-896c-29570ca63984" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-344f2aad-f1ad-4dd7-91c8-ebb3c9b63f97">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ed3ec2b-bec1-45b9-b210-6e11de3079b8" style=""><span class="se-fs- se-ff-" id="SE-30293f46-0937-49ab-8175-2ea0c243e15c" style="">디플로이먼트 </span><span class="se-fs- se-ff-" id="SE-9568285d-989a-44ad-bb3e-2dad989f7298" style=""><b>자동 복구</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a042c71c-085e-4054-8d64-5ff9c472b419">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f0ffd63b-0f66-476f-93a4-5992df974ae9" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-91faa184-536c-4764-8c7f-5b8c0584afa9" style="color:#000000;">worker1 의 전원을 꺼본다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e224dc9f-dbed-41d0-aa09-8cb48fcbe871">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:663px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e224dc9f-dbed-41d0-aa09-8cb48fcbe871", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMjEw/MDAxNjIzMDMwODE4NDQx.ssW_8AWnM-Ft9fwLQqs_sDpOQt_sa6ONgvxMLQ4Fu5Mg.u5aLIsWq9wNXLH8WAFNlqX5EefIWLuKf4yCaLH3bfHMg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%EC%A0%84_10.53.34.png", "originalWidth" : "663", "originalHeight" : "73", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="73" data-width="663" id="SE-e224dc9f-dbed-41d0-aa09-8cb48fcbe871_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-c48c5fa5-efd0-4a18-848c-9a2cc9c135ce">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0595247d-e0b7-4cc8-9746-5df867d0d24a" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-8f273d39-827e-42f2-a1bd-28b3be5e7149" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-895a0fd8-4f8c-4ab2-b125-6e15707d5ebb" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-2ca1aa2e-6145-43be-9334-8a4694235a95" style="color:#000000;">잠시 후 확인해보면 worker1 대신 다른 곳에 pod가 생성된 것을 확인할 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-22e13a39-0431-4e78-940b-a64c77b9a4e0">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:674px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-22e13a39-0431-4e78-940b-a64c77b9a4e0", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMjE0/MDAxNjIzMDMwNzk1NDI1.puxCh84y_Im04gvdHMPizuacYAeFf6opT0l-dJIZBQog.7h6FgkJNqjEtXjcmyd7OLFNcLrStilgwHgoiUcP9htog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-07_%EC%98%A4%EC%A0%84_10.53.13.png", "originalWidth" : "674", "originalHeight" : "88", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="88" data-width="674" id="SE-22e13a39-0431-4e78-940b-a64c77b9a4e0_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8f133855-fb5b-4256-93d9-713375fd94a2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-35651084-7d3b-4222-9ea3-c6dc6ccfc8d4" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-bd63bdf2-8326-4f08-a850-5dcf8ada7e33" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-723ea7ff-ccf5-45da-9e93-f56bdb18d282" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-b65bce6b-aae1-4ff9-b555-2c3672d1be12" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-441b31a0-f88c-4906-8ffd-c8bc436b43d1">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eb7eb8cf-766e-4b35-afbe-ca4428008ee1" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-bd484320-4c89-45c9-b535-cc0efc6825d8" style="color:#000000;">2) 스케일 기능</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-10103290-a077-4baa-b946-0f5a1c970750">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-10103290-a077-4baa-b946-0f5a1c970750", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTAw/MDAxNjIzMjQ0NTY0MjY3.IUIKoZeg80L_d1RHLo09TT_VPuCfQpVt5F6Q-lJw3KYg.qA2xDqNwUFXXIf3kWKZoOtrDXAZzyF0fpTUZTlOnMwsg.PNG.ghdalswl77/SE-10103290-a077-4baa-b946-0f5a1c970750.png", "originalWidth" : "1056", "originalHeight" : "235", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="154" data-width="693" id="SE-10103290-a077-4baa-b946-0f5a1c970750_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-57c512b8-f5cb-4981-b565-bc108fd7dc36">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ba3980c9-c8ff-4d14-8c63-69658034e925" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-1e1da6a6-c1a5-43b6-b733-aad02465be5d" style="color:#000000;">수동으로 레플리카의 값을 변경하는 방법에 대해 알아보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79479e82-3055-41d0-a650-18eececdea39" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-151ae645-a74b-43d2-99a7-a9e688d5200f" style="color:#000000;">같은 이름의 yaml로 apply하면 새로운 오브젝트가 생성되는 것이 아닌 변경사항이 적용된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e5830eda-9ecf-4dc6-915d-357bba76068e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-f1604503-89cd-4f26-9a68-2eba458a741d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a6dac47-cba3-4074-bf1a-c470b8cf3c90" style=""><span class="se-fs- se-ff-" id="SE-ea9e1249-dd2d-4142-bdcd-aeae22ead3f2" style="color:#000000;"><i>(물론 아래 명령어로도 스케일 변경이 가능하다)</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-f837addb-d3d4-4d65-ab78-65530db71ae4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl scale <span class="token se-code-operator">--</span>replicas<span class="token se-code-operator">=</span><span class="token se-code-punctuation">[</span>숫자<span class="token se-code-punctuation">]</span> <span class="token se-code-punctuation">[</span>디플로이먼트 이름<span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f837addb-d3d4-4d65-ab78-65530db71ae4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ed134abc-8b29-47ce-aff7-48e307754624">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3eb2bb22-74ec-4d3e-82e2-c9f0cee73829" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e8fd9ba2-7ef7-4090-8793-1ab4327e72e6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a26443bf-645d-4d5d-af2e-f0788ffef482" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-0ec2b1c5-849e-47be-bd6b-70b0d1de3a3a" style="color:#000000;">yml 파일로 스케일을 변경해보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e098b077-a5f4-4186-9570-1dee068120d2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi nginx<span class="token se-code-operator">-</span>deployment<span class="token se-code-punctuation">.</span>yml</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e098b077-a5f4-4186-9570-1dee068120d2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-0353006f-9af7-46ab-92b9-61d8ff9d5126">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9a42bf59-4ec5-48b6-8179-1e282ab3aa16" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-98a27b06-87c9-4637-b15a-672837083317" style="color:#000000;">기존 파일에서 수정할 부분인 'replicas: 10' 만 수정 후 저장하고 나간다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0dd9b9a0-ce76-494e-91f5-b7b5e36f02c5" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-61b7a2c9-a815-4071-a8ec-a1f4a60d2e7a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b891d677-a844-452d-8056-5624918baabb" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-5f8f0bfc-bb88-404b-b7b8-6b4c83c620bb" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a70f173e-fbca-4060-988e-f9c180680ef8" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-0caca308-bd9f-478a-80a4-32d6805a89ea" style="color:#000000;">아래는 deployment 생성 명령어지만, 같은 이름의 파일이 있다면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bc1f5467-cfed-4dc5-9cbb-b5f1d02b7271" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-d0e3625d-548c-4612-8e73-fe8aafdc2e7b" style="color:#000000;">더 생성되지 않고 수정되는 것을 확인해 보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-75b3cf13-9d98-44c6-a859-248c6f25fddc">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl apply <span class="token se-code-operator">-</span>f nginx<span class="token se-code-operator">-</span>deployment<span class="token se-code-punctuation">.</span>yml </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-75b3cf13-9d98-44c6-a859-248c6f25fddc"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d7947956-90e9-4e1d-8af1-6b029ae7e96a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f121700f-2e36-41d0-bc4e-8f1e8792d5b1" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-b3da5659-ef06-489e-ba89-a810d575994d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-abbffcdf-8253-46d2-9387-7af7223f337d" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-26fc438e-ff24-4caf-8273-1a41e5a1f5cf" style="color:#000000;">확인:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-356f1918-aea0-44e0-a09f-b0ad61bd8f6a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">kubectl <span class="token se-code-keyword">get</span> deployments</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-356f1918-aea0-44e0-a09f-b0ad61bd8f6a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-42008556-b4f6-49fa-aa90-cffcb0bd6c5e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e39cfc27-1fa6-4f19-99b9-872696acf5fd" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-d40a574c-a9b1-4044-8a13-4511da585d10" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-040cc088-45cb-43ac-af42-2bc7603188e9" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-758f70aa-1809-4b94-82ed-cb573133cbd0" style="color:#000000;">deployment 가 하나 더 생성되지 않고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6899ce85-cbc9-4b97-863a-edbb094b8168" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-71f38ca8-e610-475a-bd84-b0a9753e4313" style="color:#000000;">기존에 있던 web-deploy deployment 내용이 변경되었다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-cb0d3bda-bebb-4363-8b71-eda67615eaf9">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-cb0d3bda-bebb-4363-8b71-eda67615eaf9", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMjY3/MDAxNjIzMDMxMDQ4MzAy.KqqgLRNOdJiJAkCEg5DT0AqxGO69a3lzB2vaMImF4-wg.Kd-3cBiBLfSvmTmCeraL3_c0xovw7gcvP0DMD5acQrsg.PNG.ghdalswl77/image.png", "originalWidth" : "751", "originalHeight" : "127", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="117" data-width="693" id="SE-cb0d3bda-bebb-4363-8b71-eda67615eaf9_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-c956ccd4-64db-4944-bfbf-59f30399440b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-08b2862c-735e-4e0f-b046-fb34fe5a8c54" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-23a4deb2-74db-4440-8c3a-a37a9f93a60c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4fe2bc72-ceb7-487d-966c-df8c38e63972" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-57d20b01-35d6-4f61-80ac-ccddb41e0a6b" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-7a4f56ca-d8ed-4828-9f45-3acc491a1b5f">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4f82b802-b665-4b4d-b9b0-62d89e6bb703" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e7d8b6df-7afa-4dfc-a9b4-08437837079a" style="color:#000000;">3) 롤아웃 기능</span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ea851fc5-5eb5-4874-92f1-1864e02cd729" style=""><span class="se-fs- se-ff-" id="SE-1efd9777-de9b-47b2-935e-f0b83b265eae" style="">kubectl rollout</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-bd6f647f-0215-43c7-9f81-9ba0e08919a4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-690cc5cf-bc2a-4fac-bcc8-79726a4cf9b6" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e8a5cc8c-7c6f-42b6-a43c-fbe5d7369aa5" style="color:#000000;">'롤아웃 기능'은 쿠버네티스 클러스터에 새로운 소프트웨어나 서비스를 개시하는 기능이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33e5f9a4-8986-4d66-8521-0ab33343cb51" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-768f0c17-660e-468e-aff3-1bf9c905ae83" style="color:#000000;">즉, 컨테이너의 버전을 업데이트하는 것.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-776c02d3-9643-4ff5-b65d-6b980dc1fce8" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-2ce63e82-14b7-4f56-8e4a-5f65350244e5" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b7c13faa-8b93-4641-97e0-c332568b5046" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-9b4d7e87-006d-4dcb-8818-a454deb1445d" style="color:#000000;">이번엔 'image: nginx:1.16' 부분을 </span><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-ecead030-0350-4c24-bae7-abfd872dc14d" style="color:#000000;">'image: nginx:</span><span class="se-fs- se-ff- se-style-unset" id="SE-3c175887-c264-43cc-a263-f79a0be8f349" style="color:#000000;"><b>1.17'</b></span><span class="se-fs- se-ff- se-style-unset" id="SE-e2045dad-aada-479a-9ddf-cd25d4e796d3" style="color:#000000;">로 수정한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b04ef123-5468-4a81-8298-e91b181db2f6" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-2fe289e9-0039-4f22-8ced-6c7235ee5d46" style="color:#000000;">(나는 조금 더 깔끔하게 보기위해 위에서 한 replicas도 3으로 줄여주었다.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3d0b2c20-c70b-404c-852c-1bbd9d61577e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-6f62282a-1f06-47a2-a8b2-f8daa7d0bad6" style="color:#000000;">수정, 저장하고 나가서 apply -f 해주고 다시 Pod 정보를 확인해보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f9367883-d3b8-4509-b227-c262a184a684" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-013d60ca-56fb-46e4-a7e3-46796437642d" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-b4a50749-dc4f-4192-b20f-dad8258f2fd9">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-b4a50749-dc4f-4192-b20f-dad8258f2fd9", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfOTIg/MDAxNjIzMDMyNDQzMjQ0.tmmNy22Q3WybIBbgaoWYuAEPlq2QeNaJsJu2Fh5KmDQg.UeC8XI8cgSeNxst7IeWb6CiJSE_fX12iKrfWaqZ73iYg.PNG.ghdalswl77/image.png", "originalWidth" : "1447", "originalHeight" : "183", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="87" data-width="693" id="SE-b4a50749-dc4f-4192-b20f-dad8258f2fd9_0" src="images/image_7.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-46ab30d1-0cab-47e6-abfd-57628c2bdb64" style=""><span class="se-fs- se-ff-" id="SE-5d233300-9d54-45f2-87c1-ab750d5c4022" style="">docker ps -a | grep nginx 로 디플로이먼트 이름을 먼저 뽑아보고, 다시 버전 확인했다.</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-c02b4aa6-c874-4a84-bd79-69497a8976b3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9a4e0faa-a8a3-4681-a279-8ff3e791fa91" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-fcc76f7e-f400-47e7-b1e9-e64f8bfe6839" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-b7e200e1-6c12-4abc-b0c1-79502e69c285">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b5111c74-8883-419b-8f4f-ee386c5616da" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-15aa801d-1598-4862-99a4-6f8d97fce441" style="color:#000000;">4) 롤백 기능</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-85a8d768-f02a-459a-a69e-2c6c579224e8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"> kubectl rollout undo deployment <span class="token se-code-punctuation">[</span>디플로이먼트 이름<span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-85a8d768-f02a-459a-a69e-2c6c579224e8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-17ac1a3d-863a-4adb-bce5-0f4c3830ad0a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b73a641c-9f07-4be7-828f-c8bcf7df4d45" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-9e309374-a626-4ea6-9879-bd8b5274a8ed" style="color:#000000;">결과: deployment.apps/web-deploy rolled .</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-13e70743-0b9d-4a0e-a44c-9b026c31b092" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-6939dc86-4f21-42b6-a8a1-d2e779f8fd68" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-2d26b028-8e11-40f4-a155-2b30db5a3a1d">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2d26b028-8e11-40f4-a155-2b30db5a3a1d", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDdfMjIg/MDAxNjIzMDMzMjAzMzMz.q-9k92ZJ0O8xLvOj3OlbzS2vKCAR0w61biuD8eMDZi4g.CKYmc4pZFrt0_LTTp1AgJQCK-7-WFy1cceeWNcZx1OAg.PNG.ghdalswl77/image.png", "originalWidth" : "933", "originalHeight" : "275", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="204" data-width="693" id="SE-2d26b028-8e11-40f4-a155-2b30db5a3a1d_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-cba6eb3d-9ac7-4c41-ac47-9f9ddc931eb6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c569dee-46f2-4e3f-9ce8-69c4755edc40" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-da161756-2355-4f6c-ad3b-2407145a64f3" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

@@ -1,0 +1,311 @@
+<!-- source: https://blog.naver.com/ghdalswl77/223263896323 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-CC342D99-81B6-4AAA-90F0-48938A0B34E8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-48E704D0-AE05-4A68-A9BF-B5C2C813E9C2" style=""><span class="se-fs-fs11 se-ff-system" id="SE-96915594-EB8D-4CA5-95E7-4D0696C8C200" style="color:#9c9c9c;"><b>[Springboot] @Qualifier, @Primary, @Bean(name="")</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B635A9A6-0EC1-4986-A842-9BD82E7D9163" style=""><span class="se-fs-fs15 se-ff-system" id="SE-D563F317-9AE2-458F-A6C4-BA34748B28AD" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3B5B0FFD-2F1D-4FB8-AA88-0FB0E95B4EC7" style=""><span class="se-fs-fs13 se-ff-system" id="SE-2095ABA9-0E91-443D-BB31-9C08CBB55183" style="color:#141414;"><i>하나의 서비스에 </i></span><span class="se-fs-fs13 se-ff-system" id="SE-ad7b87f7-c56d-47ac-9745-84a06b5be96f" style="color:#141414;"><i><b>2개의 datasource</b></i></span><span class="se-fs-fs13 se-ff-system" id="SE-02c929be-dfcb-4b92-a7a6-548f6e2d87af" style="color:#141414;"><i> 를 사용하려 할 때,</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BE781C8C-1BE8-43E1-8DD6-66E8998ED87D" style=""><span class="se-fs-fs13 se-ff-system" id="SE-B21847F6-05B5-4F59-8A60-64419ED879F4" style="color:#141414;"><i>메인 데이터베이스 커넥션에 </i></span><span class="se-fs-fs13 se-ff-system" id="SE-152e388a-4e30-4e70-bd8c-860d3537f1b3" style="color:#141414;"><i><b>@Primary</b></i></span><span class="se-fs-fs13 se-ff-system" id="SE-a66061b1-518b-4667-884c-cd15a8cf9f83" style="color:#141414;"><i> 를 사용하여 default 로 설정하고</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5D1A5427-E9D6-4C24-A30D-C142C9972774" style=""><span class="se-fs-fs13 se-ff-system" id="SE-5E5A3529-217D-47D3-80C4-5FE622DEC66F" style="color:#141414;"><i>서브 데이터베이스 커넥션에 </i></span><span class="se-fs-fs13 se-ff-system" id="SE-c6074c5e-520f-4989-b841-ab4b0a539ffc" style="color:#141414;"><i><b>@Qualifier</b></i></span><span class="se-fs-fs13 se-ff-system" id="SE-ae3f0dfd-7ba2-4599-9495-762e8c8c5a55" style="color:#141414;"><i> 로 명시적으로 의존성을 주입받아 사용할 수 있도록 구성 할 수 있다.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-195BDC0F-EFC2-4BDD-BCBC-19B14F93631E" style=""><span class="se-fs-fs13 se-ff-system" id="SE-C5223296-ECE6-4019-8934-9B3A6CB44785" style="color:#141414;"><i>​</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-735695F8-DBC7-4424-A4F3-F02D35CD425B" style=""><span class="se-fs-fs15 se-ff-system" id="SE-B4ABC2EB-3AF7-4704-B17F-71C9A11889C2" style="color:#141414;"><i>​</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7759179F-19CB-40FB-9F99-138260928271" style=""><span class="se-fs-fs15 se-ff-system" id="SE-652E7735-33BF-4C86-BF61-07E2A9E6ABA5" style="">스프링 컨테이너가 올라갈 때, 스프링은 컴포넌트를 스캔하며 빈을 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CF0AAAA7-4778-4204-86EA-759E8B941737" style=""><span class="se-fs-fs15 se-ff-system" id="SE-BCE56A77-52F2-4E1C-9A67-C67D01965CB4" style="">스프링은 싱글톤 전략을 채택하기 때문에 한 가지 타입의 빈은 한 번만 생성되며, 애플리케이션이 구동되는 동안 하나의 빈을 계속하여 사용한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E06EA0EB-F667-4E06-98B1-882D12BA298D" style=""><span class="se-fs-fs15 se-ff-system" id="SE-3F07A559-4B09-401B-ACB0-6A1DBAB536BC" style="">하지만 아래와 같이 @Bean으로 생성하는 객체들 중 같은 클래스(타입)인 빈이 있다면 어떨까?</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-64ea07fe-d035-4235-bfe5-d23a10539e46">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Configuration
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Config</span> <span class="token se-code-punctuation">{</span>
+
+    @Bean
+    <span class="token se-code-keyword">public</span> Employee <span class="token se-code-function">JohnEmployee</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Employee</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"John"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+
+    @Bean
+    <span class="token se-code-keyword">public</span> Employee <span class="token se-code-function">TonyEmployee</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Employee</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"Tony"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-64ea07fe-d035-4235-bfe5-d23a10539e46"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c71153b9-ce3f-4f85-b432-c985e190772f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F9C5CE3A-BE74-4AFF-8112-48E6A072F038" style=""><span class="se-fs- se-ff-system" id="SE-05FCA76C-7BB5-4DE9-93CF-C33154ADCCE7" style="">스프링은 어느 것을 빈으로 생성하여야 하는지 알 수 없기 때문에 컨테이너를 띄우지 못하고 NoUniqueBeanDefinitionException 예외를 던진다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DDCFE159-42F7-4E83-95B2-1244CFC62074" style=""><span class="se-fs- se-ff-system" id="SE-4FEE9672-4514-4687-8750-5834B41B7B42" style="">이런 경우 다음 두 가지 어노테이션을 사용해 </span><span class="se-fs- se-ff-system" id="SE-7CA636D1-C10F-41C9-875D-3FB4FED4EE35" style=""><b>같은 타입의 multiple bean 을 생성</b></span><span class="se-fs- se-ff-system se-weight-unset" id="SE-1BD2A0D2-3562-4539-B38D-C761289E44E5" style="">할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E9154A39-0073-4350-81EE-7496869265F2" style=""><span class="se-fs- se-ff-system" id="SE-2319F046-534D-48F9-9D3C-70C7F894CAD8" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3649B4F4-FD87-4966-B793-AB1851BD290D" style=""><span class="se-fs- se-ff-system" id="SE-D132CE99-B095-4314-A038-460BB59E0F4F" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-7e4167ad-3da7-43af-876e-f77991e390fc">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-D7378BB2-1820-4098-9191-8C129B7E8C9A" style=""><span class="se-fs- se-ff-" id="SE-24D68A1D-42B0-48F6-86A1-89924D5F6581" style=""><b>1. @Primary</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-39166D5B-183E-47AC-9AA8-594991B3A570" style=""><span class="se-fs- se-ff-" id="SE-8B43614C-393A-40A3-AD1A-AFDAF85D30C9" style="">Simply put, we use @Primary to give higher preference to a bean when there are multiple beans of the same type.  https://www.baeldung.com/spring-primary</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a40ef586-70cc-4a79-b585-5a4006669062">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C826D668-EE61-4465-8518-C089567BD9DE" style=""><span class="se-fs- se-ff-system" id="SE-D33412A5-FDE4-4C9B-907E-952DAF9D89DE" style="">@Primary 는 같은 타입의 빈을 2개 이상 생성할 때, 하나의 빈에게 더 높은 선호도를 부여하기 위해 사용한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8CE2365F-9F66-4094-9DB5-9310388A2511" style=""><span class="se-fs- se-ff-system" id="SE-09FCD0AF-2170-4801-A62E-695527B955BB" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-56213056-5E77-4BF3-99A4-868B0DE6B0E5" style=""><span class="se-fs- se-ff-system" id="SE-67317C4D-520F-4988-8E53-3BFA5C24E6FD" style="">아래 코드를 보자. TonyEmployee() bean 에 @Primary를 붙여, 스프링이 TonyEmployee() bean 의 의존성을 JohnEmployee() 보다 먼저 주입하도록 설정한다. 즉, TonyEmployee 을 default bean 으로 생성한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8323738f-1889-4121-bf6c-cb07397abae0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Configuration
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Config</span> <span class="token se-code-punctuation">{</span>
+
+    @Bean
+    <span class="token se-code-keyword">public</span> Employee <span class="token se-code-function">JohnEmployee</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Employee</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"John"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+
+    @Bean
+    @Primary
+    <span class="token se-code-keyword">public</span> Employee <span class="token se-code-function">TonyEmployee</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Employee</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"Tony"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8323738f-1889-4121-bf6c-cb07397abae0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-bcae41f0-0613-4365-9d69-977700afdca0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-64EC81FF-A002-4697-B367-E445122AFD17" style=""><span class="se-fs- se-ff-system" id="SE-B708F953-47F6-4ABC-91AD-71D23B069024" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-913C044B-8A26-48BE-B8EE-A4D9967F9006" style=""><span class="se-fs- se-ff-system" id="SE-6737BA45-F541-44DA-828A-C843CE9F8746" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-quotation se-l-quotation_line" id="SE-21bc052f-4444-4b3f-a138-9f4b109fc3b2">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-2E42EA88-DFB3-42E1-8EF3-8E2F98601E66" style=""><span class="se-fs- se-ff-" id="SE-772C8B89-2426-4D47-ACCE-734AB691EE8E" style=""><b>2. @Qualifier</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-16E590C9-BEFF-4FCD-9CBF-5C0702DC5ECC" style=""><span class="se-fs- se-ff-" id="SE-08D7674A-6214-4195-8C5B-50BEA4177381" style="">By default, Spring resolves autowired entries by type. If more than one bean of the same type is available in the container, the framework will throw NoUniqueBeanDefinitionException, indicating that more than one bean is available for autowiring.  https://www.baeldung.com/spring-qualifier-annotation</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-1ef6446a-a5ba-4f8f-9696-8293fec14aa1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C8AE5E57-DB04-4FE1-8050-A6C3C600A388" style=""><span class="se-fs- se-ff-system" id="SE-3A0FB2B9-59C3-44B6-9878-D826760AD63A" style=""><b>왜</b></span><span class="se-fs- se-ff-system" id="SE-615611B7-A6B2-43F1-862C-0BA8BBFE4E9E" style=""><i><b> </b></i></span><span class="se-fs- se-ff-system" id="SE-D2DE1F2B-7547-4499-A4F7-DB5E8EDF3093" style="">@Qualifier</span><span class="se-fs- se-ff-system" id="SE-169E240A-C6D6-47F3-A626-91C6E169E5F1" style=""><i><b> </b></i></span><span class="se-fs- se-ff-system" id="SE-E0E1D3BD-3323-4683-9795-00CBFB7C840E" style=""><b>가</b></span><span class="se-fs- se-ff-system" id="SE-1D8B9F2C-21F9-4B7B-9283-45C03436E7FF" style=""><i><b> </b></i></span><span class="se-fs- se-ff-system" id="SE-08523269-2F53-4EC5-932B-143B04158399" style=""><b>필요할까</b></span><span class="se-fs- se-ff-system" id="SE-000366DA-4A2F-429B-BD3F-0EA952BCD72A" style=""><i><b>?</b></i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-27B1AEB8-9D6B-4D15-B6EF-471B73B0B0FF" style=""><span class="se-fs- se-ff-system" id="SE-70396C57-C384-4FE3-8F19-535157D93589" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7C7798BE-8197-476E-AA91-55EFA1D16676" style=""><span class="se-fs- se-ff-system" id="SE-88379B2A-13DA-4D98-9624-592248463D4E" style="">@Autowired 어노테이션은 스프링에서 빈에 의존성을 주입하기 위해 사용되는 방법이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4B246696-6BB2-44F7-ACF0-16D01CFA625A" style=""><span class="se-fs- se-ff-system" id="SE-3529BFA3-F780-4E84-BCD3-EF87F751E90E" style="">스프링은 타입으로 해당 빈을 찾는다. 그러나 @Autowired 를 통한 의존성 주입 시, 같은 타입의 빈이 하나 이상이라면, autowiring 할 대상이 유니크하지 않기 때문에 마찬가지로 NoUniqueBeanDefinitionException 을 던지게 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F44D262F-B503-42F6-82A4-7A0ECBDA890D" style=""><span class="se-fs- se-ff-system" id="SE-9E49AD91-8FFF-4B69-9972-1091256AA059" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52D785E6-8B4E-4AEB-B469-04374F1FB1E5" style=""><span class="se-fs- se-ff-system" id="SE-697F9A12-6582-499D-84E7-5B3CAA6014F5" style="">아래와 같이 스프링이 주입할 수 있는 bean 후보가 2개가 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21029C94-1240-42A0-B3A2-EE90670CC32A" style=""><span class="se-fs- se-ff-system" id="SE-E0F5D863-FC64-4197-A0A2-74C5B624C5B7" style="">Formatter 의 구현체로 FooFormatter 와 BarFormatter 가 빈으로 생성되고, 서비스 레이어에서 의존성을 주입 받도록 하고자 한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e8b9f8aa-fe6b-481f-b160-0d74c40b85fc">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">Component</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"fooFormatter"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">FooFormatter</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Formatter</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> String <span class="token se-code-function">format</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"foo"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+
+@<span class="token se-code-function">Component</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"barFormatter"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">BarFormatter</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Formatter</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> String <span class="token se-code-function">format</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"bar"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+
+@Component
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">FooService</span> <span class="token se-code-punctuation">{</span>
+
+    @Autowired
+    <span class="token se-code-keyword">private</span> Formatter formatter<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e8b9f8aa-fe6b-481f-b160-0d74c40b85fc"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-039c6766-eb6a-4a52-9731-b107ae5a454e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-EBBA2242-17F6-419D-B202-2AAEA583A4E8" style=""><span class="se-fs- se-ff-system" id="SE-8C370ECC-98C8-4E86-ABBE-BE0BDDD94FF7" style="">하지만 스프링은 두 개의 빈 중 어느 것을 주입하여야 하는지 알지 못하기 때문에 NoUniqueBeanDefinitionException 을 던지게 된다. 이런 문제를 해결하기 위해 @Qualifier를 사용할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-05A8312B-29D5-4FAF-BC12-40ABEAA1BEA9" style=""><span class="se-fs- se-ff-system" id="SE-A63861B6-5A1E-4BA3-B0D5-7F5AC2C68943" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-55d923c5-006e-4c63-be8c-05c46dff9365">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">FooService</span> <span class="token se-code-punctuation">{</span>
+    @Autowired
+    @<span class="token se-code-function">Qualifier</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"fooFormatter"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">private</span> Formatter formatter<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-55d923c5-006e-4c63-be8c-05c46dff9365"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3a1e1f70-d86a-425b-834a-11bb117e0820">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E84AAF73-3E9E-459B-B671-7E38829713F5" style=""><span class="se-fs- se-ff-system" id="SE-B1052A3D-E7AF-4F85-A279-6A202CE6CB6D" style="">형식은 @Qualifier 어노테이션("구현체")</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FC5E36C4-4726-455F-BA68-B751C6E24F6C" style=""><span class="se-fs- se-ff-system" id="SE-3C3E1DF9-EEF8-4684-8D26-EBE012B1A17D" style="">이를 사용하므로써 스프링은 같은 타입의 multiple bean을 제대로 찾을 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A9746F17-C689-4C36-8FF7-87239F145770" style=""><span class="se-fs- se-ff-system" id="SE-FBBD9D1C-B911-434B-8987-F314F6384880" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7B6FC504-4180-47AF-9019-83E3EA10E186" style=""><span class="se-fs- se-ff-system" id="SE-475929A3-5759-42AA-B11A-4BA031316451" style="">@Primary 와 마찬가지로, Component 와 함께 사용하여 스프링이 컴포넌트를 스캔하는 과정에서 @Qualifier 를 함께 읽게 할 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-9e29b375-1b11-40da-9f99-f8a78d787ab3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Component
+@<span class="token se-code-function">Qualifier</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"fooFormatter"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">FooFormatter</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Formatter</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//...</span>
+<span class="token se-code-punctuation">}</span>
+
+@Component
+@<span class="token se-code-function">Qualifier</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"barFormatter"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">BarFormatter</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Formatter</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//...</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9e29b375-1b11-40da-9f99-f8a78d787ab3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-899b7567-8cfd-4b58-a262-5d6e74832e0a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-68E914C6-E4A4-48B6-8987-9CFBAF2566FE" style=""><span class="se-fs- se-ff-system" id="SE-4078B3F1-378F-42F0-8963-5CCE1FE1CA30" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-68a24783-a092-4672-9623-f6da88abfb3f">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-BEE64FC2-62BD-4A2B-8EAE-B720207FE865" style=""><span class="se-fs- se-ff-" id="SE-A1E6F06B-994B-4E19-84A5-8D9AE54CE680" style="">3. </span><span class="se-fs- se-ff-" id="SE-67643F96-492C-4CC0-9A9B-776B49A754F3" style=""><b>@Qualifier vs @Primary</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-1ca231c9-e282-4fb1-ad45-91afc5903da7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-06344BAD-EEF0-4E31-8B70-4EF595E8ECCD" style=""><span class="se-fs- se-ff-system" id="SE-F6095867-0B07-426B-A6A2-D3498AA3AD0F" style="">@Primary :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C928BEF6-CB9C-4FC7-97F4-6A7AC83CC3F0" style=""><span class="se-fs- se-ff-system" id="SE-E108EF47-2222-4465-B613-3FEBA16B0CFC" style="">같은 타입의 multiple beans 이 존재할 때, 이들 간의 선호도를 정의하여, </span><span class="se-fs- se-ff-system" id="SE-B8200F68-4A0B-4FE1-BC39-425C86DAF8AC" style=""><b>하나의 구현체를 default 값으로 사용</b></span><span class="se-fs- se-ff-system" id="SE-B7DC66FB-FC6D-420F-BE8D-E52E817B2D6D" style="">하게 하는 것. 기본값으로 주입되어야 하는 빈을 특정하고 싶다면 @Primary를 사용하자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C778C7B6-6D44-4289-98C9-4A4C68D8858A" style=""><span class="se-fs- se-ff-system" id="SE-18B2E092-F184-4629-8D32-7C6775B148BE" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09EB49EF-D2FF-4D35-9012-7CE6CCCE890C" style=""><span class="se-fs- se-ff-system" id="SE-412A6B71-52C0-4FF6-9FBB-213C4BC8D687" style="">@Qualifier:</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A4325DF4-5CEF-4AAA-BFE6-24E40ED948DD" style=""><span class="se-fs- se-ff-system" id="SE-01415AB5-A062-47C1-967D-84AA85402276" style="">다른 빈을 같은 injection point 에서 사용하여야 하는 순간도 있는데, 이 경우 @Qualifier를 사용하여 </span><span class="se-fs- se-ff-system" id="SE-CF57FDFD-057A-48F3-9D75-8F01EBF42288" style=""><b>default 로 주입된 빈이 아닌, 다른 특정 빈을 주입</b></span><span class="se-fs- se-ff-system" id="SE-9AF2621E-CEE4-4724-A72B-6B36C8C0196E" style=""> 할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5C6B40F5-F9BB-4A13-BD63-C57C5BEC27A8" style=""><span class="se-fs- se-ff-system" id="SE-A886A6F4-0E98-40EA-97FD-EC4510C4FD34" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58F15699-77B4-48B0-9D7B-AD09425FF31A" style=""><span class="se-fs-fs15 se-ff-system" id="SE-E04027DD-E8ED-457D-8942-EFD28BB5EB5E" style="">@Qualifier, @Primary 어노테이션이 둘 다 존재할 때는 </span><span class="se-fs-fs15 se-ff-system" id="SE-D67AE3F2-2C72-4C8F-B084-0C30797CF057" style=""><b>@Qualifier 가 우선한다</b></span><span class="se-fs-fs15 se-ff-system" id="SE-5C9FD77C-9CD6-42E9-AC3A-88A328FFE633" style="">. 기본적으로 Primary 는 default 값을 정의하는 반면, Qualifier 는 특정한 값을 정의하기 때문이다.</span><span class="se-fs- se-ff-system" id="SE-D5E85D97-A49E-4B48-81B0-ED7237A4D922" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-27909FA9-EEBA-4AD9-8C77-AE84143F5B38" style=""><span class="se-fs- se-ff-system" id="SE-CE31449F-D8E5-4BBC-8A06-316E2F753812" style=""><i>​</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-50B2CB85-C41C-420D-84AD-19D02519DBA9" style=""><span class="se-fs- se-ff-system" id="SE-75DB1F0D-DB59-4119-AE04-F57FB8172B22" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F9F9E72F-D8F0-40E0-B5EC-67EE723F3784" style=""><span class="se-fs- se-ff-system" id="SE-72AFB703-E0AA-4D37-A780-5F9053B46E6C" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-2a50627c-1ff6-4d70-9641-0fd6b0daae18">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-A320B42C-9FCE-424E-B12C-FCA9A9E4A4F6" style=""><span class="se-fs- se-ff-" id="SE-3DEF62D3-E4EB-466F-9B6E-EA478D8D2092" style=""><b>4. @Bean("name") vs @Component </b></span><span class="se-fs- se-ff-" id="SE-0885D827-8692-474A-980B-F6ECBFC72C02" style="">+ </span><span class="se-fs- se-ff-" id="SE-B6E0F1E4-13FE-4780-A1BF-94B069DFB98F" style=""><b>@Qualifier</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-019d639d-5474-4c08-ab9e-36e95e3d7bba">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Component
+@<span class="token se-code-function">Qualifier</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"apple"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Apple</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Fruit</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//...</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-019d639d-5474-4c08-ab9e-36e95e3d7bba"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2dffc51c-0e64-4294-8f70-d3ec7bb883a4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-009ABB92-F021-4805-8EA0-9FE78117E492" style=""><span class="se-fs- se-ff-system" id="SE-255E19FD-EEEA-44F7-B6FE-1D7BB356236C" style="">@Component 어노테이션은 클래스를 Spring의 빈으로 등록하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-38F4CD32-B641-4D65-87B6-CEBE6D6ED575" style=""><span class="se-fs- se-ff-system" id="SE-A47CE035-A60B-4999-96FD-E9CBAF396FD2" style="">@Qualifier 어노테이션은 해당 빈에 이름(qualifier)을 부여한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2DCB674D-118E-4ECF-869E-C0E3BD11A956" style=""><span class="se-fs- se-ff-system" id="SE-7AE6EA28-09D3-42E8-8426-DB5515E006B6" style="">즉, Apple 클래스를 스프링 빈으로 등록하고, 해당 빈에 'apple' 이라는 이름을 부여한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21C40752-0711-4691-ACC3-8928D371C030" style=""><span class="se-fs- se-ff-system" id="SE-6F365928-A64D-4E74-8E76-31745308B909" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-35b77375-e741-472b-b9eb-7e085da528cd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">Bean</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"banana"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> Fruit <span class="token se-code-function">banana</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//...</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Banana</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-35b77375-e741-472b-b9eb-7e085da528cd"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-36ea9148-41f7-450a-939c-0e03dd097c7d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-141D7759-3598-4F10-B529-3DBFDF476E2A" style=""><span class="se-fs- se-ff-system" id="SE-21C2A09B-4342-43BA-BCEB-4A82ED1811E9" style="">@Bean 어노테이션은 banana() 메서드를 사용하여 Banana 객체를 Spring 컨테이너에 빈으로 등록한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9463A44C-53F5-4D63-BAFE-1D8481A07A38" style=""><span class="se-fs- se-ff-system" id="SE-F35800FC-5B57-4A4C-AE3D-B0AD9955C39C" style="">@Bean("banana")는 "banana"라는 이름의 빈을 등록하고, banana() 메서드가 Banana 객체를 생성하여 반환한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7793DEA6-6E26-4BE4-A475-57AF29EB0BE1" style=""><span class="se-fs- se-ff-system" id="SE-D679B650-EABE-4A57-A38C-BA31C9398AFE" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1FE4F521-BA66-4A3F-995D-FADB414DCD16" style=""><span class="se-fs- se-ff-system" id="SE-CEC1F913-64E9-4DF6-920F-7AF7B902E7A1" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C94056E0-30B9-45B4-BD12-C353692ED9CA" style=""><span class="se-fs- se-ff-system" id="SE-7365F5E6-F7A3-46BE-B92B-6864D6C476C5" style="">@Bean:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-c1dd5187-d2ab-4525-9465-b7ac4c18e983">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-c1dd5187-d2ab-4525-9465-b7ac4c18e983", "src" : "https://postfiles.pstatic.net/MjAyMzExMDdfNTQg/MDAxNjk5MzYzMjQ0NTY2.fTUbgSUNfaV-k5LrgCdFZ1EfanLzTtL-XS4dLXhw8Okg.8odCqTlTyIUruSrKy7ktqZTDJFS-2mgh7WMTax6v72Mg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2023-11-07_%EC%98%A4%ED%9B%84_10.13.20.png", "originalWidth" : "1910", "originalHeight" : "568", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="206" data-width="693" id="SE-c1dd5187-d2ab-4525-9465-b7ac4c18e983_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-77a414fc-73c6-4db8-99d3-2b114e660795">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FF8A8C56-EACC-4B5E-9AFB-160A2B74010A" style=""><span class="se-fs- se-ff-system" id="SE-F44ABA2B-B358-4C59-A22E-C1DD4C873C73" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C5716FC1-9BA2-463C-B6F7-3CD1280BF559" style=""><span class="se-fs- se-ff-system" id="SE-46271A98-488B-433B-9AEF-A6C0201E0F14" style="">@Qualifier:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-30d67fad-5d67-41d4-940d-afb0c28a721c">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-30d67fad-5d67-41d4-940d-afb0c28a721c", "src" : "https://postfiles.pstatic.net/MjAyMzExMDdfMjQz/MDAxNjk5MzYzMjQ0NTU2.Q2lbGryhQU_5QllTdFLoWhxa-XDi2amxROypn45h7B8g.Jh2gSGfDRJbD5Poc0VH36mnHH4okdWoCRIgWT5gyXeYg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2023-11-07_%EC%98%A4%ED%9B%84_10.12.50.png", "originalWidth" : "2096", "originalHeight" : "506", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="167" data-width="693" id="SE-30d67fad-5d67-41d4-940d-afb0c28a721c_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-0db71d17-17ff-4332-a55e-ae27d186f996">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3CB7D513-C768-4D3F-8E9F-50F28566A1D7" style=""><span class="se-fs- se-ff-system" id="SE-6E84468E-1160-4888-B55B-047E3BBBCF25" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-27111BBA-6880-4F09-A82D-9917CEB561F3" style=""><span class="se-fs- se-ff-system" id="SE-A0859CD1-A5AE-4FED-B63B-2B871D8A6FE3" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CB0233D0-E993-4CCC-A18C-8E464B55CD3F" style=""><span class="se-fs- se-ff-system" id="SE-702C478C-8ABA-4F1F-B7DC-1D9D527278A1" style="">@Component, @Qualifier를 사용한 방식은 클래스 수준에서 빈을 등록하고, 해당 빈에 qualifier를 부여하는 방식이고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33F81907-0C14-418A-AAAC-EE5106A5CEA6" style=""><span class="se-fs- se-ff-system" id="SE-D050C99E-32D8-4D2E-A3D1-4B552CAD0B1A" style="">@Bean을 사용한 방식은 메서드 수준에서 빈을 등록하고, 메서드 이름을 빈의 이름으로 사용하는 방식이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-098E5991-2B52-4ED4-9620-B4DC357A93D1" style=""><span class="se-fs- se-ff-system" id="SE-2C7207D7-1FBB-4695-8953-3D614881FFAE" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9F73F9FA-FEFB-4A1A-99B3-90BAA41E577A" style=""><span class="se-fs- se-ff-system" id="SE-570EC082-5E4D-42A6-9C36-D9658AC8EEA4" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

@@ -1,0 +1,175 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222407553894 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line" id="SE-395c3bf9-99ff-464f-96f5-94462a936737">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7ee67bc7-7384-4503-a963-85dc0883899a" style=""><span class="se-fs- se-ff-" id="SE-a0737a45-29c6-4093-9b6d-908123426065" style="">권한관리 기본</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7a4eaba5-c71c-4b22-9537-a1e03b07d1bc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3a5547d7-c3fd-4082-8cd4-03620acb96d8" style=""><span class="se-fs- se-ff-" id="SE-b100b2db-1136-4201-95a5-6c271e57b172" style="">쿠버네티스 클러스터의 api에 접근하기 위해서는 우선 유효한 사용자 인지 인증(authentication)을 거처야 한다. 인증이 됐으면 그 사용자가 접근하려고하는 api에 권한이 있는지 확인이 된 다음에 api를 사용할 수 있다. 하나의 클러스터를 여러명의 사용자가 사용하는 경우, api나 네임스페이스별로 권한을 구분해서 권한이 있는 곳에만 접근을 가능하게 할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fe98ef3d-8a63-4d69-881e-5a50b3b16fbb" style=""><span class="se-fs- se-ff-" id="SE-bb1bdb2b-c16c-4ad7-9c14-a4d44ed2f133" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-57632921-88ff-4716-b6dc-bfd5ebf61a00" style=""><span class="se-fs- se-ff-" id="SE-569626e3-0a19-4cc9-a342-7c6486a3d431" style="">특정 자원에 대한 읽기 전용 권한만 추가해서 다른 사람이 관리하는 네임스페이스라고 하더라도 참고용으로 살펴보게 할수도 있다. 물론 관리자는 모든 api에 대한 권한을 열어두고 모든 자원에 접근할수 있다. 쿠버네티스에서는 이러한 권한 관리를 위해서 여러가지 방법을 제공하고 있습니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e75a91c0-6ab4-444a-ba4a-e12314620860" style=""><span class="se-fs- se-ff-" id="SE-eeb7f9c6-8b29-4f8b-80b2-7dc728221f26" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bdcc70aa-37f3-488c-9a3d-5500ce4c845f" style=""><span class="se-fs- se-ff-" id="SE-3db60fe3-d128-4ab7-bb44-68d616b656ae" style="">크게 ABAC(Attribute-based access control)와 RBAC(Role-based access control) 2가지 방법이 있습니다. 어떤 방법을 사용할지는 apiserver를 시작할때 옵션에 --authorization-mode 로 지정하면 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a8a4f3d1-1bd1-480e-94f2-a5427eeb10dd" style=""><span class="se-fs- se-ff-" id="SE-8949c290-d53d-4108-8356-4c1268165c2a" style="">(1) ABAC은 단어의 의미 그대로 속성(Attribute)기반의 권한 관리. 권한에 대한 내용을 파일로 관리하기 때문에 권한을 변경하려면 직접 마스터 서버에 들어가서 파일을 변경하고 apiserver를 재시작해주어야 하기 때문에 관리하기 번거로운 측면이 있다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-06ce1fda-d9af-4edf-97a6-97329d9a5d8c" style=""><span class="se-fs- se-ff-" id="SE-649fdf91-be6e-405b-b662-66e60826cabe" style="">(2) RBAC은 역할(Role)기반권한 관리이다. 대부분의 권한관리 시스템에서 많이 사용하는 방법. 사용자와 역할을 별개로 선언한 다음에 그 2가지를 엮어(binding)해서 사용자에게 권한을 부여해 준다. RBAC은 관리하기 위해서 서버에 접근할 필요없이 kubectl이나 api 를 이용해서 관리하는 것이 가능하다. 여기서는 RBAC을 이용해서 권한을 관리하는 방법 중, </span><span class="se-fs- se-ff- se-style-unset" id="SE-dffa8e6c-2247-4c79-a362-3e9da387d815" style="color:#undefined;"><b>롤(Role)</b></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-f1e86887-da50-4a26-b5fd-146401320b08" style="color:#undefined;">과 </span><span class="se-fs- se-ff- se-style-unset" id="SE-bf4e9eb7-e52f-494d-9b69-d36552817bd6" style="color:#undefined;"><b>클러스터롤(ClusterRole)</b></span><span class="se-fs- se-ff- se-style-unset" id="SE-bfae6404-509a-4c11-876b-73b5146339a9" style="color:#undefined;">에 대해 알아본다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8096e069-8ada-48a6-b023-ae206dc456ad" style=""><span class="se-fs- se-ff-" id="SE-9cfc212e-d0f2-4241-970a-1f6c36c53626" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c257f63-6305-45c5-8f61-4ee28656f608" style=""><span class="se-fs- se-ff-" id="SE-41d511ef-ba38-42ce-ab86-c18c55f07e76" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-395a1b5b-31cd-40be-b04d-51058b9df1fb">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9800e5f0-9421-42eb-aa2b-6307add32f7b" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-0c5b5bc6-ef78-4340-bae7-8742319a8655" style="color:#undefined;">롤(Role)</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-49a9d2df-fe8d-489a-b0f5-fec7c536ecc8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0a48e9ff-7540-41b0-b53b-76344c843eab" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6ec158b0-a9ec-45e2-b712-8fe22e86feae" style="color:#undefined;">롤(Role)은 특정 api나 리소스에 대한 권한들을 명시해둔 규칙들의 집합.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eeec8b43-f8af-47bf-b736-5dea358fdce7" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0f5d4882-2fc3-4014-a43a-90eed577f016" style="color:#undefined;">롤에는 그냥 롤(Role)과 클러스터롤(ClusterRole) 2가지 종류가 있다. 롤은 그 롤이 속한 네임스페이스에 한곳에만 적용된다. 클러스터롤은 특정 네임스페이스에 대한 권한이 아닌 클러스터 전체에 대한 권한을 관리한다. 그리고 추가로 네임스페이스에 한정되지 않은 자원 및 api들에 대한 권한을 지정할 수 있다. 노드들에 대한 권한이라던가, “/healthz” 같은 엔드포인트에 대한 권한도 관리한다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-83538560-80a0-4955-a504-ecc974866467" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0a82bdac-3339-4163-9cfa-e07aedd43a2d" style="color:#undefined;">먼저 롤에 대해 알아보자. 다음처럼 read-role.yaml을 만들어서 kubectl apply -f read-role.yaml 로 적용한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_stripe __se-component" id="SE-574bb47a-800f-448f-8178-3dbf95e81ea7">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">kind</span><span class="token se-code-operator">:</span> Role
+<span class="token se-code-literal-property property">apiVersion</span><span class="token se-code-operator">:</span> rbac<span class="token se-code-punctuation">.</span>authorization<span class="token se-code-punctuation">.</span>k8s<span class="token se-code-punctuation">.</span>io<span class="token se-code-operator">/</span>v1
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">namespace</span><span class="token se-code-operator">:</span> <span class="token se-code-keyword">default</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> read<span class="token se-code-operator">-</span>role
+<span class="token se-code-literal-property property">rules</span><span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> apiGroups<span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">""</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-literal-property property">resources</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">"pods"</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-literal-property property">verbs</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">"get"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">"list"</span><span class="token se-code-punctuation">]</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-574bb47a-800f-448f-8178-3dbf95e81ea7"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-77ebf842-ae4f-456b-810e-3182112c2066">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-90d56cd1-7310-42f8-8350-821adbf6811c" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-77dd76d5-3d89-486b-b347-57f69c9e4779" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5d4a92d0-84b4-4e63-8ccc-84db1b0b8ba7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-200f8147-d1d0-4db7-8d37-5702e6995b85" style="color:#undefined;">파일의 구조를 보면 공통 설정인 kind와 apiVersion이 나온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-41e03fca-ded7-4a80-b8b0-961e3ecd5792" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5341052b-212e-47e7-b433-cff02aee6b8f" style="color:#undefined;">그 다음에 metadata부분에는 이 롤이 속한 네임스페이스를 명시해 준다. 여기서는 기본 네임스페이스인 default 다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1ffb2e4b-08c4-48a3-bff2-9c91ca87f64d" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-9a2dcc01-9d67-422a-aa0d-4f472156f2d2" style="color:#undefined;">그리고 이 롤의 이름을 name부분에 read-role이라고 적어준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db6d31ee-f139-45f1-9f68-f847ff4b2df4" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b7bfd449-d835-431c-adce-7dfc22d2938c" style="color:#undefined;"> rules엔 이제 이 롤이 가지는 권한에 대한 규칙을 구체적으로 적어 준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9bbd0408-ba90-48d3-af02-e384cd1bcb68" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-72910e6c-cc02-41ea-9bc5-7ab051db80d7" style="color:#undefined;">규칙들에는 배열형식으로 구체적인 값들을 나열할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33c07e97-98f2-4b08-9492-b6f03d73f7c9" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-373c10d1-4dd6-40f5-bd73-285e14300102" style="color:#undefined;">apiGroups에는 이 롤이 사용할 api 그룹들을 설정하는데 여기서는 따로 지정하지 않았다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7003b220-94f9-4d20-87a4-803fc9178b85" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-4fdbfe59-b67d-4c16-9f9e-08ca1aee476a" style="color:#undefined;">resources에는 어떤 자원에 접근가능한지를 명시하는데 여기서는 포드에만 접근 가능하게 pods만 적어 주었다. verbs는 동사라는 의미를 가지는 단어 그대로의 의미대로 어떤 동작이 가능한지를 설정하는 부분이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a6273d92-a23b-434b-9492-004c558f3b75" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3bb85f1f-d036-4de1-bd1a-af2dd2606743" style="color:#undefined;">여기서는 get, list를 설정했다. 전체 설정의 내용을 보면 default네임스페이스의 포드에 대한 get, list동작만 허용가능한 룰이라는걸 알 수 있다. 설정가능한 verbs들은 get, list, create, update, patch, watch, proxy, redirect, delete, deletecollection 등이 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bf7b7081-84a1-4a0e-b15b-01d97033e16b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-c1ac2f8d-f23b-4264-bd7b-d95678737bbf" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e143f4a1-ba7e-4a38-b28f-00767c87132a" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-35907f6a-2450-4066-81c8-f08535768180" style="color:#undefined;">Verb 의미</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93a6d42b-2554-406f-9568-40e6597d0f35" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-ffd4fe4b-8136-4e39-84b3-1ae3421b1807" style="color:#undefined;">create 새로운 리소스 생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-707d2f2f-d388-41e0-89ba-3544dc2a6e19" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-7539c15e-5980-4f2b-937f-235b950e423a" style="color:#undefined;">get 개별 리소스 조회</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1eb37340-fe5e-49a1-948f-c87bb1afcfb3" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-0df2a1a3-ce24-46f4-99e6-20bcc95dd8b4" style="color:#undefined;">list 여러건의 리소스 조회</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c6d6e6ec-dcc9-4a9d-a8b5-31dabce5068d" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-209068f1-6d8f-4cec-9c0e-47a0323933b2" style="color:#undefined;">update 기존 리소스내용 전체 업데이트</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9707d88c-62d2-455a-8cab-4709604742a0" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-972a6277-8daa-4587-ab16-5f59de87d74c" style="color:#undefined;">patch 기존 리소스중 일부 내용 변경</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-43ac62ea-b39e-481b-9721-e46b49c9a7ae" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-3a222f50-7e3c-4929-9570-1bd96dcfcf3f" style="color:#undefined;">delete 개별 리소스 삭제</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ab93078-365d-49dd-a46c-2a8d193d90e4" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-70211bbe-5512-4c58-add7-f51dfa965ee0" style="color:#undefined;">deletecollection 여러 리소스 삭제</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dc25f2cd-559a-4fc5-aa76-e6b5c2f50f53" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3e0bff2c-1946-47ef-b629-fb3600368c70" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8079e5af-3cb0-4a04-a378-6760d8f04451" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-149488fe-8fcc-4334-9c33-70b531d1deef" style="color:#undefined;">* resourceNames을 지정하면, 전체 포드가 아니라 지정된 특정 포드에 대해서만 룰을 설정하는 것도 가능하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5410f523-5184-4205-91a7-7294b2bc3ddb" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5638f1ef-0fed-484b-adbb-b8ae3f17936d" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db80c5cd-4a44-4388-a0ef-9276f3cf76ea" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3e78acfa-dc8c-4216-ac83-a438cfe650df" style="color:#undefined;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-quotation se-l-quotation_line" id="SE-cbfe2b05-3a9b-43a4-8e49-e0a705f08367">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fe021587-0007-4ccc-bdf6-f5ffe581a312" style=""><span class="se-fs- se-ff-" id="SE-8e891116-2a22-4ed0-86f2-b8e684b85590" style="color:#undefined;">클러스터롤(ClusterRole)</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d3434958-a8f3-4811-9b6e-a950cd87f227">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0535a827-118f-4bf3-8a57-bed9df72731a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-55e4bc82-3db2-4657-a4f4-a887e8de96af" style="color:#undefined;">클러스터롤은 롤과 유사하게 다음처럼 정의할 수 있다. read-clusterrole.yaml로 저장한 다음에 적용한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c9e860f3-cba0-475c-af35-70c380391ddf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">kind</span><span class="token se-code-operator">:</span> ClusterRole
+<span class="token se-code-literal-property property">apiVersion</span><span class="token se-code-operator">:</span> rbac<span class="token se-code-punctuation">.</span>authorization<span class="token se-code-punctuation">.</span>k8s<span class="token se-code-punctuation">.</span>io<span class="token se-code-operator">/</span>v1
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> read<span class="token se-code-operator">-</span>clusterrole
+<span class="token se-code-literal-property property">rules</span><span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> apiGroups<span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">""</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-literal-property property">resources</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">"pods"</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-literal-property property">verbs</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">"get"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">"list"</span><span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c9e860f3-cba0-475c-af35-70c380391ddf"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2397e7e2-4eba-40ee-a669-5879c7833228">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4a482dd8-952e-489b-81e1-5465a0350d30" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-470f86c8-d09c-4d91-a56c-ff8e19a3547a" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-61a2fb2e-4250-489f-9f82-3b93cf2f1709" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-9bf6b7b1-b42e-480b-ab87-8f24aff1785c" style="color:#undefined;">파일내용을 보면 kind가 ClusterRole로 롤이 Role로 되어 있던것과 다른걸 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f2fccbc2-67d6-4633-b53b-286ebcab2777" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-94070ca1-ab42-44c1-8e4f-0210d4626825" style="color:#undefined;">그리고 metadata부분에 보면 namespace부분이 없다. 클러스터롤은 전체 네임스페이스에 적용되기 때문에 네임스페이스를 별도로 명시하지 않아도 되기 때문이다. 그 외에는 앞의 read-role과 동일. 이 클러스터롤은 클러스터내의 전체 네임스페이스의 포드에 대한 get, list가 가능하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3570e3f8-06da-4f8f-b6c9-e21fc24b10bc" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2f8088a4-e2bd-4135-a33c-d24d717a3dda" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d0785554-119f-4e2c-8263-b0d07c28e112" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-927592c9-25cc-47b1-8261-45d31c410c6f" style="color:#undefined;">클러스터롤은 aggregationRule을 이용해서 다른 클러스터롤들 조합해서 사용할 수 있다. 다음 yaml 설정 내용을 보면 어떻게 설정하는지 확인할 수 있다. aggregationRule 하위에 clusterRoleSelectors라는 항목이 있고 그 하위에 다시 matchLabels 항목이 있다. 쿠버네티스의 다른 시스템과 비슷하게 클러스터롤에서도 클러스터롤에 레이블을 설정하고 그걸 aggregationRule에서 선택해서 사용하도록 되어 있는 것. 여기서는 기본 레이블인 kubernetes.io/bootstrapping: rbac-defaults을 설정했다. rules항목에는 아무것도 넣지 않았는데, 이는 레이블에 맞는 다른 클러스터롤에서 필요한 룰들을 가져오기 때문이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-62aadcb3-d936-41a3-8c56-d684c7ac802f" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7e429014-9ea2-4096-81dd-91e0ed942897" style="color:#undefined;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f1ecd7b6-8f1c-4951-922a-4666ad796be4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">kind</span><span class="token se-code-operator">:</span> ClusterRole
+<span class="token se-code-literal-property property">apiVersion</span><span class="token se-code-operator">:</span> rbac<span class="token se-code-punctuation">.</span>authorization<span class="token se-code-punctuation">.</span>k8s<span class="token se-code-punctuation">.</span>io<span class="token se-code-operator">/</span>v1
+<span class="token se-code-literal-property property">metadata</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">name</span><span class="token se-code-operator">:</span> admin<span class="token se-code-operator">-</span>aggregation
+<span class="token se-code-literal-property property">aggregationRule</span><span class="token se-code-operator">:</span>
+<span class="token se-code-literal-property property">clusterRoleSelectors</span><span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> matchLabels<span class="token se-code-operator">:</span>
+      kubernetes<span class="token se-code-punctuation">.</span>io<span class="token se-code-operator">/</span>bootstrapping<span class="token se-code-operator">:</span> rbac<span class="token se-code-operator">-</span>defaults
+<span class="token se-code-literal-property property">rules</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f1ecd7b6-8f1c-4951-922a-4666ad796be4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-18d63b7b-575c-4bfd-a71f-0040df87e712">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ff8a692a-8e21-4512-bf05-804cbe47706e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-989c7102-a2dc-4d2e-9325-321ec6cf1355" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58bdcdca-bca5-4355-bd48-18c84fac831e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-6698ce56-d002-4852-b871-fbfd57353db8" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a64bec32-ff7a-48a9-900a-d62cb7c707ad" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e9ec6716-d03a-4d42-9cb1-59cf017294aa" style="color:#undefined;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1" id="SE-91f4ceb2-8489-4f10-8d8d-dff7f4665447">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-96c24774-f787-444f-8f87-138630ab07dd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-609a42c6-d354-43a5-9de6-633946a8739c" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5a05e0a2-178c-4f0a-b894-28042a95886d" style="color:#undefined;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6f6b58c4-9c58-49f0-9bd8-1d424a44a922" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3c61430e-cbe3-4168-9936-0ce365a9aac6" style="color:#undefined;"><a class="se-link" href="https://arisu1000.tistory.com/27848" target="_blank">https://arisu1000.tistory.com/27848</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component" id="SE-ede2f771-963c-4042-b017-12f1dc790605">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://arisu1000.tistory.com/27848" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">쿠버네티스 권한관리(Authorization)</strong>
+<p class="se-oglink-summary">권한관리 기본 쿠버네티스 클러스터의 api에 접근하기 위해서는 우선 유효한 사용자 인지 인증(authentication)을 거처야 합니다. 인증이 됐으면 그 사용자가 접근하려고하는 api에 권한이 있는지 확인이 된 다음..</p>
+<p class="se-oglink-url">arisu1000.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-ede2f771-963c-4042-b017-12f1dc790605", "data" : {"link" : "https://arisu1000.tistory.com/27848", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Ft1.daumcdn.net%2Ftistory_admin%2Fstatic%2Fimages%2FopenGraph%2Fopengraph.png%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-78af1ed8-6876-4b41-b81c-462cbb15f0e0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f8d18467-4b38-46fa-abb9-2d68c3447afb" style=""><span class="se-fs- se-ff-" id="SE-009a9240-39c3-448e-838d-0444aaa6f916" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

@@ -1,0 +1,54 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222091223117 -->
+<div class="se-main-container">
+<div class="se-component se-code se-l-code_black __se-component" id="SE-dcc9778d-c4db-4157-b7ec-e2bb39578f2d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"># <span class="token se-code-operator">-</span><span class="token se-code-operator">*</span><span class="token se-code-operator">-</span> coding<span class="token se-code-operator">:</span> utf<span class="token se-code-operator">-</span><span class="token se-code-number">8</span> <span class="token se-code-operator">-</span><span class="token se-code-operator">*</span><span class="token se-code-operator">-</span>
+<span class="token se-code-keyword">import</span> paho<span class="token se-code-punctuation">.</span>mqtt<span class="token se-code-punctuation">.</span>client <span class="token se-code-keyword">as</span> mqtt
+<span class="token se-code-keyword">import</span> RPi<span class="token se-code-punctuation">.</span><span class="token se-code-constant">GPIO</span> <span class="token se-code-keyword">as</span> <span class="token se-code-constant">GPIO</span>
+<span class="token se-code-keyword">import</span> time
+
+<span class="token se-code-constant">TRIG</span> <span class="token se-code-operator">=</span> <span class="token se-code-number">23</span>
+<span class="token se-code-constant">ECHO</span> <span class="token se-code-operator">=</span> <span class="token se-code-number">24</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"Distance measurement in progress"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">setwarnings</span><span class="token se-code-punctuation">(</span>False<span class="token se-code-punctuation">)</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">setmode</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-constant">BCM</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">setup</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">TRIG</span><span class="token se-code-punctuation">,</span><span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-constant">OUT</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">setup</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">ECHO</span><span class="token se-code-punctuation">,</span><span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-constant">IN</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">output</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">TRIG</span><span class="token se-code-punctuation">,</span>False<span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"waiting for"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">try</span><span class="token se-code-operator">:</span>
+<span class="token se-code-keyword">while</span> <span class="token se-code-literal-property property">True</span><span class="token se-code-operator">:</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">output</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">TRIG</span><span class="token se-code-punctuation">,</span> True<span class="token se-code-punctuation">)</span>
+		time<span class="token se-code-punctuation">.</span><span class="token se-code-function">sleep</span><span class="token se-code-punctuation">(</span><span class="token se-code-number">0.00001</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">output</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">TRIG</span><span class="token se-code-punctuation">,</span> False<span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">while</span> <span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">input</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">ECHO</span><span class="token se-code-punctuation">)</span><span class="token se-code-operator">==</span><span class="token se-code-number">0</span><span class="token se-code-operator">:</span>
+			start<span class="token se-code-operator">=</span> time<span class="token se-code-punctuation">.</span><span class="token se-code-function">time</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">while</span> <span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">input</span><span class="token se-code-punctuation">(</span><span class="token se-code-constant">ECHO</span><span class="token se-code-punctuation">)</span><span class="token se-code-operator">==</span><span class="token se-code-number">1</span><span class="token se-code-operator">:</span>
+			stop<span class="token se-code-operator">=</span> time<span class="token se-code-punctuation">.</span><span class="token se-code-function">time</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+			
+		check_time <span class="token se-code-operator">=</span> stop <span class="token se-code-operator">-</span> start
+		distance <span class="token se-code-operator">=</span> check_time <span class="token se-code-operator">*</span> <span class="token se-code-number">34300</span> <span class="token se-code-operator">/</span> <span class="token se-code-number">2</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"distance:%.1f cm"</span> <span class="token se-code-operator">%</span> distance<span class="token se-code-punctuation">)</span>
+		time<span class="token se-code-punctuation">.</span><span class="token se-code-function">sleep</span><span class="token se-code-punctuation">(</span><span class="token se-code-number">0.4</span><span class="token se-code-punctuation">)</span>
+		
+except KeyboardInterrupt<span class="token se-code-operator">:</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"Measurement staopped by User"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-constant">GPIO</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">cleanup</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-dcc9778d-c4db-4157-b7ec-e2bb39578f2d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d7fb4b82-93cb-4cf7-b731-2d24e06616bd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4db9d3cb-2792-4cf4-abba-2fba7e89374c" style=""><span class="se-fs- se-ff-" id="SE-5081941b-1ec0-4c57-a6c2-3035bf590daa" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

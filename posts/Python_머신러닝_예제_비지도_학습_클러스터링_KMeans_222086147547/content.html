@@ -1,0 +1,340 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222086147547 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default" id="SE-c1ec69f6-aade-49ed-9725-9166a74c05cb">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1051FD32-10B5-4A89-A544-C92A67D99129" style=""><span class="se-fs- se-ff-system" id="SE-65AEC120-9C21-472B-B328-06D6914E6471" style="color:#000000;"><b>파이썬 비지도 학습 클러스터링 (K-Means) 예제</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-7f1e79da-2ac7-4b05-93b1-e7a659182c30">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-D998CD95-EBE0-4458-8476-9BC76A432C88" style=""><span class="se-fs-fs24 se-ff-" id="SE-6FAFF7CD-1AE1-4876-8372-515E5049997A" style="color:#000000;"><b>비지도 학습이란?</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-446C7F08-1B1E-428F-9154-BAE6EF5031E2" style=""><span class="se-fs- se-ff-" id="SE-C3C4897C-E01F-4701-992F-67A903FDB725" style="">클러스터링 (K-Means)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-017fdd5d-e60b-4f07-b340-1053a9315c51">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1E885B8C-EE8F-4FD6-9401-40966A93D02C" style=""><span class="se-fs- se-ff-system" id="SE-08236A45-87F4-4193-BCB7-4E6B910954B1" style="color:#000000;">머신러닝을 세 가지 종류로 나누어 볼 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ADDEEA79-A000-422C-9D1C-0A493DECE2E0" style=""><span class="se-fs- se-ff-system" id="SE-035A9251-A50E-45B9-8714-463AD57DFDBA" style="color:#000000;background-color:#c2f4db;"><b>지도 학습</b></span><span class="se-fs- se-ff-system" id="SE-95D5C9F2-51D7-4103-BB42-4715536BAC24" style="color:#000000;"><b>, </b></span><span class="se-fs- se-ff-system" id="SE-8F5D345C-D7EE-4870-8B82-52FB118C8638" style="color:#000000;background-color:#fff8b2;"><b>비지도 학습</b></span><span class="se-fs- se-ff-system" id="SE-68422735-8414-4C83-B745-4FEFCEBD4D8C" style="color:#000000;"><b>,</b></span><span class="se-fs- se-ff-system" id="SE-DAD3104F-A39C-4F77-B0BE-45488C8C14A6" style="color:#000000;"> 그리고 </span><span class="se-fs- se-ff-system" id="SE-F5FF5ACE-096E-4107-B610-E70558723853" style="color:#000000;"><b>강화 학습</b></span><span class="se-fs- se-ff-system" id="SE-C1562C01-3495-4AF7-B60C-913C97A51B55" style="color:#000000;">이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F766BB0C-17F2-4E86-953E-B1E1F02DBF11" style=""><span class="se-fs- se-ff-system" id="SE-2B0BB88B-EA52-4F38-B9D5-98E484ACD05E" style="color:#000000;">이번 시간에는 머신러닝의 비지도 학습에 대해 알아보고, 예제를 통해 실습해 보려고 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2EBDF166-46DF-4C4D-A004-3C298B3143D1" style=""><span class="se-fs- se-ff-system" id="SE-7011BCFF-AE52-45E5-ABEC-27AECD0CB9D2" style="color:#000000;">우선, 비지도 학습이 무엇인지 알기 전에 지도 학습이 무엇인지도 생각해 보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0CFFED9E-01C7-4504-8E3C-515211479212" style=""><span class="se-fs- se-ff-system" id="SE-C22B60EA-8113-4FDA-85C3-FC057E3909AF" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F816E8F2-9202-45EB-8E6B-75C48A6A279F" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-2E55A8AC-7C9E-4BC9-B55F-236D2DEBDEA7" style="color:#000000;background-color:#c2f4db;"><b>지도 학습</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-853EEF60-5610-4DC5-8D54-616521E0AEB5" style="color:#000000;">(Supervised Learning)이란 간단히 말해</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-29097E4A-7567-4CC8-B733-4923DFBE266D" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-4E96CC7C-BC0E-455D-BB39-688C53385A35" style="color:#000000;"><b>선생님이 문제를 내고 그 다음 바로 정답까지 같이 알려주는 방식</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-397E7B1A-3A76-4FF6-9D29-223009CBC078" style="color:#000000;">이다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-815C8A9C-855F-4D3D-B71C-E99EC4CB892F" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-8AA7633B-AB8E-4329-962B-106A415A458E" style="color:#000000;">즉, 여러 문제와 답을 같이 학습한 후</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A7AD6D7B-9DE6-49B1-A40E-142117C1BAE8" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-57AB89C5-2476-4CE3-8CDF-30D193626FBD" style="color:#000000;">새로운 예제와 같은 문제에 대한 올바른 답을 예측하고자 하는 방법인 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B18830B0-170A-4650-83D8-A7C0EF53D8BC" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-846E67B4-B046-48F8-B7B2-61EE020EEF84" style="color:#000000;">따라서 지도 학습을 위한 데이터에는 문제와 함께 그 정답까지 함께 알고 있는 데이터가 선택되야 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4F955701-27A2-48CB-B86E-771D710DADCB" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-7E3E4C48-7992-4E72-8030-FBE3B660E6B2" style="color:#000000;">그래서 알고리즘에 주입하는 훈련 데이터에 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-680BE423-DBCD-4468-B97E-E52B043C6F98" style="color:#000000;"><b>레이블(Lable)</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-F49046C3-1969-42AF-8AC4-A160617372D0" style="color:#000000;">이라는 원하는 답이 포함되어야 하는데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B9B98575-0120-4D8B-A61E-EED198C69E7B" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-D169CD73-07CF-420B-BECA-2954A6F5ECE9" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-13DD8FEA-FF2B-407B-ACD5-9CBD6372B399" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5D54D6D5-85D3-49E5-8A29-62B019C29636" style="color:#000000;">예를 들어, “장미꽃이 찍혀 있는 이미지 데이터”에 레이블로</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-AAED2740-0A88-47B8-9B29-04FEDD7C5C17" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-9253318A-47A0-4FDD-B585-B268B5707433" style="color:#000000;">“해당 장미꽃의 품종을 나타내는 텍스트“를 함께 입력해서 지도 학습시키면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B7DB393F-9716-4B7A-98CD-854C0F952DA7" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-0362CDCC-02E6-46F4-B3EA-E4FFCEA97C58" style="color:#000000;">지금까지 본 적 없는 장미꽃이 찍힌 새로운 이미지를 받았을 때</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0811D407-FDF8-4977-B2F3-9A51B5184C20" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-C8E11C93-F775-4A3E-851A-8C5D7B1FADA0" style="color:#000000;">해당 장미꽃의 품종이 무엇인지를 예측할 수 있게 되는 방식이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-98C7CEA7-AEA7-4D56-B162-CBDB890F5175" style=""><span class="se-fs- se-ff-system" id="SE-33627E45-F7FA-4BB7-8AEC-93CA3926DF5B" style="color:#000000;"><b>분류(Classification)</b></span><span class="se-fs- se-ff-system" id="SE-2F5970F4-479B-4DCC-A89B-07623FD5B960" style="color:#000000;">가 전형적인 지도 학습 작업이며, 숫자 인식을 좋은 예로 들 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-AEA6367F-F21A-471C-8EDF-E98EC9415A01" style=""><span class="se-fs- se-ff-system" id="SE-8BE3D41E-28A3-4B29-928F-1B6C25924A25" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9A74C7E1-3D2E-40A7-87FA-EE24A11CAAB0" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5A9CE92A-624A-4E38-97FC-B79E419ACA2A" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A59462CD-145F-4BEB-B96E-292F62565C5D" style=""><span class="se-fs-fs24 se-ff-system se-style-unset" id="SE-6FED501A-35C2-4515-8831-35A7BC0C3631" style="color:#000000;background-color:#fff8b2;"><b>비지도 학습</b></span><span class="se-fs-fs24 se-ff-system se-style-unset" id="SE-937AC605-852E-4F24-857E-9663E57F10C5" style="color:#000000;"><b>이란,</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-C8DB49C2-B951-445F-986D-D694AB41B68A" style="color:#000000;">(Unsupervised Learning)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09BB6CC4-2D61-4672-8ED6-B6097B325766" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5C487BFE-5415-42CF-B65D-AFF1CDA084C6" style="color:#000000;">이런 선생님이 문제와 함께 정답(레이블)까지 알려주는 지도 학습과는 달리</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-40DB0C39-C396-4382-B699-8FFAF578C0F0" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-2811F555-32AE-483E-B718-54C8AE44A381" style="color:#000000;">문제는 알려주되- 정답까지는 알려주지 않는 학습 방식이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-998E2E4E-889D-4CD9-BA63-66C1767DC0F4" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-7A4A12B2-39EF-48F5-945A-92077BD37EDB" style="color:#000000;">즉, 여러 문제를 학습함으로써 해당 데이터의 패턴, 특성 및 구조를 스스로 파악하여</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E4AF4D54-1A12-4D24-8551-628183AC2776" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-EFBEA7BC-6742-4F18-83DE-6BAA4638748A" style="color:#000000;">이를 통해 새로운 데이터에서 일정한 규칙성을 찾는 방법인 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-17783938-E0A2-4FF2-894A-CB308CEF2743" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-2D58C8F3-6348-4B9D-BA15-5D60E2FBF089" style="color:#000000;">비지도 학습은 지도 학습에서 필요했던 레이블이 필요하지 않다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BA1A4A9E-4163-4EC6-9F61-14A084456689" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-2E011234-A7E5-48DB-A82B-8074AFD49454" style="color:#000000;">시스템이 아무런 도움 없이 학습해야 한다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-EE7D97FA-9533-442C-9EF6-9CAADEFEBBCC" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-3670AEAC-B54D-45D5-AB82-500DAFB1C784" style="color:#000000;">비지도 학습은 구체적인 결과에 대한 사전 지식은 없지만</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-23116D09-9831-48D1-BF86-36440A981940" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-08A8F0B8-9259-487E-8699-B84798EBF494" style="color:#000000;">해당 결과 데이터를 통해 유의미한 지식을 얻고자 할 때 사용된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-64FA1DBD-D247-40AF-86A8-D7C5F46933C4" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-DF9862B4-1F6B-4A8F-9CDF-6478509D3534" style="color:#000000;">사람도 제대로 알 수 없는 본질적인 문제나,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D08A9113-1BB2-48BD-BBF0-567A237D7F16" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-3BA929CD-1C4E-45DD-82CA-479BED3DAFBB" style="color:#000000;">데이터에 숨겨진 특징이나 구조 등을 연구할 때 많이 활용되고 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B8C75FAC-F989-4BA0-9E48-0E9AEA7C38DF" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-57B25127-42B6-4E57-8843-C6CEAA63C133" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1882AD27-88A3-49DE-B38D-DE766EABBA21" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-F0CEBFAB-25F4-4B3F-905D-CAE77E5D1600" style="color:#000000;">아래는 가장 중요한 비지도 학습 알고리즘이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2F9B9535-6A93-418B-A1FA-D29C566F056C" style=""><span class="se-fs- se-ff-system" id="SE-72FCB3D6-CD25-4433-B1C2-5F7C74973037" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9BAAE9BA-BA74-48D3-80CC-990DCFB92746" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-F7C53EA8-B244-474B-A20F-DFF577F33B9C" style="color:#000000;background-color:#c1f7ff;"><b>1) 군집(Clustering)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F690944F-BEFC-491D-A4DE-32A486CE66EC" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-996D5928-9CFD-45D0-B4DC-C2D8CBE994E2" style="color:#000000;background-color:#c1f7ff;"><b>- K-평균(k-Means)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8E862B46-34F4-4986-AE68-E88FE2EB7AC2" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-3CA7FA0A-E22C-47B5-AE04-A00DF4F666A5" style="color:#000000;"><b>- 계층 군집 분석(HCA, Hierarchical Cluster Analysis)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FA292035-EE37-43DC-A230-24914AC61C82" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-77F7D2AE-421D-405E-9085-1FEB41CC79AB" style="color:#000000;">- 기댓값 최대화(Expectation Maximization)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0AFF3B72-D050-47A2-A093-62779EF89DB6" style=""><span class="se-fs- se-ff-system" id="SE-442C7265-C435-4A49-8B5B-B957D792E0FC" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A3C9309B-31B2-4D2C-8C8B-915AA24E699C" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-56781E5C-1D44-400F-84CA-0B183623C662" style="color:#000000;">2) 시각화(Visualization)와 차원 축소(Dimensionality Reduction)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4004E389-2A55-448C-9162-CC7B3560ECDB" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-7478AB95-72B0-473D-AB79-5EC866FB4BF3" style="color:#000000;">3) 연관 규칙 학습(Association Rule Lea</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FCD7770B-D36C-4961-8FE0-F57C3EAFBA85" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-B06B9674-D222-4687-8C48-3D37E584B7F3" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-164C4525-4DD9-493E-A77E-A9611DCC49D5" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-DC3127D3-8B93-4DA9-BA35-38343FDC0AFF" style="color:#000000;">일단 이번 포스팅에서는 </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-F0A72D57-F9A2-4217-BE3D-A2EDA4083988" style="color:#000000;background-color:#c1f7ff;"><b>군집(Clustering) - (k-Means) </b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-2AD1B21D-E042-4BB5-B773-FB739B4C5880" style="color:#000000;">에 대한 실습을 할 예정이므로</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63EF3728-F8EE-41A3-A1B2-76EACE8D052C" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-1A63C169-9DAD-4B97-85BB-72207E12C9BA" style="color:#000000;">클러스터링 (K-Means)에 대해서 자세히 알아보도록 한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-ae1a2218-1ae8-4f89-9944-6ab80cc690df">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-659F59AF-BAD2-4BB6-88DD-B6F66CACFE38" style=""><span class="se-fs-fs24 se-ff-" id="SE-C5699E14-E03D-45A7-BB73-3E72416FA4E4" style="color:#000000;"><b>클러스터링 (K-Means)</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d1221aa8-403f-4f9d-954d-12a9c411cea0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-54D6C38A-28FF-41E9-BD6C-D72CE193FF37" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-36DF8FB6-A612-4C62-B8D1-902829DF249E" style="color:#000000;"><b>군집(clustering)</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-2825CF79-6501-4DD3-968F-2E56D5B9BB80" style="color:#000000;">이란, 데이터셋을 클러스터라는 그룹으로 나누는 작업이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8E4F63C8-146F-4F1D-9279-7CA13CFE8961" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-D95052AC-6352-4569-9C6D-89F2973A4FAB" style="color:#000000;">한 클러스터 안의 데이터 포인트끼리는 매우 비슷하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-03A5FEFE-FED8-4D35-9C97-F952463285B4" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-99F85936-CF55-4AE9-8E49-276623FA8737" style="color:#000000;">다른 클러스터의 데이터 포인트와는 구분되도록 나누는 것이 목표!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B67D04E6-1338-432A-9262-080E430938B8" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-8DA23731-F68B-4C6B-BB90-54BC72C73A3C" style="color:#000000;">분류와 비슷하게 데이터 포인트의 클러스터를 예측 및 할당한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3459D80F-030F-4353-8EE3-C61BA3E22A75" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-56799A97-BA3A-4F53-AEA0-6B288E9DB30C" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-fd738a94-f3a5-448b-a15c-25589d14aec9">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-208EB088-B07D-496F-9B3A-E8700622E967" style=""><span class="se-fs-fs24 se-ff-" id="SE-9FA58B20-9589-4006-8617-832DBC6E300D" style="color:#000000;"><b>K-평균 군집</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-cde30a2d-878f-4258-819a-eba867a303fc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-887026A8-20D5-4660-9E6D-A2917B25F040" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-A5B0EE01-4AEF-4756-98B1-2EECF378851D" style="color:#000000;"><b>k-평균(k-means)</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-45F8665D-3A24-4E04-9DA2-DCE544EE4ECB" style="color:#000000;"> 군집은 가장 간단하고 널리 사용하는 군집 알고리즘이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C6C11D37-AEA9-400E-9E57-DDCEBB6E5CEB" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-EEBC5AC3-FAFE-4D21-A808-C968E628EC2E" style="color:#000000;">이 알고리즘은 데이터의 어떤 영역을 대표하는 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-EE03EFCA-1A4F-4B92-AE51-1173D68F20AD" style="color:#000000;"><b>클러스터 중심(cluster center)</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-B46367DB-C21D-4E0B-8C2C-6565E025F770" style="color:#000000;"> 을 찾는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1B5A2C70-6BDA-4197-93D6-78F5A2E8F913" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-2ED581ED-9FFE-4B60-9783-62FD5A71AD98" style="color:#000000;">이 알고리즘이 이루어 지는 순서는 다음과 같다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9AA43772-23BE-4EBD-8433-B51A59D10961" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-A326B9DC-3AA3-4D07-86A9-7619B427B0F7" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DAA9B12D-55A7-4B56-B080-3CFE0A8FEDEB" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-EFCAFF09-FC9F-46C6-81BE-51BE9CEFD232" style="color:#000000;">1. 데이터 포인트를 가장 가까운 클러스터 중심에 할당</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D28CF980-81DC-4E9D-9348-04ABCC1D6C68" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-C913DD6A-5322-429B-8BC4-4C28C6566B80" style="color:#000000;">2. 클러스터에 할당된 데이터 포인트의 평균으로 클러스터 중심을 다시 지정</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D0BAF868-3879-4B99-9C15-F553DDD4115E" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-FFB2DA21-1A94-453D-92C9-4DE1589D76EA" style="color:#000000;">3. 클러스터에 할당되는 데이터 포인트에 변화가 없을 때 알고리즘 종료.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-d71c9e98-5cc9-464c-86ad-f6b62f7df00c">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-8ED511C0-A299-48AC-A451-91D076E89B41" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-7E7B2899-61C2-4915-97A1-247E73B1612F" style="color:#000000;"><b>0. Matplotlib</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-c9aad17b-c840-4208-92ae-9fef8d4d4627">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-660CB34C-51F2-4CA3-84BC-117FC313ADC7" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-D8F3691B-5054-4EF1-B40E-B18E742AD6E6" style="color:#000000;">Matplotlib는 파이썬에서 데이타를 차트나 플롯(Plot)으로 그려주는 라이브러리 패키지로서 가장 많이 사용되는 데이타 시각화(Data Visualization) 패키지로 알려져 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-07D107B7-9D9C-4B5A-9192-94B96A9FBF02" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-00D28BB9-0FB0-4E9B-B63F-41B5799E8683" style="color:#000000;">Matplotlib는 라인 플롯, 바 차트, 파이차트, 히스토그램, Box Plot, Scatter Plot 등을 비롯하여 다양한 차트와 플롯 스타일을 지원하며,</span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-A7221747-D492-412B-8E4E-2B51B373FF93" style="color:#000000;"><a class="se-link" href="https://matplotlib.org/gallery.html" target="_blank"> Matplotlib.org 갤러리 웹페이지</a></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-B5A98A7F-FD16-4FB7-8C91-ED37115C0A63" style="color:#000000;">에서 다양한 샘플 차트를 볼 수 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BCA21951-1512-45D0-AD07-367B7E27292D" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-E6CF6E16-9CD1-4C1E-8F58-BBE7E9AE9A1B" style="color:#000000;">Matplotlib를 이용하여 데이타 시각화(Data Visualization)를 사용하기 위해서는 아나콘다-주피터를 사용하면 편리하..지만</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0BFF4A0B-A9B1-4E4C-AB27-6658E1041887" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-DFC09759-57B3-4893-99FB-D241D67DBE86" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F0162434-CBD4-4E35-87CF-3B621A4E22AD" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-46E79DC2-3506-4136-9EA7-5885DDCE04AE" style="color:#000000;">저는 </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-8792D15A-6194-4CCF-ADD4-B83F1E2A120C" style="color:#000000;"><b>파이참 환경</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-8A555BFD-A11D-4A5A-A276-4FB99A5CD650" style="color:#000000;">에서 실습을 진행하려고 합니다!!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6A81BF01-C3DB-41BE-86B3-C419A48C42CB" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-5757414B-C0EC-4E56-BFB8-6A7001C4C2D9" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-0ef04c14-ea3b-4bca-98b4-626cf4b49f29">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-9530FF87-DB99-44F1-BAE7-17DBD5894697" style=""><span class="se-fs-fs19 se-ff- se-style-unset" id="SE-0B730E02-21C3-4C06-B307-9B294E02A8F8" style="color:#000000;"><b>1. Matplotlib 사용법</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-dc19c620-bbee-4603-8f0d-d40a60271de8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A88516E1-B37B-4FDB-AD35-3113B6ADFD46" style=""><span class="se-fs- se-ff-system" id="SE-D9CD8937-C27F-4BFA-AFB8-99C44B4F344A" style="color:#000000;"><b>0. 역시 라이브러리 설치 먼저</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D789C147-9703-4862-80F9-ED0F12D9C351" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-FD2540C3-0569-467F-8C31-A053952BD61C" style="color:#000000;">콘솔에 아래와 같이 입력해주세요.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d32658ed-294b-403b-aea3-8bab9b67a2ad">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">pip install matplotlib</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d32658ed-294b-403b-aea3-8bab9b67a2ad"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-bbdf5552-df40-4584-9330-f969a3a661dd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-AE9D6ECC-6101-47B9-80B9-3011FECC7896" style=""><span class="se-fs- se-ff-system" id="SE-9368B50D-7FC0-43D3-AFFA-5E0C71258B8C" style="color:#000000;">안될시에는 lib 없이!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d68f4ac3-b77c-463b-b3d3-c006ba068d65">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">pip install matplot</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d68f4ac3-b77c-463b-b3d3-c006ba068d65"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-557d7ca0-7937-4179-9a36-327fbb3a4352">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FFB8ABCC-2CA5-48CE-A2CD-BE845B411219" style=""><span class="se-fs- se-ff-system" id="SE-24BEBE53-592C-4C13-9E97-D145F0970A7B" style="color:#000000;">설치가 되었다면,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E8F4F3EF-7214-41EA-AF22-2B9E397FC77C" style=""><span class="se-fs- se-ff-system" id="SE-114A5E60-C68B-493A-BEFA-D306B271803B" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-106c78e6-eb96-4ab1-a155-98106c78f2ad">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">from sklearn<span class="token se-code-punctuation">.</span>cluster <span class="token se-code-keyword">import</span> KMeans
+<span class="token se-code-keyword">import</span> matplotlib<span class="token se-code-punctuation">.</span>pyplot <span class="token se-code-keyword">as</span> plt
+<span class="token se-code-keyword">import</span> pandas <span class="token se-code-keyword">as</span> pd</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-106c78e6-eb96-4ab1-a155-98106c78f2ad"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-00a38a8a-22b2-4b89-a36d-d8b1bee8e94f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CDAA63AA-03B9-4F26-983D-AA172019AB84" style=""><span class="se-fs- se-ff-system" id="SE-0D7683B6-AE5D-42F0-BA07-ECB24436C7A1" style="color:#000000;">저번 예제에서 설치한 사이킷런을 import하고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8C35D982-3DE4-4015-8794-368391974F29" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5D727B26-1A45-4A57-863E-9838AA3FB5C4" style="color:#000000;">Matplotlib를 사용하기 위해서는 먼저 matplotlib.pyplot 을 아래와 같이 import 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2E38CD83-7F26-4CCC-9454-01B6B7ECFD80" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-BE904BF9-29B1-4D95-802E-8AFBF461CF21" style="color:#000000;">pyplot을 다른 이름으로 사용할 수 있지만, 통상 plt 라는 alias를 사용한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-AC28C91B-5EF3-4063-A608-2987B7E7B7E7" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-62121BAC-959A-447D-8B00-C590BBB85C70" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1B266763-D1FD-4A5C-ACF6-3BD0D1CC0987" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-F6DAC226-F5A6-4587-B052-5586CC23B30C" style="color:#000000;">그리고 아래의 코드를 입력해보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-97e7dccb-d516-4fc8-90ce-73b931a4fccf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"># <span class="token se-code-number">1</span>
+from sklearn<span class="token se-code-punctuation">.</span>cluster <span class="token se-code-keyword">import</span> KMeans
+<span class="token se-code-keyword">import</span> matplotlib<span class="token se-code-punctuation">.</span>pyplot <span class="token se-code-keyword">as</span> plt
+<span class="token se-code-keyword">import</span> pandas <span class="token se-code-keyword">as</span> pd
+
+features <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">140</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">130</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">150</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">170</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">]</span>  # <span class="token se-code-punctuation">[</span>무게<span class="token se-code-punctuation">,</span>표면<span class="token se-code-punctuation">]</span> <span class="token se-code-number">1</span>부드러움<span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span>거칢
+
+data <span class="token se-code-operator">=</span> pd<span class="token se-code-punctuation">.</span><span class="token se-code-function">DataFrame</span><span class="token se-code-punctuation">(</span>features<span class="token se-code-punctuation">)</span>
+data<span class="token se-code-punctuation">.</span>columns <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span><span class="token se-code-string">'kg'</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">'surface'</span><span class="token se-code-punctuation">]</span>
+data <span class="token se-code-operator">=</span> pd<span class="token se-code-punctuation">.</span><span class="token se-code-function">concat</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">[</span>data<span class="token se-code-punctuation">,</span> labels<span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> axis<span class="token se-code-operator">=</span><span class="token se-code-number">1</span><span class="token se-code-punctuation">)</span>
+feature <span class="token se-code-operator">=</span> data<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">[</span><span class="token se-code-string">'kg'</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">'surface'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">]</span>
+feature<span class="token se-code-punctuation">.</span><span class="token se-code-function">head</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span>feature<span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-97e7dccb-d516-4fc8-90ce-73b931a4fccf"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-0a70f7ba-b8a4-4d3d-8dc7-f3ba93701b70">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-26C262C8-72E5-4725-926C-22185231D0EC" style=""><span class="se-fs- se-ff-system" id="SE-49743073-DE6E-4FE0-9AF9-FBC42E284CD6" style="color:#000000;">해당 코드는 단순히 무게와 표면으로 대상이 사과인지, 오렌지인지 판별하여 표로 나타내는 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4C8899E0-7348-4BAD-954C-9CD9CF6D37A4" style=""><span class="se-fs- se-ff-system" id="SE-295101E4-B37F-4613-B26E-EA14999B88B7" style="color:#000000;">코드의 결과 또한 무난하게 나오는 것을 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3EEF11F7-418D-4300-85E0-8AB72B11A5AE" style=""><span class="se-fs- se-ff-system" id="SE-D3FA5B98-A751-4335-A714-99014C69451D" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8514EB21-5412-4AC6-98BC-EC02EE78FAAA" style=""><span class="se-fs- se-ff-system" id="SE-C3CE7BCC-EE5B-43C4-8C36-2376A02EA66C" style="color:#000000;">결과 :</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-a002bf00-fa8a-44aa-89cc-0fc3702232da">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:544px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a002bf00-fa8a-44aa-89cc-0fc3702232da", "src" : "https://blogfiles.pstatic.net/MjAyMDA5MTBfMjYy/MDAxNTk5NzAyNjExMDA5.frSye4-eYkRLWzFgiyS8oiPVeS2IephO3MqEuiu7d60g.DT1XqqudhF0eheDNBa3eG3NbzViOcJpzadpdszxXuJgg.PNG.ghdalswl77/SE-e8943a4a-c0a5-4b50-ac1b-947759967337.png?type=w1", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-a002bf00-fa8a-44aa-89cc-0fc3702232da_0" src="https://blogfiles.pstatic.net/MjAyMDA5MTBfMjYy/MDAxNTk5NzAyNjExMDA5.frSye4-eYkRLWzFgiyS8oiPVeS2IephO3MqEuiu7d60g.DT1XqqudhF0eheDNBa3eG3NbzViOcJpzadpdszxXuJgg.PNG.ghdalswl77/SE-e8943a4a-c0a5-4b50-ac1b-947759967337.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e74067c6-83d3-46f4-b933-f5f62876b1be">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B8FD56C9-2DFC-4D02-8A74-F92F5249CCAD" style=""><span class="se-fs- se-ff-system" id="SE-2AC2B5B5-1376-4A26-8E5E-4BA52FB0B1B7" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ACDDEF6C-F3E8-467B-96A3-DE3B29A15097" style=""><span class="se-fs- se-ff-system" id="SE-9C2B39A2-B076-46AD-B2DD-289C76360182" style="color:#000000;">이제 본격적으로 비지도 학습을 시켜보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E7ED74D6-6183-4FE0-A89A-921C6CA146BB" style=""><span class="se-fs- se-ff-system" id="SE-72EED822-20FF-47F3-92D1-9562E156B02C" style="color:#000000;">아래의 코드를 입력한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f896c70f-dc8d-45e7-bf8e-093d9103aaeb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"># <span class="token se-code-number">2</span>
+model <span class="token se-code-operator">=</span> <span class="token se-code-function">KMeans</span><span class="token se-code-punctuation">(</span>n_clusters<span class="token se-code-operator">=</span><span class="token se-code-number">2</span><span class="token se-code-punctuation">)</span>
+model<span class="token se-code-punctuation">.</span><span class="token se-code-function">fit</span><span class="token se-code-punctuation">(</span>features<span class="token se-code-punctuation">)</span> # 알고리즘 불러와서
+
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span>model<span class="token se-code-punctuation">.</span><span class="token se-code-function">predict</span><span class="token se-code-punctuation">(</span>features<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>    # 학습 시키고 출력</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f896c70f-dc8d-45e7-bf8e-093d9103aaeb"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-97fb9fef-87bc-440a-a743-c769a3b17e68">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9069F246-70A3-4F29-821D-F469AE29E74E" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-414C21E4-E07B-4132-9B76-037AD7DF5D38" style="color:#000000;">클러스터를 2개로 할 것이기 때문에 n_clusters 파라미터를 2로 주고!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-131F4B17-16A5-4938-A965-9D9D763AABA1" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5AFBD560-39A3-4376-875D-F186B5242179" style="color:#000000;">fit 해주면 아래와 같은 결과가 나온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-AFBF862D-0143-430A-A516-2F58F3254FC8" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-5FE6ACB5-AEFB-4338-AD25-E759B742370C" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-51c74848-69a1-40e8-a953-fb21c86f62d1">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:535px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-51c74848-69a1-40e8-a953-fb21c86f62d1", "src" : "https://blogfiles.pstatic.net/MjAyMDA5MTBfMzUg/MDAxNTk5NzAyNjgzMzQ3.bSmz33A2l-y5NWinDa3QINnrlnyscX7VmSigZ0IQQWMg.8zH10K8ADSPmIfx9zpyGZTsixfCuro2Rli22goATEmEg.PNG.ghdalswl77/SE-8a06f315-9f37-47fb-8e10-db6690bed4f9.png?type=w1", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-51c74848-69a1-40e8-a953-fb21c86f62d1_0" src="https://blogfiles.pstatic.net/MjAyMDA5MTBfMzUg/MDAxNTk5NzAyNjgzMzQ3.bSmz33A2l-y5NWinDa3QINnrlnyscX7VmSigZ0IQQWMg.8zH10K8ADSPmIfx9zpyGZTsixfCuro2Rli22goATEmEg.PNG.ghdalswl77/SE-8a06f315-9f37-47fb-8e10-db6690bed4f9.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d0b2b9fe-9c08-4adb-b533-e05f29ef745c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BEFD6F41-B9E0-452C-BF63-35F2052E7F8A" style=""><span class="se-fs- se-ff-system" id="SE-094323F2-FBB7-4512-8E7E-44EF6CEF757D" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2DFA0579-9D4C-44C4-8613-8E56B2E53FD2" style=""><span class="se-fs- se-ff-system" id="SE-6415B415-F289-4CC8-91BC-4E1BC2388E62" style="color:#000000;">?!?!?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-EEF131DE-6D40-4173-9CF0-E4A2F2865F8D" style=""><span class="se-fs- se-ff-system" id="SE-2D6F3EF9-7E71-4726-AC14-3214B3CE448D" style="color:#000000;">바보인가? 원하는 답이 나오지 않았다.. 다시 한 번 더 실행 시켜보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-11EAEBE3-5E8C-41CF-BF56-9BF2EDBD6484" style=""><span class="se-fs- se-ff-system" id="SE-6B2A7D90-366E-4D07-8DB5-09284691C166" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-32956593-5b3a-47d5-b963-33f5b4262d76">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:488px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-32956593-5b3a-47d5-b963-33f5b4262d76", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjI5/MDAxNTk5NzQ5MjAyODAx.3Dm_bxW5KOhTjwfQkEHRmppyvpBhAZb8fwQUd0dLPgkg.KPj95hzBVq89xfllo8A3i37Muthlck0qHt0JKbCiycAg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="170" data-width="488" id="SE-32956593-5b3a-47d5-b963-33f5b4262d76_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-da47651a-3167-426b-a212-44973625f09c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-69B8DA47-35BD-4DFE-99D6-282DC648B414" style=""><span class="se-fs- se-ff-system" id="SE-F9E16B65-3A49-4F83-94AF-66A90A962523" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5E6F57EB-C1F7-4B00-A402-751F04951BAE" style=""><span class="se-fs- se-ff-system" id="SE-0C4A93BE-DBC1-45E4-821A-CB200AF985BF" style="color:#000000;">1 1 1 0 혹은 0 0 0 1 이 출력...</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7FA39353-43B7-4F65-8018-48804DAF5861" style=""><span class="se-fs- se-ff-system" id="SE-FEEEC1C3-A3CF-4CCF-B5C2-D816F03679B7" style="color:#000000;">정답인 1 1 0 0 은 나오지 않는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C67D07F1-512C-4BDE-8B9E-4184B772BAE6" style=""><span class="se-fs- se-ff-system" id="SE-5FF45FEB-C500-4C0E-B908-79C8A87687D9" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CC18ED2A-6035-452C-8126-6E2944EE6702" style=""><span class="se-fs- se-ff-system" id="SE-EED7FB0E-DE31-4497-8E49-46B4BED85D5A" style="color:#000000;">이렇게 비지도 학습의 경우 실핼할 때마다 답이 달라진다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-803012E8-1003-42F0-9369-309E05EDB461" style=""><span class="se-fs- se-ff-system" id="SE-F50C1CEC-D489-4308-9BFB-114B9C48B1B7" style="color:#000000;">이유는 우리가 답을 알려준 적이 없기 때문이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9273F3A3-D1A0-4994-B574-16A086D9D609" style=""><span class="se-fs- se-ff-system" id="SE-D1074576-4F7D-4E23-A277-E08491C1DB5A" style="color:#000000;">지도 학습의 경우 '1은 1이야' 라고 알려줬지만</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DB3F39A4-BAF3-45FC-BC2C-D02BEE90DAF2" style=""><span class="se-fs- se-ff-system" id="SE-0B3D36FF-B18F-4F78-811F-CCB7B226D7BE" style="color:#000000;">비지도 학습의 경우 1이 1인지, 0인지 미리 알려주지 않았기 때문!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80FAAD1F-6902-45A5-86A6-DA4441963440" style=""><span class="se-fs- se-ff-system" id="SE-025714F8-144B-4E7B-AACB-3AA6537C9D14" style="color:#000000;">0과 1이 다르다는 것만 구분한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8C05A022-8519-46A0-9D82-D170F6CBEE7A" style=""><span class="se-fs- se-ff-system" id="SE-3505CDD6-3E0F-4A06-952C-F83B0555A7CA" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-955A1B47-AA7D-4AB1-AC38-55A097CF1F7C" style=""><span class="se-fs- se-ff-system" id="SE-0C99B559-E8CE-4ACA-862D-5E1F2343FF13" style="color:#000000;">그래서 위 코드에서 </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a0589308-efd5-411f-a5c8-f9aa53c7840a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"># features <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">140</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">130</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">150</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">170</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">]</span>
+
+features <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">140</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">130</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">1</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">160</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">,</span> <span class="token se-code-punctuation">[</span><span class="token se-code-number">170</span><span class="token se-code-punctuation">,</span> <span class="token se-code-number">0</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a0589308-efd5-411f-a5c8-f9aa53c7840a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c6a97a31-db6e-49d0-8d35-7345a2587169">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F43CF5A0-0108-4BBE-B069-26B5B04ADDC4" style=""><span class="se-fs- se-ff-system" id="SE-DCD112E0-9DBA-4F2B-B835-5C2CC9488B3C" style="color:#000000;">이렇게 150에서 160으로만 바꾸어 주어도</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-300B9B8D-A4F4-499E-958F-4197948D7699" style=""><span class="se-fs- se-ff-system" id="SE-06B9A330-2F0B-4C70-A3CC-2FE880A878C6" style="color:#000000;">1 1 0 0 이라는 제대로 된 답을 주기는 한다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B12E45CF-11D8-4DE5-A4F0-DEFA56D278DD" style=""><span class="se-fs- se-ff-system" id="SE-6832F794-286B-4781-B7F7-80C35A59980C" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BDE077BB-3407-4A61-B2AB-3100638E3E78" style=""><span class="se-fs- se-ff-system" id="SE-BF768F22-3ECE-4AC4-B125-8B2F4CBCF43E" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F00C4193-180B-4BE1-AA8D-400289E44DCD" style=""><span class="se-fs- se-ff-system" id="SE-30D01DFD-108F-4DB1-A1DE-E29A1A04FCBB" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C9701D77-65EF-440B-AFF0-7E002B13FFBB" style=""><span class="se-fs- se-ff-system" id="SE-601F5F82-4984-407C-943A-D03A04F994B7" style="color:#000000;">그럼 다음 시간에 이어서</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9E1A8045-6118-4DB0-A39C-58A175DA207B" style=""><span class="se-fs- se-ff-system" id="SE-46F74478-5A4E-4E20-BD33-B0A09CC7A2F9" style="color:#000000;">비지도 학습 + </span><span class="se-fs- se-ff-system se-style-unset" id="SE-6C5C3999-0C59-43C5-B011-1DCECC64099E" style="color:#000000;">Matplotlib 3차원 그래프 실습을</span><span class="se-fs- se-ff-system" id="SE-638E43F4-EBD5-4BD6-9146-5990D8DB4286" style="color:#000000;"> 해보도록 하겠습니다~~! *_*</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ca4b2061-9637-419f-b150-0e725ffc7c86">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ca4b2061-9637-419f-b150-0e725ffc7c86", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTFfMjY1/MDAxNTk5ODA2NjAxMzk2.JeRLtyXxpL_-GLRY2w3bYVY2Ew6ZPBGHAGpxydpTISsg.Lj72PuLq1xXkC6zDKqZtYiGXAve5jYcc_qaN9NAMM8gg.PNG.ghdalswl77/Figure_8.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="485" data-width="693" id="SE-ca4b2061-9637-419f-b150-0e725ffc7c86_0" src="images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BEC1B83D-BB07-479E-A908-067B5D9E87AF" style=""><span class="se-fs- se-ff-" id="SE-8378E345-3081-447D-AF3E-EB1133E478BB" style="">이런 실습</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ac654c6c-8ab6-43e7-a471-3ad9a59aa107">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C67035FD-DF66-450B-90E6-C616038E3C61" style=""><span class="se-fs- se-ff-system" id="SE-C6FC02EE-3339-4931-A313-04EC9D994683" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1" id="SE-e9c381ce-2e5e-4b99-803d-ec207841808e">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-6fd1ed51-d170-43db-b7a5-d51030e25795">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5326C610-334E-457C-901C-F58FF5D96ED9" style=""><span class="se-fs- se-ff-system" id="SE-F8E8D740-CC4E-457F-8424-B22F8A7B54EB" style="">참고 ::</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D0D243B1-88E6-4E88-950B-F3429E3CA564" style=""><span class="se-fs- se-ff-system" id="SE-3F7FEB51-C47C-4C6F-B357-DB975B6DFE81" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-EB73A33B-CAA8-48FA-BDD9-68F9B2DD154D" style=""><span class="se-fs- se-ff-system" id="SE-10F8F566-5351-4101-A6D9-37FE513D53AE" style=""><a class="se-link" href="https://econsultsolutions.com/step-by-step-machine-learning/" target="_blank">https://econsultsolutions.com/step-by-step-machine-learning/</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component" id="SE-7de31eda-39e1-4763-8fe7-745cb881d030">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail" href="https://econsultsolutions.com/step-by-step-machine-learning/" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Feconsultsolutions.com%2Fwp-content%2Fuploads%2F2018%2F03%2FMachine-Learning.png%22&amp;type=ff120"/>
+</a>
+<a class="se-oglink-info" href="https://econsultsolutions.com/step-by-step-machine-learning/" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Step by Step: Machine Learning | Econsult Solutions, Inc.</strong>
+<p class="se-oglink-summary">This is the latest installment in our Step By Step series, where analysts and research assistants showcase how we use cutting edge tools and resources to complete projects. ESI uses all of these programs and utilities to better serve our clients and solve problems. Artificial intelligence (AI) is th...</p>
+<p class="se-oglink-url">econsultsolutions.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-7de31eda-39e1-4763-8fe7-745cb881d030", "data" : {"link" : "https://econsultsolutions.com/step-by-step-machine-learning/", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Feconsultsolutions.com%2Fwp-content%2Fuploads%2F2018%2F03%2FMachine-Learning.png%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

@@ -1,0 +1,307 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222045346067 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default" id="SE-82b0e5d5-1cd7-467a-89c9-2bc159a8ff75">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BA2814C4-DE7A-49EE-9C50-BB3C8517C878" style=""><span class="se-fs- se-ff-system" id="SE-F140AC0F-3609-41DD-BF6F-6798F8D28B19" style=""><b>예제로 정규식 이해하기</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-8f53ffb6-da9d-45d0-b3c2-ac10aa3f1b16">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-0d047b1c-075a-4c52-8fc5-68a73dcd6881" style=""><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-5E1EFFFB-261C-4312-97E3-CD7FFFCC8955" style="color:#666666;background-color:#ffffff;">정규표현식(Regular Expression, RegExp)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-75fe7199-5693-4d2a-8706-8b16e399f0ab" style="line-height:1.6;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-925FFA98-6BC1-4701-B604-3E4D9F286926" style="color:#666666;background-color:#ffffff;">특정한 규칙을 가진 문자열의 집합을 표현하는데 사용하는 형식 언어.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-A5674034-67FA-4DAA-B080-A45E15EB71BE" style="line-height:1.6;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-3FFCC510-E6F2-4461-8F90-D668A7D43C18" style="color:#666666;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-f53d1e60-404d-40ec-94b4-8f7ec3c22346">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-3CCD0CE3-5ECE-485F-BF56-66938E74E0C6" style=""><span class="se-fs- se-ff-" id="SE-80B87930-32B4-4EB1-87B7-3F600AFD7BA2" style="">0. 핸드폰 번호 정규식</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ee7df33c-e9e6-4632-b595-7a9053d23000">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2A902C51-FF71-4EC5-98C2-18BAD715E707" style=""><span class="se-fs- se-ff-system" id="SE-D23A1E2B-2D26-4818-A526-030DBAC221D1" style="">보통 핸드폰 번호는 세 자리로 나뉘어 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0A0CF505-5E20-402A-A266-BACC5E657D68" style=""><span class="se-fs- se-ff-system" id="SE-A5651874-ADE7-4A8D-967D-979719C7CA31" style="">_ _ _ - _ _ _ _ - _ _ _ _</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FEB63154-2434-4DA6-8855-42D5FD2D7AC1" style=""><span class="se-fs- se-ff-system" id="SE-8746BA4D-74F9-46D4-8843-F397FE3321F5" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E257FFCB-FC72-4F8F-8150-65ECA1343376" style=""><span class="se-fs- se-ff-system" id="SE-831B9910-4CDB-45CD-ADC8-0852D452CB0C" style="">이 핸드폰 번호의 규칙을 찾아보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1CE0C405-A8E8-42DE-845A-5468179D93BC" style=""><span class="se-fs- se-ff-system" id="SE-15E3E84E-19A6-46AA-B0D5-9F67285248DB" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4D8A5987-0428-4BD5-9F92-8B418210E213" style=""><span class="se-fs- se-ff-system" id="SE-94F0B5D7-FF90-4EA1-9540-794D0C533B6F" style="">규칙 1) 첫 세 자리는 아래와 같은 번호들이 나오곤 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CCA09CAC-7E06-4820-A238-E94F5F504FDA" style=""><span class="se-fs- se-ff-system" id="SE-96B13EBC-6C43-404C-A1DB-BD77B58B372A" style="">010</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-062BA2EC-D81F-472A-B979-A6CD44FD0E6C" style=""><span class="se-fs- se-ff-system" id="SE-365C0B82-F102-41BB-9DCF-AC165282D98D" style="">011</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-151774F3-EB2F-4AAF-BA85-37B38543DC23" style=""><span class="se-fs- se-ff-system" id="SE-2AB1E6C3-F1E6-44AA-A18E-1540665884B2" style="">016</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DD1F9CDD-1C21-4FA2-B2AF-663B380EEF1B" style=""><span class="se-fs- se-ff-system" id="SE-4270AC08-5D5B-4988-B361-850B6817EECD" style="">017</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7279ACBC-770F-4094-A9E9-97B535DC5992" style=""><span class="se-fs- se-ff-system" id="SE-426C7D15-2A15-4CA6-98B2-68BEECEF03C6" style="">018</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-042D42EE-1E7D-4662-B2D7-541383DDBE4E" style=""><span class="se-fs- se-ff-system" id="SE-E11FDD5F-19B9-4056-80C1-C01E41FE609C" style="">019</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E4E603ED-2029-4E6F-9669-0A8AC1ABEE0A" style=""><span class="se-fs- se-ff-system" id="SE-81537F3B-5758-48AB-96D5-9FF7660E1BC0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-D84280D3-07D5-4161-960D-B9AF894F2800" style=""><span class="se-fs- se-ff-system" id="SE-7F6C4D15-ADF9-4EC5-B678-E47F1F1B402B" style="">규칙 2) 두번째 자리는 3~4자리의 임의의 숫자가 나온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-99794436-EE6E-4EDB-AD9D-15B01B987751" style=""><span class="se-fs- se-ff-system" id="SE-187D737C-1121-4A03-AC1A-17F38601EEFD" style="">규칙 3) 두번째 자리는 4자리의 임의의 숫자가 나온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4B674239-3629-4DC1-99B4-A0BAAEDDE2E8" style=""><span class="se-fs- se-ff-system" id="SE-AB65CBC1-C3E7-4DD2-B06C-4DB5C8BA0A2A" style="">규칙 4) 자릿수 사이에 아무 표기도 사용하지 않거나 - 로 구분 또는 .로 구분 하는 것을 허용한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-AF1A0B96-999D-4215-AFDE-616262A4B305" style=""><span class="se-fs- se-ff-system" id="SE-FC6933D6-1312-4F6A-A935-BB621105AD92" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7A69DA9A-CFF0-47B5-9DEE-E0693CB7840D" style=""><span class="se-fs- se-ff-system" id="SE-98310FF2-9750-4846-924E-DD9BE7EFA219" style="">그렇담 아래의 세 가지 패턴 다 허용하는 것으로</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5FCF8E58-D8BE-4121-9361-97575324BE72" style=""><span class="se-fs- se-ff-system" id="SE-59BB1E95-2396-4BF0-9615-5F5EF14DA8CB" style="">정규 표현식을 만들어 보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-40EAC9F9-D893-479C-998E-A5E3537F246B" style=""><span class="se-fs- se-ff-system" id="SE-426BD3BC-CE96-4DFF-8F85-4EDFDCE06D16" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-33679cd2-6d93-4ede-a734-95207534c81e">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-996D41C7-6176-4179-AFE0-EED43B1550A0" style=""><span class="se-fs- se-ff-" id="SE-CAB9873C-7ED2-43A2-8780-F26DD5190FAE" style="">1. </span><span class="se-fs- se-ff-" id="SE-231092E8-2EFB-49B5-8667-525BDBF20736" style=""><b>첫번째 세 자리</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-503d1c60-db9a-4166-89b9-33defd0f97fa">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FC8FEEE7-DE5E-4981-80AE-D860BB42BA48" style=""><span class="se-fs-fs19 se-ff-system" id="SE-C04702A7-9371-4EF5-8B84-82ED5E4FE9CB" style="color:#0078cb;"><b>^01</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-06C88152-DFE3-4D66-82AE-9BD82859A187" style=""><span class="se-fs- se-ff-system" id="SE-5F7719D9-8B69-47D5-A6B8-80872F344207" style="">정규 표현식 패턴의 시작을 의미하는 ^을 시작으로 01을 추가했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7E1E4D2D-5B2A-4F9B-944F-D39F329A0C16" style=""><span class="se-fs- se-ff-system" id="SE-26818197-8365-4CD3-AB93-D25049F6B29A" style="">문자열의 시작이</span><span class="se-fs- se-ff-system" id="SE-392958D6-597E-48DB-B6A9-E11A17755353" style="color:#0078cb;"> 01</span><span class="se-fs- se-ff-system" id="SE-8E489192-740A-433D-9450-87682F9F0CA2" style=""> 이라는 것을 의미한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E4DD7B91-20CD-415F-8859-81F85E096FF2" style=""><span class="se-fs- se-ff-system" id="SE-6536D091-EB34-4C54-B327-A9DCE6FA098B" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C0A58133-BBA2-4E6A-94A6-A916D1F363C3" style=""><span class="se-fs-fs19 se-ff-system" id="SE-2C90AE6A-172D-40EF-8B00-B1F8FEF293CE" style="color:#000000;"><b>^01</b></span><span class="se-fs-fs19 se-ff-system" id="SE-FF02BA4D-C48D-410F-A368-A1967165A656" style="color:#0078cb;"><b> (?:0|1|[6-9])</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-14DE641C-7D88-4EF5-A009-153D93265089" style=""><span class="se-fs- se-ff-system" id="SE-DD0F9817-9381-41D4-A51D-B6FDA4AE6D7F" style="">01 다음에 오는 값으로</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DCFD95F9-07E6-4340-8E52-371B667257BD" style=""><span class="se-fs- se-ff-system" id="SE-0C30AFE7-F8A6-4784-9D29-CC39A8321746" style="color:#0078cb;">0,1 또는 6~9 </span><span class="se-fs- se-ff-system" id="SE-BB6B44B8-389C-4B03-8E1D-9A7D90FED04F" style="">사이 값으로 지정 했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-DA509E3D-ED45-4669-8886-3431A18B4FC4" style=""><span class="se-fs- se-ff-system" id="SE-A55A1700-EC48-4FF6-BFB6-E091A172EA37" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-98a827cd-292c-45b9-be37-58135b72dbd2">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-46AF2092-A7E4-496E-914D-4ACC73DAF6C6" style=""><span class="se-fs- se-ff-" id="SE-5D1A8A05-414A-4F28-B0FC-49B361EF4327" style="">2. 두 </span><span class="se-fs- se-ff-" id="SE-E4A97E1B-5CCB-4230-AC43-3A9AA9247BED" style=""><b>번째 세 자리</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-144684bb-301a-42f3-b898-32a565631b3e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3A3FCD0D-8B16-4C8D-8DE8-6868A45F8C43" style=""><span class="se-fs-fs19 se-ff-system" id="SE-511AB767-6922-4B6E-90C4-DCCCD4B10120" style="color:#000000;"><b>^01</b></span><span class="se-fs-fs19 se-ff-system" id="SE-E966E74B-E852-4D99-9490-CC069F3A29AC" style="color:#0078cb;"><b> </b></span><span class="se-fs-fs19 se-ff-system" id="SE-EF0D674C-D662-4F6F-9C58-AF4482D82EE1" style="color:#000000;"><b>(?:0|1|[6-9])</b></span><span class="se-fs-fs19 se-ff-system" id="SE-0BF5B576-2FC9-406D-891F-BBEBD011FFFC" style="color:#0078cb;"><b>(\\d{3}|\\d{4})</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-E5D14FB1-CAAB-43A3-9AC6-99452C4747EF" style=""><span class="se-fs- se-ff-system" id="SE-0081BEDC-F3C1-4DDB-A532-85689C269E31" style="">3자리 또는 4자리의 숫자를 허용 하는 것으로 지정한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-137E62A5-480A-4043-A1E9-A9DE4D0767A6" style=""><span class="se-fs- se-ff-system" id="SE-DA769559-BBF3-4F29-9362-712278A1F885" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-404f4667-2f78-40c5-9c36-679aae6c3bbf">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-4634C856-9CDA-4F30-BD8B-99D5FD581D3E" style=""><span class="se-fs- se-ff-" id="SE-555FD286-2CA5-4315-A68A-CA72B1A88A45" style="">3. </span><span class="se-fs- se-ff-" id="SE-9E4EA4DD-D64F-45AD-8EB9-B2D295ABEA8D" style=""><b>세</b></span><span class="se-fs- se-ff-" id="SE-90CC429B-7EA9-4AC8-9748-806D7AA34BDC" style=""> </span><span class="se-fs- se-ff-" id="SE-0968AE31-2A14-4D24-AC3F-1F9643AE67E9" style=""><b>번째 세 자리</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ac551474-2f88-4deb-bae4-929beaa14260">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58269073-B46E-4D8F-9A8F-37C938A9B130" style=""><span class="se-fs-fs19 se-ff-system" id="SE-363262E5-58A0-486B-A97B-325461C9E75D" style="color:#141414;"><b>^01 (?:0|1|[6-9])(\\d{3}|\\d{4})</b></span><span class="se-fs-fs19 se-ff-system" id="SE-1B191066-7A40-40F5-A9D7-DCCC51103046" style="color:#0078cb;"><b>(\\d{4})$</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4746482E-C215-44D9-AFD1-F77EF8F9FBFF" style=""><span class="se-fs- se-ff-system" id="SE-19B56ECE-7FB0-4EAA-9B18-411E7D54A9C4" style="">마지막은 4자리 숫자로 지정했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-90646CD4-08C5-4812-A34D-140F1CD69E4C" style=""><span class="se-fs- se-ff-system" id="SE-A4394E2E-6AA4-4BA9-805A-C1A40335F62C" style="">그리고 표현식 종료를 알리는 $로 마무리 했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-B3666DFB-B179-4DAD-90EB-C077D8494F6A" style=""><span class="se-fs- se-ff-system" id="SE-5D25F6F4-5C51-4ACC-B098-1B750A570B94" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-5df597b5-df4e-4532-9fa3-e13aaf8608db">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-DCFCC8C8-4165-42A9-B87C-6A2B1E6090DF" style=""><span class="se-fs- se-ff-" id="SE-EC0A3F8D-17E5-4FBA-BCAA-0FDC12DAE25B" style="">++ 구분값 추가</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ce21183b-7c83-480e-9902-be5d35789d0e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-EAFBC065-712C-43EE-BA9D-AED544725AB0" style=""><span class="se-fs- se-ff-system" id="SE-08328D30-D5B8-473A-90FB-C18748D0256C" style="">3핸드폰 번호를 입력할 때 - 를 추가하지만,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2C852F5A-D087-4A35-A522-3E347FF2C9C7" style=""><span class="se-fs- se-ff-system" id="SE-F80A659D-4FCA-459A-93D0-D3C490FA0562" style="">. 를 추가하는 경우도 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6B162FE0-777D-48F6-88D7-2E32CE32F2DD" style=""><span class="se-fs- se-ff-system" id="SE-544274B9-8429-4A43-B47B-611E4E74C6BD" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0B7E9DAA-7E02-4C45-B983-E51DDA68892B" style=""><span class="se-fs-fs19 se-ff-system" id="SE-B32CE24B-5686-45B9-B723-B9C2051046E3" style="color:#141414;"><b>^01</b></span><span class="se-fs-fs19 se-ff-system" id="SE-53149801-1034-43A9-A06A-110AE3C08CAC" style="color:#0078cb;"><b> </b></span><span class="se-fs-fs19 se-ff-system" id="SE-6C4B24EE-7DCF-43E9-AF00-DE670EFA89BA" style="color:#000000;"><b>(?:0|1|[6-</b></span><span class="se-fs-fs19 se-ff-system" id="SE-9C383D53-51AC-4068-A266-1A7CA4F612B5" style="color:#141414;"><b>9])</b></span><span class="se-fs-fs19 se-ff-system" id="SE-11CAF49B-3C52-4DDF-9B79-DD6A7023025B" style="color:#0078cb;"><b>[.-]?</b></span><span class="se-fs-fs19 se-ff-system" id="SE-C3130150-AFAD-4276-9981-9DF7F1843708" style="color:#141414;"><b>(\\d{3}|\\d{4})</b></span><span class="se-fs-fs19 se-ff-system" id="SE-8E0F87EF-32F3-4F35-ACBA-8F1034E12861" style="color:#0078cb;"><b>[.-]?</b></span><span class="se-fs-fs19 se-ff-system" id="SE-407AEB6E-9621-4279-87CA-1F3E50A41D5E" style="color:#141414;"><b>(\\d{4})$</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DAE7C1C9-43E6-4995-A3C1-75674361139E" style=""><span class="se-fs- se-ff-system" id="SE-B2E085FE-7678-4C46-A912-0CBA81877350" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B9D8C482-A193-4B31-87F0-445A53B88716" style=""><span class="se-fs- se-ff-system" id="SE-97E39599-8512-4364-B353-058D75E192BC" style="">여기서!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-EC62E77E-E74D-401C-BB8F-192006F31596" style=""><span class="se-fs- se-ff-system" id="SE-B24A4839-F780-42E2-8C3F-CB499FA9B2E7" style="color:#0078cb;"><b>[.-]?  </b></span><span class="se-fs- se-ff-system" id="SE-20582309-0A45-4562-8DEE-B292A39835DC" style="">이 값은 . 또는 - 값이 없거나 단 한개만 존재하는 것을 의미한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E9C771B7-5244-4467-91A8-4B72193DBB13" style=""><span class="se-fs- se-ff-system" id="SE-68F67ADF-EB2D-4226-BB81-94B8A7BB72B7" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-af8380c8-2619-4d89-a433-557d79dc53c9">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B6F7863B-A309-4575-9D9C-A4CBC9CB52A5" style=""><span class="se-fs- se-ff-system" id="SE-016DFA3A-5ED4-4C0F-8252-94046618517F" style=""><b>그래서,</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-8b2cbb40-7a15-436c-85c9-b303fe2978ee">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4503A52C-32B8-4F89-9C4F-11578F7A8CA9" style=""><span class="se-fs- se-ff-system" id="SE-0A704B1F-389B-4E08-B7C3-5920F51C7B5B" style=""><b>최종 정규식은 다음과 같다.</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-B68F3677-57CB-40C7-8A0C-01C3FFDFF015">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-D03FE588-FAFE-41B8-BF9B-E0F736F096B3" style=""><span class="se-fs- se-ff-system" id="SE-CA2BA449-8941-423A-B1F5-DAF1A4A926E8" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-8ba4d917-a712-4a23-9161-5bf9e0e525bd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-operator">^</span><span class="token se-code-number">01</span> <span class="token se-code-punctuation">(</span><span class="token se-code-operator">?</span><span class="token se-code-operator">:</span><span class="token se-code-number">0</span><span class="token se-code-operator">|</span><span class="token se-code-number">1</span><span class="token se-code-operator">|</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">6</span><span class="token se-code-operator">-</span><span class="token se-code-number">9</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">.</span><span class="token se-code-operator">-</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">?</span><span class="token se-code-punctuation">(</span>\\d<span class="token se-code-punctuation">{</span><span class="token se-code-number">3</span><span class="token se-code-punctuation">}</span><span class="token se-code-operator">|</span>\\d<span class="token se-code-punctuation">{</span><span class="token se-code-number">4</span><span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">.</span><span class="token se-code-operator">-</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">?</span><span class="token se-code-punctuation">(</span>\\d<span class="token se-code-punctuation">{</span><span class="token se-code-number">4</span><span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">)</span>$</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8ba4d917-a712-4a23-9161-5bf9e0e525bd"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b1216d14-5fb3-4a4c-a3a3-6eed8bc4ec24">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5CC357C3-46EB-4C76-9D88-070190C8209A" style=""><span class="se-fs- se-ff-system" id="SE-73C7CFAC-ACFB-4A75-A75C-C13DF91A1933" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F4CEE911-40C9-493A-BFE7-61E4B682D771" style=""><span class="se-fs- se-ff-system" id="SE-4CC6410C-FC70-49AC-B109-390DB58E18E6" style="">위 코드를 자바 코드로 작성 후 위 표현식을 테스트 해보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-92e969d7-1705-4b80-8dcd-5c1c11e65416">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">String regExp <span class="token se-code-operator">=</span> <span class="token se-code-operator">^</span><span class="token se-code-number">01</span> <span class="token se-code-punctuation">(</span><span class="token se-code-operator">?</span><span class="token se-code-operator">:</span><span class="token se-code-number">0</span><span class="token se-code-operator">|</span><span class="token se-code-number">1</span><span class="token se-code-operator">|</span><span class="token se-code-punctuation">[</span><span class="token se-code-number">6</span><span class="token se-code-operator">-</span><span class="token se-code-number">9</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">.</span><span class="token se-code-operator">-</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">?</span><span class="token se-code-punctuation">(</span>\\d<span class="token se-code-punctuation">{</span><span class="token se-code-number">3</span><span class="token se-code-punctuation">}</span><span class="token se-code-operator">|</span>\\d<span class="token se-code-punctuation">{</span><span class="token se-code-number">4</span><span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">.</span><span class="token se-code-operator">-</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">?</span><span class="token se-code-punctuation">(</span>\\d<span class="token se-code-punctuation">{</span><span class="token se-code-number">4</span><span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">)</span>$</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-92e969d7-1705-4b80-8dcd-5c1c11e65416"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-fd50d6bb-fe8c-4859-aed4-8f19d84ac8ba">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1E15DB6B-159F-4A5A-9342-9E0409E04442" style=""><span class="se-fs- se-ff-" id="SE-F9B32C34-A05D-48BB-8B53-A70F43E01368" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-77274467-4423-420e-be42-c8e0b55e9814">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">String phoneNum1<span class="token se-code-operator">=</span><span class="token se-code-string">"01012345678"</span><span class="token se-code-punctuation">;</span>
+System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"phoneNum1 테스트 결과 =="</span> <span class="token se-code-operator">+</span>﻿
+phoneNum1<span class="token se-code-punctuation">.</span><span class="token se-code-function">matches</span><span class="token se-code-punctuation">(</span>regExp<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-77274467-4423-420e-be42-c8e0b55e9814"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-7e3dc1fe-58ab-450f-b022-3df6c8f39ea4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-BFB2D03F-7066-4842-B7C1-3EB5B73BA879" style=""><span class="se-fs- se-ff-system" id="SE-D40A7A33-29D2-4EFF-A601-A2D8377C2403" style="">phoneNum1의 값이 01로 시작했고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-903641BD-794B-4D53-AAF4-48B407019AFE" style=""><span class="se-fs- se-ff-system" id="SE-F4658401-FCF5-436E-A6E8-DAE2FA10BB7E" style="">세번째 값이 0으로 첫번째 자리는 모두 정상적으로 들어왔다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-048A4B28-D430-4925-A299-BE4AD94EC3E7" style=""><span class="se-fs- se-ff-system" id="SE-FF8223D0-E828-47F2-A18E-3D88576FC903" style="">두번째 및 세번째 자리는 모두 숫자 값이고 7~8 자리의 값이어야 하는데</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2048696D-6042-4EF8-B69B-041B419E9D6B" style=""><span class="se-fs- se-ff-system" id="SE-C191FA1B-52D3-4320-A727-D9CB2010EB46" style="">8자리니까, 문제 없는 값으로 확인 되었다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-27FC96D1-F9C1-496E-9448-2195DB8236B0" style=""><span class="se-fs- se-ff-system" id="SE-3FF3CB54-1FFF-42B2-8208-190A974D47B9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1A0AB67D-8CCA-44D6-90D4-2F12863153E6" style=""><span class="se-fs- se-ff-system" id="SE-736E388F-8996-48E7-99C7-4A11926B3CA3" style="">위 코드를 실행한 결과는 아래와 같다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component" id="SE-663647c8-156b-43b0-a51d-f5ff4bcc6c66">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">phoneNum1 테스트 결과 <span class="token se-code-operator">==</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-663647c8-156b-43b0-a51d-f5ff4bcc6c66"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f9895891-567d-4775-adb3-921c03075277">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8556D4B7-171E-4EB5-89EF-6EE47A82F30B" style=""><span class="se-fs- se-ff-system" id="SE-E6929590-4E47-4FE8-BAEC-A08938B6970D" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3E707E36-C371-4EF9-B134-4682C2DF2E71" style=""><span class="se-fs- se-ff-system" id="SE-FAEF1D51-A216-48DF-9D37-B351BC6F59E8" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-557c789a-c47b-4e80-bb3d-32651f7f7a48">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">String phoneNum2<span class="token se-code-operator">=</span><span class="token se-code-string">"010-1234-5678"</span><span class="token se-code-punctuation">;</span>
+System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"phoneNum2 테스트 결과 =="</span> <span class="token se-code-operator">+</span>﻿
+phoneNum1<span class="token se-code-punctuation">.</span><span class="token se-code-function">matches</span><span class="token se-code-punctuation">(</span>regExp<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-557c789a-c47b-4e80-bb3d-32651f7f7a48"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2dbe45c2-4712-4e45-8b9d-f4ffdaa23e02">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-233945BF-3B16-40AD-8476-4FE1E0D93267" style=""><span class="se-fs- se-ff-system" id="SE-2E16F029-DD9F-425B-838C-1FFFAAC51A04" style="">두번째 예제의 구분자를 - 로 변경했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-123C5E84-533E-4BD0-B599-034C34EF4A18" style=""><span class="se-fs- se-ff-system" id="SE-7AEE2A2D-1E53-4BD9-BB7C-EDE5F7C7DA99" style="">위 코드를 실행하면 아래와 같은 결과가 나온다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component" id="SE-b28cbf7a-79b7-4552-bf43-958dedb5b49d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">phoneNum1 테스트 결과 <span class="token se-code-operator">==</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b28cbf7a-79b7-4552-bf43-958dedb5b49d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5f99cf95-8ca1-4e42-8919-829b8e6a3ba7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-960EA175-F851-4347-997E-3E996C13E8D9" style=""><span class="se-fs- se-ff-system" id="SE-0EA136E7-B50E-48D2-8EBE-DB3EEAEFD443" style="">- 를 .로 바꿔도 같은 결과인 true가 나온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5BADF2E0-0A77-43F7-A3D2-2856828D0375" style=""><span class="se-fs- se-ff-system" id="SE-36A1BD81-4B0D-492E-A0B1-F8D9FD24E12E" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-76E10210-7433-481E-B5F5-92DFDB5E8C0A" style=""><span class="se-fs- se-ff-system" id="SE-5F812B4B-2B9F-4AB1-99CF-3AD56FCD83BC" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-50696c6a-96be-4bca-8317-c2adebe50268">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">String phoneNum2<span class="token se-code-operator">=</span><span class="token se-code-string">"0101234-.5678"</span><span class="token se-code-punctuation">;</span>
+System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"phoneNum3 테스트 결과 =="</span> <span class="token se-code-operator">+</span>﻿
+phoneNum1<span class="token se-code-punctuation">.</span><span class="token se-code-function">matches</span><span class="token se-code-punctuation">(</span>regExp<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-50696c6a-96be-4bca-8317-c2adebe50268"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f4f6bd64-c705-4b9c-9165-61cfc6422a48">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C901A364-A426-499F-9D42-0CD02EDF87BF" style=""><span class="se-fs- se-ff-system" id="SE-9408101C-FABA-4D94-9DB5-1C8FA26131A8" style="">이번에는 4와 5 사이에 - 과 . 두개를 같이 사용했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39EABA76-ED83-49D2-8A71-DB39D2DC63D1" style=""><span class="se-fs- se-ff-system" id="SE-E80C0F10-118C-4E6F-9A04-377A4D96CA78" style="">둘 다 허용된 문자열이지만 둘 중 한개 혹은 둘 다 오지 않아야 한다고 앞서 정의 했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-E3DCAB90-7213-4B61-91F1-609C1214911E" style=""><span class="se-fs- se-ff-system" id="SE-C3CB043B-003A-46AE-A21D-D45BB0A00BF8" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CE6180E8-5B31-4ADD-9C90-9C2E6AFC9706" style=""><span class="se-fs- se-ff-system" id="SE-758FE3AB-C853-4AA6-BDB8-1675D2905DDD" style="">위 코드를 실행하면 아래와 같은 결과가 나온다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component" id="SE-cc050da4-2ff6-4582-9e61-d0bf762facb1">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<div class="se-module se-module-code se-fs-fs16">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">phoneNum1  테스트 결과 <span class="token se-code-operator">==</span> <span class="token se-code-boolean">false</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-cc050da4-2ff6-4582-9e61-d0bf762facb1"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b888b5d6-d3cf-4951-ab9c-43d475d13aac">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8DF93E14-81CA-43FE-8466-A1AB07D11FC3" style=""><span class="se-fs- se-ff-" id="SE-F272E90F-F71B-4791-A9BE-C6277252C050" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1" id="SE-80374575-cbe0-4616-904d-c8e4ed62f6e5">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-948f4b90-2b47-4c12-a7e3-1f84036478d3">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-948f4b90-2b47-4c12-a7e3-1f84036478d3", "src" : "https://postfiles.pstatic.net/MjAyMDA3MjlfMTEy/MDAxNTk2MDEyODkxMzgz.9GsfopKsiozUKlKu8_fh-F2s9o7KRFY6gvyO81jRvcAg.zxdvWoJTnDuE4tLuZCAJjSYQjTRVqh0xQBd5W8I4O8cg.PNG.ghdalswl77/SE-cf130f0d-4c75-4af7-82a2-94fa0fc8e438.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="486" data-width="693" id="SE-948f4b90-2b47-4c12-a7e3-1f84036478d3_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d4599a97-f177-4542-8ac5-dd4ac8aea390">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-16F8296C-82DF-469A-8A4D-1C0DB2A9561F" style=""><span class="se-fs- se-ff-" id="SE-49F506CC-686F-4880-9A57-A7B9D2F34CF4" style="">정규식 정리표 🧹</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

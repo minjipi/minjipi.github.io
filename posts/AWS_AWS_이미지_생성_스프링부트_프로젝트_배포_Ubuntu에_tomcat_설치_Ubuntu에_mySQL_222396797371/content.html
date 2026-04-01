@@ -1,0 +1,1057 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222396797371 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-3a740fdb-92b9-4498-9a7f-d06b52276365">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-97b6b54e-7d69-45d8-97b6-65d3153dd73a" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" id="SE-b39abe56-2f6a-430c-a7d7-085e65e8388e" style="color:#000000;"><b>[ Amazon Web Services ]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-0ca17015-71af-4a1a-ad6c-3c4f2cd4f8ac" style="line-height:1.8;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-09c6995c-de13-45b6-8831-ca347811ed38" style="color:#000000;"><b>AWS 이미지 생성</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-5f3e3aae-3808-4ff3-9547-dc081092e9ce" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" id="SE-4f8a2098-846d-4463-95d1-736557a418ad" style="color:#000000;"><b>스프링부트 배포(톰캣, DB 연동)</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-c15aec20-7dcc-4ead-b96d-b2612b859803">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:512px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-c15aec20-7dcc-4ead-b96d-b2612b859803", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTNfMjk4/MDAxNjIzNTg3NzM0NjYw.K_62a0SPSZKxrukc0gA1Ja3knjqWPmFyTPFWEwH7vH4g.rxmT24fQrUkIhsMEVgjXqsJHo5qFhrEJObXi-xeHmF4g.PNG.ghdalswl77/SE-c15aec20-7dcc-4ead-b96d-b2612b859803.png", "originalWidth" : "512", "originalHeight" : "313", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="313" data-width="512" id="SE-c15aec20-7dcc-4ead-b96d-b2612b859803_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-quotation se-l-quotation_line" id="SE-a49786b0-72cd-44df-9e36-deee7b42447c">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a48182d2-447b-4920-85d9-6fade0ea3646" style=""><span class="se-fs- se-ff-" id="SE-c53c2d0c-46a5-45f7-b28a-352ff5dd9b7e" style="">전체 구조</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e5eaadcf-8cfe-4116-be50-d6f69eeb31a6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-ba92f8e4-7c6b-4874-8542-a65a03790c0d" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-bfbbc3b3-9059-4a63-a8d6-f4034057b1aa" style="">목표 : AWS 인스턴스에  개인 웹 사이트 스프링부트 프로젝트를 올리고, 해당 톰캣 인스턴스로 이미지를 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-f94b40eb-683c-4d92-84f2-b570af5ff9e6" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-507dd4d5-1d86-4826-91b1-a4992db8cb21" style="">= tomcat 인스턴스와 DB인스턴스를 생성해 둘을 연동해주고, 이미지 생성.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-366bede7-d3b9-4cda-b45f-ad6556e26520" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic" id="SE-cf9754cf-60fb-4d3a-b55c-a51be204c371" style=""><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-1c869d87-1db0-4775-8570-85d0e34ff65e" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic" id="SE-46a99ec7-f17e-4ff6-a970-19601fbb490b" style=""><b>📍 인스턴스 2개 생성 (Ubuntu)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-7c8e011f-cc2f-42ad-91a5-2382df990094" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-4750c346-372d-4f78-ab83-a3e97ec67b49" style="">(1) Ubuntu 인스턴스 생성 후, DB 설치</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-00cb1ba6-8fe0-47b5-a481-38f07cc15190" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3879e9ff-75a4-4591-b0b8-90d167c1d022" style="">(2) </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-8d82a835-ab9d-4daf-99d7-66c7c2d71b56" style="">Ubuntu 인스턴스 생성 후, </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-df8ad536-a7fb-4da5-8acc-6c06d45dfa6b" style="">tomcat 설치</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee0dd182-0168-4035-8d05-9c2fc85de7fc" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b296547d-ac26-44c1-b453-94a8fa426846" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-624d943b-9cca-4ef1-9a36-403223558ee4" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ce8e7f6b-dee3-4ac7-b87c-c78460cc5f87" style=""><b>📍 보안그룹 각각</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1a8dc812-ac04-4a58-b784-3b0f7088cf86" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-9ae7eb49-b4be-4bcf-b460-cbef54590cf4" style="">- tomcat : 8080 포트, 모든 ICMP, SSH</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-50e4d096-7966-4e35-a1f1-ed9deb77aad3" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-6f7cd9b2-f99c-44cc-9b0c-18ad781362c2" style="">- DB : 3306 포트, 모든 ICMP, SSH</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line5" id="SE-efd2d354-6897-4c05-a845-7f7dddd31d01">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-23a03938-9247-4029-814d-5fa0e455ed6b">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2c32da0f-5f3e-4b5b-9d9f-023fd1715942" style=""><span class="se-fs- se-ff-" id="SE-e00b4097-89f7-4609-88dc-37dc02adbf99" style="">1. 인스턴스 생성 : MySQL 설치</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f5d94ff0-c09e-4a19-84a6-e4f078161ee2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-92ee6e22-e1cc-4aa4-9226-91133e81df0d" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-6ee14383-8205-4182-8947-c1376852d563" style=""><b>(1) DB 접속 :</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-532b37f6-2ea6-4a26-944e-33ececa71ad9" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7fb367dc-dc3f-467b-a5b8-1f96a7c3fa25" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ba3148b5-a8da-4c8e-b6cf-0411fc439be1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-410a6976-f0fd-441b-9a48-b81224b31506" style="">mysql 설치</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-099b3a38-9f22-4be2-ab4d-6637f42c7845">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">apt<span class="token se-code-operator">-</span><span class="token se-code-keyword">get</span> update
+apt<span class="token se-code-operator">-</span><span class="token se-code-keyword">get</span> install mysql<span class="token se-code-operator">-</span>server</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-099b3a38-9f22-4be2-ab4d-6637f42c7845"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8bc63919-faf8-4f33-aa15-e9a065396e43">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b31e4d9e-eb42-49f7-b077-856ae3b71eef" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3330fe1f-53c5-4fc1-9da3-0e1aaf2b33fc" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-04bea956-393b-4d5a-b6e1-8181e0bd4569" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ab664fc8-895d-4e43-a2f7-99acc44a50bb" style="">mysql 실행</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6c4f7781-ac00-4d46-ac78-eaac4c694c8d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl start mysql</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6c4f7781-ac00-4d46-ac78-eaac4c694c8d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d3bec45e-edb8-4068-93c6-603853eb97a6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1a1e7eaa-481f-487a-b926-ee56f85834da" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-045d9f06-9f0f-434e-b226-d500c91b55b0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39429df1-de0c-41fb-8221-fca144626452" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7345553d-2be1-408b-a90f-a18aa8f15f14" style="">실행 확인</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b1214e7d-b371-457e-9f43-3f5e3c2c4ae5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">netstat <span class="token se-code-operator">-</span>anlp <span class="token se-code-operator">|</span> grep <span class="token se-code-operator">:</span><span class="token se-code-number">3306</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b1214e7d-b371-457e-9f43-3f5e3c2c4ae5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5b29fd6f-cf4d-49af-ae08-d35ab6e20e3c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b019f20e-b839-471f-9ef2-b476b9bff5c5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-20d853f4-05e0-437b-beb0-00edcc265d5d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f634288f-825c-4bc0-b0b8-38987d95d1bd" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-39300e90-8807-4aa7-8d7b-a23f228091b8" style="">서버가 재시작 되더라도 mysql 자동 실행되게 설정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-3d31e5f9-bdb8-47ab-90b9-81cc17e86614">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl enable mysql</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-3d31e5f9-bdb8-47ab-90b9-81cc17e86614"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-dbf9f56d-6902-4d4b-887b-923e006ce726">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fa02b4ae-35bb-4fa5-8e5e-7b64b5c8df17" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-23d3666b-2cbe-4357-ad69-90b469bb35b7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-77b4c1bf-8fe8-4162-b8b3-cb2ad4f8ee4d" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e94df15b-9b42-4fc6-a4ab-3b788cb36ae0" style="">mysql 접속</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-51d9e683-f5ed-4903-8c27-ec966cb4f56a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mysql <span class="token se-code-operator">-</span>u root <span class="token se-code-operator">-</span>p</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-51d9e683-f5ed-4903-8c27-ec966cb4f56a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b6d10c1d-2c08-4a16-a833-63d7b1833dbb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b5f58f0e-bbb0-48ae-84dd-79046601cd89" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ddae1fe2-fc24-4780-8374-69779ccf96f1" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b0008f8c-f262-42c2-a505-d1f90db6325e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-15dbd6a5-4435-4e6c-b62e-60466a5a7ab5" style="">mysql에 접속할때 root 계정에 패스워드 없이 접속된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0744caf6-2829-41ca-b68f-659d5c9eda4e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f62976e8-930e-47d4-998f-4410c61b3b03" style="">root 계정에 패스워드를 추가해 보는데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-860221ea-e8e1-4f8b-b95f-86498f0c95ce" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-fae2a2f9-8a33-40aa-b0f6-f098e9e50512" style="">패스워드를 변경하는 쿼리는 mysql 버전별로 조금 다르기 때문에 버전을 먼저 확인해 본다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6ce4f57c-0b01-4ba9-8136-63ac517d3510">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mysql <span class="token se-code-operator">-</span><span class="token se-code-constant">V</span>
+혹은
+mysql <span class="token se-code-operator">-</span>version</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6ce4f57c-0b01-4ba9-8136-63ac517d3510"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d71e8d35-c21f-4049-ae44-4af7e2c0c51d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-88211aca-8900-44ff-9c1c-b679a3900561" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-11e25765-e605-4db5-babd-380c875c7499" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2003d4b9-cf87-4edc-b8f0-3c9e5bb0bce3" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e03db160-d283-4c0e-a95f-874add7023d0" style="">제가 설치한 mysql 버전은 5.7.25.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ad21d260-63cc-49c5-9b6c-a13f82a07560" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-d89062c1-af1f-41a4-a326-4abf59814a25" style="">5.7.6 이후 버전이라면 아래와 같이 쿼리로 root 계정에 패스워드를 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7b9b0b0b-018f-414f-9640-97fb885a9eb9">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">ALTER</span> <span class="token se-code-constant">USER</span> <span class="token se-code-string">'root'</span>@<span class="token se-code-string">'localhost'</span> <span class="token se-code-constant">IDENTIFIED</span> <span class="token se-code-constant">BY</span> <span class="token se-code-string">'qwer'</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7b9b0b0b-018f-414f-9640-97fb885a9eb9"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ed36ab65-e145-4dcc-b37d-7313a3652aec">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ccfff990-6f33-4d90-9d8d-bb289557310c" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8388652c-923c-4e02-af0c-73085b3105c4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a35d9ccd-5d9d-4eba-88ce-2bca2dd1dccb" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5580d57e-94ef-4726-9fb9-ec1a292be201" style="">5.7.6 이전 버전:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-9e3a8a5d-1f64-4b3a-8e3a-fc5607f57b37">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">SET</span> <span class="token se-code-constant">PASSWORD</span> <span class="token se-code-constant">FOR</span> <span class="token se-code-string">'root'</span>@<span class="token se-code-string">'localhost'</span> <span class="token se-code-operator">=</span> <span class="token se-code-constant">PASSWORD</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">'qwer'</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9e3a8a5d-1f64-4b3a-8e3a-fc5607f57b37"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-44dd0590-be62-411b-946e-9c9f50a308a0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b0911163-ff69-4f2d-81da-67643bf36f9c" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-185203ff-93d1-4757-888d-bda512cfba6f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7c1826f9-d131-484d-a64e-bd03e7b89e52" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b3169075-0a2e-4e4f-a256-1cbe4a0d99aa" style="">웹 서버 등과 연결해 사용할 때는 root 계정을 사용하는 것 보다,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4480d2a8-dd4e-48eb-9039-1e35a7ac1b02" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7229647a-27d6-4de5-b285-397225a1b6f3" style="">계정을 만들고 권한을 부여해 사용하는 것이 좋다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1a3a9225-cedc-4b6e-a111-cc9f697a48a1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-d3fb2625-d993-4530-b140-c01fe262d98d" style="">그리고 이번 포스팅에서 할 AWS에서 디비 연동 시, root 계정으로는 접근이 까다로웠다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-155ed8f5-0dc6-44fb-93fa-1c6bcb9413b6" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-0a9e936c-9a33-4c76-984b-acf665dab7b1" style="">(에러남. 해결 방법 딱히 안찾아보고 그냥 연동할 계정 만들어줬음!)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9003bfee-0e7a-47d9-8854-3c4dbb38bdfe" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3a654f7e-65e9-4fc3-ad15-28d3ae60affe" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f8e6031e-644b-4da2-bf94-37df8e3db77a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-460ba530-3419-4e01-88a9-e7e153bda0ad" style="">DB 연동할 database를 만들고, database에 계정을 추가해보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5cf31e0c-7b90-4080-b910-9f1ba0a79097" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-18f6186c-a22d-4621-bd34-f352af4f4e9b" style="">minji(작성자 이름) database를 만든다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d5e214d6-a7db-464d-85bd-a560b2d1501c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">CREATE</span> <span class="token se-code-constant">DATABASE</span> minji<span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d5e214d6-a7db-464d-85bd-a560b2d1501c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4c20a87e-052b-4a48-b793-3bdc6bfc2e86">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9f05b009-464d-45ae-b584-eebd2b730124" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2cbd648a-2601-40fa-97f6-a1c5acaec679" style="">SHOW DATABASES; 로 만든 것 확인해봐도 되지만 넘어감.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e8bf73b-6c4e-47b9-9573-45e59dbbc567" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f9f1e7f8-3f2c-49e0-bc0e-91ca6255365f" style="">이 데이터베이스를 사용할 계정을 만들자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e237bc34-bac2-4f7d-9642-5d16fcc89bed" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-bb85a706-cc01-4094-9d16-5917e950abc1" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-95edce8e-1ec3-4b04-a442-5d411ade4247">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">CREATE</span> <span class="token se-code-constant">USER</span> <span class="token se-code-string">'minji-s'</span>@<span class="token se-code-string">'localhost'</span> <span class="token se-code-constant">IDENTIFIED</span> <span class="token se-code-constant">BY</span> <span class="token se-code-string">'qwer1234'</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-95edce8e-1ec3-4b04-a442-5d411ade4247"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c7ea7c71-3820-4dc4-b5e1-961bd5af8b60">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b982c1c6-c41d-45fa-88e1-febbb68258ff" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-9ee42078-35c0-4ba1-a61c-e4c21bc9c0d4" style="">계정은 minji, Host는 localhost, 패스워드는 qwer.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1b671102-c2b5-45b0-8db1-f36d476923bb" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5dd4627d-726f-4501-92d3-8a6380eaa6d7" style="">mysql의 user 테이블에 추가하거나 변경이 있을 경우 flush privileges 쿼리를 실행해준다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-024d7a1b-aa4d-4b4b-817b-b43a66af734a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">FLUSH</span> <span class="token se-code-constant">PRIVILEGES</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-024d7a1b-aa4d-4b4b-817b-b43a66af734a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b4f8973d-69dd-43ba-88eb-7ffc7c828ea6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-2418c138-0961-43d0-a327-06c2b81ee2fc" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic" id="SE-e35525d8-709c-4f73-b007-66cbe35847f8" style=""><i>* 쿼리가 대문자인 것은 mysql의 예약어(select, update 등)은 대문자로 하는 것이 아름다운 약속..이기 때문</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63354e9b-9136-4df4-b051-a966f8931c15" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ebcf4262-a299-477b-8544-4fb56b59d1eb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7f5d88e7-9de6-47fe-a5b0-c5f704b3b370" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7d0f5f26-bbc2-42c4-bd36-b5553c351398" style="">계정이 잘 만들어졌는지 확인.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8c4936df-b58b-4778-83b3-f003647774e9">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">SELECT</span> User<span class="token se-code-punctuation">,</span> Host<span class="token se-code-punctuation">,</span> authentication_string <span class="token se-code-constant">FROM</span> mysql<span class="token se-code-punctuation">.</span>user<span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8c4936df-b58b-4778-83b3-f003647774e9"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-default __se-component" id="SE-e2613dda-72d2-4de1-8804-3b56e70dc8c6">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span>
+<span class="token se-code-operator">|</span> User             <span class="token se-code-operator">|</span> Host      <span class="token se-code-operator">|</span> authentication_string                     <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span>
+<span class="token se-code-operator">|</span> root             <span class="token se-code-operator">|</span> localhost <span class="token se-code-operator">|</span> <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span>
+<span class="token se-code-operator">|</span> minji            <span class="token se-code-operator">|</span> localhost <span class="token se-code-operator">|</span> <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e2613dda-72d2-4de1-8804-3b56e70dc8c6"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1fa9e663-32bb-42aa-86d0-ef6f82c5f8b9">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d919daec-38aa-468a-a269-ae3de5b91422" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f7aa93a0-2968-4aab-ab00-bd6c57261492" style="">이제 minji 계정에 minji DB를 사용할 수 있게 권한을 부여한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-28546ee7-d291-4e92-afe5-9955f1137b78">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">GRANT</span> <span class="token se-code-constant">ALL</span> <span class="token se-code-constant">PRIVILEGES</span> <span class="token se-code-constant">ON</span> minji<span class="token se-code-punctuation">.</span><span class="token se-code-operator">*</span> to minji@localhost<span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-28546ee7-d291-4e92-afe5-9955f1137b78"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8ee56bfc-8b41-4953-91ac-3dec5912c650">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">FLUSH</span> <span class="token se-code-constant">PRIVILEGES</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8ee56bfc-8b41-4953-91ac-3dec5912c650"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-db2de0b7-cfca-457f-8d2d-df10ea99f58e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ac6b146e-d073-4d08-a297-0fa4b6c41943" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-313c45e6-7913-46ed-afe7-6d58b6276ac0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7ab93ef4-43f2-49d3-8d46-40d2eb0658b7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-459e03bd-558b-4540-ad2a-d9b4a49c6098" style="">이제 원격접속을 위해 아래 설정을 해준다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-45079031-9c2d-4e7d-a242-06d8536af45f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">CREATE</span> <span class="token se-code-constant">USER</span> <span class="token se-code-string">'minji'</span>@<span class="token se-code-string">'%'</span> <span class="token se-code-constant">IDENTIFIED</span> <span class="token se-code-constant">BY</span> <span class="token se-code-string">'qwer'</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-constant">GRANT</span> <span class="token se-code-constant">ALL</span> <span class="token se-code-constant">PRIVILEGES</span> <span class="token se-code-constant">ON</span> <span class="token se-code-operator">*</span> <span class="token se-code-punctuation">.</span> <span class="token se-code-operator">*</span> <span class="token se-code-constant">TO</span> <span class="token se-code-string">'minji'</span>@<span class="token se-code-string">'%'</span> <span class="token se-code-constant">WITH</span> <span class="token se-code-constant">GRANT</span> <span class="token se-code-constant">OPTION</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-constant">FLUSH</span> <span class="token se-code-constant">PRIVILEGES</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-45079031-9c2d-4e7d-a242-06d8536af45f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ab1277c5-ab40-4791-9bbe-3e894d73c8c7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-323f8887-84b5-4b8a-9f01-efcfdaf0d6a3" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-9d6176b6-165a-4e89-842d-c95d4435e84e" style="">'minji'@'%'</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-916b7f34-8f1e-4f9e-9c5b-181efb1557e9" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-47170b24-3938-4666-b275-cb30a20c32c8" style="">'minji' 계정이 '이디서든'</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c810c001-bcd7-456c-ac77-26c6500525e7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f4cfbeae-bd15-40de-8f0b-cd83b9e913ab" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c10bc106-5d34-4968-bd64-115387c5fe06" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3d5369fa-448a-488f-9326-12bcd8bb064e" style="">어디서든 접속 허용이 아니라 특정 아이피에서만 접속을 허용하게 해 주려면 (ex.192.168.1.100)아래 쿼리를 실행한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-533a17ee-319f-4912-945f-f058c4ba3a84">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">CREATE</span> <span class="token se-code-constant">USER</span> <span class="token se-code-string">'minji'</span>@<span class="token se-code-string">'192.168.1.100'</span> <span class="token se-code-constant">IDENTIFIED</span> <span class="token se-code-constant">BY</span> <span class="token se-code-string">'qwer'</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-constant">GRANT</span> <span class="token se-code-constant">ALL</span> <span class="token se-code-constant">PRIVILEGES</span> <span class="token se-code-constant">ON</span> <span class="token se-code-operator">*</span> <span class="token se-code-punctuation">.</span> <span class="token se-code-operator">*</span> <span class="token se-code-constant">TO</span> <span class="token se-code-string">'root'</span>@<span class="token se-code-string">'192.168.1.100'</span> <span class="token se-code-constant">WITH</span> <span class="token se-code-constant">GRANT</span> <span class="token se-code-constant">OPTION</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-constant">FLUSH</span> <span class="token se-code-constant">PRIVILEGES</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-533a17ee-319f-4912-945f-f058c4ba3a84"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d7c503c8-83af-4641-9bff-60e7aa7a5459">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-653a7683-59f8-453d-8db8-af86b6b1b704" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-955123b5-f5cb-47cd-b964-102b7547d5d4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c73f0c4-028c-45da-9d23-53a6fedb48c5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e09cbff8-7232-48ab-800d-a36c308a2b1e" style="">원격 접속 허용 확인:</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-92e09855-c57b-4909-a5eb-677af0952c41">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">SELECT</span> User<span class="token se-code-punctuation">,</span> Host<span class="token se-code-punctuation">,</span> authentication_string <span class="token se-code-constant">FROM</span> mysql<span class="token se-code-punctuation">.</span>user<span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-92e09855-c57b-4909-a5eb-677af0952c41"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-default __se-component" id="SE-a6914e97-2bc7-4e2f-833f-675744fb94ec">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span>
+<span class="token se-code-operator">|</span> User             <span class="token se-code-operator">|</span> Host      <span class="token se-code-operator">|</span> authentication_string                     <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span>
+<span class="token se-code-operator">|</span> root             <span class="token se-code-operator">|</span> localhost <span class="token se-code-operator">|</span> <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span><span class="token se-code-operator">~</span>
+<span class="token se-code-operator">|</span> minji            <span class="token se-code-operator">|</span> <span class="token se-code-operator">%</span> <span class="token se-code-operator">|</span> <span class="token se-code-operator">|</span>
+<span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">--</span><span class="token se-code-operator">-</span><span class="token se-code-operator">+</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a6914e97-2bc7-4e2f-833f-675744fb94ec"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-a6755996-3ac7-4e64-9155-7c83e892407e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-50563c5c-bd5a-4752-a035-855a0f772b15" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-4538e5ab-3e48-465e-98ab-b71e9674aa37" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd420712-aa6d-4785-9dd3-f41d876280f4" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f6ec06bc-61f0-4fb6-84db-8d0f091adde6" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fda26fa8-6c2f-4ca5-a1a0-4f7d586fe6a2" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-fc7530b8-dd37-4a03-97a0-49c2f934a63a" style=""><b># 원격 접속</b></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-2beb8931-a619-4188-8176-c5003dc2e303" style=""> - (다른 곳에서 접속되어야함)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-20ccfab2-d4f5-4cf4-8401-39990c930f6b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-1c22a1f6-035c-44f3-bc78-411e5ad0a2d7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80e53146-a7d6-4f12-bdef-358a7ca728c1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e27149d5-e7d1-4721-98ec-6deb5c4d8b83" style="">1. </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-8adfa804-e8f2-45a9-a434-d74cf887c1c3" style=""><b>원격 접속 사용자 생성, 확인</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-08257b3b-4c3d-4dc1-9949-4ceb867573bb" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-801430db-8c30-4bb9-9a8f-b8445181664a" style=""><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d16b930b-f35a-429b-b742-ddb5ff6d64e0" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-6d91fc95-a579-48d1-b5db-e08fe45c3b15" style="">2. </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-6ff92be5-95fd-4683-984c-a0892ec07ff6" style=""><b>bind adress 설정</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-18d166fc-dd21-41bb-bca4-02fb7fef3b6d">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-18d166fc-dd21-41bb-bca4-02fb7fef3b6d", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMSAg/MDAxNjIzMjE3Nzc3Njk3.UL47hSIl-2ySaHbvHu_LH85VkEZ-0T0bKmVT1mNupMog.7PnWKcxJHzVpnReM4SshUusgyfQD0uG5P47gFL-Zr8Qg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_2.49.33.png", "originalWidth" : "703", "originalHeight" : "41", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="40" data-width="693" id="SE-18d166fc-dd21-41bb-bca4-02fb7fef3b6d_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-30971c49-0588-4ef0-8ace-8e792ee3d171">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4c4e9d9e-9f6d-480d-b0df-91fb5c65798a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-96482422-01b0-4809-bcdc-85e71590adb4" style=""><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d7cf3fa3-b4ad-4eac-ba6a-ceb25c41d9c1" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-2d5c1782-6d6f-4100-ab75-f214d32479e0" style="">아래 설정파일에서 수정.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-0701c96e-848c-498f-85d0-c246f71df4f1">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>mysql<span class="token se-code-operator">/</span>mysql<span class="token se-code-punctuation">.</span>conf<span class="token se-code-punctuation">.</span>d<span class="token se-code-operator">/</span>mysqld<span class="token se-code-punctuation">.</span>cnf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0701c96e-848c-498f-85d0-c246f71df4f1"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-f5938d49-7210-4d02-aff0-445e03b21135">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:581px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-f5938d49-7210-4d02-aff0-445e03b21135", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTgw/MDAxNjIzMjE4MjM5ODk5.uwPrsICYLU_k453_Rnbna47njXX1p6L4pXZt73aWxH8g.LlWTsGGkFEFBL7j8Fpm0hW5M5b4N8Q5LHBcurhI7ChAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_2.57.16.png", "originalWidth" : "581", "originalHeight" : "263", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="263" data-width="581" id="SE-f5938d49-7210-4d02-aff0-445e03b21135_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-259b81ec-c44c-4abc-8488-2bd04e51fca5">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:352px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-259b81ec-c44c-4abc-8488-2bd04e51fca5", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTky/MDAxNjIzMjE4MjU4Njg0.KUnfUidQLN4lcZ0BpUyadIZcRBzwO6E3Kj3Jy5ZA3Bog.dVeqMCXqlkTWvLZSRqn5K3v8O0JBiAffGIwB_WPznfgg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_2.57.36.png", "originalWidth" : "352", "originalHeight" : "232", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="232" data-width="352" id="SE-259b81ec-c44c-4abc-8488-2bd04e51fca5_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-edf18fbe-63aa-41b4-ae13-c8340af6ac1a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart mysql</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-edf18fbe-63aa-41b4-ae13-c8340af6ac1a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-a2a3cbd7-8ae3-4742-a4f0-0c10fc37b166">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-68c1a0c9-df24-4e88-b7f4-ddf5a2904abc" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e9eb9b19-61d5-40f9-8f0e-7ef4fce65774" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-552ff4f1-77d2-415d-8be6-600b885023ae" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-0d6fe10f-f5a0-430d-a053-f48b39516143" style="">3. </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-16a15a74-1e6c-486c-aedd-170c051c0f6f" style=""><b>OS 방화벽</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b2c59cfa-72f4-442b-93af-7ba36c60dc77">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">ufw disable
+ufw allow mysql</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b2c59cfa-72f4-442b-93af-7ba36c60dc77"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-5dc3d8a4-0669-49ae-9fab-0c4e9e501f3e">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:344px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-5dc3d8a4-0669-49ae-9fab-0c4e9e501f3e", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTUw/MDAxNjIzMjE4MTM3NzAx.M29FUAwVpGgP6_sMb7YU6___lsixlz1UfRRzXrWmoJUg.He8SZ_SHbQf9sBcP68NtepCkl3FbzLVxHzLb5KdOFn4g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_2.55.35.png", "originalWidth" : "344", "originalHeight" : "39", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="39" data-width="344" id="SE-5dc3d8a4-0669-49ae-9fab-0c4e9e501f3e_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-5b60d762-570c-4aaf-985b-1c99ec8fcf3d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ecdb1d36-2782-4ca1-8ba7-0d061f33aa60" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cdc65979-d650-481c-89c3-8d6f24b67d6a" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5ffa43d9-9ba8-4d0b-acc5-cf8d70d44cdc" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2de2ec9d-6570-4650-af10-21e1050bd2ad" style="">4. 톰캣 서버 컴퓨터에서 원격 접속 되는지 확인.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-05818efc-e88d-48d5-9b7b-9df67b62d340" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-c6e941d9-79fa-45bd-bd14-f207d6212855" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d8075acd-9881-4300-ade4-34c91ae8dd9a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5150650c-7ae3-4778-b118-4560607c93f8" style="">mysql-client 설치.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-ba46c731-e35a-4bb2-b09b-a1062d164d53">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">apt<span class="token se-code-operator">-</span><span class="token se-code-keyword">get</span> install mysql<span class="token se-code-operator">-</span>client</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ba46c731-e35a-4bb2-b09b-a1062d164d53"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8672a6e2-45d3-40f0-b137-08b0da5d13c7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9936f97a-b531-42fd-825c-02b1cac79821" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-accd6010-b9aa-4fd2-8eb0-3b5c9ec7ea7a" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fe3d25cd-f866-4ed5-91d0-0734654a51f1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-46a39abc-0619-46e3-8501-db4737ad9322" style="">접속.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-afbf80c9-3c6d-44ee-8cff-b911824e1fcd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mysql <span class="token se-code-operator">-</span>u minji <span class="token se-code-operator">-</span>p <span class="token se-code-operator">-</span>h <span class="token se-code-number">100.101</span><span class="token se-code-number">.10</span><span class="token se-code-number">.240</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-afbf80c9-3c6d-44ee-8cff-b911824e1fcd"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-740307d1-b5a1-4896-b5d7-3d92994ce77e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-44991fa1-bd8b-4a0b-b420-a8c191f9be4d" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-106233e1-820b-46f1-910d-244e4491c23c" style="">접속시 아이피는 대역 잘보고. 대역 맞게 입력 해준다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d0a41010-c6dc-4eeb-bf79-b7884029c586" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2d2fd5d5-46e7-4c6f-83ea-7d3626cc5382" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-0d3f4863-3324-4ecc-9fc8-0b993d974c68">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-904202b8-091d-44e1-ad79-6726e85d7c6c" style=""><span class="se-fs- se-ff-" id="SE-a83dbd35-df54-44dc-9954-288d3d6b07e5" style="">2. 인스턴스 생성 : Tomcat 설치</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a821c26c-fc1a-477a-a371-2272cb8f1e67">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1a1040af-90c6-4723-b4c0-3a247e38f55b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8787e734-c79f-43ac-b1de-14aeecca26d9" style=""><b>1. 톰캣 홈페이지 방문</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1d5ae227-fde1-4e78-8872-1260d411988e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-606050c7-7134-47c0-8a16-f8b3be19f55b" style="">먼저 아파치 톰캣 홈페이지 </span><span class="se-fs- se-ff-nanumbarungothic" id="SE-f58ee237-5eaf-47bb-b90e-dafdada75c83" style=""><a class="se-link" href="http://tomcat.apache.org/" target="_blank">http://tomcat.apache.org/</a></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-a51c8ea6-ce41-4476-a411-a311d5001e58" style="">  에 방문하여</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component" id="SE-2f8e32a2-43c1-4a7d-9a51-4ae856cfbdd8">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="http://tomcat.apache.org/" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Apache Tomcat® - Welcome!</strong>
+<p class="se-oglink-summary">Apache Tomcat The Apache Tomcat ® software is an open source implementation of the Jakarta Servlet , Jakarta Server Pages , Jakarta Expression Language , Jakarta WebSocket , Jakarta Annotations and Jakarta Authentication specifications. These specifications are part of the Jakarta EE platform . The ...</p>
+<p class="se-oglink-url">tomcat.apache.org</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-2f8e32a2-43c1-4a7d-9a51-4ae856cfbdd8", "data" : {"link" : "http://tomcat.apache.org/", "isVideo" : "false", "thumbnail" : ""}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7386d3a8-b241-4d1c-9451-ff2208fa0069">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4dc65257-219d-463a-b082-63eccca8072e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-be5ac87d-8654-4baa-8fd0-e48a112dcd9e" style="">다운로드할 톰캣 압축 파일의 URL 경로를 얻기.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a47bc17a-cd17-474a-8593-03a0e78b97b5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-e41c69b9-86cb-43d4-9936-540312f99ffc" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-69db6b9e-d6c8-4eba-8001-7d6c96b1e068" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f4234d3e-c234-497d-98bd-ab3ab4add417" style="">(9버전을 기준으로 진행)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de15619c-b85d-4a67-a4ea-406c828b6a4e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-d4449235-b717-412f-ae26-80287ff1e87b" style="">홈페이지 좌측의 Download-&gt; Tomcat 9 메뉴를 클릭 하고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a5e6d50-5ac2-47ab-a5db-8d9d092dda49" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3aa59b91-2402-43cd-b0a9-4037a7059f34" style="">Binary Distributions 섹션에서 Core에 해당하는 tar.gz 파일을 우클릭하여 링크 주소를 복사.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-41611920-8b00-47b2-8587-3e3f69817f73">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-41611920-8b00-47b2-8587-3e3f69817f73", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTdfMjc3/MDAxNjIzODk1MTgxMzM4.2P41o5NNS-viJnu01pst9EcgdK_qQHQi4H8c4wampJcg.O7K6AYfStvqvf_V-T2ya33Cerk_6atzG3VHCabnaYc0g.PNG.ghdalswl77/image.png", "originalWidth" : "1378", "originalHeight" : "822", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="413" data-width="693" id="SE-41611920-8b00-47b2-8587-3e3f69817f73_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-1caa2830-572e-4dbe-b275-3f05d63a7dbf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-82d6ebee-de0f-488c-a5ab-506832188bc5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-a86b4e42-2898-4ecf-9fad-a2a7b8435816" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2e8cfe4b-2aa5-4329-bf42-461c7bff2ceb" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5225ce93-346a-4d15-b9b2-4bc0222b72bb" style="">아래와 같은 URL이 복사된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2ce41917-aac0-4df5-b483-a618c6e07b81" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cc94ca2b-1c18-4a49-81dd-a2c606f9aab6" style=""><a class="se-link" href="https://mirror.navercorp.com/apache/tomcat/tomcat-9/v9.0.46/bin/apache-tomcat-9.0.46.tar.gz" target="_blank">https://mirror.navercorp.com/apache/tomcat/tomcat-9/v9.0.46/bin/apache-tomcat-9.0.46.tar.gz</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5d5f4315-a66e-4e46-babf-6144dac6d6cd" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-d9600790-4146-4840-8446-bd7efc5272cc" style="">(주소는 자주 바뀌기 때문에 위 주소 에러날 시 공식 홈페이지에 들어가서 받을 것.)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ec1a172e-ae6e-4329-96c8-94cd12856014" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3ea43f7a-b0bc-4a90-98bb-78118259493c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-919be54e-d491-4923-ab9e-5d4f4551976f" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-03256b91-8109-454d-93cd-3333889640b6" style=""><b>2. wget 명령어로 파일 다운로드</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-12b633b5-a6eb-4cb6-b1a6-335c99b82523" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-485ed86d-52ea-42d7-9990-13b09d88281b" style="">Ubuntu에서 웹상의 파일을 다운로드 받으려면 wget 명령어를 사용하면 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c0c4ab8d-5bba-4784-840e-2b09a2102ef4" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8deac9cc-0555-412f-94e9-7ff530ec9638" style="">다운로드할 파일이 저장될 위치(디렉토리)에서, 아래와 같이 wget 명령어를 실행.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-905aff19-cd20-4f1d-b983-fc016c423604">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">wget https<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>mirror<span class="token se-code-punctuation">.</span>navercorp<span class="token se-code-punctuation">.</span>com<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">/</span>tomcat<span class="token se-code-operator">/</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9</span><span class="token se-code-operator">/</span>v9<span class="token se-code-punctuation">.</span><span class="token se-code-number">0.46</span><span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.46</span><span class="token se-code-punctuation">.</span>tar<span class="token se-code-punctuation">.</span>gz</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-905aff19-cd20-4f1d-b983-fc016c423604"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-033f94a3-c889-4aed-bb0d-a470237d2c8a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6bf7edf0-f2a2-4e57-97d4-354f97f5cf07" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-631521ae-6d03-430e-a0f5-789673062141" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7ba53686-5769-41f3-84b8-ec22763e89f3" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b448ba7e-9027-4825-9c33-26c14701b926" style="">다운로드가 완료되면, ls 명령어로 해당 디렉토리에</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-71e8e221-20f3-4c29-a050-ddf95c48af12" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-963f27b2-9543-4f4d-99f7-bd2f70c6bda8" style="">apache-tomcat-9.0.8.tar.gz 파일이 생성된 것을 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15c28c81-d1af-4b29-8cef-5b9164bc305a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-38753b64-c5b1-48ae-8b28-3c81cc827ed0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3e7f518e-6f27-4152-9ec6-1c15044cf81c" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-1dc68429-7ede-43a1-9203-836d89147032" style=""><b>3. 압축 파일 해제</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1ceadad1-1380-4b76-869f-8e5feb99b90a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-90611515-dc95-44c4-82c7-68a394e77f8a" style="">다운로드한 파일은 .tar.gz 확장자를 갖는 압축파일이므로 이를 사용하려면 먼저 압축을 풀어야 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-29e75234-ed35-44c5-9da4-8cbdd8e8db51" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-29c72df2-ccc0-44da-8e8a-be551ba1a56e" style="">압축을 풀때는 아래와 같이 tar 명령어와 -xvzf 옵션을 사용.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-235c1670-d8d1-41b4-9112-78edd65b6ae5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">tar <span class="token se-code-operator">-</span>zvxf apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span><span class="token se-code-punctuation">.</span>tar<span class="token se-code-punctuation">.</span>gz</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-235c1670-d8d1-41b4-9112-78edd65b6ae5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-25bbb1cf-f945-4fc6-a179-57982eb95d52">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dc25723b-d578-4cd8-84e6-4ba3915dd5e7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3e16a259-79a7-4561-8607-83935f344d77" style="">압축이 풀리면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-95497767-f09b-45bf-ac7e-34e7ddd75961" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cbfb5003-8802-4bba-8e0f-7845fb985e44" style="">같은 이름의 디렉토리에 압축이 풀린것을 확인할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d691e59d-cb06-4df7-970b-b68080ffbc20" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cecba139-45d6-4abc-b99d-5a8a7d164a43" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15c0a7f7-05c0-43d2-9ebd-564cc41e377a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-403a9543-6d17-4678-be26-ae093262526e" style=""><b>4. 톰캣 실행 및 접속</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93759982-4672-4dd8-95d1-d034c87cf7c5" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ffb09fbc-1648-4b24-8a1a-e8388b0b02a7" style="">톰캣 서버를 실행하려면 </span><span class="se-fs-fs16 se-ff-nanummyeongjo" id="SE-cb442cfa-332a-476e-93a1-9fab4c0d399d" style=""><b>apache-tomcat-9.0.8/bin/ </b></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-e56d6f76-5b3d-45e7-a1d8-74a1282c3ef4" style="">디렉토리 밑에 있는 startup.sh 파일을 실행한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-deb5b87a-0db6-4ad8-be99-9fefc0973e1a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-486d6a82-5d4e-4fc1-94f6-eb99546fe965" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c93390cf-1225-4ace-8185-086efda3963c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">ubuntu@root<span class="token se-code-operator">:</span><span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads$ cd apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span><span class="token se-code-operator">/</span>
+ubuntu@root<span class="token se-code-operator">:</span><span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-punctuation">.</span>8$ cd bin
+ubuntu@root<span class="token se-code-operator">:</span><span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span><span class="token se-code-operator">/</span>bin$ <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>startup<span class="token se-code-punctuation">.</span>sh
+
+Using <span class="token se-code-constant">CATALINA_BASE</span><span class="token se-code-operator">:</span> <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>ubuntu<span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span>
+Using <span class="token se-code-constant">CATALINA_HOME</span><span class="token se-code-operator">:</span> <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>ubuntu<span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span>
+Using <span class="token se-code-constant">CATALINA_TMPDIR</span><span class="token se-code-operator">:</span> <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>ubuntu<span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span><span class="token se-code-operator">/</span>temp
+Using <span class="token se-code-constant">JRE_HOME</span><span class="token se-code-operator">:</span> <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>ubuntu<span class="token se-code-operator">/</span>java
+Using <span class="token se-code-constant">CLASSPATH</span><span class="token se-code-operator">:</span> <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>ubuntu<span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span><span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>bootstrap<span class="token se-code-punctuation">.</span>jar<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>ubuntu<span class="token se-code-operator">/</span>test<span class="token se-code-operator">/</span>downloads<span class="token se-code-operator">/</span>apache<span class="token se-code-operator">-</span>tomcat<span class="token se-code-operator">-</span><span class="token se-code-number">9.0</span><span class="token se-code-number">.8</span><span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>tomcat<span class="token se-code-operator">-</span>juli<span class="token se-code-punctuation">.</span>jar
+Tomcat started<span class="token se-code-punctuation">.</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c93390cf-1225-4ace-8185-086efda3963c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ad5c48dc-cf81-4b94-8c6d-0306ac3742eb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-98e71a74-0763-4e91-aa64-868a511f3367" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-50b86254-868e-4782-93bb-62e13be41f1e" style="">톰캣 서버는 기본적으로 8080 포트로 설정돼있기 때문에 웹브라우저에서 해당 우분투 서버의 8080 포트로 접속해 톰켓 서버가 정상 실행중인지 확인한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63d905c2-9685-43bc-a9e5-163c1c87ec93" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ce80de23-1070-4873-ac47-465b8fbc7008" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-07eda6cb-bf90-48ae-9046-8976d594f8f1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-06fc5f92-130e-4f84-84d3-239dede8b126" style="">아래와 같은 페이지가 보이면 톰켓이 정상적으로 실행된 것!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-54e42b98-3003-4b31-86e4-e661b1c47c78">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-54e42b98-3003-4b31-86e4-e661b1c47c78", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMjU1/MDAxNjIzMjE3MjI2MjAw.At3Gy4WSdLj44rzqf0QtUWF0SD7qKB2td_vPMHfQpa0g.CXiPshg7G2LvnzLoCjOOTzXFUQkJ3wShZLmU4_t0X60g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_2.40.21.png", "originalWidth" : "2970", "originalHeight" : "894", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="208" data-width="693" id="SE-54e42b98-3003-4b31-86e4-e661b1c47c78_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-0f73f0b1-e746-4f58-99b7-a54c344e0f48">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ec2cef50-11b0-4a23-af18-5aa1d141dc23" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8d8fe2d8-7aab-4500-9a81-8a54f723d7b9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7b96770e-4ab9-4dab-85a6-d52b2a920cfa" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-51a0bf92-08b9-406e-b077-cb47cde974bb" style="">톰캣 서버를 종료하려면,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-456da136-d8d5-4232-aaff-2b96843999cf" style=""><span class="se-fs-fs16 se-ff-nanummyeongjo" id="SE-89c353e9-a0dc-4018-a3a9-1f33da9ff51a" style=""><b>apache-tomcat-9.0.8/bin/ </b></span><span class="se-fs- se-ff-nanumbarungothic" id="SE-eca285e3-2216-4fd4-a422-4820075de7c1" style="">디렉토리 밑에 있는 shutdown.sh 파일을 실행한다 !</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd427244-f1cf-442c-876f-6ad1a73c0240" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f53ae0ca-03da-4747-af12-adc144fe7558" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c1c35fcd-0447-426e-8fd4-6503d3d42957" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-bf84323e-822d-480b-8562-264a48344cd0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a23b8e54-3c36-47b6-855f-06412fc8f487" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-467cfdd6-9188-4cb2-9969-19b7a4b2df81" style=""><b># 본체에서 aws 파일 옮기기</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-956b51e8-e7af-4e5e-a70f-7da529532edf" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-7aa3c134-f5fb-4eec-b9c9-57308b358d81" style="">scp 명령어 사용</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c4a842fd-a445-40d8-8be6-2e33634e8082">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">scp <span class="token se-code-operator">-</span>i <span class="token se-code-string">"Downloads/key (1).pem"</span> <span class="token se-code-operator">/</span>Users<span class="token se-code-operator">/</span>minz<span class="token se-code-operator">/</span>Downloads<span class="token se-code-operator">/</span>web<span class="token se-code-operator">/</span>build<span class="token se-code-operator">/</span>libs<span class="token se-code-operator">/</span>web<span class="token se-code-punctuation">.</span>war ubuntu@<span class="token se-code-number">13.209</span><span class="token se-code-number">.9</span><span class="token se-code-number">.46</span><span class="token se-code-operator">:</span><span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c4a842fd-a445-40d8-8be6-2e33634e8082"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c2e45cac-f528-46a0-a4a9-c690993bef61">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b2f96fec-9b52-4742-bed1-76b62bd1a30d" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-baa5cc95-5415-4608-936c-e331a2ab2718" style=""><a class="se-link" href="https://ict-nroo.tistory.com/40" target="_blank">https://ict-nroo.tistory.com/40</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component" id="SE-d4a4fe14-181b-49e9-8153-a27ab6999df4">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://ict-nroo.tistory.com/40" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">[AWS] EC2 ssh 원격 접속과 scp를 통한 파일 전송</strong>
+<p class="se-oglink-summary">AWS EC2 ssh 원격 접속과 scp를 통한 파일 전송 EC2 인스턴스 생성이 성공적으로 끝났다면, 다음과 같이 CLI환경에서 ssh를 통해서 EC2에 원격 접속을 할 수 있고, scp를 통해 간단한 파일 업/다운로드를 할 수 있..</p>
+<p class="se-oglink-url">ict-nroo.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-d4a4fe14-181b-49e9-8153-a27ab6999df4", "data" : {"link" : "https://ict-nroo.tistory.com/40", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Ft1.daumcdn.net%2Ftistory_admin%2Fstatic%2Fimages%2FopenGraph%2Fopengraph.png%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-44a0ac9d-4353-4afb-a337-b60e3a9614f0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd49cf21-09e1-437b-8864-083e4b346ee9" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5ef31e43-59fc-41f6-98b0-bc45015286ac" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-df8d0d9f-529e-4779-a46a-5e6e614e1052" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-a7ccb481-c442-4e92-84e6-3a602e64f899" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3964fd43-6d45-4f23-9070-27aa039bec4e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-4ba12e97-2dc8-4e7f-8a71-0144c05d1ff0" style="color:#000000;"># &lt;war 파일 수정&gt;</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15923cd0-a664-407c-bff1-7458f14c640e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0ccd2135-27e6-48a4-b7c1-8b4639afffa4" style="color:#000000;"><b>application.properties 수정.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-94c70dc5-338b-452c-b116-071b3e61854d" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-811fa903-99dc-4dc6-b9dc-6a2aed1cc841" style="color:#000000;">디비 접속 시 아이디, 비번 등을 해당 파일에서 직접 수정했다. (war파일 생성 하기 전 수정하고 생성해도 되지만)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-64f5be21-a39e-4afd-a952-08f3afa8a6ea">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:547px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-64f5be21-a39e-4afd-a952-08f3afa8a6ea", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTAg/MDAxNjIzMjIwMDMxMTc0.3Ew4a798di44ArrfZ8xfj17L5_h62d5ju4xpENlarTMg.PN2I8t1WzEq3DXWmHUzxf8PEZnlpObNR5sBecsVui5Ug.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_3.27.08.png", "originalWidth" : "547", "originalHeight" : "103", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="103" data-width="547" id="SE-64f5be21-a39e-4afd-a952-08f3afa8a6ea_0" src="images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-d0d22e4a-e9f2-4305-b273-5a4d36a17fb4">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:494px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d0d22e4a-e9f2-4305-b273-5a4d36a17fb4", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMjQ5/MDAxNjIzMjE5ODExNTc2.ounH2wpjjKTCmFK9qG9eMpJmi-fcZUYqt5Ckq5grDDwg.JYTA_0VOe1_3CVH_yX4rr8qWuoQRy5FzVT1R0SBGvjAg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_3.23.28.png", "originalWidth" : "494", "originalHeight" : "177", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="177" data-width="494" id="SE-d0d22e4a-e9f2-4305-b273-5a4d36a17fb4_0" src="images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-26f5909a-f6ba-42a3-87cd-6aac390c7386">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bfafc5ae-46ce-4618-bde6-e686c564b970" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-cb8d1ce5-228a-47df-9a46-0e9bdfddc131" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-012fa404-f47d-49c4-80c4-ebbad0287103" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-dd8bc76d-27c0-4571-aafe-7cd6b16f86a1" style="color:#000000;"><b>war 파일 생성하려면 </b></span><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" id="SE-cf1ec267-31be-4c3c-ad43-fe6fcd3db42b" style="color:#ffc66d;"><b>configure</b></span><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" id="SE-e55bb4e5-f646-4439-9f8b-972a1d9d16cf" style="color:#000000;"><b> </b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-df314fde-76de-41fa-8b14-f2f23935c252" style="color:#000000;">설정되어 있어야 함.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-4661a7b7-c0b9-4def-b58d-6a935d9ddb60">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4661a7b7-c0b9-4def-b58d-6a935d9ddb60", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfNDYg/MDAxNjIzMjIwNzYxNjcw.VxEmnPRSZ9DNMD2NUrHKGSaP1vvls6_ueSCUr9xivlUg.6hqyJRLz9NYMH5U6T5pH-CyvZ6ZFrI8JRjkXCZEP3Mkg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_3.39.16.png", "originalWidth" : "2424", "originalHeight" : "1290", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="368" data-width="693" id="SE-4661a7b7-c0b9-4def-b58d-6a935d9ddb60_0" src="images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d25aa896-4911-473e-9a8f-ecb0dcd3edd0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6486177b-e4a9-4f36-b4ae-3ec7d7812e8e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c2d81b57-5357-4f61-972a-a3c981d19d11" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-65305f6b-b020-4200-975f-64430c7d7e10" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7693c17e-e51c-4384-a160-51c9c64bfa5a" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-19e923d5-f77b-4ba5-b1eb-a1ed9bb5c8f2" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0e820fcc-9c99-475a-ab59-3a7914d28131" style="color:#000000;">war 파일을 /wapapps 로 이동 후,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-9904531e-709b-4d0d-8880-6d8171357210">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>catalina<span class="token se-code-punctuation">.</span>sh run</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9904531e-709b-4d0d-8880-6d8171357210"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-faa0a009-3264-4b5d-b441-bb4df44cae75">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a7e0700-06d4-4c1f-bee6-f8c0916b59c7" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c4c24f48-92b1-476c-9e85-50bebe668f7f" style="color:#000000;">해주면 페이지 뜸.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4aa3b317-21f2-4a85-aa52-3bf4bf9b93f9" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9dac45bf-5c1e-4ea7-a904-c308a04a181a" style="color:#000000;">톰캣 실행해주면 자동으로 생김.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fe279a8c-90e6-485a-b318-38c249ecc056" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0fd8671b-a2f7-481e-bad1-bca3243881ef" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a5ffff04-9a5b-4228-ab72-493261401a3c" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-b1132d65-cd62-4c10-b6a6-58da7e6f8a21" style="color:#000000;"><i>* 그리고 압축이 한 번 풀린 war파일은 지워주는 것이 좋음.</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-417cbcf6-9b5a-4fb8-a33e-e6af292f6635">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:518px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-417cbcf6-9b5a-4fb8-a33e-e6af292f6635", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMjkg/MDAxNjIzMjI4NjgwMjAz.C-29fFAguPEJykCTwNlNNhsaMXkHf0hFcXTgN8nav-og.xbwdsCPEuSjfweJ1yaQMqYbgWvWiAViygxPMW3GnyoIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_5.51.17.png", "originalWidth" : "518", "originalHeight" : "53", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="53" data-width="518" id="SE-417cbcf6-9b5a-4fb8-a33e-e6af292f6635_0" src="images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e2bd47cc-1c84-4808-b9de-b41a3ebd5064">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1d779af8-1805-44d4-b324-dd6af05265e8" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-a090f6c9-265a-4219-9319-60a2fbab623e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4ad71ed3-9f85-469d-b7d3-190131ab34fa" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-5de48a02-f3cb-4f80-b241-6b6be2fd5c6f" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-2ba7ddb8-1838-47dc-9663-fa345528e3dd">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5f35a319-018a-4215-9c97-a696c857cff9" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-7e5197b3-c8d0-4e19-9b0c-b295576ebdac" style="color:#000000;"># 실행 후 문제</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ace421ea-cc9b-4c1e-9126-e8df8125bb20">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a96ad0df-8bb7-41b9-bab6-0bdd9f4a7251" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-986d1b84-2fa9-4442-b21a-f5bbb0edbcc2" style="color:#000000;">띄워봤는데 이미지 다 깨짐.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1eb5fe68-f4a5-4182-801e-485bdf7dffc7">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1eb5fe68-f4a5-4182-801e-485bdf7dffc7", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMjU3/MDAxNjIzMjI0MDE3ODc3.FhxxOIQh8iEL--bxQaZPUPVukudQn-NQW_j0zXLNxu0g.L76QCyNouzQ-1VO4R0-sQhgwf7OMUK3gX34QlFdULtMg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_4.33.34.png", "originalWidth" : "2664", "originalHeight" : "964", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="250" data-width="693" id="SE-1eb5fe68-f4a5-4182-801e-485bdf7dffc7_0" src="images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-a4197c41-8ab5-45d7-9a4f-eb9cbd058d4e">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a4197c41-8ab5-45d7-9a4f-eb9cbd058d4e", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMjM3/MDAxNjIzMjIzOTI2NjEx.WrGwoRIWwuf9JJADvUizGdcztY-h6GKctJysYX7JO3Yg.WWLM7g5psQAToKirYo0KI1nUloQTVjAmresbsA47Ps8g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_4.32.04.png", "originalWidth" : "779", "originalHeight" : "255", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="226" data-width="693" id="SE-a4197c41-8ab5-45d7-9a4f-eb9cbd058d4e_0" src="images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7b251ff3-a869-4e71-b9ee-aba655052669">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ed84fa37-a3b9-400f-a25f-ea35230b7008" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-cc3a0e53-4cf1-4419-943e-dbc85edaa392" style="color:#000000;">톰캣 홈디렉터리 변경</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-81aa0d23-aecf-460c-b3df-7f3f1ea23273" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-fe3ed33a-94c4-4d31-a859-90f79e739019" style="color:#000000;">context 추가해주기.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-23fd3ccf-8bb0-4083-95a8-7277eba50b7f" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-d4a08bf8-9bed-4b6a-9d71-25ad133e0429" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-50301815-c740-436c-be30-ba99e37a3600">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6875c60b-e37c-4335-9627-e9869b49e6e3" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-445c380d-bef4-4f93-9560-4b58fd50ce9c" style="color:#000000;">3. 이미지 만들기</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-2735c637-ada4-406f-a50e-882166c1ee56">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2735c637-ada4-406f-a50e-882166c1ee56", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTNfMTkg/MDAxNjIzNTg3NTk1MzIx.0qwbPbrc-NVcVZhc7-ySjWaBMYVwV1ojltSlnjwWEWUg.I2JzPz_TCoIqRcxWrrvHARvGdnhpRO7vYkpFVkNaKAAg.PNG.ghdalswl77/image.png", "originalWidth" : "3584", "originalHeight" : "1112", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="215" data-width="693" id="SE-2735c637-ada4-406f-a50e-882166c1ee56_0" src="images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-3adf9555-4046-49b8-8dcd-02c7a32bc7e7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cffb6f64-fa4d-459e-b57b-3ed181a204be" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-69b477c4-495b-4a95-b554-dfae57170ca1" style="color:#000000;">작업 - 이미지 및 템플릿 - 이미지 생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-82ad373d-0473-4c50-a71c-47b661f82b97" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-4597337d-b50e-4f98-b24f-975971e31e3d" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-a1a790b9-d89a-424f-975f-682ad346b347">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a1a790b9-d89a-424f-975f-682ad346b347", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTEw/MDAxNjIzMjI1Mjc1ODU4.9bJysIamBaaE74ZTVUdfi8mcGz6SqvpwLsRO4phJWM0g.x_suiqVd8Aq1QALiyEvcB3tFxX-0D15OdtX8YXZ9Wxcg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_4.50.15.png", "originalWidth" : "2784", "originalHeight" : "1734", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="431" data-width="693" id="SE-a1a790b9-d89a-424f-975f-682ad346b347_0" src="images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-53e03640-7e7e-49ae-8ef0-80770f00bb83">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-612a2c24-f0a0-4d58-98e9-f1da06735248" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-e56de72f-2463-4e4e-863e-57a0b7ebcd7f" style="color:#000000;">[ 이미지 생성 ]</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fbfd346d-0d9c-49a0-8c02-d796f1c4a4e4" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c8f2fab4-7e4e-4725-a4cc-3f52d71c0b31" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1cb4e33d-c091-4d52-bec5-8177788d37f4">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1cb4e33d-c091-4d52-bec5-8177788d37f4", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfNjEg/MDAxNjIzMjI1Mjc1OTMy.Qi7namXvJcI9tXNWcHVEhRJiqYocXUGh8GFR5c3IN9Qg.GIigLt5DMyg2nNUg2MrIEiVJt72j5alb7oTmag779yIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_4.51.27.png", "originalWidth" : "2726", "originalHeight" : "962", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="244" data-width="693" id="SE-1cb4e33d-c091-4d52-bec5-8177788d37f4_0" src="images/image_17.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-19ccca76-ec73-4493-abf1-908f09c51735">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-138508f1-f19c-4610-8457-1c4c502576b4" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0a25b526-266d-40d6-ac1c-6c0882d99672" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-03168887-c4f1-4a93-833a-0efb9a110ac4" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-b7abc0af-9b89-42aa-956d-42d467a0f82c" style="color:#000000;">이미지가 다 만들어지면, 인스턴스 삭제.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6d74b161-4db6-4eb5-af41-11e165679932" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-54767d3b-2812-4e14-8fa8-1ff18ea56863" style="color:#000000;">이건 그냥 이제 필요없으니 지워주자! 언제 요금이 청구될지 모름ㅜㅜ</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8229704f-0311-4a2f-989a-a42555e19170" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-464f07d4-02c9-4628-a155-e1edcf547176" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2e5b9294-395a-48a2-8847-5e3df8c83d63" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-f10d2493-1de6-47f9-923c-216978fb230f" style="color:#000000;">그리고 만든 이미지로 톰캣 인스턴스 생성해보기.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd1106dc-55cb-46f2-af72-c96f320d1e71" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-cb1458f8-b771-4eae-b0cf-6dab39d8843c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dca7346b-1be7-40ac-b00c-b16b6e9939b3" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-019c11c2-25c9-4b13-8d4a-81df0d3683bf" style="color:#000000;">[인스턴스 시작]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-47642d48-62c2-4ec4-bf20-8794fda92e50">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-47642d48-62c2-4ec4-bf20-8794fda92e50", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMjYw/MDAxNjIzMjI1NDM4NDAw.yzglf3ujbJ6f27w4LoERyVQuLQP6mBIuZC4kPPmqR9gg.jnzZivz-cHX_V6gAJ0r5sXab5wcg_T9q5bmnUfTwAusg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_4.57.15.png", "originalWidth" : "2234", "originalHeight" : "578", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="179" data-width="693" id="SE-47642d48-62c2-4ec4-bf20-8794fda92e50_0" src="images/image_18.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7bf5bfd2-7aa1-4192-a35b-cdb341334c59">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2bf057ff-ffac-419a-802d-64ae67b54e86" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-ace77329-743e-44f6-86c0-227b993b0bcc" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-03e36405-ead6-4c82-9a01-60dbe96bc256">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-03e36405-ead6-4c82-9a01-60dbe96bc256", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTQx/MDAxNjIzMjI1NDY1OTIz.Iymb0B9CjBZsvIGd1-p58je9dT-8sdjb6WSDt0YQ83wg.QFWKT1mWBO8rL7SdQ8WC1hnzaZKxBIgzY9WfV1ElcUEg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_4.57.41.png", "originalWidth" : "2714", "originalHeight" : "764", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="195" data-width="693" id="SE-03e36405-ead6-4c82-9a01-60dbe96bc256_0" src="images/image_19.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d3f9fefe-1f2d-4eb1-a3f5-a8a744469985">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e47a7423-5121-489f-acba-bffd9ac9fcde" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-6129c92f-296c-4b7f-8180-d22df6497b82" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-519f191b-bbf9-430f-a689-d01ffb22e4cd" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-cbac6966-0259-4e20-84ec-471e0fc63e09" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-884079b4-3079-4343-b930-14fffa728948" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-3b8dce70-b384-4edb-a61d-175774f0c1e3" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-374c95f1-79a0-4655-80db-1fd979c754a9" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-6f056914-8b60-4dc7-93c2-77861064bce3" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eefb1601-4f59-46ae-ba4f-a6b23d31f2be" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f59bf169-a121-400a-b7e1-7540934ee54c" style="color:#000000;"><b># 톰캣 서비스 등록</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-49a0c13a-fd8f-487f-a828-109ecbe940b2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>systemd<span class="token se-code-operator">/</span>system<span class="token se-code-operator">/</span>tomcat<span class="token se-code-punctuation">.</span>service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-49a0c13a-fd8f-487f-a828-109ecbe940b2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-18639fb1-b156-4cf5-a66f-b1cc4d7a76a4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c56635c7-87a7-409f-a446-412cc2286625" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-66e0aaf3-3cb2-4dc5-bfa0-aed21487fdaf" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3a766803-884f-4ad6-be9c-501afd17c4c7" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-17246bc1-a4ea-4334-b276-f83ade616bd4" style="color:#000000;">[Unit] </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7757f857-dcb3-4d49-a721-1a1470a7746b" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-87c5fb95-dcf0-459a-8141-e927dd5a56ef" style="color:#000000;">Description=Apache Tomcat Web Application Container </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-539f879f-b546-401c-b37d-b7b3b63ce611" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9de692b2-6bcb-46c4-a873-e7aa4d49700f" style="color:#000000;">After=network.target </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52ba55c2-7d6d-4b62-9f11-ba714ab01d12" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-762eacca-ecd1-45a0-8b3e-d9c27760212b" style="color:#000000;">[Service] </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dc857acc-e0c2-4e37-9c43-6a118ef03049" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-6e9eff38-398b-4ecc-bfdd-2a24760ef994" style="color:#000000;">Type=forking </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd70c7c9-2725-40a5-b673-733da860498a" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-19eb200a-bfc1-4f8f-af98-85c46d2198e6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-417da9bd-7970-4bd5-b582-67906eb44bbe" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-dae4b8a6-48e6-42f6-95ea-13f40ac0df49" style="color:#000000;">Environment=JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b8dd6c1e-7d81-42b1-8905-a8f94a976459" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-10544061-d946-4128-b669-e4dbf1d6e04e" style="color:#000000;">Environment=CATALINA_PID=/usr/local/tomcat/temp/tomcat.pid </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0055d345-5f4b-41e4-805a-553890d12db5" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-1bca4225-f7e8-406b-b2cf-825560801a2d" style="color:#000000;">Environment=CATALINA_HOME=/usr/local/tomcat</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bfca865d-66c3-4145-9332-676a79c6667e" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-a4137266-2ef6-4d38-8527-dec9d124f664" style="color:#000000;">Environment=CATALINA_BASE=/usr/local/tomcat</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-42dd1860-65cf-48a4-b024-fe2d1421359e" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-93c9a1a9-a96e-45ee-b58c-4a17afeb2596" style="color:#000000;">Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC' </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-00f1799a-5ed0-48c8-8d99-e9c850e47ca0" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0f94982a-64e8-412c-9385-b69edc55cc05" style="color:#000000;">Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom' </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1786e8c3-e4d6-4cd0-9365-e6aff32d13da" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c0a4b31d-80a4-4428-b8b7-7bc6ae77ecc2" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6a0add55-e7cb-45dd-8161-797424683eac" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-b0d1e775-178c-4425-ba51-b9ee4cd39726" style="color:#000000;">ExecStart=/usr/local/tomcat/bin/startup.sh </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c066213f-efd5-499a-8c90-7ad07fa2da86" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-03aa6834-a9d9-447c-9827-7b89bbec78d9" style="color:#000000;">ExecStop=/usr/local/tomcat/bin/shutdown.sh </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee5315f7-3f68-420f-80eb-a14654b1f39d" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-06fcdb95-a664-4cf4-9c58-356c02b9a2e4" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7408761f-ec36-4d35-9f23-5354039f6a45" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-4cd2840f-3f45-4e18-a9d4-7127dfd38976" style="color:#000000;">User=tomcat </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e9e56866-291b-4263-89ca-a90bc38c8d89" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-1b9ba6f4-e791-4a9a-995d-fa982432eadd" style="color:#000000;">Group=tomcat </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3b698c6e-75f0-4f04-81e1-08dd84fb6e24" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-8808b82f-12a6-489f-b248-7ec704f835a3" style="color:#000000;">UMask=0007 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-347776ef-a600-4e4f-8419-2625f65cf054" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-e3a633be-88b2-4ecc-9899-53e5d90369e6" style="color:#000000;">RestartSec=10 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2717a443-6c0f-4793-ad9e-9a1b646c6b70" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9ae94bad-6b34-4ecc-9c26-7df4c49dbf51" style="color:#000000;">Restart=always </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-599f950f-8ffe-4e91-84bc-af189ad6767c" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-5990783f-1ee3-4017-99b9-0481553fef34" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-947178bd-62ae-40a0-8f95-cd72eda064e9" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-f8783793-28ab-4833-832f-4383b43188c3" style="color:#000000;">[Install] </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fec390d7-b90b-4ff4-a998-4c709cab5826" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-f815ae7b-1e9a-480f-8ec9-3d9a8e71d37e" style="color:#000000;">WantedBy=multi-user.target</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6ad92e8b-c55d-412e-b651-9636b3c1d553" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9e8ba857-080a-4042-8650-34dee4970c7e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7eb635b0-840c-4dcd-a9f3-2e183b5d70ee" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-7c1bbd0a-a74b-4316-945f-8e40fe161302" style="color:#000000;">-</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7cd95f40-3a9a-4013-9b90-8445e1e4e50e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">useradd tomcat
+chown <span class="token se-code-operator">-</span><span class="token se-code-constant">R</span> <span class="token se-code-literal-property property">tomcat</span><span class="token se-code-operator">:</span>tomcat <span class="token se-code-operator">/</span>usr<span class="token se-code-operator">/</span>local<span class="token se-code-operator">/</span>tomcat
+systemctl enable tomcat
+systemctl restart tomcat</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7cd95f40-3a9a-4013-9b90-8445e1e4e50e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-92a89204-fd42-49d6-8137-0efb872b2bd9">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0465eab6-f070-4013-98a9-f38b4343da76" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-5f3cb5d8-7402-4d9f-9e7b-f71bf5598fd9" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e4cec318-07cb-4644-9802-90f79739b48e" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-d173df45-61bb-4747-a104-b2790dfa69a1" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cd45dbac-b92c-4fbe-b6ea-2e2018f02f25" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-01ef7461-0293-41cb-aa72-799a157c9a66" style="color:#000000;"><b># DB 깨짐 현상 :</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8a41ff84-f9eb-4a0b-84bb-d4fdcbce155b" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-907c9ac1-ee2f-42c8-88af-03a31d38f7ab" style="color:#000000;"> 데이터베이스 인코딩 타입 확인 명령어</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-cfb6390b-0c04-4bfe-aa6d-a564850a77cd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">SELECT</span> default_character_set_name<span class="token se-code-punctuation">,</span> <span class="token se-code-constant">DEFAULT_COLLATION_NAME</span> <span class="token se-code-constant">FROM</span> information_schema<span class="token se-code-punctuation">.</span><span class="token se-code-constant">SCHEMATA</span>
+<span class="token se-code-constant">WHERE</span> schema_name <span class="token se-code-operator">=</span> <span class="token se-code-string">"mydb"</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-cfb6390b-0c04-4bfe-aa6d-a564850a77cd"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-e03b1081-6baf-405c-9e41-6a1c00fa0e2c">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e03b1081-6baf-405c-9e41-6a1c00fa0e2c", "src" : "https://postfiles.pstatic.net/MjAyMTA2MDlfMTQ0/MDAxNjIzMjI5ODQ1NTEz.bZDzLcyE6eJPoAdNKC4I7HcTcmcQq1X8aAOFf14FmYsg.gZGVTKWcR9zbHOLkhYQo0PaKmlGZS4xpreqCwb3eWFkg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-09_%EC%98%A4%ED%9B%84_6.10.42.png", "originalWidth" : "915", "originalHeight" : "141", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="106" data-width="693" id="SE-e03b1081-6baf-405c-9e41-6a1c00fa0e2c_0" src="images/image_20.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-99ce9c98-c8d6-4f66-8e92-64ef7c6ebca4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9d6a02a4-86ab-4680-b1ef-0145427af63a" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-4bc03735-2cee-433e-9fb2-64751b492ed5" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-41445360-899f-44aa-b460-ce765182a43f" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c4e0806d-6901-4f75-a5fd-81f017d97732" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

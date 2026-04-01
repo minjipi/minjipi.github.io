@@ -1,0 +1,95 @@
+<!-- source: https://blog.naver.com/ghdalswl77/223127067372 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-c0a08e83-1d9d-415a-adc2-e22b9ff2be32">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3f28ab30-a3e2-4ba7-beab-6dc4cc7f073b" style=""><span class="se-fs- se-ff-system" id="SE-b12989d2-8eeb-45c4-9cf3-079210dfb90e" style="">Elasticsearch의 스냅샷은 데이터 백업 및 복구 시 필수적인 기능이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-19e227f5-9e6b-4ada-9866-4737098edf11" style=""><span class="se-fs- se-ff-system" id="SE-fa2c629a-88c8-44d3-afdc-b98474fa76e8" style="">Elasticsearch의 스냅샷과 생성 방법에 대해 정리한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f27ac16c-0fd6-471e-ab5d-b402e2263968" style=""><span class="se-fs- se-ff-system" id="SE-9c0c87cf-2ead-4579-8e41-3f03b76cb49e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63048875-f967-4bd8-b429-d268c424659f" style=""><span class="se-fs- se-ff-system" id="SE-a28e2b51-d602-4293-a1b5-ca447138c2c0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd3a4160-c533-443d-845f-84351b6dbff0" style=""><span class="se-fs- se-ff-system" id="SE-461e18e0-4186-4ad9-a055-7d57593f2e57" style="">1) Elasticsearch에서 스냅샷을 실행할 때, 스냅샷 파일은 기본적으로 클러스터 내의 모든 노드에 분산 저장된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0690d841-2117-4b31-be53-82b598969bae" style=""><span class="se-fs- se-ff-system" id="SE-03be7fb6-e065-41f8-9391-3f23bc356b8e" style="">예를들어 3개의 노드로 구성된 클러스터에서 스냅샷을 실행하면, 스냅샷 파일은 3개의 노드 모두에 저장되는 식.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-56e4db17-fcab-44bc-a770-bb58625547d3" style=""><span class="se-fs- se-ff-system" id="SE-72fa499f-70cd-44fa-8be3-cf8211f31470" style="">스냅샷 파일은 기본적으로 Lucene 인덱스 파일 형식으로 저장되며, 데이터를 저장하는 데 사용되는 세그먼트 파일로 나뉘어진다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-71ec98c0-f5f2-4c54-a45f-af825288d1e6" style=""><span class="se-fs- se-ff-system" id="SE-e2d1b9f0-09d3-466a-8ffd-4bbf29905fa2" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ea493365-bffa-49c8-8d1c-49b86baffdde" style=""><span class="se-fs- se-ff-system" id="SE-5a60ce25-3ccd-471e-a821-d383fe8d0083" style="">2) 스냅샷 파일이 여러 개인 이유는 Elasticsearch의 인덱스 구조 때문이다. Elasticsearch의 인덱스는 기본적으로 샤드(shard)로 나뉘어져 분산 저장되는데 스냅샷은 모든 샤드를 포함하므로, 하나의 스냅샷은 여러 개의 샤드 파일로 구성된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fd8c4021-c84e-4905-9f41-3b0a63eb85bf" style=""><span class="se-fs- se-ff-system" id="SE-330d4486-d4b5-4299-b474-72639918ea29" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eb7ca5e2-bdca-43f0-8cae-edf260a83ceb" style=""><span class="se-fs- se-ff-system" id="SE-6d0db20b-5d8b-4d35-897e-40834b43b12f" style="">3) 스냅샷 파일은 먼저 primary shard가 저장된 노드에 저장되고, 그 다음 replica shard가 저장된 노드에 복제된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15b800c6-c176-4e68-a7f0-7e1b59848105" style=""><span class="se-fs- se-ff-system" id="SE-34f4e01e-89b6-4003-a325-283846bd178a" style="">스냅샷을 실행할 때, 각 노드에 저장될 스냅샷 파일의 복사본을 만드는 것이 아니라, 분산된 파일 시스템을 통해 데이터가 저장된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line5" id="SE-c94a3122-1fbd-49a7-8660-aa4bc782c637">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-26d28206-00c0-4008-a537-f476000ab32d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ebc317b7-a991-4e71-9e0e-6137a1a315fb" style=""><span class="se-fs- se-ff-system" id="SE-c1a1c3f9-de62-4182-8f9a-40630c911b71" style="">​</span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7da9b7ed-b8a0-4fe3-93dc-d83580696154" style=""><span class="se-fs- se-ff-system" id="SE-3160e209-8b95-4fdb-8416-bc46a00c3671" style="">backup 디렉토리 생성</span></p></li></ol><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-925414d5-a1db-4752-b44f-d8edd44a3b05">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mkdir <span class="token se-code-operator">/</span>data<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>backup</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-925414d5-a1db-4752-b44f-d8edd44a3b05"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2b59821d-b799-4d85-a6da-c68429941b0b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f605e877-6895-4f68-b601-81db5e612c13" style=""><span class="se-fs- se-ff-system" id="SE-9b3c7c28-57ed-4b2a-8843-75174c1321bb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7653c867-b8e7-4bbf-8130-935293e41e86" style=""><span class="se-fs- se-ff-system" id="SE-26daeee8-b880-4948-ba90-87d40c3530a5" style="">2. Repository 생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b7f562a4-1147-4f20-aafd-3439a6679548" style=""><span class="se-fs- se-ff-system" id="SE-b9202575-6b3d-43b3-bced-f7f9c8ffe01c" style="">스냅샷을 저장할 repository를 먼저 생성한다. 스냅샷 repository는 로컬 파일 시스템, Amazon S3, Hadoop 등 다양한 유형으로 설정할 수 있다. 여기서는 로컬 파일 시스템을 예로 든다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-68c156ea-5c26-4228-9694-c65fd99ba603">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">PUT</span> <span class="token se-code-operator">/</span>_snapshot<span class="token se-code-operator">/</span>backup
+<span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"type"</span><span class="token se-code-operator">:</span> <span class="token se-code-string">"fs"</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-string-property property">"settings"</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"location"</span><span class="token se-code-operator">:</span> <span class="token se-code-string">"/path/to/backup/directory"</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-68c156ea-5c26-4228-9694-c65fd99ba603"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-063742a2-0ad6-469b-8c69-00082350e2b7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-02362ab8-9273-4ab7-8597-e6c3d31419e3" style=""><span class="se-fs- se-ff-system" id="SE-03ef98af-4e2f-48f2-89f5-b7b0c5ddbdb1" style="">위 예시에서 /path/to/backup/directory는 스냅샷을 저장할 로컬 디렉토리 경로를 나타낸다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0266768b-663f-40cd-9c9e-3a855b75e37e" style=""><span class="se-fs- se-ff-system" id="SE-1a1ba87d-79ed-456b-8331-155e5bf0831d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-07bb0c30-943c-40bb-a3c7-e5392ee58b84" style=""><span class="se-fs- se-ff-system" id="SE-a31b4ce7-47b6-45e9-87de-a6178079519e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a54fba6f-a8fa-4bd9-8aeb-b5127ec1df14" style=""><span class="se-fs- se-ff-system" id="SE-c85fa62f-033f-48d0-905d-a46055539b36" style="">3. 스냅샷 생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-76a4ae9d-5b1c-4ca0-ada0-7d0581050e4a" style=""><span class="se-fs- se-ff-system" id="SE-2bd00f0f-234f-494c-be0f-7fb68840a121" style="">repository를 생성한 후, 스냅샷 생성한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b4a423bf-3a36-4583-a8a2-d5a22b9780e6">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">PUT</span> <span class="token se-code-operator">/</span>_snapshot<span class="token se-code-operator">/</span>backup<span class="token se-code-operator">/</span>my_snapshot
+<span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"indices"</span><span class="token se-code-operator">:</span> <span class="token se-code-string">"index1,index2"</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-string-property property">"ignore_unavailable"</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span><span class="token se-code-punctuation">,</span>
+<span class="token se-code-string-property property">"include_global_state"</span><span class="token se-code-operator">:</span> <span class="token se-code-boolean">false</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b4a423bf-3a36-4583-a8a2-d5a22b9780e6"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-6dfe8c03-a7e9-4de8-9591-4018e009ffb2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0fe5674c-ff76-41cc-9015-898f604ff933" style=""><span class="se-fs- se-ff-system" id="SE-30ee8a0f-fd6c-463a-ba6f-5625de2ec612" style="">위 예시에서 index1과 index2는 스냅샷을 생성할 대상 인덱스이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-27453455-42c0-44f7-802b-a9823c113407" style=""><span class="se-fs- se-ff-system" id="SE-51ba338f-0529-44a3-80e3-79a5213d63ca" style="">ignore_unavailable 옵션은 해당 인덱스가 존재하지 않더라도 스냅샷을 생성할 것인지를 결정하는 옵션이고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-965e19c0-f8db-47d7-86f2-f27deee95c55" style=""><span class="se-fs- se-ff-system" id="SE-fce16533-de75-4589-9c85-dd5e6e57c706" style="">include_global_state는 클러스터 전역 상태를 스냅샷에 포함할지를 결정하는 옵션이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-05f820b2-b6bd-4c43-898a-f6866b473f4d" style=""><span class="se-fs- se-ff-system" id="SE-8b5d5ee3-cc79-4fdf-8216-3c7c56b52482" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ebc07f51-18d0-4e9e-b653-5eca5043c6c7" style=""><span class="se-fs- se-ff-system" id="SE-40606b47-c3bd-44d0-ba07-dc6f9c2c0889" style="">스냅샷 생성에 성공하면 요청에 대한 응답으로 {"acknowledged": true}가 반환됩니다. 이제 스냅샷을 사용하여 Elasticsearch 데이터를 백업하거나 복구할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c159d9b4-e3de-4226-9e9a-cca249f9125b" style=""><span class="se-fs- se-ff-system" id="SE-410ec8a4-7db3-4602-8f76-50e93e1766d4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ebc5cbac-e201-4609-a7bf-83e2d6aa56a5" style=""><span class="se-fs- se-ff-system" id="SE-ffa16291-4e31-451e-a369-61271d76da91" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9dac3e11-85b0-4cb8-9ca5-9ae972bb4176" style=""><span class="se-fs- se-ff-system" id="SE-cef979d5-e3a3-4b7a-bbaf-904423ba8770" style="">* 스냅샷은 Elasticsearch의 버전별로 호환성이 있으므로, 복원할 때 동일한 버전의 Elasticsearch를 사용하는 것이 좋다. (특히 5버전 인덱스는 7버전에서 사용할 수 없다..)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-baada169-c5c7-4d02-828b-4b7c3fb6f95a" style=""><span class="se-fs- se-ff-system" id="SE-0d877b66-8566-4098-a891-bfdf073aab6d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e771bff1-8bf4-431b-865f-4e2886945dc4" style=""><span class="se-fs- se-ff-system" id="SE-91f73c2b-231d-427c-a382-f62b36bf4d72" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

@@ -1,0 +1,337 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222889111394 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-4c85a58c-10af-4020-84c1-8946ddd7db98">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ce514ce6-380d-4676-82d6-6af3796a86d9" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-95dbb396-604a-48bc-8733-771c4db317e4" style="color:#141414;"><b>1. JPA의 구동방식</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79720ba2-99d2-4d8a-a257-66108e6ecf12" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-1cc39d8b-fcd2-4a3b-8413-f13c08eda53a" style="color:#141414;">JPA의 구동방식을 살펴보면 아래와 같이 META-INF라는 곳 아래에 persistence.xml을 설정정보로 참고한 뒤 EntityManagerFactory를 생성하고 거기서 EntityManager를 생성해서 요청을 실행한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e6524248-ba42-4df9-98f9-dc14492f5a54">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d97a4ac6-017c-4223-b40d-d970e20e4302">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f4a3a924-5818-4bb5-836f-e604a1067ae4" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-ac3cde04-0408-43aa-a7a8-024c7b64f60d" style="color:#141414;"><b>EntityManagerFactory와 EntityManager?</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b0ded46b-5b52-4191-babd-8b3aac81d753" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-9794f3e5-0dbb-4074-b6d7-d803b5cf6fa3" style="color:#141414;">어플리케이션은 단 하나의 EntityManagerFactory를 가지는데, 어플리케이션이 실행하면 생성하고 종료하면 소멸한다. 실제 DB 사용을 담당하는 EntityManager는 하나의 Thread(Transaction)가 생성될 때마다 EntityManagerFactory가 생성해 준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-70e4ba0e-5491-4a96-9504-597df7df6fca" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-39c4f97c-3e7f-4da0-9902-840b18ddd4ce" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d155bde4-6742-4c42-b91b-5dd7e6bce6d3" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-4ae3fdb8-d40c-476e-abbf-e61b2c62067d" style="color:#141414;">이를 코드로 구현하면 다음과 같다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b61c58b9-566f-460c-b5e3-e4063c9b0678">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">JpaMain</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">static</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">main</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String[] args</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        EntityManagerFactory emf <span class="token se-code-operator">=</span> Persistence<span class="token se-code-punctuation">.</span><span class="token se-code-function">createEntityManagerFactory</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"Hi1"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+
+        EntityManager em <span class="token se-code-operator">=</span> emf<span class="token se-code-punctuation">.</span><span class="token se-code-function">createEntityManager</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+
+        EntityTransaction tx <span class="token se-code-operator">=</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">getTransaction</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        
+        tx<span class="token se-code-punctuation">.</span><span class="token se-code-function">begin</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">try</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//code</span>
+<span class="token se-code-operator">...</span>
+             tx<span class="token se-code-punctuation">.</span><span class="token se-code-function">commit</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span><span class="token se-code-keyword">catch</span> <span class="token se-code-punctuation">(</span>Exception e<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">{</span>
+             tx<span class="token se-code-punctuation">.</span><span class="token se-code-function">rollback</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">finally</span> <span class="token se-code-punctuation">{</span>
+            em<span class="token se-code-punctuation">.</span><span class="token se-code-function">close</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+
+        emf<span class="token se-code-punctuation">.</span><span class="token se-code-function">close</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b61c58b9-566f-460c-b5e3-e4063c9b0678"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-ce0127c4-4f3d-44c2-b060-b5e2fade9a86">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e5e06ab7-1052-4de3-92ba-d541e68c4e6a" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-b5b01605-4cb6-4a93-8feb-967ee0a1eb4f" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c6c87435-f59f-48f9-80c5-6331e8222b4f" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-1df26f6c-476f-408c-a7ae-7341dd28193a" style="color:#141414;">모든 데이터의 변경(수정,삭제,추가 등)은 transaction안에서 실행되어야하기 때문에 tx.begin 이후 DB에 대한 코드를 작성한다. code 부분에 DB에 대한 코드를 작성한 뒤, tx.commit 부분에서 실제로 쿼리가 DB에 적용되기 때문에 try 문에서 에러가 나면 tx.rollback으로 DB에 반영하지 않을 수 있다. 그리고 항상 요청이 끝나면 em.close로 entityManager를 버려준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-805ff86e-3889-4de1-9c69-9cb36ad22835" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-0679f783-e7bc-4f4d-a97c-7872355de153" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a09d567-84b0-4a1d-8104-5b87807d9c46" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-22816dd2-b1f3-431b-9384-d2c4275da665" style="color:#141414;"><b>회원 CRUD추가</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c7456d41-e609-4527-b08a-b302b4dc22d0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">try</span><span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">// 회원객체 생성 </span>
+ 	   Member member <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+           member<span class="token se-code-punctuation">.</span><span class="token se-code-function">setId</span><span class="token se-code-punctuation">(</span>2L<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+           member<span class="token se-code-punctuation">.</span><span class="token se-code-function">setName</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"HI2"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+          
+           em<span class="token se-code-punctuation">.</span><span class="token se-code-function">persist</span><span class="token se-code-punctuation">(</span>member<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+           tx<span class="token se-code-punctuation">.</span><span class="token se-code-function">commit</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c7456d41-e609-4527-b08a-b302b4dc22d0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4e8930df-751a-4d96-b485-aa07565675cf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1f618064-8917-4c2a-9036-5547b0432c33" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-13155db2-d434-4720-be05-5d03195095cc" style="color:#141414;">tx.commit 에서 insert 쿼리가 나가고, 이 때 쿼리는 persistence.xml에서 설정한 dialect의 종류에 맞게 실행된다.(데이터베이스의 종류(H2, Oracle, Mysql 등)에 맞게 쿼리가 변환되어 나감)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cb24aa3e-b6a3-488c-af4e-bc149bbbe3f2" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-36c482bf-1f15-47d4-9c03-48e7498b9b87" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4692effe-4546-44c3-b46c-a84e50c822fc" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-ff6c49d6-e0bb-4e87-9c1d-95aa02632723" style="color:#141414;">나머지 조회, 삭제, 수정은 아래와 같다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-bf63e7f9-ba56-4036-9516-6be9c36e6af3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">try</span><span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">//	    조회</span>
+            Member findMember <span class="token se-code-operator">=</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">find</span><span class="token se-code-punctuation">(</span>Member<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span> 2L<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span> <span class="token se-code-comment">//(클래스, pk)</span>
+<span class="token se-code-comment">//      삭제</span>
+            em<span class="token se-code-punctuation">.</span><span class="token se-code-function">remove</span><span class="token se-code-punctuation">(</span>findMember<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">//      수정</span>
+            findMember<span class="token se-code-punctuation">.</span><span class="token se-code-function">setName</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"HelloJPA"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+            
+            tx<span class="token se-code-punctuation">.</span><span class="token se-code-function">commit</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bf63e7f9-ba56-4036-9516-6be9c36e6af3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-0bb91877-656f-4633-a0e5-7035f1893235">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cf6505df-cf6a-4a2a-8512-68aed5864ee8" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-ede526fe-9340-44c4-a7f4-f8d2ada9ccc9" style="color:#141414;">JPA를 사용하면 객체를 다루듯 DB를 다룰 수 있다는 장점이 있는데, 그 특징이 가장 잘 드러나는 곳이 수정 부분이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8a5ddce0-cb5b-4e38-9399-b2c973a0614f" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-9cb26444-5684-437c-989d-9cd51f02e9e7" style="color:#141414;">findMember 객체의 이름만 바꿔줬을 뿐인데 변경사항을 알아서 체크하고 DB에 수정쿼리를 날려준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8c680c80-a0a2-4f71-9d34-dc479baf0450" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-6d7fddb8-16c8-4c7f-a1cd-f37eae6a43c0" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8edff7c2-99f3-4a8b-9db5-08075382fd16" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-b0fa0126-7834-41cb-8084-9a20937c1b1a" style="color:#141414;"><b>전체조회</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09e2f0cb-f611-4769-baf2-b224c0889e35" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-91a35c84-416c-4397-a4fc-18775d7aac8d" style="color:#141414;">전체조회는 JPQL을 사용한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c74f21f6-1d8a-4da3-b516-ecaa528206ee">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">try</span><span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">// 	      전체조회</span>
+              List<span class="token se-code-operator">&lt;</span>Member<span class="token se-code-operator">&gt;</span> result <span class="token se-code-operator">=</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">createQuery</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"select m from Member as m"</span><span class="token se-code-punctuation">,</span> Member<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">getResultList</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">for</span> <span class="token se-code-punctuation">(</span>Member member <span class="token se-code-operator">:</span> result<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">{</span>
+                  System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"member.name = "</span> <span class="token se-code-operator">+</span> member<span class="token se-code-punctuation">.</span><span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c74f21f6-1d8a-4da3-b516-ecaa528206ee"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-87332eda-c82e-4c7d-b5d9-478e0e83cb1d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9b75ce64-8bc0-49ba-a86b-25fc181c1835" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-dd51438e-5d6a-4b82-9b0d-a57f48817f00" style="color:#141414;">SQL이 테이블을 대상으로 날리는 쿼리라면, JPQL은 객체를 대상으로 날린다고 생각하면 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15118dea-2ae7-4bb0-ab62-679c183dd005" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-f7c85d4e-6de4-42a8-9e91-2e3aa5a2248f" style="color:#141414;">그렇기 때문에 select m.name, m.id 가 아닌 select m 만으로도 조회가 가능하다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-789bb10b-5fd2-49bc-a05b-7a3566917915" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-4c215602-b9c0-4833-868a-f3ad9ffad195" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-12d5a951-f2c0-4d56-ac36-47938c1e6c58" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-d6b67b42-04aa-466b-8de7-ce03b7786042" style="color:#141414;"><b>영속성 컨텍스트</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-54df6469-d313-482d-8bfc-f722c65c0444" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-a193a2c4-81a7-4d29-9b94-3d77fda183e3" style="color:#141414;">영속성 컨텍스트는 엔티티를 영구적으로 저장하는 환경이며 논리적인 개념이다. 접근은 Entitymanager를 통해 가능하고 DB로 가기전에 있는 가상공간이라고 생각하면 된다. 이 영속성 컨텍스트를 사용하는 이유에 대해서는 아래에서 설명한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52caee5f-d8b8-46c6-b236-25a9d0d6fcd1" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-ba919e0d-cf5b-47e8-b9f3-7bb49134891e" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-89c69f62-d23a-40d2-9cb0-42076dd606d4" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-8e27538e-c0c0-4738-b929-a2335688d732" style="color:#141414;"><b>엔티티의 생명주기</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-0414e187-2832-433e-9368-9a4a973f51fe">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-91b8857d-d7c2-4991-bec2-fe8df22f1358" style=""><span class="se-fs- se-ff-" id="SE-d972e652-95e5-46c6-92d6-c141d7ced0e6" style="">엔티티의 생명주기</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9f8e6de4-7b3d-4f19-a164-9a3a08f71533">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-71949f92-2ac9-4389-b8f0-091640b5fa1b" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-54403590-cc23-41c2-902c-c25b54e16979" style="color:#141414;">우선 member객체를 생성한 것은 </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-1274a22f-0cfb-455b-a215-c64fc4564f46" style="color:#141414;"><b>비영속 상태</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-f3dc794b-c0b0-4bac-a8eb-12f96b1b0747" style="color:#141414;">다. (=영속성 컨텍스트와 관련없는 상태.) 그 후 EntityManager를 통해 persist로 영속상태로 만들어주는데. 이 때 member은 영속성 컨텍스트 안으로 들어간다. 후에 detach통해 영속성 컨텍스트에서 분리할수 있다. 이외에도 clear은 영속성 컨텍스트를 아예 비우는 것이기 때문에, 들어있던 모든 엔티티들이 분리된다. close는 EntityManager를 닫는 것으로 영속성 컨텍스트가 사라진다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b67e2608-ede9-4f00-8f11-4af5f3431d4b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-comment">//          &gt; 비영속</span>
+            Member member <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Member</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+            member<span class="token se-code-punctuation">.</span><span class="token se-code-function">setId</span><span class="token se-code-punctuation">(</span>2L<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+            member<span class="token se-code-punctuation">.</span><span class="token se-code-function">setName</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"HelloB"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">//          &gt; 영속</span>
+            em<span class="token se-code-punctuation">.</span><span class="token se-code-function">persist</span><span class="token se-code-punctuation">(</span>member<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">//          &gt; 영속해지</span>
+            em<span class="token se-code-punctuation">.</span><span class="token se-code-function">detach</span><span class="token se-code-punctuation">(</span>member<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b67e2608-ede9-4f00-8f11-4af5f3431d4b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9e1e2f96-bee5-479b-a3cf-7a588814874b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8632627b-a73a-435d-a760-1a449d915609" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-fb0c0850-e96d-4d79-b574-97a41377e3de" style="color:#141414;">remove는 commit시에 </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-2a6797b8-ece2-4d6a-9177-db94f1dea119" style="color:#141414;"><b>flush </b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-8838bef6-2e52-4acb-b68c-c41e7c07f989" style="color:#141414;">되며, 변경사항(삭제)가 DB에 반영된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-81a00022-b6c4-4280-98e7-78ac882c46bf" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-129977bf-08d1-437d-ada0-14887aa983db" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2dc9f98d-1dc4-4f86-a169-6478e3be6690" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-02298ed6-2f43-49e8-b15a-6339b2c1b930" style="color:#141414;">* flush란 영속성 컨텍스트의 변경내용을 DB에 반영하는 것이다. 크게 3가지 방법으로 flush를 할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0b4b360b-5a95-4452-8626-ef8d6de78bda" style="line-height:2.0;"><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-ffd519a9-f73f-48e4-87c0-f0e3f07338e5" style="color:#141414;"><b>(1) em,flush()</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-887e3894-5b4c-45f4-8320-bc074f786cf7" style="line-height:2.0;"><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-2e96e8cb-94c2-4939-843e-c2238577ca78" style="color:#141414;"><b>(2) tx.commit()</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a27203f3-083a-4078-9e62-979caa349e0e" style="line-height:2.0;"><span class="se-fs-fs13 se-ff-system se-style-unset" id="SE-8dac1375-91b9-4a48-9ed0-f0b6ac349339" style="color:#141414;"><b>(3) JPQL 쿼리 실행</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2c6a361a-35f6-4016-8735-7901e9f2356d" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-314593af-eca2-4f2d-beeb-05fe48f75eb5" style="color:#141414;">JPQL쿼리 실행 시 자동으로 flush가 이뤄지는데, 그 이유는 다음과 같은 경우 때문이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1c17811-d41b-4e44-8557-588a2a12f5ac" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-b4efbde0-0d84-4903-8781-d10bfad57194" style="color:#141414;">em.persist(memberA); em.persist(memberB); em.persist(memberC); </span><span class="se-fs- se-ff-" id="SE-8c23b63d-b64d-49d2-868f-75daabf9e704" style="color:#141414;"><i>//중간에 JPQL 실행</i></span><span class="se-fs- se-ff- se-style-unset" id="SE-98ba67bb-a733-453a-8cda-f1ae4f5ef1e4" style="color:#141414;"> query = em.createQuery("select m from Member m", Member.class); List&lt;Member&gt; members= query.getResultList();</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b07dda6-7685-45d1-9cba-0d66b9a760bd" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-a0bd8d6d-fad8-491e-801f-eacffb6670e1" style="color:#141414;">아직 commit 되기 전이라 persist시킨 member A, B, C는 DB에 들어가지 않았고, 이때 JPQL로 결과를 조회를 하면 당연히 없다고 나온다. JPQL은 1차 캐시를 거치지 않고 바로 sql로 변환되어 DB에 쿼리를 날리기 때문에 이런 경우를 위해서 JPQL이 실행되면 그전에 flush를 자동으로 호출한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-07c4dfe5-df90-422b-8048-4f900846a2db" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-100dca3d-7ee0-4d50-905f-e2a86d68a11a" style="color:#141414;"><b> </b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5d8d944a-9319-45ab-9851-323c782aea9e" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-eac5a231-ad41-4936-a279-4e6cdc71ca4a" style="color:#141414;"><b>2. 영속성 컨텍스트의 장점</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f172aec7-ce83-4b52-8b7b-69cf68a6459e" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" id="SE-21550ec3-b029-4cdb-b022-c883dfb7522d" style="color:#141414;">영속성 컨텍스트 사용하는 이유👍🏻</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c8b1aed-7afd-4fa3-a385-467684e2aa2f" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" id="SE-77df372b-e1e8-4c2f-bd81-405f2213e140" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15b9f2b5-b6c1-4c8f-afa3-53bb7b79bd9f" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-14297fa9-d6c4-466f-99e2-a0a09bfe919c" style="color:#141414;"><b>2-1. 1차 캐시</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-aa7f898d-f6ce-46ce-9c2b-3cb38df241da" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-013d3de6-4237-4b02-8b49-6384eb28eabc" style="color:#141414;">persist로 영속상태가 되면 key(pk): value(entity) 형태로 캐시에 저장된다. 따라서 같은 transaction안에서는 캐시가 유지된다. 이후에 find를 할 경우, 먼저 1차 캐시에서 있는지 살펴본 뒤에 없다면 select 쿼리를 날려서 찾아오기 때문에 쿼리 날리는 횟수를 조금 줄일 수 있다. (하지만 한 transaction안에서만 적용되어 큰 성능개선은 없다.)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-7f3031a2-007f-4136-aaa9-573532894eb7">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-69c0212d-92cc-4033-b702-3f0a22f3a0e7" style=""><span class="se-fs- se-ff-" id="SE-12a597f0-9af3-431e-bbea-493a8f04ae33" style="">1차 캐시에 없다면 DB에서 조회해 오고 이를 바로 또 1차 캐시에 저장한다.</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7b8c8f73-b209-4541-89ea-5d386aa07e43">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b26ff035-99b2-489c-93e3-93afbbee3490" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-ffd451db-831b-4c62-8ba9-aa1aa7eee10a" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-35986069-961c-4ff9-8503-8b45ed8facf2" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-6630be18-6041-4015-858d-61fac2d32444" style="color:#141414;"><b>2-2. 객체의 동일성 보장</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d9219d5f-d579-447e-bc5f-c869d60b90d3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Member a <span class="token se-code-operator">=</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">find</span><span class="token se-code-punctuation">(</span>Member<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span> <span class="token se-code-string">"member1"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+Member b <span class="token se-code-operator">=</span> em<span class="token se-code-punctuation">.</span><span class="token se-code-function">find</span><span class="token se-code-punctuation">(</span>Member<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span> <span class="token se-code-string">"member1"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span>a <span class="token se-code-operator">==</span> b<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d9219d5f-d579-447e-bc5f-c869d60b90d3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e9b02dc5-8957-4716-9265-34f67d47eab2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-805316eb-97ce-4334-ba24-5edcfaef63ac" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-8c687058-9bf2-4462-bf48-e91f9fab6a65" style="color:#141414;">위 코드의 결과는 참이다. 당연해 보이긴 하지만 사실 데이터베이스 차원에서 위와 같이 sql을 날려 비교하면 a와 b가 다르다. (물론 id값은 같지만,) 영속성 컨텍스트가 있어서 객체 간 비교를 편하게 할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a2b819f6-30a4-40f9-a9e8-633e2b3f3b9d" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-5e70ad88-bc92-4c92-b12f-44acce57f450" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eea38266-21e0-4a75-bd73-745656fe0d85" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-b6c0ffb5-1c2e-4383-b0d6-034e49e65311" style="color:#141414;"><b>2-3. 트랜잭션 쓰기 지연</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c460b09-9625-4fb4-8f74-e7d811d40bdc" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-068da56a-8ba5-4b27-938c-e9ad6fe85e88" style="color:#141414;">영속성 컨텍스트는 DB전에 있는 단계로 buffer와 같은 역할을 한다. 따라서 변경사항을 모아 놨다가 commit()시에 flush가 되면서 DB에 반영된다. </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-98b64552-7408-4af4-b525-fdf88e6765c8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-comment">// 엔티티 매니저는 데이터 변경 시 트랜잭션 시작</span>
+
+transaction<span class="token se-code-punctuation">.</span><span class="token se-code-function">begin</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span> <span class="token se-code-comment">// [트랜잭션] 시작</span>
+
+em<span class="token se-code-punctuation">.</span><span class="token se-code-function">persist</span><span class="token se-code-punctuation">(</span>memberA<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+em<span class="token se-code-punctuation">.</span><span class="token se-code-function">persist</span><span class="token se-code-punctuation">(</span>memberB<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">// 여기까지 INSERT SQL을 데이터베이스에 보내지 않는다.</span>
+<span class="token se-code-comment">// 커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.</span>
+transaction<span class="token se-code-punctuation">.</span><span class="token se-code-function">commit</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-98b64552-7408-4af4-b525-fdf88e6765c8"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-1e97d04f-c66f-48b5-ba1a-ced4f0d24830">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-da7c3164-24cf-4449-b9ed-7f55ec899020">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-aba3f215-376c-4520-a281-45ef2d82e3d4" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-b7568c49-5b33-4ef9-90c7-d41043b16554" style="color:#141414;"> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3bd28183-4d69-4a78-8d59-edfb849ede31" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-ce8e282f-d28a-4c5b-bd52-cf9c269c5970" style="color:#141414;"><b>2-4. 변경감지 (dirty check)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-aea22f10-8047-426e-b670-e0076a2394b2" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-8949b920-240a-41e2-bf94-565a064b37a0" style="color:#141414;">이 기능으로 이전에 회원수정이 간단하게 객체의 속성을 바꾸는 것만으로 끝났다! 영속성 컨텍스트는 commit으로 flush가 실행되면 변경사항들을 체크해 update를 해준다. 체크하는 방식은 영속성 컨텍스트에 들왔을 최초의 모습을 스냅샷으로 떠놓고, 그 후 flush 할 때 실제 entity와 스냅샷을 비교해서 달라진 것을 감지한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-011d60ec-e823-45ee-b4cb-ac7b748e35e9">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-fd774400-b2d1-47da-8168-ee03c741c5d6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9529bf53-4f39-425f-ba41-7390becfc4af" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-03e78086-238f-464d-a7f6-8b56c28b84e3" style="color:#141414;"><b>2-5. 지연 로딩 (LAZY Loading)</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-4c29cf4b-09e2-4dee-b853-71c098869bb7">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">process</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">{</span>
+   Member member <span class="token se-code-operator">=</span> entityManager<span class="token se-code-punctuation">.</span><span class="token se-code-function">find</span><span class="token se-code-punctuation">(</span>Member<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">,</span>100L<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+ member<span class="token se-code-punctuation">.</span><span class="token se-code-function">getJPA</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span> <span class="token se-code-comment">// 필드로 JPA 클래스를 가짐</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4c29cf4b-09e2-4dee-b853-71c098869bb7"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1fdf941c-0a94-4def-a55e-ad21fb1493ec">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1fdcaca7-b5d5-4f9e-9a05-8c5872a2fce6" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-a3de1bba-c0c1-41ff-8e2b-f5bfaf9e55c0" style="color:#141414;">지연로딩은 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-edd86db1-c64a-4b9a-8df2-c272fee342e2" style="color:#141414;">연관된 엔티티를 프록시로 조회하는 개념인데, 프록시를 '</span><span class="se-fs- se-ff-system se-style-unset" id="SE-cb333287-33df-4c65-8adf-07cba13b1399" style="color:#141414;"><b>실제 사용할 때</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-8eb3359f-25ed-44fe-a064-d6a9d76f0a0c" style="color:#141414;"> 초기화하면서 데이타베이스를 조회'한다. (이 부분은 다음에 정리할 예정으로 여기서는 간단하게만 적어둔다.) </span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-9d9c3605-46ca-45b9-ac61-5a0407e4cbe6" style="color:#141414;">위와 같이 Member 클래스가 필드로 Jpa를 가지는 경우- find(member) 시점에는 MEMBER SELECT만 발생하고, getJpa()를 호출하는 순간 Jpa 를 SELECT한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b58f31d-a635-4a6c-b8c4-3d72fa961639" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-b4241759-7c97-4934-90f2-a13c87963e65" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3819d71b-5cb2-4f63-80ac-71ebddfe786f" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-16d0ee8c-8d9c-4235-b771-639196fea89f" style="color:#141414;"> </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-33ca9e28-1f5c-4646-8c35-c8e607d4370c">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-right" style="max-width:150px;">
+<div class="se-module se-module-image" style=""><div class="se-state-error se-state-error-small" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-5354c5d3-73ea-4e31-b712-45c5a304a78e" style=""><span class="se-fs- se-ff-" id="SE-91be6440-a3f2-47d8-bdc0-26b2518124ac" style="">출처</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-781bb4fa-c57a-4960-ba81-51f47298e204">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-right" id="SE-3a973d38-d7a6-45ff-b08a-504fda56a195" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system se-style-unset" id="SE-16be50ff-fd8a-4b55-b0e1-dd0ffa219b35" style="color:#141414;">김영한님의 JPA 책을 공부하며 정리했습니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

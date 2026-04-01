@@ -1,0 +1,614 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222773447581 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-69f92c1e-e3f1-4157-9bbe-bc4ac4b6ae80">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7ba3605b-acef-4546-a9a4-aee14e912e55" style=""><span class="se-fs- se-ff-system" id="SE-7b73bc91-cb88-46fa-b4f2-8d37dd3ed5bf" style="">개발 환경에서 git push만 해도 배포가 되는 환경을 구성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0e0d6caa-9ae0-4aae-90f8-8d724bb16089" style=""><span class="se-fs- se-ff-system" id="SE-13c199a8-c437-4c80-9bd6-a0bca9364dc9" style="">실습은 다음과 같은 환경에서 진행된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-66543fc4-1c77-4f36-a9f9-13b37df6e4a7">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-66543fc4-1c77-4f36-a9f9-13b37df6e4a7", "src" : "https://postfiles.pstatic.net/MjAyMjA2MTNfMjAw/MDAxNjU1MDk1MTcwMjAw.JG1Ja1_2J31Ni8wbk7qMZesKs8gISoBGLH0EeZTE-fEg._YjC_PU6o4i5hHo8Zbvpqk4jofX-7e3LiW1kuFwFvokg.PNG.ghdalswl77/%EC%A0%9C%EB%AA%A9_%EC%97%86%EB%8A%94_%EC%95%84%ED%8A%B8%EC%9B%8C%ED%81%AC_17.png", "originalWidth" : "1672", "originalHeight" : "776", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="321" data-width="693" id="SE-66543fc4-1c77-4f36-a9f9-13b37df6e4a7_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9ae9a532-a041-4cb0-bba3-cf10dedc938b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1c098675-6962-4baf-a81f-d59abc7c23cd" style=""><span class="se-fs- se-ff-system" id="SE-d1239cf9-cb13-4c01-9c7a-597b4b24a70d" style="">젠킨스 서버와 프론트엔드 서버 각각 다른 aws에 구동되어 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2a9279dd-4ed2-42c5-a8d3-3a8f7b05b42f" style=""><span class="se-fs- se-ff-system" id="SE-5d851dc8-8e71-4d75-8acb-1766e0d80066" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-70dcfad9-e998-43d1-8933-63799b2758f2">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-32e93fa3-a33e-488f-9f56-4c9a08e12388" style=""><span class="se-fs-fs24 se-ff-" id="SE-2a4a4974-0524-447b-b55f-0ef2c7a82ae8" style=""><b>빌드</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e71da974-b715-4869-bad3-c4e2ccf5e181">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-88ca58cf-6fbb-4868-9f7f-70a58dcb4023" style=""><span class="se-fs-fs16 se-ff-system" id="SE-a6d955d3-f07b-46de-8996-e7774ce7c9a6" style=""><b>1) 개발환경에서 빌드한 경우</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-00595a11-c095-44c0-9e84-97de46a6442a" style=""><span class="se-fs- se-ff-system" id="SE-a9888f00-a302-49d9-add4-662d7c5fd688" style="">vscode 프로젝트에서 빌드.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cb84660f-ac06-4b9d-acaa-cc6e53072c55" style=""><span class="se-fs- se-ff-system" id="SE-da122cc7-bdc6-463a-b24e-c5ccd94a8c0b" style="">프로젝트 터미널 에서 다음 명령어를 입력한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-2498a088-88d3-4766-ae16-7715ca90ec55">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">npm run build</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-2498a088-88d3-4766-ae16-7715ca90ec55"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4fabb919-9aa2-4ae4-9251-beabff5c1597">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-236fd93f-8816-4254-8b8c-46a7638f29e7" style=""><span class="se-fs- se-ff-system" id="SE-6b52817b-c72a-4aa9-9bb7-e37d73c19ab3" style="">그러면 프로젝트에 build 라는 폴더가 생겼을 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c40e6ad-5661-4a8b-bf9e-213984a3abf1" style=""><span class="se-fs- se-ff-system" id="SE-b7129727-c667-43e8-8823-f40a69513e0c" style="">빌드 후, build한 디렉토리의 index.html을 확인해보자</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-8c9f364f-86bf-4751-a5d1-67e4db3d4b23">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:450px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-8c9f364f-86bf-4751-a5d1-67e4db3d4b23", "src" : "https://postfiles.pstatic.net/MjAyMjA2MTNfMzAg/MDAxNjU1MDg3OTkwMjk5.aMugDfru0gqZdNoKaJalVjJ4O3jDhB88MOLztX_rRGEg.Z3kOZWLR1jHA_W_f9p4-x3WxH3W_Sdvq9PK-xxIgZsog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-13_%EC%98%A4%EC%A0%84_11.39.45.png", "originalWidth" : "1360", "originalHeight" : "590", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="195" data-width="450" id="SE-8c9f364f-86bf-4751-a5d1-67e4db3d4b23_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-14bf65d2-3d38-4945-9988-7edb5bcaf573">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd36031e-52ab-404e-8b7a-44831441f964" style=""><span class="se-fs- se-ff-system" id="SE-ab489e29-ae5e-4be0-b239-d0fcf102d500" style="">공백이 존재하지 않고 가독성이 매우 떨어지는 문서로 되어있을 것이다. 이렇게 된 이유는 npm run build 명령을 통해 create-react-app이 이미 존재했던 index.html 파일의 불필요한 공백을 제거했기 때문이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8b04fd99-56f4-4823-9358-46321a5c5f24" style=""><span class="se-fs- se-ff-system" id="SE-1bb55021-fbd8-4a39-974f-3e4868fada63" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e338ea71-b794-4fcd-8c1f-a6919da1e6ec" style=""><span class="se-fs- se-ff-system" id="SE-cc4e3678-4b36-487f-b7f6-254ed2161af8" style="">실제 서비스 할 때 build 디렉토리 안에 있는 파일을 사용하면 된다. 즉, 웹 서버가 문서를 찾는 최상위 디렉토리에 build 디렉터리 안의 파일들을 위치시키면 실제 서버 환경 완성.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d3d0a402-fa18-4a80-867d-fbdac843b78e" style=""><span class="se-fs- se-ff-system" id="SE-e1cd3741-5f40-448e-be4d-50a00793819e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-688c5b72-64de-4e13-ab60-c965340c6e05" style=""><span class="se-fs- se-ff-system" id="SE-72abf94a-3039-4f2d-a085-c633e7cba8d0" style="">이를 scp 명령어 혹은 본인이 편한 수단을 사용해 프론트엔드 서버(aws)로 가져온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4a054f28-c1c6-477d-b3c1-d57f3be2c6fd" style=""><span class="se-fs- se-ff-system" id="SE-8cbffc2c-1364-4e5e-8f26-5c5b67b96ede" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1f72254-8b43-43e9-94f0-4a3d1dd5444e" style=""><span class="se-fs-fs16 se-ff-system" id="SE-989e43e1-ddac-4185-bb65-366c5fee5c45" style="">2) </span><span class="se-fs-fs16 se-ff-system" id="SE-06434993-da8d-45ba-9ced-d578b51e1712" style=""><b>서버에서 빌드</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-461e549b-3283-4e93-9817-5c0515cc7b8d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">cd <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>ubuntu<span class="token se-code-operator">/</span>front<span class="token se-code-operator">/</span>
+npm run build</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-461e549b-3283-4e93-9817-5c0515cc7b8d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2d387de4-d937-4d24-a9fb-578800f698f6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-25012486-9f80-4089-b81f-3ae870b9cf6f" style=""><span class="se-fs- se-ff-system" id="SE-1cbc3b56-15c9-4391-83d7-5f2e90327fab" style="">해당 프로젝트 파일이 있는 곳에서 위 명령어 입력.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79fe58f5-011e-432e-99fb-def9e9d6230a" style=""><span class="se-fs- se-ff-system" id="SE-6fbf5bda-740a-4684-9b51-dad6f19ee27a" style="">그리고 ls 명령어로 생성된 폴더를 확인한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d028a652-b99d-44d5-96ef-e878ddd2f7a4" style=""><span class="se-fs- se-ff-system" id="SE-c5c4954e-eb61-47d2-ae26-a99b465e2f55" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-4143cb06-4ad0-43f4-aed0-b5397f311437">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5e22e34a-8c91-4374-9e01-cb6198dbccc2" style=""><span class="se-fs-fs24 se-ff-" id="SE-04c69903-d778-4a23-b76e-d2f93d3b4ff0" style=""><b>배포</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-df3b5c63-bab4-40ab-b046-b8033eab2eba">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-75373a73-656b-4e8c-9592-443a6b6ff958" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-ef96e33c-c8be-45a2-9ef8-10f11618ca5e" style="">젠킨스 설치 및 깃헙과 젠킨스 연동하기는 아래 포스팅에 따로 정리해두었다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-df40b05f-4e4c-4715-acd8-963463df69db" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-f1c3c63c-4e3c-422f-aeae-831b3ab8a422" style="">배포는 젠킨스 설치와 연동 후 가능하기 때문에.. 설정을 마친 후 다시 이어서 진행을 권장한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-aac0e1c2-f85b-4614-8d1e-9ec105abb3ab" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-cd0ed68a-137a-4a2f-8bee-81476f25dd4e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-162dd8e8-2a5f-4a8f-8627-8008919f1cd0" style=""><span class="se-fs-fs16 se-ff-system" id="SE-a9b2afaf-de45-4c2f-adc3-92bd0f75bb2b" style=""><b>(1) </b></span><span class="se-fs-fs16 se-ff-system" id="SE-627e7aa4-7a74-46d9-bf09-17b3463d4c4c" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222742279019" target="_blank"><b>AWS(Ubuntu 20.04)에 젠킨스 설치하기</b></a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e7aac78f-f0a5-4164-b17c-a8b56635a672" style=""><span class="se-fs-fs16 se-ff-system" id="SE-3ab1bc20-accd-41be-90a1-d3fac8b0d8bd" style=""><b>(2) </b></span><span class="se-fs-fs16 se-ff-system" id="SE-6f4b2a3b-35b5-4f60-bf82-78edae8f7624" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222743600660" target="_blank"><b>GitHub과 젠킨스 연동하기</b></a></span><span class="se-fs-fs16 se-ff-system" id="SE-8f40b517-9705-43f7-abe6-39da47741699" style=""><b>(+webhook 설정)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-27fc20f6-33bc-43fc-a4b2-8d4b60f88639" style=""><span class="se-fs- se-ff-system" id="SE-ad7dec09-ac24-4f7c-8055-e1e455cfbe40" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1edac3f-d302-4e58-9a7a-3830a46d1bb8" style=""><span class="se-fs- se-ff-system" id="SE-c4aa4390-cd8b-451c-a63a-57857dfcc875" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3a1ce698-6a7a-4006-b04a-b752990ffae3" style=""><span class="se-fs-fs24 se-ff-system" id="SE-b9289b2a-8b85-45d0-b34e-f33a0915fea8" style=""><b>Jenkins 사용자 추가</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ae619287-4529-4ece-8b45-880a5ae0abdc" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-59c21a99-50a2-460a-86cf-79e3f05cc21b" style="">젠킨스가 프론트엔드 ec2에 ssh로 접속해서 여러 작업을 수행하는데, 그때 사용될 계정을 생성한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-40382752-31fa-409c-aed6-eb539eb29bcd" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-46c43065-dd94-49e2-b686-0f71fca25c6e" style="">jenkins유저는 nologin 설정이 있기 때문에 로그인 할수 없는 유저다. 원격지의 자원을 마음대로 조정하기 위해서는 jenkins 유저의 공개키가 필요한데, 로그인을 할수 없어서 만들 수 없어서 jenkins 유저를 따로 새로 생성했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5b6a3a93-e8d2-4892-9bf5-4bf117836a04" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-6972b2da-6b0c-4488-b005-f48ee74f9946" style="color:#999999;"><i>꼭 다음과 같이 하지 않고도 젠킨스에 관련 설정이 있을 것 같지만, 급해서 어쩌다보니 다음 설정을 하게 됐다..ㅠㅠ</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39160a7c-4a2d-48cf-ae91-075815485a3e" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-dc82b415-2e3d-43df-9fe2-223fe5a92586" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e68bdefc-fdb2-436c-bb6e-020d187df352" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-447c65b3-3443-4975-a8e9-f80612bfd78a" style="">jenkins 유저 생성</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-68e681e0-4bb5-4d6b-986f-56c4ce8b7814">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">useradd <span class="token se-code-operator">-</span>m jenkins</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-68e681e0-4bb5-4d6b-986f-56c4ce8b7814"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f0687d32-19c8-4d80-9b90-7661782fbc2d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a3adeff0-364b-42c1-a2fb-fe08d338a368" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-288a7965-8570-4f44-9445-2abff23a0983" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de05505f-1651-4b9d-bbbb-c7d5d8846295" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-b6f41271-d7aa-40d7-80bc-14ef3473867f" style="">리눅스 SSH 설정 파일 수정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7773eb50-3c3d-4791-914b-c09ac443054e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>ssh<span class="token se-code-operator">/</span>sshd_config</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7773eb50-3c3d-4791-914b-c09ac443054e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8f8b1d34-2963-4ccb-bc43-c034c50ed77d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c57c7bd6-4a2a-4b71-91ea-f35cbcc23411" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-4ad69fcf-f4c7-41a8-a60a-e14bec922ed9" style="">PasswordAuthentication 부분을 yes로 수정해 패스워드로 로그인 할 수 있게 설정한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-f001b344-a160-4eec-8faa-fdfbfa99ff03">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">PasswordAuthentication yes</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f001b344-a160-4eec-8faa-fdfbfa99ff03"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-0b7a4b3a-9c30-4ac0-9ae7-48f2b5819524">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart sshd</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0b7a4b3a-9c30-4ac0-9ae7-48f2b5819524"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-dd8edea8-be32-4baa-aafa-506aab469335">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e67c7640-2ba9-4e11-9557-7c758baf2426" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-80bdb1aa-ec3e-4119-85da-4f76b85c7356" style="">시스템 재시작</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fb940675-3509-4958-ae20-7b88f498f47c" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-42789f7d-4a9e-4b1a-a228-04e6fb8f614f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c973deaa-17a3-482a-9e9a-6b3257b43387" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-3f33b8d5-042f-4708-ad82-ff29215e7732" style="">jenkins 계정 패스워드 설정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-ec9dac92-913f-4610-97ab-d168a31c049f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">passwd jenkins</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ec9dac92-913f-4610-97ab-d168a31c049f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-17354491-f153-4a75-ab8a-9c280db3f6ea">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-412022f1-8404-48c3-8181-e4c1b537ac11" style=""><span class="se-fs- se-ff-system" id="SE-a240e9e0-debb-4b8f-9286-4c1ad3a08d47" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cce6ffba-4b05-471e-b920-049968d79860" style=""><span class="se-fs- se-ff-system" id="SE-86a33595-0693-49bf-8150-78624a0799f7" style="">ERROR xsel 에러 발생 방지를 위해 위 명령어로 설치 (에러 방지)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e62b5010-4e52-4719-ae12-6a1b3439ebd1">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">sudo apt install xsel</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e62b5010-4e52-4719-ae12-6a1b3439ebd1"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-797d20e8-fbd2-414d-9182-82ae47a72da6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-19df7cf5-b4ae-47ca-8370-50f7effd0f4a" style=""><span class="se-fs- se-ff-system" id="SE-ba58acdb-99dc-4dbc-89b5-d64858c78dba" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d05300bc-af75-4732-b710-e0514c687d1c" style=""><span class="se-fs- se-ff-system" id="SE-58afce5d-fc6c-461e-be61-a75eb4665d04" style="">포트 변경</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-78938ebe-599a-4e06-8848-3d2a70adb044" style=""><span class="se-fs- se-ff-system" id="SE-25954019-d6de-4db7-95c7-53d2081a4204" style="">물론 꼭 80으로 해야하는 것은 아니고, 본인 환경에 맞는 포트 번호를 사용하면 된다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6c32646a-b13f-452b-b44f-17614be34a46">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">npx serve <span class="token se-code-operator">-</span>l <span class="token se-code-number">80</span> <span class="token se-code-operator">-</span>s build</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6c32646a-b13f-452b-b44f-17614be34a46"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1dd9974e-50a7-49fd-aff3-0e5fb980acd7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-44a3b881-0c02-4966-81ce-f9e27f4837c9" style=""><span class="se-fs- se-ff-system" id="SE-50d8b859-82d3-4d4c-8ee0-a9df18714661" style="">-s 옵션으로 build 폴더를 지정,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dcde870f-1351-4f42-b1a3-1c8c181d7070" style=""><span class="se-fs- se-ff-system" id="SE-e56373e2-bf26-4a06-a4e3-2a455c627715" style="">-l 옵션으로 포트를 80으로 변경하여 실행</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0eacc55a-5b9e-4cac-9607-b014f3834f3a" style=""><span class="se-fs- se-ff-system" id="SE-c1d63ffd-63d3-4b33-a8d6-d2bd3f3b333b" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-1CC472AE-11E5-4250-9A1E-E6E2C817E440">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-543E3940-8145-4C7D-8EFE-D2880A401C7E" style=""><span class="se-fs- se-ff-" id="SE-40CCCE29-C93D-4D1A-950F-1EE41079973E" style=""><b>Publish Over SSH 플러그인 설치</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-6688ba65-8383-4994-9186-fb503fc52b5e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-46227248-fcea-40ea-b12d-d3063769cc77" style=""><span class="se-fs- se-ff-system" id="SE-6f06d81b-7c51-4a4e-8a77-84d04958f078" style="">설치한 젠킨스에 접속해</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ed3f6970-7733-4faf-abde-fa212df8bf06" style=""><span class="se-fs- se-ff-system" id="SE-b8a5e634-7ab5-4341-b1ab-6c3866d1893c" style="">Jenkins에서 제공해주는 플러그인 중에 SSH로 EC2에 jar 배포 파일을 전달을 해주는 Publish Over SSH 플러그인을 설치한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0394a2a9-8290-4777-a5c0-e3a056ec32fb" style=""><span class="se-fs- se-ff-system" id="SE-8ac43633-0266-4417-affc-3ddf9e78088b" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0567bd88-38f6-4f9d-821e-75e92a21fb04" style=""><span class="se-fs- se-ff-system" id="SE-0b9986c6-5429-437c-ac88-77346d978711" style="">왼쪽 사이드 바에서 Jenkins 관리에서 플러그인 관리를 클릭</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-60fa5a8e-1cb3-4af6-8ba1-01ea73fd5431">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-60fa5a8e-1cb3-4af6-8ba1-01ea73fd5431", "src" : "https://blogfiles.pstatic.net/MjAyMjA2MDhfMTE3/MDAxNjU0NjcwOTUyNTkw.PZlnuJUpS1NVa0Pvg2WvSF4EHhNiIWNj2l9JK1cwtdAg.V6cy517dUs_8aUhcOEAMS6l3uT5jnQdepsg4W79J-6Ig.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_3.49.08.png?type=w1", "originalWidth" : "2242", "originalHeight" : "854", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-60fa5a8e-1cb3-4af6-8ba1-01ea73fd5431_0" src="https://blogfiles.pstatic.net/MjAyMjA2MDhfMTE3/MDAxNjU0NjcwOTUyNTkw.PZlnuJUpS1NVa0Pvg2WvSF4EHhNiIWNj2l9JK1cwtdAg.V6cy517dUs_8aUhcOEAMS6l3uT5jnQdepsg4W79J-6Ig.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_3.49.08.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9640a172-8eec-4dc5-b288-9c1190d9a265">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1c2bcffe-26b8-4ce1-9f5c-956c6926c9fd" style=""><span class="se-fs- se-ff-system" id="SE-17cff391-3efd-4690-813d-a4a0f6b5404c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-b6439da5-73f3-42c9-ad80-d150bc1a0cf6" style=""><span class="se-fs- se-ff-system" id="SE-b980ed58-06f1-4e79-af80-0ddfb483d840" style="">나는 이미 설치를 한번 했기 때문에 설치된 플러그인 목록에서 Publish Over SSH를 보여주지만, 처음 설치하는거라면 설치 가능에서 Publish Over SSH 검색하면 된다. </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1cddba15-9109-4a76-9d6a-371f5c00f0d5">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1cddba15-9109-4a76-9d6a-371f5c00f0d5", "src" : "https://blogfiles.pstatic.net/MjAyMjA2MDhfMTk4/MDAxNjU0NjcwOTk1NTky.1MrkVif1QJi4HuYS1si3MHEpu3B2Uf8wg73sxnbiPsEg.U1vw20gNxVyW18a9tjzqW7gijwHx06SSpfUSQ8MVq5Eg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_3.49.51.png?type=w1", "originalWidth" : "1700", "originalHeight" : "680", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-1cddba15-9109-4a76-9d6a-371f5c00f0d5_0" src="https://blogfiles.pstatic.net/MjAyMjA2MDhfMTk4/MDAxNjU0NjcwOTk1NTky.1MrkVif1QJi4HuYS1si3MHEpu3B2Uf8wg73sxnbiPsEg.U1vw20gNxVyW18a9tjzqW7gijwHx06SSpfUSQ8MVq5Eg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_3.49.51.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ee915e96-d701-471e-80d4-8d0b7b44c566">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a3b5e98-67f0-439d-bc1d-378fd5c0e603" style=""><span class="se-fs- se-ff-" id="SE-8cb9a931-c22f-4fd2-b996-2e69dd060990" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-E69A4D05-FA8F-4043-B937-E06CB77ACE6C">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-AF0312C9-AEBD-4A11-BD3B-FD56716CA8A5" style=""><span class="se-fs- se-ff-" id="SE-A3CF1038-0490-4942-B745-CDB912D14FC9" style=""><b>시스템 설정</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4c31fbe6-e71f-4caa-8d6f-c2bb9edc32ab">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0338d68e-6e0e-4c65-95dd-135e83d6754f" style=""><span class="se-fs- se-ff-system" id="SE-79824735-e053-4e4d-a399-40da1d6c517c" style="">Jenkins 관리에서 시스템 설정을 클릭</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-7fe47b09-8a7b-447c-bda2-f9efde3b96ad">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7fe47b09-8a7b-447c-bda2-f9efde3b96ad", "src" : "https://blogfiles.pstatic.net/MjAyMjA2MDhfMzUg/MDAxNjU0NjcxMDQ5Nzcz.FxV_zEFwnOKJhTdPa1Ko5SFkAi_7P7lQlXBT4ZT37xkg.l_kWRNGZvffQIdqV_4mHrcZBv1_nlySTVxEoyky_kz0g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_3.50.46.png?type=w1", "originalWidth" : "2308", "originalHeight" : "850", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-7fe47b09-8a7b-447c-bda2-f9efde3b96ad_0" src="https://blogfiles.pstatic.net/MjAyMjA2MDhfMzUg/MDAxNjU0NjcxMDQ5Nzcz.FxV_zEFwnOKJhTdPa1Ko5SFkAi_7P7lQlXBT4ZT37xkg.l_kWRNGZvffQIdqV_4mHrcZBv1_nlySTVxEoyky_kz0g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_3.50.46.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b52ccce3-9221-42b0-bf8c-33276b09ff32">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dc808425-0ad7-4b41-a4e8-697bcf5fad88" style=""><span class="se-fs- se-ff-system" id="SE-1770f1bf-db91-4052-852e-42338bf8a122" style="">그리고 쭉 내려가면.. 맨 하단에 Publish over SSH라는 폼 화면이 보인다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-5669ed78-6f99-4e8b-adad-5fb04f9ff9e5" style=""><span class="se-fs- se-ff-system" id="SE-407d5db2-43b4-4374-87d5-1fe23f6cf860" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-a07ca904-8643-4d17-89c4-2ecfce85a893">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a07ca904-8643-4d17-89c4-2ecfce85a893", "src" : "https://postfiles.pstatic.net/MjAyMjA2MjZfMTA4/MDAxNjU2MjUwNTAxNjI1.dOUsHQ7Beufcgt_0vSlhT4FUjATBoVOQ2XNNgNzPig4g.tlwhLrKS3qJ9bRpixKGfATZHZn17C6REHwPH2X6ZWa8g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-26_%EC%98%A4%ED%9B%84_10.34.58.png", "originalWidth" : "1414", "originalHeight" : "220", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="107" data-width="693" id="SE-a07ca904-8643-4d17-89c4-2ecfce85a893_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-20ec1885-5ee0-4609-956f-87a0dcd67429">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-20ec1885-5ee0-4609-956f-87a0dcd67429", "src" : "https://postfiles.pstatic.net/MjAyMjA2MjZfMTQy/MDAxNjU2MjUwNTc3NzYz.yiZXkiZSuOXClrKgzcv7hO1YKqn1-O5XzKnuIrXYq6wg.Zi-kuWlqBhfvq0dxFxSsGtkkIKpDIDh_IPqOcTxgWjMg.PNG.ghdalswl77/SE-20ec1885-5ee0-4609-956f-87a0dcd67429.png", "originalWidth" : "1424", "originalHeight" : "1052", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="511" data-width="693" id="SE-20ec1885-5ee0-4609-956f-87a0dcd67429_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-5c2aa5d7-179f-43d6-9eb7-404caf78b02d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-22409f34-ae21-4bca-900e-52465c47bc9d" style=""><span class="se-fs- se-ff-system" id="SE-102defac-e66c-473f-94be-9cc090fd7505" style="">Key에는 AWS EC2 인스턴스 생성 시 발급받은 RSA 키가 필요하다. EC2 생성할 때 받은 ssh 접속 키인 pem 파일내용을 붙여넣기해도 되지만, 위에서 jenkins 사용자와 비밀번호를 설정했으니 패스워드를 입력한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fc3df939-d441-42e5-b636-fe5ccca138ed" style=""><span class="se-fs- se-ff-system" id="SE-a73be52c-f1c3-4b45-9df0-ec42fef2cca9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0be819b5-c790-480a-a3b3-32d5c1d43dec" style=""><span class="se-fs- se-ff-system" id="SE-e22f459a-e5bd-49d7-a94d-9bb8be9f2497" style="">- Name: 본인이 사용할 임의의 SSH Server의 Name 입력</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7d07f302-6918-4fab-9f5b-f9f64c4ebaad" style=""><span class="se-fs- se-ff-system" id="SE-b1abbe61-9531-447a-8568-276a2e1e1090" style="">- Hostname: 실제로 접속할 원격 서버 ip, 접속 경로를 입력. ex) 퍼블릭 IPv4 주소</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5b3e6a99-ef74-4124-8c52-83eca4f8a250" style=""><span class="se-fs- se-ff-system" id="SE-69dead69-e269-4dd6-83c3-b3dc051373c5" style="">- Username: 접속할 원격 서버의 user 이름.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-99403208-d169-4c60-a038-d1c96a8aeb4a" style=""><span class="se-fs- se-ff-system" id="SE-91bba297-5ddc-495d-9647-32d5fc10789d" style="">- Remote Directory: 원격서버에서 접속하여 작업을 하게 되는 디렉토리.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-082faae1-c945-42ae-b6e5-a6c0470537fe" style=""><span class="se-fs- se-ff-system" id="SE-d2f7a9d6-1659-451b-8446-26168d87fb70" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a2092b39-48de-41fb-91a4-a3b4af975b29" style=""><span class="se-fs- se-ff-system" id="SE-5b75fbda-d3fe-416a-8e95-040670dda4a8" style="">그리고 아래 Test Configuratoin을 눌러서 Success라고 문구가 나오면 성공적으로 SSH 설정이 된 것이다</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-05ef974f-af27-4bc9-9892-7cedf0eceec6">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-05ef974f-af27-4bc9-9892-7cedf0eceec6", "src" : "https://blogfiles.pstatic.net/MjAyMjA2MDhfMTU2/MDAxNjU0NjcxNjE5MTEx.NCPdSc0nuLjBfkUQ10uLSPbUlDch7CWTw292c5k9zX4g.H_lDzbOKKX3fFKxwZaJgJF0jI07tQxqnNQXcqhygju4g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_4.00.09.png?type=w1", "originalWidth" : "1412", "originalHeight" : "642", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-05ef974f-af27-4bc9-9892-7cedf0eceec6_0" src="https://blogfiles.pstatic.net/MjAyMjA2MDhfMTU2/MDAxNjU0NjcxNjE5MTEx.NCPdSc0nuLjBfkUQ10uLSPbUlDch7CWTw292c5k9zX4g.H_lDzbOKKX3fFKxwZaJgJF0jI07tQxqnNQXcqhygju4g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_4.00.09.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f0c51786-fdf8-45b1-acd6-767ac32daa35">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5152efc4-532d-4945-94e6-2f69532392e8" style=""><span class="se-fs- se-ff-system" id="SE-f5d332b9-f0d7-4996-838c-2b2794d72e3a" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d694b152-4a72-4cb9-bdd0-c07f465280ff" style=""><span class="se-fs- se-ff-system" id="SE-1d2f597b-2510-4797-8822-bbf5c5f45f76" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-17EA7E9A-5A2C-4262-9FF6-684AE91398FE">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-CB90EEC8-3B17-4E50-B65A-EC953EA9810E" style=""><span class="se-fs- se-ff-" id="SE-2AE29939-1242-415C-8DAD-F8516B13518A" style=""><b>Jenkins Item 구성</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ad7d32f8-15fd-43ca-8780-510e604929bf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-daff1f06-13e4-4066-b0c5-376d40b7d859" style=""><span class="se-fs- se-ff-system" id="SE-ba80a6ec-0ad4-41f7-b3c7-d331e0afb9a8" style="">이제 SSH를 통해 배포 jar 파일을 보낼 준비가 거의 다 됐다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bf19563f-852f-447a-ac1d-a3bf19b67ef3" style=""><span class="se-fs- se-ff-system" id="SE-74518a33-0aa6-4876-857f-fab1fb2d04a8" style="">아래 Jenkins Item을 클릭 후 구성 버튼 클릭.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-a6d8dd6b-e205-4889-8f6c-ec65bb87f132">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-a6d8dd6b-e205-4889-8f6c-ec65bb87f132", "src" : "https://blogfiles.pstatic.net/MjAyMjA2MDhfMjQw/MDAxNjU0NjcxODAwNzQw.6Gfpf85by69Vj4Ha45r_IYEsUWhjf8U61MRoN2bLbV0g.rT6AVlPVk_TmbL3a6Uw9Ot6Lj72jwWERIQhrcPW7gJkg.PNG.ghdalswl77/image.png?type=w1", "originalWidth" : "2056", "originalHeight" : "1030", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-a6d8dd6b-e205-4889-8f6c-ec65bb87f132_0" src="https://blogfiles.pstatic.net/MjAyMjA2MDhfMjQw/MDAxNjU0NjcxODAwNzQw.6Gfpf85by69Vj4Ha45r_IYEsUWhjf8U61MRoN2bLbV0g.rT6AVlPVk_TmbL3a6Uw9Ot6Lj72jwWERIQhrcPW7gJkg.PNG.ghdalswl77/image.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b00affe7-389e-4a6f-a44b-c6633b7b1845">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52351469-a6b2-485d-a5b8-6f44173bb149" style=""><span class="se-fs- se-ff-system" id="SE-5b12a744-00cc-4096-9711-542356243c88" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-dc627359-d7ea-4494-95cc-b5950fdabd3d" style=""><span class="se-fs- se-ff-system" id="SE-2a9571a1-59f0-4c80-9c6e-30a2367e1517" style=""><i>* 혹시 구성이 보이지 않는다면 다음 링크를 참고해 [새로운 Item] 을 만들어 주세요</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-902f52f7-82d3-4c9f-8850-d1e5c2eec77f" style=""><span class="se-fs-fs13 se-ff-system" id="SE-c246b1ac-9bb5-47c1-8e4c-80b783faf2da" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222743600660" target="_blank">https://blog.naver.com/ghdalswl77/222743600660</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component" id="SE-5b852e3e-ea9c-4963-bdcd-9440c6fee356">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-center">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail" href="https://blog.naver.com/ghdalswl77/222743600660" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjA1MjNfMjQx%2FMDAxNjUzMzAxODM2MDQx.gIUuRdy_Qk-xAt_s6DoHO1NAfRZGuejK-I1ZiUDKgU0g.cyMNUdF2lyWa54jW1Q2IZW9zo7JwocwoCzAvjLoBuisg.PNG.ghdalswl77%2F%25BD%25BA%25C5%25A9%25B8%25B0%25BC%25A6_2022-05-22_%25BF%25C0%25C8%25C4_9.13.31.png%3Ftype%3Dw2%22&amp;type=ff120"/>
+</a>
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222743600660" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">[Jenkins] 젠킨스 파이프라인(CI/CD) 구축</strong>
+<p class="se-oglink-summary">젠킨스 파이프라인 구축 (CI/CD) 젠킨스 파이프 라인이란? 젠킨스 파이프 라인이란, 연속적인 작업들을...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-5b852e3e-ea9c-4963-bdcd-9440c6fee356", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222743600660", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjA1MjNfMjQx%2FMDAxNjUzMzAxODM2MDQx.gIUuRdy_Qk-xAt_s6DoHO1NAfRZGuejK-I1ZiUDKgU0g.cyMNUdF2lyWa54jW1Q2IZW9zo7JwocwoCzAvjLoBuisg.PNG.ghdalswl77%2F%25BD%25BA%25C5%25A9%25B8%25B0%25BC%25A6_2022-05-22_%25BF%25C0%25C8%25C4_9.13.31.png%3Ftype%3Dw2%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-4B76E7D4-AF68-41A0-9D53-DF243098D827">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-358A36EC-019C-4C8E-8E10-6D6909AD34FB" style=""><span class="se-fs- se-ff-" id="SE-740494D7-02E1-4522-8A73-D4F2BD02CEE8" style=""><b>Build</b></span><span class="se-fs- se-ff-" id="SE-02D763E1-0301-475F-B2AA-63C2E4CF7B27" style=""> </span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-df45f45d-466c-4283-a4bd-c78b9e51793a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-02f1e643-c267-4f05-b855-f3b708fd35cb" style=""><span class="se-fs- se-ff-system" id="SE-edb0f143-2cb0-4baa-99f8-12fca7ef4bd3" style="">하단 셀렉트 박스를 통해 빌드 시 할 수 있는 작업을 정의해 두었다</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-b9658937-f956-4009-9c83-f4606457a382">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-b9658937-f956-4009-9c83-f4606457a382", "src" : "https://postfiles.pstatic.net/MjAyMjA2MTNfMTQx/MDAxNjU1MTAzNjY5MTQ5.eAJtquialzDVjm2rUaBEtZQujaUhmuuXgoa5XLhxruAg.IhjCz7ZvExfsfbh5WrAov7V14h8yyukHca33tfqiA_Qg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-13_%EC%98%A4%ED%9B%84_4.01.04.png", "originalWidth" : "1440", "originalHeight" : "864", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="415" data-width="693" id="SE-b9658937-f956-4009-9c83-f4606457a382_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-01c04571-d07c-4b92-8e61-9048c79d1176">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-63f02d44-ab30-42dd-a904-1155ba21d4c4" style=""><span class="se-fs- se-ff-system" id="SE-ec4c4e25-c223-4f2b-af94-2fe0fbbab67c" style="">나는 Execute shell 방식으로 Build를 설정하여 Command에 다음 명령어를 수행한 후 Build를 수행하도록 설정했다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-2dce6305-5530-476f-bcd8-884d39d87f28">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2dce6305-5530-476f-bcd8-884d39d87f28", "src" : "https://blogfiles.pstatic.net/MjAyMjA2MDhfMjAg/MDAxNjU0NjcyOTg2Njc5.Mx_yb5On9lJzMJh6cKrAa-2XPjqA8RZCTI47K90deicg.x8esX1yPXc4G8E_pNo-tVKfhYNz5OpEPiIm3Q4ZuRlUg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_4.23.01.png?type=w1", "originalWidth" : "1746", "originalHeight" : "480", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" id="SE-2dce6305-5530-476f-bcd8-884d39d87f28_0" src="https://blogfiles.pstatic.net/MjAyMjA2MDhfMjAg/MDAxNjU0NjcyOTg2Njc5.Mx_yb5On9lJzMJh6cKrAa-2XPjqA8RZCTI47K90deicg.x8esX1yPXc4G8E_pNo-tVKfhYNz5OpEPiIm3Q4ZuRlUg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-08_%EC%98%A4%ED%9B%84_4.23.01.png?type=w1"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-quotation se-l-quotation_line" id="SE-D598BC3F-3F28-432D-80CB-62565C9793FF">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-B5F1FC02-6623-438A-A9E8-A0FBB75BA5AD" style=""><span class="se-fs- se-ff-" id="SE-12275989-53CB-4148-8547-942F98BA0231" style=""><b>빌드 후 조치</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4ebf5e7a-8ffe-40d1-a115-c41d8cc559f8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f9892ef-36f3-455f-ab80-5c699039caed" style=""><span class="se-fs- se-ff-system" id="SE-21e1d772-cca4-4535-8833-5e31f57f3a8d" style="">이제 배포 파일을 보내는 설정을 하고 어떻게 실행할지 정의하는 부분을 입력한다. </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-f14b6350-b365-44a2-b740-d31ca5eb7632">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-f14b6350-b365-44a2-b740-d31ca5eb7632", "src" : "https://postfiles.pstatic.net/MjAyMjA2MTNfNjgg/MDAxNjU1MTAzNzIxNzYw.nB4ZXpvfPEsXkBjgrRcOXaYGMzFNlaiOUXjFXJeatbIg.pKAx1bceB2YmSwlT2HDJsneg8XM2qaoEmfwIJTr1-5gg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-06-13_%EC%98%A4%ED%9B%84_4.01.59.png", "originalWidth" : "1744", "originalHeight" : "1542", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="612" data-width="693" id="SE-f14b6350-b365-44a2-b740-d31ca5eb7632_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f7f78b72-7f7b-4281-90a5-96c21639afff">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3c1bda20-0694-40df-af2b-7999eac50888" style=""><span class="se-fs- se-ff-system" id="SE-60f7099c-dd41-48eb-9d2c-c3f25bcf58f9" style="">- Source files: 내가 전송할 파일의 위치. Jenkins의 workspace 기준으로 적게 되는데 git pull로 가겨온 스프링 부트 앱의 루트 경로라고 생각하면 된다. jar 파일의 위치는 build/libs 하위에 있다. 이 경로를 jar 파일이라 명시.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-021f1bac-a084-4fb4-9a36-d15784037959" style=""><span class="se-fs- se-ff-system" id="SE-4edc6a00-6266-4265-94bd-efbcf3ec37f9" style="">- Remote Directory: 파일을 전송할 원격 서버의 디렉토리를 명시하는 부분. 여기서 주의할 점은 위에서 SSH 서버 설정하는 부분에서 이미 경로를 적어줬기 때문에(/var/lib/jenkins), 그 밑의 경로부터 적어야한다. 나의 경우 /로 적었으니 빌드 후 ec2서버의 /var/lib/jenkins로 jar 파일이 배포된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2eccbccb-3a44-42cd-b6ed-5bdb841ac008" style=""><span class="se-fs- se-ff-system" id="SE-7ace41a8-3311-4193-b0e2-8be1625e92fa" style="">- Exec command: 파일 전송 후 실행할 명령어를 입력. 절대 경로로 ec2 루트 경로 부터 적는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ced15360-a685-48c7-b562-05b7f9ed3138" style=""><span class="se-fs- se-ff-system" id="SE-2e774a1f-6441-497d-a201-f2177e2963dd" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-ac50886b-d02e-41df-abae-de8c993bf520">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-ED60FAE5-827D-4D3F-91AD-67B64B2103E6" style=""><span class="se-fs- se-ff-" id="SE-F5E8E93F-3977-428D-8FFA-8CAEC1E05F93" style=""><b>배포 후 실행될 스크립트 명령어</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-a39a9df8-6a0b-43a4-9326-f3513b132d70">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">echo <span class="token se-code-string">"PID check..."</span>
+<span class="token se-code-constant">CURRENT_PID</span><span class="token se-code-operator">=</span><span class="token se-code-function">$</span><span class="token se-code-punctuation">(</span>ps <span class="token se-code-operator">-</span>ef <span class="token se-code-operator">|</span> grep npx <span class="token se-code-operator">|</span> awk <span class="token se-code-string">'{print $2}'</span><span class="token se-code-punctuation">)</span>
+
+echo <span class="token se-code-string">"Running PID: $CURRENT_PID"</span>
+<span class="token se-code-keyword">if</span> <span class="token se-code-punctuation">[</span> <span class="token se-code-operator">-</span>z $<span class="token se-code-constant">CURRENT_PID</span> <span class="token se-code-punctuation">]</span>
+then
+echo <span class="token se-code-string">"Project is not running"</span>
+<span class="token se-code-keyword">else</span>
+echo <span class="token se-code-string">"kill $CURRENT_PID"</span>
+sudo kill <span class="token se-code-operator">-</span><span class="token se-code-number">9</span> $<span class="token se-code-constant">CURRENT_PID</span>
+sleep <span class="token se-code-number">10</span>
+fi
+
+echo <span class="token se-code-string">"Deploy Project...."</span>
+sed <span class="token se-code-operator">-</span>i <span class="token se-code-string">'s/.\/static/\/static/g'</span> index<span class="token se-code-punctuation">.</span>html
+nohup sudo npx serve <span class="token se-code-operator">-</span>n <span class="token se-code-operator">-</span>l <span class="token se-code-number">80</span> <span class="token se-code-operator">-</span>s <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>jenkins <span class="token se-code-operator">&gt;</span> <span class="token se-code-operator">/</span>home<span class="token se-code-operator">/</span>jenkins<span class="token se-code-operator">/</span>jenkins<span class="token se-code-punctuation">.</span>log <span class="token se-code-number">2</span><span class="token se-code-operator">&gt;</span><span class="token se-code-operator">&amp;</span><span class="token se-code-number">1</span> <span class="token se-code-operator">&amp;</span>
+
+echo <span class="token se-code-string">"Done"</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a39a9df8-6a0b-43a4-9326-f3513b132d70"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-a98f012c-8cba-4bd4-8697-8f9e8393ae85">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-a067722b-00b0-47bd-9007-c9d54f39c72a" style=""><span class="se-fs- se-ff-system" id="SE-e55a12d4-102c-43d7-9e89-824a86c38016" style="">bash 쉘로 grep 명령어로 실행 중인 부트 애플리케이션의 pid (프로세스 식별자)를 조회해서</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-5f2a94e7-0f07-4b81-9ab4-76c021f43e74" style=""><span class="se-fs- se-ff-system" id="SE-51bb4b6f-99a9-4481-b757-88adbc1e61a7" style="">길이가 0이면 ( -z 옵션 문자열의 길이가 0이면 참) 앱을 실행시키고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-f286c069-a76e-48a5-abd5-5b59992630f8" style=""><span class="se-fs- se-ff-system" id="SE-3cc94634-ffba-4517-b454-e53ef2c15f8e" style="">만약 떠있는 앱이 존재하면, kill -9 명령어로 강제종료 후 다시 재기동 하도록 작성했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-a2d49735-3b6b-4fc0-8de1-220dd46feba4" style=""><span class="se-fs- se-ff-system" id="SE-559e6bf8-698d-42b8-a007-bece01996577" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-3f2d4904-81e5-49d9-b906-f97ca3a54675" style=""><span class="se-fs- se-ff-system" id="SE-e11af2be-5d1c-44ec-a807-7266b52d1b82" style="">이렇게까지하면,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-8e5961a3-1a9f-4afd-95fc-6adc182be63e" style=""><span class="se-fs- se-ff-system" id="SE-4b41298e-0e23-4c96-8a70-5282a93b06a4" style="">개발 환경에서 git push만 해도 알아서 배포가 된다. 푸시 후 젠킨스에 들어가면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-47e8742d-eb58-43b6-9be2-03a5141b6487" style=""><span class="se-fs- se-ff-system" id="SE-39c83abf-384e-4e08-947d-57ad3093bf29" style="">다음과 오렌지 박스에 배포중 정보가 뜬다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-3ba2e559-73ab-435f-a9a7-ce7d1a04ac8c">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-3ba2e559-73ab-435f-a9a7-ce7d1a04ac8c", "src" : "https://postfiles.pstatic.net/MjAyMjA2MTVfMjk0/MDAxNjU1MjI0MzYwNTI1.TFCasgniTqSAWxiKeypk11xq7sJD-W2mz8xYSKCjXmkg.06H3HkOA1FcdGt8FgLdh5rxAQt5YRxBKNOsAPDyOYC8g.PNG.ghdalswl77/image.png", "originalWidth" : "2568", "originalHeight" : "1454", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="392" data-width="693" id="SE-3ba2e559-73ab-435f-a9a7-ce7d1a04ac8c_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e8bff1fe-9a94-4c48-8434-cb941f40f591">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-48ddd5e6-763a-4a26-8f24-f20fbd143594" style=""><span class="se-fs- se-ff-system" id="SE-c1f80d42-a7e7-4b46-87cf-7f6cf0d079ed" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a663f63c-95a0-4692-a1c5-3d7c4c266010" style=""><span class="se-fs- se-ff-system" id="SE-775985ed-0663-4096-9c71-27846dc7a609" style="">+ 혹시 배포 후 사이트에</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0acc9525-6fa6-4ee8-b9c8-0455a1b2581a" style=""><span class="se-fs- se-ff-system" id="SE-9cf7d2ff-8a83-405b-be75-90ff4ec25636" style="">uncaught syntaxerror: unexpected token '&lt;'</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93f966b3-67e8-4993-850f-544e9c5d95a1" style=""><span class="se-fs- se-ff-system" id="SE-8fb64aa6-2c76-45c2-882d-006128df449c" style="">이런 에러가 뜨면 index.html 파일을 수정하면 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-35555066-6de6-4f23-8ac6-bd7e533dfbeb" style=""><span class="se-fs- se-ff-system" id="SE-95947ec4-73de-48f2-8406-2851ab9461e0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-816a1bcf-95d3-4524-8d7a-7f070d7483da" style=""><span class="se-fs-fs13 se-ff-system" id="SE-b7018bec-f758-4d8d-8e93-822c1242fea7" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222770546441" target="_blank">https://blog.naver.com/ghdalswl77/222770546441</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component" id="SE-b5f11670-52dc-47fe-8275-30aabaad2976">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-center">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail" href="https://blog.naver.com/ghdalswl77/222770546441" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjA2MTNfMTQ4%2FMDAxNjU1MDUyNzk3NTc0.Hq9y41lIaRh8bGxiuRpdUjfO2j-T9N6L7Vz5INaf_0Mg.saslBT3IePuEGeuJQb319lCzBzOX0W6sCQKRgheQTswg.PNG.ghdalswl77%2F%25BD%25BA%25C5%25A9%25B8%25B0%25BC%25A6_2022-06-13_%25BF%25C0%25C0%25FC_1.53.13.png%3Ftype%3Dw2%22&amp;type=ff120"/>
+</a>
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222770546441" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">리액트 uncaught syntaxerror: unexpected token '&lt;' 해결</strong>
+<p class="se-oglink-summary">리액트 uncaught syntaxerror: unexpected token '&lt;' 해결 리액트로 프로젝트 빌드 후 분명히...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-b5f11670-52dc-47fe-8275-30aabaad2976", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222770546441", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjA2MTNfMTQ4%2FMDAxNjU1MDUyNzk3NTc0.Hq9y41lIaRh8bGxiuRpdUjfO2j-T9N6L7Vz5INaf_0Mg.saslBT3IePuEGeuJQb319lCzBzOX0W6sCQKRgheQTswg.PNG.ghdalswl77%2F%25BD%25BA%25C5%25A9%25B8%25B0%25BC%25A6_2022-06-13_%25BF%25C0%25C0%25FC_1.53.13.png%3Ftype%3Dw2%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3f6c8600-6419-4d1a-9d26-c030bcb7f1b6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a5387757-9376-4c3d-ba4f-3266df68a330" style=""><span class="se-fs- se-ff-" id="SE-7f933237-d1f5-48f2-b3a4-49a0c6232fb3" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

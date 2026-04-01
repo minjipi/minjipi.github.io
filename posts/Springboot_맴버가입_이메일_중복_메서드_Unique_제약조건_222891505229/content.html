@@ -1,0 +1,33 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222891505229 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-732fee81-eda0-452a-80bf-3b015011285b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52FE9BA3-C456-4C62-AC57-F7586EB8F01C" style=""><span class="se-fs- se-ff-" id="SE-0C4CDFBB-CE38-44BD-97EC-B59E068208EF" style="">JPA springboot 맴버가입 이메일 중복 로직을 구현하며..</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B2276588-421F-4845-97CB-3DEB2E6C1176" style=""><span class="se-fs- se-ff-" id="SE-6801D103-CA29-4266-AB0B-13232296A00E" style="">코드만 봤을 때 다음의 문제점 무엇일까?</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-4ec87605-62f9-4f15-9ba0-f8671ca71878">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">private</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">validMemberEmailDuplicate</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String email</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">if</span> <span class="token se-code-punctuation">(</span>memberRepository<span class="token se-code-punctuation">.</span><span class="token se-code-function">existsByEmail</span><span class="token se-code-punctuation">(</span>email<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">throw</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">MemberEmailDuplicateException</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"이미 사용중인 이메일 입니다."</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4ec87605-62f9-4f15-9ba0-f8671ca71878"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e035573a-5da4-40a6-a593-34012d7eda78">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C1B3ACB5-6884-45A1-8604-18A3BAAF0C94" style=""><span class="se-fs- se-ff-" id="SE-6EEA8991-E19E-4437-BF9E-CB893B952447" style="">동일한 맴버 아이디가 중복 가입이 될 수 있다는 것이다.. was가 동시에 여러개 뜨는데(멀티스레드) 예를들어 '맴버A' 라는 사용자가 정말 동시에 DB insert를 하게 되면, 동시에 '맴버A'라는 회원이 두 명 가입되는 문제가 생긴다. 이런 문제가 생길 때 최후의 방어를 위해 DB member email에 Unique 제약조건을 걸어둬야 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-59AA0F48-AACF-440E-BE97-337996423357" style=""><span class="se-fs- se-ff-" id="SE-316D827C-6A3B-4483-A2FC-D5430E16FABB" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-B3261DEA-DD4A-46C4-B190-3742AFFAF89E" style=""><span class="se-fs- se-ff-" id="SE-4A66FE5C-E752-4E02-8586-8206A4933D37" style="">* Unique 제약조건:</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8E75CE6A-F513-47C0-9F8E-71DBC98DA6F9" style=""><span class="se-fs- se-ff-" id="SE-58D04AB1-EB31-4445-97BE-F282785AB235" style="">입력하지 않아도 되지만 중복된 값은 저장되지 못하게 하는 제약조건. null값('')은 허용하지만 동일한 값이 저장되는 것만은 허용하지 않는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-45F568B3-8335-4E87-B0BB-EFA158E68BB1" style=""><span class="se-fs- se-ff-" id="SE-A66B896A-2F5D-43CC-915F-1CBB444905EF" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d56c448f-6fa1-47cd-93f0-caad7cb82a9a" style=""><span class="se-fs- se-ff-" id="SE-06528906-4090-41A4-ADFD-523F7F26E722" style="">- - - - - - - - -</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-CDC59ACE-1AF1-48B7-9DA5-38BC5096B587" style=""><span class="se-fs- se-ff-" id="SE-CF42B9C2-806C-4F6D-8ED7-28B661FF6BBF" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-705AB0CA-22F3-4267-AD95-8A8ADCD5FC0A" style=""><span class="se-fs- se-ff-" id="SE-E78CDD31-8DB0-4587-86B1-D0062620A4F8" style="">+ 실무자 분께서는 위 방식 말고 INSERT 쿼리에 조건을 거는 방법을 사용한다고 한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

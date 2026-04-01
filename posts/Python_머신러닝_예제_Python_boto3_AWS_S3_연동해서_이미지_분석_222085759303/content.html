@@ -1,0 +1,490 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222085759303 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default" id="SE-28362e95-f47e-404b-bbc9-2b056beb1742">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d734ebf3-5eb1-41f7-8b67-2a53c2f5a0bf" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-1f669882-91fb-470d-b209-41c74ce4fcba" style="color:#141414;">Python boto3 + AWS S3 연동, 이미지 분석</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-e2b078eb-4871-4744-93c7-8b6326acf420">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cf1b8da0-ec3b-4e74-8ca0-01883b36647c" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-c42c71a5-65a5-45e3-8d44-af05b344eab9" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1d1c132c-2c36-460c-9781-a1ace7fd2d4f" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-90852e1c-238c-4b1b-a1d1-7063d423e68e" style="color:#141414;">AWS S3란, 이미지, 동영상 등 다양한 파일을 저장하기 위한 목적으로 사용할 수 있는 아마존 서비스 입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a2e89702-dce4-401c-9146-548f9e1afd8f" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-57409ee0-2154-4b3b-a6c1-db2ded1c238e" style="color:#141414;">Python에서 AWS S3에 다양한 파일을 업로드하기 위해서는</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3ab49099-da95-4ef1-bb76-0ef034d64972" style=""><span class="se-fs- se-ff-system se-style-unset se-decoration-unset" id="SE-0cbad9fb-f5d5-4107-906a-7961dbf0414f" style="color:#141414;"><b>boto3</b></span><span class="se-fs- se-ff-system se-style-unset se-decoration-unset" id="SE-cc7bf0ca-bb81-4e4a-8aaf-9eb1ad1b1d59" style="color:#141414;">라는 이름의 라이브러리를 사용해 연동</span><span class="se-fs- se-ff-system se-style-unset" id="SE-62fcd31a-5367-4144-af2a-07accb6f7ebc" style="color:#141414;">할 수 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-92ad124e-6d3e-4e8e-b7c3-f609f726ec01" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-199a9a27-f902-4853-b1c9-8f7523c55a42" style="color:#141414;">최종적으로 업로드한 이미지를 분석하는 프로그램 실습을 위해,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3a5cd068-c51e-4bf7-b291-aec337d53270" style=""><span class="se-fs- se-ff-system se-style-unset" id="SE-fbe82ecf-f141-4f72-8314-20d3d9ce8336" style="color:#141414;">우선 AWS S3 서비스의 </span><span class="se-fs- se-ff-system se-style-unset" id="SE-083b7301-06bc-4935-98dd-1b16fe944fbc" style="color:#141414;"><b>[버킷 만들기]</b></span><span class="se-fs- se-ff-system se-style-unset" id="SE-e282dd2f-385a-404f-862c-c7484c352dbe" style="color:#141414;">를 먼저 진행합니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line5" id="SE-40a8d1d8-ebc1-4d3c-bada-d788b2b08ed6">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-b076adaa-b438-457f-92da-e49a3db81aeb">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b2b8587f-67c2-420d-a106-a4c8d98a866d" style=""><span class="se-fs-fs24 se-ff-" id="SE-7ccd0db7-4a69-4657-9f89-42bc20e589ac" style="color:#141414;"><b>0. Amazon S3 : 버킷 만들기</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-852b6b58-9743-47ec-9c51-5650c342ef5c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5fd0c7db-4878-47de-a530-1fe87d4fcbaa" style=""><span class="se-fs- se-ff-" id="SE-d403e38a-209e-4096-8c5b-9c8167376c8a" style="color:#141414;">aws 사이트에서 S3 서비스를 검색합니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-b6236c24-33c2-4b1e-a5ee-9f86d26bb74f">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-b6236c24-33c2-4b1e-a5ee-9f86d26bb74f", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfODQg/MDAxNTk5NzIwMTA4MDE0.QR3BIhazki6WVqXB5KNTH2gY5Jphk6eYpOZYgAdH8Ccg.sR6-Onm6zwXJZqrR3AkVbTI1QEqZN4wyXTWrLJMHQ-4g.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="177" data-width="693" id="SE-b6236c24-33c2-4b1e-a5ee-9f86d26bb74f_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7f109aa0-7d32-4d3e-bfc1-2897a4e8ea12">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1961704a-b929-4bcb-9b24-d1ce00445d58" style=""><span class="se-fs- se-ff-" id="SE-ecb6e139-1d4e-4631-9171-cafb00053f04" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9f8229a9-8dc7-422e-8dcc-2d5feb867cef" style=""><span class="se-fs- se-ff-" id="SE-92ab81b8-a4ba-496e-ab75-fdc848ca6ab8" style="color:#141414;">그리고 아래와 같이 버킷을 생성해주세요.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-5fb54ea6-84e7-41f2-b36b-df642f128dba">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-5fb54ea6-84e7-41f2-b36b-df642f128dba", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjQ0/MDAxNTk5NzIwMTk5MDMz.QHOCZ9QTyMHd6_dsWf_v_YH8kZrxdwE8zFBAkV2-q-Ug.JrkWp-XeYtHnl57-sL7BBn1ONoc3EbSZuA8hbKq_dbsg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="202" data-width="693" id="SE-5fb54ea6-84e7-41f2-b36b-df642f128dba_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4f59db96-c008-4c1c-8fc4-914fac36645a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-736ba3a2-ba4c-402d-a810-a375b0f3b47a" style=""><span class="se-fs- se-ff-" id="SE-ef6df193-d783-4ad0-a09a-0b6a6560720c" style="color:#141414;"><b>[ 버킷 만들기 ] 를 클릭.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-96286b84-f855-4a45-a2ff-b956fbb031d9" style=""><span class="se-fs- se-ff-" id="SE-8f754598-a4a9-4554-a73c-0d7eae0c3df9" style="color:#141414;"><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-d4f4c22f-954a-4163-929f-24bf9dcbe01b">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d4f4c22f-954a-4163-929f-24bf9dcbe01b", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMTc4/MDAxNTk5NzIwMjI4MDM5.NlfbqHbWtxvZZ_LO0hfPCSzmmzP4ExC2TEzVG7cdw2Mg.wNDbJ12BM9r-m1U9DIIALav91RkCvOP6D7WvWhBaPgEg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="519" data-width="693" id="SE-d4f4c22f-954a-4163-929f-24bf9dcbe01b_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-59c31c72-cc68-478f-bc83-3f0aa80ce9e3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-92215b13-92ff-43d0-a5a5-080e97011834" style=""><span class="se-fs- se-ff-" id="SE-30b00ef7-512b-4cf1-b880-d22a999822bb" style="color:#141414;">이름을 쓰고 [다음]</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9063d160-2784-42d7-9948-6bd726fd01bd" style=""><span class="se-fs- se-ff-" id="SE-28185894-ddf7-40e6-add7-c1ae7dc72cfd" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-5eb31d14-c360-48de-9f78-e197ccf6f7f1">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8c06ef7c-2fe0-4472-9ae5-144c059c94bf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-138e8918-ac52-452f-8360-ee71f6aab2dc" style=""><span class="se-fs- se-ff-" id="SE-23a68373-c3a1-47b2-a750-dc950ff3ff19" style="color:#141414;">[ 다음 ]</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6cd106d2-48ff-4f70-8527-e37dcacc4852" style=""><span class="se-fs- se-ff-" id="SE-f353edb1-54b5-483d-8f31-06aeabc8e51b" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-902fc060-4711-4f93-bc41-b0e499c23ffb">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-902fc060-4711-4f93-bc41-b0e499c23ffb", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMTM5/MDAxNTk5NzIwMzAzMDE4.gMrQ-nf1EXmQELsy6SWQ0Hwo4v7AaZigLkeg4sJhtTUg.-HStMtw_pErFVdoU97NYYR-1zU5osgR8_gF3fVjZNN0g.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="481" data-width="693" id="SE-902fc060-4711-4f93-bc41-b0e499c23ffb_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-c0bddfcd-9342-4cb6-9e24-037298fff112">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5ce2330d-5488-4200-ad35-c0ceec98726f" style=""><span class="se-fs- se-ff-" id="SE-0efb0a25-223d-4a6a-88e9-43677ba3543c" style="color:#141414;">[ 모든 퍼블릭 액세스 차단 ] 체크 </span><span class="se-fs- se-ff-" id="SE-1f702f86-251c-4e98-bb61-0cfb930f0e7c" style="color:#141414;"><b>'해제' </b></span><span class="se-fs- se-ff- se-weight-unset" id="SE-2413e40c-bdb5-41f2-aa5a-d93714e4a3ec" style="color:#141414;">해주세요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f34da9c0-726c-41f6-899e-97fd85ad8ccf" style=""><span class="se-fs- se-ff-" id="SE-37c308e2-2f35-4127-a777-b35d2f731495" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-8b6191e5-a51b-46bd-9014-397f71fbbf5e">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-8b6191e5-a51b-46bd-9014-397f71fbbf5e", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMTE4/MDAxNTk5NzIwMzU2OTcw.PlIvctAAlwNs4fhZokvrm2ka6Plj7DtbM5UVbPYms0Eg.2K8zP1cMgq-zxHrm01OBXIdCdYUYTfmqnyXdG6HELdMg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="265" data-width="693" id="SE-8b6191e5-a51b-46bd-9014-397f71fbbf5e_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9ef20678-84bf-48f9-bb5b-af4363504d07">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-168b9436-8aac-407d-9d57-fe575328d3ae" style=""><span class="se-fs- se-ff-" id="SE-3732de51-c43b-4617-abd1-ceabaee9c82d" style="color:#141414;">생성된 버킷 확인 후, 들어가 주세요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ab653519-116e-4bd1-b1e5-4a8bacdb72a5" style=""><span class="se-fs- se-ff-" id="SE-914a5f2a-a476-46aa-96c4-76effcdb1f86" style="color:#141414;">여기에 이미지를 업로드 할 것입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d8c3e61c-3b92-4850-ac59-04c85b9094f8" style=""><span class="se-fs- se-ff-" id="SE-cafcd12a-07c0-4555-8648-a63b82ff6c12" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-780b4208-f2ab-4848-a87b-b92d989b8656">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-780b4208-f2ab-4848-a87b-b92d989b8656", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMzgg/MDAxNTk5NzIwNDY2NjUy.cMuOVN7eeep5d56gf-GbWYszT5xbTZe2Ud-LMj9bVOcg.duDs3BsbzO_yx8ITV-JA4BvEfb3EG3Ul4nyZB5ArqLsg.PNG.ghdalswl77/SE-780b4208-f2ab-4848-a87b-b92d989b8656.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="283" data-width="693" id="SE-780b4208-f2ab-4848-a87b-b92d989b8656_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-5e3cfdc3-9917-426c-82a9-5d09986d7c18">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c9f9e490-4d9b-4299-8b80-fe75b527f83d" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-3a5462db-587f-47d7-af2d-2d072cc161b6" style="color:#141414;">여기서</span><span class="se-fs- se-ff-" id="SE-094aee7b-7b0b-40d6-b59d-72cbebbb8b2a" style="color:#141414;"><b> [ 업로드 ] </b></span><span class="se-fs- se-ff-" id="SE-0551ff3f-9824-4859-a692-aaf1b1216890" style="color:#141414;">클릭 후,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9e0f0846-026e-4706-b434-790491e88967" style=""><span class="se-fs- se-ff-" id="SE-376decd0-9448-4159-837a-53918a8103b9" style="color:#141414;">그냥 파일 추가 누르셔서 업로드 하시면 됩니다!!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6db6c048-8396-43eb-88d1-0f632fc8313d" style=""><span class="se-fs- se-ff-" id="SE-bef7ea1b-08b3-4979-9f93-696b1083adf3" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ccb72ced-5405-4ee1-adb9-3a6ace507d9c" style=""><span class="se-fs- se-ff-" id="SE-0739c456-42cb-43ac-9528-d01f32826cf1" style="color:#141414;">참고로 이미지 업로드 하시기 전, 미리 아래의 링크로 들어가서</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2ec4f3d5-e576-4e16-a6bf-47f327ab419f" style=""><span class="se-fs- se-ff-" id="SE-56e1c400-1a50-4a69-a828-8f148e1c87d4" style="color:#141414;">업로드할 이미지가 잘 분석되는지 확인해 주세요ㅠ.ㅠ</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e9a29912-2e5a-4d9a-9b9e-869acff2e6f1" style=""><span class="se-fs- se-ff-" id="SE-1f750e7f-b0d9-4a95-b467-089f35c3871b" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c0056fb5-4ae9-4344-a168-5e9b553f80c3" style=""><span class="se-fs-fs16 se-ff-system se-style-unset" id="SE-061ff05d-22d6-482c-8a3e-2d12674a9637" style="color:#333333;background-color:#e5eaef;"><a class="se-link" href="https://ap-northeast-2.console.aws.amazon.com/rekognition/home?ad=c&amp;cp=bn&amp;p=rkn&amp;region=ap-northeast-2#/label-detection" target="_blank"><b>Amazon Rekognition</b></a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f1c3b7eb-a77a-4540-8c81-4924f4135d44" style=""><span class="se-fs- se-ff-" id="SE-0fcde2bc-f40b-4829-9805-4109344933a8" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7220ba46-9d7e-425e-8170-bce4a8c7bf00" style=""><span class="se-fs- se-ff-" id="SE-6ecc5e1a-eaec-4006-afe4-558b2f632e88" style="color:#141414;">아마존 서비스 중 하나로,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-4bb5c24c-bd8b-40aa-9233-90447da88e2b">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:473px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4bb5c24c-bd8b-40aa-9233-90447da88e2b", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfNzYg/MDAxNTk5NzIxMjE4MjE3.0J__mGMhJwClNNyixAfDZiQcZNKXhx4JqAT6G7A27Kog.UBJ92HCvzy5QEYk9hg3QvAXyyZOLJ4F0mUGvcASeKHog.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="428" data-width="473" id="SE-4bb5c24c-bd8b-40aa-9233-90447da88e2b_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e32a65ad-2430-4596-9172-085145257088">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3cdb71f5-f812-45e1-a894-34a9e4049155" style=""><span class="se-fs- se-ff-" id="SE-3f3e9c62-b138-4a27-a16b-6591e93d46f1" style="color:#141414;">이렇게 이미지를 분석해서 '강아지' 임을 알려주는 서비스 입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a589dcb1-2aef-40c1-bcec-6cbff4ccbbe1" style=""><span class="se-fs- se-ff-" id="SE-46b85014-23e0-4b17-8111-fee869bb5431" style="color:#141414;">저의 경우...</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1d7d3a96-6f4b-4014-bd35-7e262aaa0234">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:200px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1d7d3a96-6f4b-4014-bd35-7e262aaa0234", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMTg4/MDAxNTk5NzIxOTUxNjAz.KinQypDKWsHhv0LoAGyOi6Vb-NM53PYhX2-2DRGwzEsg.nE1IAq7nH8hoZrQKin8RYnsij78Ho74ILSEZQfLB-P0g.PNG.ghdalswl77/SE-1d7d3a96-6f4b-4014-bd35-7e262aaa0234.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="200" data-width="200" id="SE-1d7d3a96-6f4b-4014-bd35-7e262aaa0234_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-784d981e-5821-4079-9d5a-9e4292b5192b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bae3c9d1-28de-4d71-ae43-cb1594101fae" style=""><span class="se-fs- se-ff-" id="SE-e3de3178-3033-448f-a21f-4a327d1018ea" style="color:#141414;">타코 안에서 생각에 잠긴 아저씨 그림을 업로드 했더니 야구모자 라는 결과가 나왔습니다.ㅠㅠ</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e79996a2-f593-4ed3-97ae-d35ad2e167c9" style=""><span class="se-fs- se-ff-" id="SE-d2fbd6ff-f193-4b10-ba39-9c00581f3a51" style="color:#141414;">이렇게 인식을 잘 못한다면 다른 이미지로 바꾸어 주세요..!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-764332d4-0b9b-4aa9-bf59-4357487ef6d5" style=""><span class="se-fs- se-ff-" id="SE-56d760c8-8c06-489c-9e2f-07150630c115" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-01fb93ab-a15e-4f9f-91db-abe6be048eb1">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-82650b4e-ed15-4120-8b50-5461512b4f10" style=""><span class="se-fs-fs24 se-ff-" id="SE-b51cc464-8ae0-439c-90ed-029744cf00f2" style="color:#141414;"><b>1. boto3 설치</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-b26a0a9e-309a-4063-ba2c-e15f34e9c889">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">pip install boto3</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b26a0a9e-309a-4063-ba2c-e15f34e9c889"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8d83c535-f297-4c85-9981-5575bfde2adf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79d5ead4-641d-499f-b325-4410b71e9ff3" style=""><span class="se-fs- se-ff-" id="SE-34de88b1-2346-4410-bc44-87efc7a54f9a" style="color:#141414;">본격적으로 연동을 해 봅시다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bdae7e3c-4862-47b9-9695-f8a048222129" style=""><span class="se-fs- se-ff-" id="SE-8aa1e74a-3a2e-4373-82dc-818a2eea69fd" style="color:#141414;">라이브러리를 설치해 주세요.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-620a7d66-e454-4e7d-b386-0794ba8fe3bd">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b0f2f466-5477-40aa-9fa9-3d78525fd31b" style=""><span class="se-fs-fs24 se-ff-" id="SE-72a77684-32d4-4ed2-b913-6aee50e5da19" style="color:#141414;"><b>2. aws 액세스키 생성</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd3e65e8-f9cd-49a0-82ad-2050d99a40f2" style=""><span class="se-fs- se-ff-" id="SE-bb591ab3-1155-43f5-896a-1b2707318b11" style="">aws 가입 필수 !!</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-d0dd8b1e-3e69-466a-9eeb-ade02ff571d5">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d0dd8b1e-3e69-466a-9eeb-ade02ff571d5", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjE1/MDAxNTk5NzE3OTE5NjA4.m2iGf2GOVxQRCRuPQ5DS-eokWpf7YWlNUyLCeUNCQd8g.hfJfstwd-C9Pd0Qb9ZH3u3lpyX6Edt1TilPHvs8QDmIg.PNG.ghdalswl77/SE-d0dd8b1e-3e69-466a-9eeb-ade02ff571d5.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="243" data-width="693" id="SE-d0dd8b1e-3e69-466a-9eeb-ade02ff571d5_0" src="images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a859d401-df23-4daf-ba23-e3b7825baaed">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7d41b4d2-0544-4a53-8d7a-c9998f7bc4b3" style=""><span class="se-fs- se-ff-" id="SE-ecf33b04-e6ec-477a-a4bd-b89a7b006ff4" style="color:#141414;"><b>[ 내보안자격증명 ]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fb01ac42-7539-47fd-bf5c-b9d8c2b970a6" style=""><span class="se-fs- se-ff-" id="SE-9d19ed42-ab1e-401f-9121-eaa8fcdabdbf" style="color:#141414;">이 키가 있는 컴퓨터에서만 사용할 수 있게 해줌.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3b515940-c782-4d5b-9ead-aac9ece0a88f" style=""><span class="se-fs- se-ff-" id="SE-90b8084e-1a01-4e87-9cff-76d5dd7e6dc8" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-634446c8-f835-4129-941b-8e6c3bec96ea">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-634446c8-f835-4129-941b-8e6c3bec96ea", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjI3/MDAxNTk5NzE4MTQ0Mzk2.R1DWZtthncEKePeYyjfEaWO_ilnPshzxM0SPVa-i7iIg.JohHl_jQ1AQ49a5D2rkuh1aqrEXTqqh1sZ9iga3H9nEg.PNG.ghdalswl77/SE-634446c8-f835-4129-941b-8e6c3bec96ea.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="315" data-width="693" id="SE-634446c8-f835-4129-941b-8e6c3bec96ea_0" src="images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-08ebf3f7-a3f7-4ddf-8502-0653609db540">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-169e3d84-f3c6-4b93-8cdd-ab7afde51968" style=""><span class="se-fs- se-ff-" id="SE-692d63bc-51a0-4d7d-b5d1-a93d79d9890b" style="color:#141414;">액세스 키 -&gt; </span><span class="se-fs- se-ff-" id="SE-7d21cedb-a562-4211-81d6-9e706289ff6a" style="color:#141414;"><b>[ 액세스 키 만들기 ]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d66f1989-cb81-4d7c-b6ee-c9248a856d19" style=""><span class="se-fs- se-ff-" id="SE-1f87fa5e-357d-4199-b137-228cdf0a8d87" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-15f71f24-a274-4e9e-8cec-b7ce59b77c66">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-15f71f24-a274-4e9e-8cec-b7ce59b77c66", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjAx/MDAxNTk5NzEyNjcxMzA1.QuvGXU7K7R8okzXXlcFNM15vnfTYVr_lArIXAPARKMEg.l_VUtBNaFz7cGZtgepbhmbOKVF3A38Swk62T2b3RrsAg.PNG.ghdalswl77/SE-15f71f24-a274-4e9e-8cec-b7ce59b77c66.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="229" data-width="693" id="SE-15f71f24-a274-4e9e-8cec-b7ce59b77c66_0" src="images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-56170ba5-4737-4f06-93b2-f9de01ed6393">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6c5b6132-9f51-41c4-961c-b69757a047cc" style=""><span class="se-fs- se-ff-" id="SE-d16a5722-f46c-4831-8aec-7ac5490eb494" style="color:#141414;"><b>[ 키 파일 다운로드 ]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-129bbfff-440c-4286-b637-fb36e923b754" style=""><span class="se-fs- se-ff-" id="SE-9c38cb05-66e8-45aa-8297-f0803a4c8a25" style="color:#141414;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9d1b37a3-2840-44eb-aa1e-e048389e98b1" style=""><span class="se-fs- se-ff-" id="SE-6ce60f83-1154-45dd-9bc7-93a50bd22a6f" style="color:#141414;"><b>rootkey.csv </b></span><span class="se-fs- se-ff- se-weight-unset" id="SE-684b910f-5faa-4d0e-b3a8-cfb754efd896" style="color:#141414;">라는 키파일을 열어보면 아래와 같이</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-964bfb56-644c-4948-8fcf-c90c175245ac" style=""><span class="se-fs- se-ff-" id="SE-b83a6661-7803-48d1-972a-5665d15063a2" style="color:#141414;"><b>AccessKeyId </b></span><span class="se-fs- se-ff- se-weight-unset" id="SE-5abade2d-a56b-41d7-9cea-7e93eee64f69" style="color:#141414;">와,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-488cab27-e857-49f9-9059-20c6bbd74e39" style=""><span class="se-fs- se-ff-" id="SE-0a1908dc-4929-47fb-817f-370e221ffc66" style="color:#141414;"><b>SecretKey </b></span><span class="se-fs- se-ff- se-weight-unset" id="SE-7a1ae372-3f17-401d-990b-8a5a8c6af0f7" style="color:#141414;">가 있는데-</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-d35bbe90-a719-4241-a3e7-53b57fe6d5a8">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:624px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-d35bbe90-a719-4241-a3e7-53b57fe6d5a8", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjA1/MDAxNTk5NzE4NTQzNzgz.S4fbXEPgWEbgf9ndgTLYeuYgh6k48qDGlbQKCpgo7KIg.mH4EC237FRouA96QeJjTpyA86yT7BIH42HksgmSSJOcg.PNG.ghdalswl77/SE-d35bbe90-a719-4241-a3e7-53b57fe6d5a8.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="175" data-width="624" id="SE-d35bbe90-a719-4241-a3e7-53b57fe6d5a8_0" src="images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-71a6b4c1-bb21-4688-856d-0c322032ea7d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b89cd019-90fd-493a-b062-8524a71690d3" style=""><span class="se-fs- se-ff-" id="SE-21dc9227-7009-4211-bd4c-9f619c154235" style="color:#141414;">요 값을 사용할 예정.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-fd6f0d70-be1a-4af7-be8d-cc6a8ff4c233">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a882347-48fa-46b9-9d7d-dc36289d0e62" style=""><span class="se-fs-fs24 se-ff-" id="SE-6c4facd6-6b21-437c-bde1-5b4cf881de99" style="color:#141414;"><b>3. 내 문서 -&gt; 'credentials' 파일 생성</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-31c4c1fb-781e-48c7-93ec-59806a3d8bac" style=""><span class="se-fs- se-ff-" id="SE-c5a968ce-c012-469d-845a-fa2c77fb3623" style="">aws 가입 필수 !!</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f103c59c-42ad-48de-bd02-97213dd455d8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f8be0a3b-56da-4458-8661-44e838acd60f" style=""><span class="se-fs- se-ff-" id="SE-41d83f60-4c1c-4150-8395-969ba1d273fb" style="color:#141414;">내 문서 (혹은 로컬디스크\사용자 위치) 에</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b37f5a83-7d77-40dc-8888-03a31396e8c5" style=""><span class="se-fs- se-ff-" id="SE-1dba2cae-c4f5-4b96-8efc-56e16cc734ff" style="color:#141414;"><b>.aws 라는 이름의 폴더</b></span><span class="se-fs- se-ff-" id="SE-cdd10c7d-2f1c-4c94-9837-d2678d9ba7b6" style="color:#141414;">를 만들고,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-68bd0e05-33fe-45e2-af82-6b92d9af35a8">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-68bd0e05-33fe-45e2-af82-6b92d9af35a8", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMTgg/MDAxNTk5NzEzMTk3NDY5.yqiD7goJQtgw2RAsLMJbVzsT6CduSISBHhQcqmDcc4Qg.mYv5pTdV2FvhKawbv1KnfDDsdaqxbUg7VYPm2coLPVIg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="117" data-width="693" id="SE-68bd0e05-33fe-45e2-af82-6b92d9af35a8_0" src="images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d28940d6-9b65-4f18-a77d-fbdc28440c06">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-85a2ef32-737e-4ee4-a85f-03e3f5bb2822" style=""><span class="se-fs- se-ff-" id="SE-5d5f807f-fbfb-4da2-92e5-d0120578ee7e" style="color:#141414;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-456b3293-6f49-4d16-9ddf-4c0865d10628" style=""><span class="se-fs- se-ff-" id="SE-e5020889-391b-4e7c-8362-4ddb781a4c8e" style="color:#141414;"><b>credentials 라는 이름의 '확장자가 없는' 파일을 만들어주세요.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4a2a371c-2402-47c0-952a-502648121044" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-2cb78c5a-f214-4e3b-a8a0-af19a05d50a5" style="color:#141414;">* 저의 경우 git bash 를 사용해 vi 편집기로 만들었는데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6b92e35a-4f22-414a-9431-759b2e0a825f" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-da796635-5614-4313-bf73-ddf6106166f8" style="color:#141414;">메모장으로 만든 후 .txt 확장자를 지워주셔도 좋습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8f46d8b0-8a49-4b70-aba8-93e74ef38817" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-cb445b08-140e-4595-8700-d95cbd26ad04" style="color:#141414;">폴더를 만들었다면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0a5a9ce8-4c4e-4020-8a77-dbe42009b324" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-d718d02d-0e1c-4ecd-88ba-6f42ba161efa" style="color:#141414;">폴더 안에 아래의 내용을 입력해 주세요!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-56498e6d-2f8c-4579-8350-1a96b26e94c0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span><span class="token se-code-keyword">default</span><span class="token se-code-punctuation">]</span>
+aws_access_key_id <span class="token se-code-operator">=</span> ﻿아까 키파일의 AccessKeyId 입력
+aws_secret_access_key <span class="token se-code-operator">=</span> ﻿아까 키파일의 SecretKey 입력
+region <span class="token se-code-operator">=</span> ap<span class="token se-code-operator">-</span>northeast<span class="token se-code-operator">-</span><span class="token se-code-number">2</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-56498e6d-2f8c-4579-8350-1a96b26e94c0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-46ccf938-4948-4904-8fdb-527065da4965">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4772e007-fcf3-4ace-9bda-fb45bf44c7e2" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-d3709c42-d8a6-413e-afe2-229e731c75d5" style="color:#141414;">참고로 여기서</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7c3e0093-6ab0-4b4d-85b5-a05e75694e5f" style=""><span class="se-fs- se-ff-nanummyeongjo" id="SE-eac80959-7a51-40e3-ac42-8a7e0bb1bbda" style="color:#141414;"><b>Traceback: </b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-742b3d28-af9b-4e4c-bf04-72fa49158406" style=""><span class="se-fs- se-ff-nanummyeongjo" id="SE-3841fc9b-b7e0-416f-8017-707bf70ed606" style="color:#141414;"><b>cp.read([path]) </b></span><span class="se-fs- se-ff- se-weight-unset" id="SE-2f9251e5-3338-4587-9b39-ce4118a2ba0e" style="color:#141414;">--- 어쩌고 에러가 난다면?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5b56da37-2764-4bac-91d9-5e72e8cbcc88" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-152f2b2b-b072-4447-ae53-640222ccdb03" style="color:#141414;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9aeacafc-cef7-4f96-8681-31f4f0053bb0" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-d4b375f0-dac7-42d2-bf7a-df16fdd7c17a" style="color:#141414;">맨 첫 줄의 </span><span class="se-fs- se-ff-" id="SE-897f92c0-0eab-4587-a051-6139ea59134d" style="color:#141414;"><b>[default] </b></span><span class="se-fs- se-ff- se-weight-unset" id="SE-2dd9c64b-2c00-4b0d-ae4b-bf810dfe658f" style="color:#141414;">를 확인해 주세요!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de47532f-3533-4848-ae93-fb07c0249066" style=""><span class="se-fs- se-ff-" id="SE-01a5a107-a177-44fd-ae2d-21582d2aa752" style="color:#141414;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-fee2dcbd-ac79-4f45-bcd0-d6397614283e">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-99f79fd8-adff-418e-8101-7b2cff4bf940" style=""><span class="se-fs-fs24 se-ff-" id="SE-e5bffac2-ffe4-41a4-9de5-e90ab481c11f" style=""><b>4. Ptyhon 코드 입력</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-f3ae473f-5b04-4dc9-b1ac-d4854070e1bf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">import</span> boto3
+
+bucket<span class="token se-code-operator">=</span><span class="token se-code-string">'[S3버킷이름]'</span>
+photo<span class="token se-code-operator">=</span><span class="token se-code-string">'[그림파일 이름.확장자]'</span>
+
+
+client<span class="token se-code-operator">=</span>boto3<span class="token se-code-punctuation">.</span><span class="token se-code-function">client</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">'rekognition'</span><span class="token se-code-punctuation">)</span>
+
+
+response <span class="token se-code-operator">=</span> client<span class="token se-code-punctuation">.</span><span class="token se-code-function">detect_labels</span><span class="token se-code-punctuation">(</span>Image<span class="token se-code-operator">=</span><span class="token se-code-punctuation">{</span><span class="token se-code-string-property property">'S3Object'</span><span class="token se-code-operator">:</span><span class="token se-code-punctuation">{</span><span class="token se-code-string-property property">'Bucket'</span><span class="token se-code-operator">:</span>bucket<span class="token se-code-punctuation">,</span><span class="token se-code-string-property property">'Name'</span><span class="token se-code-operator">:</span>photo<span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">}</span><span class="token se-code-punctuation">,</span>
+    MaxLabels<span class="token se-code-operator">=</span><span class="token se-code-number">10</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">'Detected labels for '</span> <span class="token se-code-operator">+</span> photo<span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">for</span> label <span class="token se-code-keyword">in</span> response<span class="token se-code-punctuation">[</span><span class="token se-code-string">'Labels'</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">:</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"Label: "</span> <span class="token se-code-operator">+</span> label<span class="token se-code-punctuation">[</span><span class="token se-code-string">'Name'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"Confidence: "</span> <span class="token se-code-operator">+</span> <span class="token se-code-function">str</span><span class="token se-code-punctuation">(</span>label<span class="token se-code-punctuation">[</span><span class="token se-code-string">'Confidence'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"Instances:"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">for</span> instance <span class="token se-code-keyword">in</span> label<span class="token se-code-punctuation">[</span><span class="token se-code-string">'Instances'</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">:</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"  Bounding box"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"    Top: "</span> <span class="token se-code-operator">+</span> <span class="token se-code-function">str</span><span class="token se-code-punctuation">(</span>instance<span class="token se-code-punctuation">[</span><span class="token se-code-string">'BoundingBox'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">[</span><span class="token se-code-string">'Top'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"    Left: "</span> <span class="token se-code-operator">+</span> <span class="token se-code-function">str</span><span class="token se-code-punctuation">(</span>instance<span class="token se-code-punctuation">[</span><span class="token se-code-string">'BoundingBox'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">[</span><span class="token se-code-string">'Left'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"    Width: "</span> <span class="token se-code-operator">+</span> <span class="token se-code-function">str</span><span class="token se-code-punctuation">(</span>instance<span class="token se-code-punctuation">[</span><span class="token se-code-string">'BoundingBox'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">[</span><span class="token se-code-string">'Width'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"    Height: "</span> <span class="token se-code-operator">+</span> <span class="token se-code-function">str</span><span class="token se-code-punctuation">(</span>instance<span class="token se-code-punctuation">[</span><span class="token se-code-string">'BoundingBox'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">[</span><span class="token se-code-string">'Height'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"  Confidence: "</span> <span class="token se-code-operator">+</span> <span class="token se-code-function">str</span><span class="token se-code-punctuation">(</span>instance<span class="token se-code-punctuation">[</span><span class="token se-code-string">'Confidence'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"Parents:"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">for</span> parent <span class="token se-code-keyword">in</span> label<span class="token se-code-punctuation">[</span><span class="token se-code-string">'Parents'</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">:</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"   "</span> <span class="token se-code-operator">+</span> parent<span class="token se-code-punctuation">[</span><span class="token se-code-string">'Name'</span><span class="token se-code-punctuation">]</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-string">"----------"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-function">print</span> <span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f3ae473f-5b04-4dc9-b1ac-d4854070e1bf"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-72ee9668-bc76-4be0-a990-f5b158ea0c4c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a3e15e6e-c8cb-45cd-a79b-a3570a22be20" style=""><span class="se-fs- se-ff-" id="SE-d2eb90da-dbe1-4fe9-984c-5d52fa3c838d" style="">bucket=</span><span class="se-fs- se-ff-" id="SE-70fc63cf-4069-47eb-ae54-a1580eaed805" style=""><b>'[S3버킷이름]'</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bc115558-103a-4f86-8f11-c391191b65d6" style=""><span class="se-fs- se-ff-" id="SE-6947065e-eb56-426c-9960-62ab3d21115c" style="">photo=</span><span class="se-fs- se-ff-" id="SE-d623698f-484b-4ae7-9f58-521d88d130bf" style=""><b>'[그림파일 이름.확장자]'</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be7e5205-c810-4fca-a684-f876ddf4040b" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-398a97e9-dbf8-42a8-bdf8-df5dfc374301" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c7a91f5f-7944-4638-8b72-d00c2e91cdca" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-20e9f8d7-6f74-46b2-a279-45f8fe019507" style="">만 유념해서 입력해 주세요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ea1c515c-3325-4ec5-93c8-44d92034344c" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-11624a46-f207-46f7-b4c4-df393c72ca4d" style="">참고로 파이썬 파일 위치는 상관이 없습니다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c5163e8-3cdf-4dc4-bea0-968893182d09" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-080fc31b-ebae-4e0c-b499-9a03efcfc36c" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-108f9c06-7842-4a48-969f-9ad763bb0c1c">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a71f40e-fc68-4c9c-aab5-e97dab9c7948" style=""><span class="se-fs-fs24 se-ff-" id="SE-c4d31517-dbe0-4aa0-8c42-1b06442b3715" style=""><b>5. 결과 확인</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-3b69c500-a258-459b-8b1a-4e417b93b405">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-3b69c500-a258-459b-8b1a-4e417b93b405", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMjQ0/MDAxNTk5NzIxNTE3NTkw.MhPAinED3l-G8pYEzd6eKGcnzcbjfq9fcqEdF7FAAv4g.02kTLEIyAk-5uhiSgL2_mEIiJLlbtvW3gnLF0gSMzjQg.PNG.ghdalswl77/image.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="401" data-width="693" id="SE-3b69c500-a258-459b-8b1a-4e417b93b405_0" src="images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-3e59359d-b238-42f2-93e8-36807a60ee48">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f0cd06a3-b948-487a-aef3-2c1101d77012" style=""><span class="se-fs- se-ff-" id="SE-656b4bea-d0ec-46ad-82b6-c72c4649f716" style="">Parents:</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a5153fd6-4e6e-42da-9f8d-20ec6605a60a" style=""><span class="se-fs- se-ff-" id="SE-fdbc1029-d100-4a10-94d8-978ea1851e59" style=""><b>Scarf</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15c747c9-f216-43a2-999a-5a506c0aa59e" style=""><span class="se-fs- se-ff-" id="SE-4c24dede-691d-496b-8b97-99c5ff182c32" style=""><b>Clothing</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-464552c1-801b-40be-a35a-f014811f4b48" style=""><span class="se-fs- se-ff-" id="SE-8f276395-d5fe-45c0-a8a6-8c9589a88193" style="">----------</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eed04aae-3255-459a-8c44-07a824003cfd" style=""><span class="se-fs- se-ff-" id="SE-8cc0333a-667e-4186-8cb9-7e37f157578a" style="">정확하게 나왔습니다!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-0e665bfc-ed0c-493a-9df9-d9b7ec100146">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-0e665bfc-ed0c-493a-9df9-d9b7ec100146", "src" : "https://postfiles.pstatic.net/MjAyMDA5MTBfMTk2/MDAxNTk5NzIxNjI1MDc2.Kpm33dazzjQspggAGn_slMO8LajvCO3xHwxhTvvgQpUg.S6hXYmUSaGfKhQ1-781ZLQ5fk18TkpE7co-LmE7MB30g.PNG.ghdalswl77/SE-0e665bfc-ed0c-493a-9df9-d9b7ec100146.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="408" data-width="693" id="SE-0e665bfc-ed0c-493a-9df9-d9b7ec100146_0" src="images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9dd3a22c-6f36-4f4f-a55b-3e2b93edfabf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58dbd892-625d-4e4a-8b7b-1c0448ddf888" style=""><span class="se-fs- se-ff- se-weight-unset" id="SE-11c64607-827a-4e72-9de2-85d31644a69f" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

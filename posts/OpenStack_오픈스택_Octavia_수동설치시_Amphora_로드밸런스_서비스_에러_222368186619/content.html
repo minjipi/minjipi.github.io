@@ -1,0 +1,942 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222368186619 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-22670e6a-4629-4793-bbc3-d6a77554d324">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-0d3766ad-6196-43d8-819e-6b162a2b23d0" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanummyeongjo se-style-unset" id="SE-61dcf75e-db76-4ac2-8bf2-9ee510a21f8b" style="color:#000000;"><b>[OpenStack - </b></span><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" id="SE-250b15a4-ad56-41ba-bf47-38655be3b0c1" style="color:#000000;"><b>Octavia</b></span><span class="se-fs-fs16 se-ff-nanummyeongjo se-style-unset" id="SE-a2b3892b-eef2-4122-9b06-dc488c15ff94" style="color:#000000;"><b>]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-1b4b9481-62da-435d-bde8-519a3b3f3f02" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" id="SE-3ea89b55-a3d7-48a7-ab70-790ac192c829" style="color:#000000;">오픈스택 로드밸런스</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-b1238ae3-66c0-494d-8420-85ed17d2e421" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" id="SE-85317c2a-0e40-4386-8ed6-766699cbf908" style="color:#000000;">-</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-94cf51d3-5dc1-47c2-a651-a584c35c810f" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" id="SE-165ae950-f61f-4d7b-8150-7116a0a24645" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-7c27f801-481f-48de-b0a5-ec68c8fe1d86" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" id="SE-83e80001-2011-4426-94fe-f46cb1b6e5f7" style="color:#700001;"><b>Amphora 로드밸런서</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-799e7574-232a-4521-852b-ba74663ff991" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" id="SE-51d89a48-5e15-452b-a3c2-7a47e6006f8a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-4361b0f6-cef8-424d-b80f-eee6d58e061b" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" id="SE-b3788093-2939-4a76-aa7f-9ce339d98aaf" style="color:#000000;">기존 Neutron 로드밸런서는 Neutron 자체의 프로세스로 존재하였지만</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-a41dbf7d-0eba-46c4-9795-67a63bb236d5" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" id="SE-1dad3f1b-50dd-45b0-b2f8-aab38422616a" style="color:#000000;">Octavia에서는 Amphora라고 불리는 로드밸런서를 인스턴스 형태로 배포.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-f8ae29e4-a317-43eb-89a6-6fc8230ce364" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" id="SE-0bedf769-fe72-4432-9cb3-7c472f897e61" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-a820496e-73ba-411d-bee2-0e0da76922a4" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" id="SE-b5210608-abd6-4166-a3f1-b396d5121558" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-1d950213-621a-4083-a71c-3cbcc8100ba6">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-24a11e2c-d869-445e-9ee8-c83e53df3a06" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-c5bc06e3-e9ec-4bcd-b3b9-503bafbc284d" style="color:#000000;">(1) DB 생성</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-54eee816-9734-430c-ba40-ca5504137ed0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bdfaefda-2834-4e86-adb1-ec1cf3c1a9f4" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-318aa4ae-3a20-4728-a5b3-3e0fd6b93686" style="color:#000000;"><b>[1] controller</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-20a83492-c467-4e41-869e-187ad476f79b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mysql <span class="token se-code-operator">-</span>u root <span class="token se-code-operator">-</span>p
+create database octavia<span class="token se-code-punctuation">;</span>
+grant all privileges on octavia<span class="token se-code-punctuation">.</span><span class="token se-code-operator">*</span> to octavia@<span class="token se-code-string">'localhost'</span> identified by <span class="token se-code-string">'비밀번호'</span><span class="token se-code-punctuation">;</span> 
+grant all privileges on octavia<span class="token se-code-punctuation">.</span><span class="token se-code-operator">*</span> to octavia@<span class="token se-code-string">'%'</span> identified by <span class="token se-code-string">'비밀번호'</span><span class="token se-code-punctuation">;</span> </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-20a83492-c467-4e41-869e-187ad476f79b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d004491b-ee4f-4c45-ac78-5d3f190a227c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f400c288-8a27-4a76-af33-850828d1712c" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e77e4cb1-1065-48b0-b77b-9fe6dd0ba00e" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-68cf7da3-cd69-4aaf-8305-5439609d1559">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-a104908b-b355-45f5-8ee1-cda9953546d2" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-a05cf171-8229-4478-af6a-ba5885302138" style="color:#000000;"><b>(2) 사용자 및 엔드포인트 생성</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e30beb7c-9ac2-4184-88ab-a35fe59f9941">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4cac50ce-c6f0-40f1-913a-840db3793fe6" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-67affd19-74c1-42db-80a2-956da993ae0f" style="color:#000000;"><b>[1] controller</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-4747ce3e-74cc-4f93-bbfa-d88aed4ba934">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">penstack user create <span class="token se-code-operator">--</span>domain <span class="token se-code-keyword">default</span> <span class="token se-code-operator">--</span>project service <span class="token se-code-operator">--</span>password 비민번호 octavia
+
+openstack role add <span class="token se-code-operator">--</span>project service <span class="token se-code-operator">--</span>user octavia admin
+
+openstack service create <span class="token se-code-operator">--</span>name octavia <span class="token se-code-operator">--</span>description <span class="token se-code-string">"OpenStack LBaaS"</span> load<span class="token se-code-operator">-</span>balancer
+
+<span class="token se-code-keyword">export</span> octavia_api<span class="token se-code-operator">=</span><span class="token se-code-punctuation">[</span>네트워크 노드 <span class="token se-code-constant">IP</span><span class="token se-code-punctuation">]</span>
+
+openstack endpoint create <span class="token se-code-operator">--</span>region RegionOne load<span class="token se-code-operator">-</span>balancer <span class="token se-code-keyword">public</span> <span class="token se-code-literal-property property">http</span><span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>$octavia_api<span class="token se-code-operator">:</span><span class="token se-code-number">9876</span>
+	
+openstack endpoint create <span class="token se-code-operator">--</span>region RegionOne load<span class="token se-code-operator">-</span>balancer internal http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>$octavia_api<span class="token se-code-operator">:</span><span class="token se-code-number">9876</span>
+
+openstack endpoint create <span class="token se-code-operator">--</span>region RegionOne load<span class="token se-code-operator">-</span>balancer admin http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>$octavia_api<span class="token se-code-operator">:</span><span class="token se-code-number">9876</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4747ce3e-74cc-4f93-bbfa-d88aed4ba934"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d7cbb4bc-cd19-4d20-9215-75da66388508">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-58257d63-db65-4451-8418-bd9b1e2f0ae2" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-67806a82-1651-440a-948b-760143db9cb2" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-466129e4-acf7-45cc-baf0-8b33882921ef">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-6f242ddd-8fa6-4614-b9e8-1a37d28e5bb4" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-a696c96a-0f27-4a92-9d82-97f9011a046c" style="color:#000000;"><b>(3) 옥타비아 설치</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-dac1ba34-2ef4-4c57-a285-abf8e59a5d0f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f7f6f3c7-f946-40c2-95a8-c663234ce248" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-04c0b131-a197-4a79-81f4-0388b9275f13" style="color:#000000;"><b>[3] network</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-10fd307b-136e-429c-8368-d854e9be38fb" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5cb04dcb-984e-4f87-a674-fe2cfee963ae" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-04770162-08b3-417f-ab5d-63d6abf0e3f8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">dnf <span class="token se-code-operator">-</span>y install epel<span class="token se-code-operator">-</span>release
+dnf <span class="token se-code-operator">--</span>enablerepo<span class="token se-code-operator">=</span>centos<span class="token se-code-operator">-</span>openstack<span class="token se-code-operator">-</span>victoria<span class="token se-code-punctuation">,</span>powertools <span class="token se-code-operator">-</span>y install openstack<span class="token se-code-operator">-</span>octavia<span class="token se-code-operator">-</span>api openstack<span class="token se-code-operator">-</span>octavia<span class="token se-code-operator">-</span>health<span class="token se-code-operator">-</span>manager openstack<span class="token se-code-operator">-</span>octavia<span class="token se-code-operator">-</span>housekeeping openstack<span class="token se-code-operator">-</span>octavia<span class="token se-code-operator">-</span>worker</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-04770162-08b3-417f-ab5d-63d6abf0e3f8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-21601f95-8eb3-4cd7-8c75-ad972a5bdebf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b3493d2f-54f7-4316-9260-da0a17bd9d67" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c48634c6-eb6a-4474-93bf-7310f624b7ef" style="color:#000000;">ssl 인증서 다운 !</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7c1599bb-55e2-4a71-83ce-7b1982dc48c0" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c9fc16cd-1ddb-4531-8ab8-39bd18d3752f" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-8c183016-9d8e-4db7-9599-7640cadc3544">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-a3b6e358-16d2-4124-b336-0c4d522ffa42" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-bc3d9bc9-3d89-4215-9cbf-5dfa0a94b546" style="color:#000000;"><b>(4) 인증서 설정</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9cea27ff-0a6a-4fb8-9f7f-2524f48d3587">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8fff0d65-b78c-4db5-a26a-6740812a3d6c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-291b112d-b882-4c24-8de1-596600b2c4c0" style="color:#000000;"><b>[3] network</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-ba05205b-5a08-4bbe-bee6-64abd5a9f9b8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mkdir <span class="token se-code-operator">-</span>p <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span><span class="token se-code-keyword">private</span>
+mkdir <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>work
+cd <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>work
+git clone https<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>opendev<span class="token se-code-punctuation">.</span>org<span class="token se-code-operator">/</span>openstack<span class="token se-code-operator">/</span>octavia<span class="token se-code-punctuation">.</span>git
+cd octavia<span class="token se-code-operator">/</span>bin</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ba05205b-5a08-4bbe-bee6-64abd5a9f9b8"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c713204d-bef9-4922-9d44-a854a9a99253">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>create_dual_intermediate_CA<span class="token se-code-punctuation">.</span>sh
+cp <span class="token se-code-operator">-</span>p <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>dual_ca<span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>server_ca<span class="token se-code-punctuation">.</span>cert<span class="token se-code-punctuation">.</span>pem <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs
+cp <span class="token se-code-operator">-</span>p <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>dual_ca<span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>server_ca<span class="token se-code-operator">-</span>chain<span class="token se-code-punctuation">.</span>cert<span class="token se-code-punctuation">.</span>pem <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs
+cp <span class="token se-code-operator">-</span>p <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>dual_ca<span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>server_ca<span class="token se-code-punctuation">.</span>key<span class="token se-code-punctuation">.</span>pem <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span><span class="token se-code-keyword">private</span>
+cp <span class="token se-code-operator">-</span>p <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>dual_ca<span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>client_ca<span class="token se-code-punctuation">.</span>cert<span class="token se-code-punctuation">.</span>pem <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs
+cp <span class="token se-code-operator">-</span>p <span class="token se-code-punctuation">.</span><span class="token se-code-operator">/</span>dual_ca<span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>client<span class="token se-code-punctuation">.</span>cert<span class="token se-code-operator">-</span>and<span class="token se-code-operator">-</span>key<span class="token se-code-punctuation">.</span>pem <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span><span class="token se-code-keyword">private</span>
+chown <span class="token se-code-operator">-</span><span class="token se-code-constant">R</span> octavia <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c713204d-bef9-4922-9d44-a854a9a99253"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5c99a321-6d7d-42d7-86c9-f11b77df65f6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b6ac710-7a71-4eae-af01-3e36b7893fac" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-c3109306-3c61-4fa4-8783-bd5d32c12e80" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-9999523c-3008-4c11-8dda-837097e01518">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-e162c66f-fd8f-429d-8daa-8aa36fe557cf" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-0dadb1f0-8bbf-44b3-bdeb-4dee70764a12" style="color:#000000;"><b>(5) 옥타비아 설정</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-f80a9a1b-4fa8-4e1c-8ce8-c64167600ba2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eee28170-e947-4a6e-b358-5e82fc114885" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-cb2eb0c5-e312-45b1-aa02-ba4654b2b946" style="color:#000000;"><b>[3] network</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-cfc553b7-9108-4a05-a73d-271d7074fd5f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mv <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>octavia<span class="token se-code-punctuation">.</span>conf <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>octavia<span class="token se-code-punctuation">.</span>conf<span class="token se-code-punctuation">.</span>org
+
+vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>octavia<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-cfc553b7-9108-4a05-a73d-271d7074fd5f"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-480a395d-f691-4193-86dd-abef50ca2668">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span><span class="token se-code-constant">DEFAULT</span><span class="token se-code-punctuation">]</span>
+transport_url <span class="token se-code-operator">=</span> rabbit<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>openstack<span class="token se-code-operator">:</span>비번@컨트롤러<span class="token se-code-constant">IP</span>
+<span class="token se-code-punctuation">[</span>api_settings<span class="token se-code-punctuation">]</span>
+bind_host <span class="token se-code-operator">=</span> 네트워크노드<span class="token se-code-constant">IP</span>
+bind_port <span class="token se-code-operator">=</span> <span class="token se-code-number">9876</span>
+auth_strategy <span class="token se-code-operator">=</span> keystone
+api_base_uri <span class="token se-code-operator">=</span> http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>네트워크노드<span class="token se-code-constant">I</span><span class="token se-code-operator">:</span><span class="token se-code-number">9876</span>
+<span class="token se-code-punctuation">[</span>database<span class="token se-code-punctuation">]</span>
+connection <span class="token se-code-operator">=</span> mysql<span class="token se-code-operator">+</span>pymysql<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">:</span>qwer1234@컨트롤러<span class="token se-code-constant">IP</span><span class="token se-code-operator">/</span>octavia
+
+<span class="token se-code-punctuation">[</span>health_manager<span class="token se-code-punctuation">]</span>
+bind_ip <span class="token se-code-operator">=</span> <span class="token se-code-number">0.0</span><span class="token se-code-number">.0</span><span class="token se-code-number">.0</span>
+bind_port <span class="token se-code-operator">=</span> <span class="token se-code-number">5555</span>
+<span class="token se-code-punctuation">[</span>keystone_authtoken<span class="token se-code-punctuation">]</span>
+www_authenticate_uri <span class="token se-code-operator">=</span> http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>컨트롤러<span class="token se-code-constant">IP</span><span class="token se-code-operator">:</span><span class="token se-code-number">5000</span>
+auth_url <span class="token se-code-operator">=</span> http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>컨트롤러<span class="token se-code-constant">IP</span><span class="token se-code-operator">:</span><span class="token se-code-number">5000</span>
+memcached_servers <span class="token se-code-operator">=</span> 컨트롤러<span class="token se-code-constant">IP</span><span class="token se-code-operator">:</span><span class="token se-code-number">11211</span>
+auth_type <span class="token se-code-operator">=</span> password
+project_domain_name <span class="token se-code-operator">=</span> <span class="token se-code-keyword">default</span>
+user_domain_name <span class="token se-code-operator">=</span> <span class="token se-code-keyword">default</span>
+project_name <span class="token se-code-operator">=</span> service
+username <span class="token se-code-operator">=</span> octavia
+password <span class="token se-code-operator">=</span> qwer1234
+
+<span class="token se-code-punctuation">[</span>certificates<span class="token se-code-punctuation">]</span>
+ca_private_key <span class="token se-code-operator">=</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span><span class="token se-code-keyword">private</span><span class="token se-code-operator">/</span>server_ca<span class="token se-code-punctuation">.</span>key<span class="token se-code-punctuation">.</span>pem
+ca_certificate <span class="token se-code-operator">=</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>server_ca<span class="token se-code-punctuation">.</span>cert<span class="token se-code-punctuation">.</span>pem
+server_certs_key_passphrase <span class="token se-code-operator">=</span> insecure<span class="token se-code-operator">-</span>key<span class="token se-code-operator">-</span><span class="token se-code-keyword">do</span><span class="token se-code-operator">-</span>not<span class="token se-code-operator">-</span>use<span class="token se-code-operator">-</span><span class="token se-code-keyword">this</span><span class="token se-code-operator">-</span>key
+ca_private_key_passphrase <span class="token se-code-operator">=</span> not<span class="token se-code-operator">-</span>secure<span class="token se-code-operator">-</span>passphrase
+
+
+<span class="token se-code-punctuation">[</span>haproxy_amphora<span class="token se-code-punctuation">]</span>
+server_ca <span class="token se-code-operator">=</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>server_ca<span class="token se-code-operator">-</span>chain<span class="token se-code-punctuation">.</span>cert<span class="token se-code-punctuation">.</span>pem
+client_cert <span class="token se-code-operator">=</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span><span class="token se-code-keyword">private</span><span class="token se-code-operator">/</span>client<span class="token se-code-punctuation">.</span>cert<span class="token se-code-operator">-</span>and<span class="token se-code-operator">-</span>key<span class="token se-code-punctuation">.</span>pem
+
+
+<span class="token se-code-punctuation">[</span>controller_worker<span class="token se-code-punctuation">]</span>
+client_ca <span class="token se-code-operator">=</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>client_ca<span class="token se-code-punctuation">.</span>cert<span class="token se-code-punctuation">.</span>pem
+
+<span class="token se-code-punctuation">[</span>oslo_messaging<span class="token se-code-punctuation">]</span>
+topic <span class="token se-code-operator">=</span> octavia_prov
+
+<span class="token se-code-punctuation">[</span>service_auth<span class="token se-code-punctuation">]</span>
+auth_url <span class="token se-code-operator">=</span> http<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>컨트롤러<span class="token se-code-constant">IP</span><span class="token se-code-operator">:</span><span class="token se-code-number">5000</span>
+memcached_servers <span class="token se-code-operator">=</span> 컨트롤러<span class="token se-code-constant">IP</span><span class="token se-code-operator">:</span><span class="token se-code-number">11211</span>
+auth_type <span class="token se-code-operator">=</span> password
+project_domain_name <span class="token se-code-operator">=</span> Default
+user_domain_name <span class="token se-code-operator">=</span> Default
+project_name <span class="token se-code-operator">=</span> service
+username <span class="token se-code-operator">=</span> octavia
+password <span class="token se-code-operator">=</span> 옥타비아 비번</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-480a395d-f691-4193-86dd-abef50ca2668"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-acf145a2-ea9d-41ad-a50c-d94c83450985">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">chmod <span class="token se-code-number">640</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>octavia<span class="token se-code-punctuation">.</span>conf
+chgrp octavia <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>octavia<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-acf145a2-ea9d-41ad-a50c-d94c83450985"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c8d6acfc-8539-4307-95af-0d20571d54ef">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">su <span class="token se-code-operator">-</span>s <span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>bash octavia <span class="token se-code-operator">-</span>c <span class="token se-code-string">"octavia-db-manage --config-file /etc/octavia/octavia.conf upgrade head"</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c8d6acfc-8539-4307-95af-0d20571d54ef"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-302c1fb9-70df-444e-a520-c3c5e1928b62">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl enable octavia<span class="token se-code-operator">-</span>api octavia<span class="token se-code-operator">-</span>health<span class="token se-code-operator">-</span>manager octavia<span class="token se-code-operator">-</span>housekeeping octavia<span class="token se-code-operator">-</span>worker
+systemctl restart octavia<span class="token se-code-operator">-</span>api octavia<span class="token se-code-operator">-</span>health<span class="token se-code-operator">-</span>manager octavia<span class="token se-code-operator">-</span>housekeeping octavia<span class="token se-code-operator">-</span>worker</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-302c1fb9-70df-444e-a520-c3c5e1928b62"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-744b3ea7-6c43-453b-b624-9250949722cb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15b80bd2-c562-4746-b717-c2bd44f87cd2" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-796a0ddc-7a77-47be-9bc5-6d229b3803c9" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-57f9e2fa-6d2b-4823-93d3-5bf3f7687c8c">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-0b213c79-3b8a-4bee-bf9d-ed7eb6f5a6c6" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-6d604d81-a1d0-4983-adc0-5db1daab66f6" style="color:#000000;"><b>(6) 로드밸런스 이미지 생성</b></span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-b6f30854-851a-40ab-b21f-1dd2091ea822" style=""><span class="se-fs- se-ff-" id="SE-a7f6d789-de71-44d5-85fc-4d4c40ce277e" style="">어디서 하든 상관 없지만,</span></p><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-87bab6a6-9153-4518-9766-ca3a7709e43c" style=""><span class="se-fs- se-ff-" id="SE-69809bbf-523b-4f60-94d3-747d03287ba9" style="">여기서는 이미지 서비스가 컨트롤러에 설치 되어 있기 때문에 컨트롤러에서 이미지를 만들고 등록하는게 빠름.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e24c1153-3536-4be7-bc8b-e7b4aa610464">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8db66227-6aae-4438-8e74-c79e75059ed0" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-17e39496-5ade-465b-b2dd-52e3580e55e7" style="color:#000000;"><b>[1] controller</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8dac1a7e-01a1-47d3-9123-735806656d38">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">dnf <span class="token se-code-operator">--</span>enablerepo<span class="token se-code-operator">=</span>centos<span class="token se-code-operator">-</span>openstack<span class="token se-code-operator">-</span>victoria<span class="token se-code-punctuation">,</span>powertools<span class="token se-code-punctuation">,</span>epel <span class="token se-code-operator">-</span>y install openstack<span class="token se-code-operator">-</span>octavia<span class="token se-code-operator">-</span>diskimage<span class="token se-code-operator">-</span>create debootstrap python3<span class="token se-code-operator">-</span>octaviaclient</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8dac1a7e-01a1-47d3-9123-735806656d38"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c0fde242-e797-467c-8ca1-afaec29dfd3f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mkdir <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>image
+cd <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>image
+octavia<span class="token se-code-operator">-</span>diskimage<span class="token se-code-operator">-</span>create<span class="token se-code-punctuation">.</span>sh <span class="token se-code-operator">-</span>r 비번 <span class="token se-code-operator">-</span>g stable<span class="token se-code-operator">/</span>victoria</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c0fde242-e797-467c-8ca1-afaec29dfd3f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d9316fd3-cb6e-4990-8c7d-10f0097fd43b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c3773a56-f117-48be-b4c8-8c37d87fc274" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-d27550c9-7259-49ae-a5ca-cf072c663a1f" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-bb01ff7e-4f4b-4984-9fed-8e5f2d24ecec">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-9f59152b-60d5-4621-a362-1afdc4d9acee" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-70f491d4-89c8-4c46-b3d1-d43fc429d9bb" style="color:#000000;"><b>(7) 이미지 등록</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-7723E7B3-FB1C-4DE1-8872-AF388CBDD538">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7723E7B3-FB1C-4DE1-8872-AF388CBDD538", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjZfMjc5/MDAxNjIxOTkzNTEzNzIy.8CQ0gYdngE7GT7JpF1t8SR-373LwADK1-uH0QTbh65Ig.sv4lZA1aE_242ynOs6BUvvv-GXFMEuHRtGlEm2BOXnEg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-26_%EC%98%A4%EC%A0%84_10.45.11.png", "originalWidth" : "1254", "originalHeight" : "190", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="105" data-width="693" id="SE-7723E7B3-FB1C-4DE1-8872-AF388CBDD538_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-25b905f7-ab9b-499c-8e20-2a669a0e7588">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">source <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>keystone_admin</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-25b905f7-ab9b-499c-8e20-2a669a0e7588"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-854f8549-cfa9-4f76-a44f-cbe78c996c72">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">openstack image create <span class="token se-code-string">"Amphora"</span> <span class="token se-code-operator">--</span>tag <span class="token se-code-string">"Amphora"</span> <span class="token se-code-operator">--</span>file amphora<span class="token se-code-operator">-</span>x64<span class="token se-code-operator">-</span>haproxy<span class="token se-code-punctuation">.</span>qcow2 <span class="token se-code-operator">--</span>disk<span class="token se-code-operator">-</span>format qcow2 <span class="token se-code-operator">--</span>container<span class="token se-code-operator">-</span>format bare <span class="token se-code-operator">--</span><span class="token se-code-keyword">private</span> <span class="token se-code-operator">--</span>project service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-854f8549-cfa9-4f76-a44f-cbe78c996c72"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-35a41e5d-a5fb-4cf1-a184-51c3b1698e4e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b511f7be-05f0-4923-ba1d-fca29b421b86" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-733c8e6c-a43b-45b9-88e2-0ecfd5ccf218" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-ef938ac5-6553-44b6-88f3-f5f47832a7e0">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-3e133859-b22e-4fe5-9ca9-f28a9b26498e" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-cfa3867f-409b-4881-98cc-65b9ffe83b5d" style="color:#000000;"><b>(8) flavor 등록</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-70e3e1f6-fcf4-41d4-a897-9a110a334ab0">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">openstack flavor create <span class="token se-code-operator">--</span>id <span class="token se-code-number">100</span> <span class="token se-code-operator">--</span>vcpus <span class="token se-code-number">1</span> <span class="token se-code-operator">--</span>ram <span class="token se-code-number">1024</span> <span class="token se-code-operator">--</span>disk <span class="token se-code-number">5</span> m1<span class="token se-code-punctuation">.</span>octavia <span class="token se-code-operator">--</span><span class="token se-code-keyword">private</span> <span class="token se-code-operator">--</span>project service
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-70e3e1f6-fcf4-41d4-a897-9a110a334ab0"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-26649d7a-6772-4084-acfa-88951a527f37">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c3a38434-d246-4325-ac71-f362b76585a6" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e3e09828-31e4-46f1-8dec-df7754667fbd" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-f266dae7-2aaf-420d-9a10-c89f3ff5f54d">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-956f2fbf-a73d-4d06-aea9-d90faca62a23" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-b8e2d80f-b3fe-4f55-8481-a3722a5cc144" style="color:#000000;"><b>(9) 보안 그룹 생성</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-38cbf80a-4757-4d62-8705-1c04cb7ad564">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">stack security group create lb<span class="token se-code-operator">-</span>mgmt<span class="token se-code-operator">-</span>sec<span class="token se-code-operator">-</span>group <span class="token se-code-operator">--</span>project service
+openstack security group rule create <span class="token se-code-operator">--</span>protocol icmp <span class="token se-code-operator">--</span>ingress lb<span class="token se-code-operator">-</span>mgmt<span class="token se-code-operator">-</span>sec<span class="token se-code-operator">-</span>group
+openstack security group rule create <span class="token se-code-operator">--</span>protocol tcp <span class="token se-code-operator">--</span>dst<span class="token se-code-operator">-</span>port <span class="token se-code-number">22</span><span class="token se-code-operator">:</span><span class="token se-code-number">22</span> lb<span class="token se-code-operator">-</span>mgmt<span class="token se-code-operator">-</span>sec<span class="token se-code-operator">-</span>group
+openstack security group rule create <span class="token se-code-operator">--</span>protocol tcp <span class="token se-code-operator">--</span>dst<span class="token se-code-operator">-</span>port <span class="token se-code-number">80</span><span class="token se-code-operator">:</span><span class="token se-code-number">80</span> lb<span class="token se-code-operator">-</span>mgmt<span class="token se-code-operator">-</span>sec<span class="token se-code-operator">-</span>group
+openstack security group rule create <span class="token se-code-operator">--</span>protocol tcp <span class="token se-code-operator">--</span>dst<span class="token se-code-operator">-</span>port <span class="token se-code-number">443</span><span class="token se-code-operator">:</span><span class="token se-code-number">443</span> lb<span class="token se-code-operator">-</span>mgmt<span class="token se-code-operator">-</span>sec<span class="token se-code-operator">-</span>group
+openstack security group rule create <span class="token se-code-operator">--</span>protocol tcp <span class="token se-code-operator">--</span>dst<span class="token se-code-operator">-</span>port <span class="token se-code-number">9443</span><span class="token se-code-operator">:</span><span class="token se-code-number">9443</span> lb<span class="token se-code-operator">-</span>mgmt<span class="token se-code-operator">-</span>sec<span class="token se-code-operator">-</span>group</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-38cbf80a-4757-4d62-8705-1c04cb7ad564"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-865b1dbb-89ed-45ed-9137-ed999601115d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-019e572b-923f-49d2-83e4-b04594b4bff6" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-eed6189e-fb1d-4f06-b925-07fa4256d11e" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-59488e8d-2776-4651-b97e-b380b754a37a">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-17a5c945-cbca-4c75-b5ab-d84ba5aed8b1" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-26a74526-d0b9-40fb-b38b-87342c1883b9" style="color:#000000;"><b>(10) 네트워크 생성</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-b5870e06-665b-46e7-9f22-a7605fd700d4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">openstack network create <span class="token se-code-operator">--</span>project service <span class="token se-code-operator">--</span>share <span class="token se-code-operator">--</span>provider<span class="token se-code-operator">-</span>network<span class="token se-code-operator">-</span>type flat <span class="token se-code-operator">--</span>external <span class="token se-code-operator">--</span>provider<span class="token se-code-operator">-</span>physical<span class="token se-code-operator">-</span>network extnet external
+openstack subnet create external<span class="token se-code-operator">-</span>subnet <span class="token se-code-operator">--</span>network external <span class="token se-code-operator">--</span>project service <span class="token se-code-operator">--</span>subnet<span class="token se-code-operator">-</span>range <span class="token se-code-number">192.168</span><span class="token se-code-number">.1</span><span class="token se-code-number">.0</span><span class="token se-code-operator">/</span><span class="token se-code-number">24</span> <span class="token se-code-operator">--</span>allocation<span class="token se-code-operator">-</span>pool start<span class="token se-code-operator">=</span><span class="token se-code-number">192.168</span><span class="token se-code-number">.1</span><span class="token se-code-number">.104</span><span class="token se-code-punctuation">,</span>end<span class="token se-code-operator">=</span><span class="token se-code-number">192.168</span><span class="token se-code-number">.1</span><span class="token se-code-number">.109</span> <span class="token se-code-operator">--</span>gateway <span class="token se-code-number">192.168</span><span class="token se-code-number">.1</span><span class="token se-code-number">.1</span> <span class="token se-code-operator">--</span>dns<span class="token se-code-operator">-</span>nameserver <span class="token se-code-number">8.8</span><span class="token se-code-number">.8</span><span class="token se-code-number">.8</span>
+
+openstack network create <span class="token se-code-operator">--</span>project service <span class="token se-code-operator">--</span>share <span class="token se-code-operator">--</span>provider<span class="token se-code-operator">-</span>network<span class="token se-code-operator">-</span>type vxlan internal
+openstack subnet create internal<span class="token se-code-operator">-</span>subnet <span class="token se-code-operator">--</span>network internal <span class="token se-code-operator">--</span>project service <span class="token se-code-operator">--</span>subnet<span class="token se-code-operator">-</span>range <span class="token se-code-number">100.100</span><span class="token se-code-number">.100</span><span class="token se-code-number">.0</span><span class="token se-code-operator">/</span><span class="token se-code-number">24</span> <span class="token se-code-operator">--</span>allocation<span class="token se-code-operator">-</span>pool start<span class="token se-code-operator">=</span><span class="token se-code-number">100.100</span><span class="token se-code-number">.100</span><span class="token se-code-number">.10</span><span class="token se-code-punctuation">,</span>end<span class="token se-code-operator">=</span><span class="token se-code-number">100.100</span><span class="token se-code-number">.100</span><span class="token se-code-number">.250</span> <span class="token se-code-operator">--</span>gateway <span class="token se-code-number">100.100</span><span class="token se-code-number">.100</span><span class="token se-code-number">.1</span> <span class="token se-code-operator">--</span>dns<span class="token se-code-operator">-</span>nameserver <span class="token se-code-number">8.8</span><span class="token se-code-number">.8</span><span class="token se-code-number">.8</span>
+openstack router create router <span class="token se-code-operator">--</span>project service
+
+openstack router add subnet router internal<span class="token se-code-operator">-</span>subnet		
+openstack router <span class="token se-code-keyword">set</span> router <span class="token se-code-operator">--</span>external<span class="token se-code-operator">-</span>gateway external</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b5870e06-665b-46e7-9f22-a7605fd700d4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1815b6d4-bc37-4407-b39d-75ebe0faa741">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-71ac1890-d222-465f-81bb-8f5636de8862" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ede4acf3-0996-4107-ab35-51bd51f770fe" style="color:#000000;"><b>​</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c7d55a0f-002c-477b-9a1e-1442566cc7fc" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-178e9185-cdc1-41af-989a-03df3d5b6aad" style="color:#000000;">방금 만든 네트워크는 바로 대시보드에서 확인되지 않는다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-5E702BEF-149C-4E3C-972D-C8A3EB17A1B1">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-5E702BEF-149C-4E3C-972D-C8A3EB17A1B1", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjZfODIg/MDAxNjIxOTk1NTkzODQz.b9KUD6wUjtRS2lt0bRSShxIJax8tLY5EJ-uMP1QTltEg.jQpmkBvIlg7lWfRydAG4swKaPYFYqd1v3s28kLI7YqMg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-26_%EC%98%A4%EC%A0%84_11.19.51.png", "originalWidth" : "1160", "originalHeight" : "747", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="446" data-width="693" id="SE-5E702BEF-149C-4E3C-972D-C8A3EB17A1B1_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a94efe96-7892-4b86-ae25-a123ef4ef277">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cbce63eb-789c-4794-91f4-33bfa0646c6c" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-d4c218a7-ed8c-473c-8694-5a4f68bab6e8" style="color:#000000;">아래 데시보드 설정을 해서, 네트워크를 보이게 하자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-53dcf216-09f5-40cd-92b2-8b488f99685a">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-483c5b32-f0b7-4452-9ace-eaa439226f5d" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-6df0bd7c-0f2f-4df3-9343-9974afb65446" style="color:#000000;">(11) 데시보드 설정</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-69263b2a-2082-4b59-ac87-c8f36141b43e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-16d2d0cf-4f52-4372-b6a7-0ef96ebce370" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c11ee3b6-299a-498d-8743-e713df1d1971" style="color:#000000;">1.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-36a0f74a-1995-4635-8f2a-c35e7a498d77" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-2bbd353e-15c4-43bb-ad03-2b2415a46843" style="color:#000000;">인증 -&gt; 역할 -&gt; 역할 생성 -&gt; _member_ 입력 후 생성.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0ce0469c-85d8-4412-ad47-e9e72c4fdf66" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-eb99c8b4-82db-432c-9773-f1b77974b1a8" style="color:#000000;">인증 -&gt; 프로젝트 -&gt; service 프로젝트의 멤버 관리 -&gt; admin을 service 프로젝트에 추가 -&gt; admin 계정에 admin 열할 추가 -&gt; 저장.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e2f04726-27dc-4d01-94ea-9c8a2de2b070" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-1c4d63fe-8d56-457a-bfaa-7f3111138f6a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8cb770fe-7845-4d13-a59f-2bf261cb278a" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-d7d0eac2-5ec0-4af2-851d-0703327a4b4c" style="color:#000000;">2. 왼쪽 위에 admin 프로젝트를 service 프로젝트로 변경</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-B7FF0796-9CB2-4C7F-A982-56BB3F90990C">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-B7FF0796-9CB2-4C7F-A982-56BB3F90990C", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjZfMTMz/MDAxNjIyMDExMTA0MTQw.vhN7dXya-E0dS-gzJBxaaFL3-9f6pYAaGTW4TdEUdsog.PY-XnZeZ0ic_t1jETQoQ7tcYpfAvYNliOJedMZg7tAog.PNG.ghdalswl77/SE-3f25e0ea-339c-4fcd-9614-e991dd054c49.png", "originalWidth" : "1150", "originalHeight" : "445", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="268" data-width="693" id="SE-B7FF0796-9CB2-4C7F-A982-56BB3F90990C_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-29D1B819-7FA4-41C9-94AC-E5BE693888DB">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-29D1B819-7FA4-41C9-94AC-E5BE693888DB", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjZfOTcg/MDAxNjIxOTk1MzczOTI5.bi9FvF2EMqLy1WbtHpNdj-l_QJTQhDmErj49Q3hmEwsg.vZJgCwtIn4l1rX4uCXAVyBeghUQVND_V2cGg584ZruIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-26_%EC%98%A4%EC%A0%84_11.16.11.png", "originalWidth" : "1153", "originalHeight" : "234", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="140" data-width="693" id="SE-29D1B819-7FA4-41C9-94AC-E5BE693888DB_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-47b45b2d-d3bf-41cc-acf5-d3d54558268f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e8dfe15d-052f-479e-97b1-09e7af56c0d7" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0e6baef1-488c-46be-913c-83cb7366fd50" style="color:#000000;">프로젝트 -&gt; 네트워크 -&gt; 네트워크 토폴로지에서 확인</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-4E22371F-4EEA-4FB6-8C82-663D3BBA6EA7">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-4E22371F-4EEA-4FB6-8C82-663D3BBA6EA7", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjZfMjEg/MDAxNjIxOTk1NzMzMTE4.EzGwKfzQNeQiDWUPlwcYy9Yu4qyPo8Lbo7UPG6IuOR8g.Gqh1kas2mA2z8HbduUcgR_JpSu70Xp2BBuuAK4kYGOkg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-26_%EC%98%A4%EC%A0%84_11.22.11.png", "originalWidth" : "1161", "originalHeight" : "695", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="414" data-width="693" id="SE-4E22371F-4EEA-4FB6-8C82-663D3BBA6EA7_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8694f59b-4f96-42f6-b78c-4060d67ac4bf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-685ad3b7-0e7b-4f29-b19b-b37ed0d83ffb" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-383190a0-970a-4b93-9555-646d07d9724d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5d56a49f-d6d4-4726-b9b5-9195bf0001b0" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-ab40bafe-ae61-45ae-ad74-f7270c263d12" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-ab771b43-c3f4-49c4-901c-379bbad2ee61">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-402cbe4b-8292-418f-ba4f-16093e1bd91e" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-8df54eda-8415-4fd5-b683-a1ae011fd712" style="color:#000000;">(12) 옥타비아 설정</span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-60e0d14e-895c-4fc3-a1d0-0554bd733d14" style=""><span class="se-fs- se-ff-" id="SE-a4f747c9-b12d-46d3-8ce8-5c014670721d" style="">(생성한 네트워크 밑 보안 그룹 등 적용)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4ec819d4-a2fc-4d87-8952-e51169154ed3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9d0a8845-9071-4ed4-9de0-c7db3436060f" style=""><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" id="SE-feab0ea6-1106-4144-816f-c73ee703f264" style="color:#000000;"><b>[3] network</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6976b1f8-f38f-41ba-814f-7d966238139d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>octavia<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6976b1f8-f38f-41ba-814f-7d966238139d"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-84701fbc-b23f-424a-bb2d-81257e63a93a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span>controller_worker<span class="token se-code-punctuation">]</span>
+client_ca <span class="token se-code-operator">=</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>octavia<span class="token se-code-operator">/</span>certs<span class="token se-code-operator">/</span>client_ca<span class="token se-code-punctuation">.</span>cert<span class="token se-code-punctuation">.</span>pem
+
+# 아래의 내용 추가
+amp_image_tag <span class="token se-code-operator">=</span> Amphora
+amp_flavor_id <span class="token se-code-operator">=</span> <span class="token se-code-number">100</span>
+amp_secgroup_list <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span>시큐리티 그룹의 <span class="token se-code-constant">ID</span><span class="token se-code-punctuation">]</span>   👉🏻방금 생성한 그룹
+amp_boot_network_list <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span>internal 네트워크의 <span class="token se-code-constant">ID</span><span class="token se-code-punctuation">]</span>
+network_driver <span class="token se-code-operator">=</span> allowed_address_pairs_driver
+compute_driver <span class="token se-code-operator">=</span> compute_nova_driver
+amphora_driver <span class="token se-code-operator">=</span> amphora_haproxy_rest_driver </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-84701fbc-b23f-424a-bb2d-81257e63a93a"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-75cf50da-2d08-420b-9c9b-70c6be83f33c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart octavia<span class="token se-code-operator">-</span>api octavia<span class="token se-code-operator">-</span>health<span class="token se-code-operator">-</span>manager octavia<span class="token se-code-operator">-</span>housekeeping octavia<span class="token se-code-operator">-</span>worker</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-75cf50da-2d08-420b-9c9b-70c6be83f33c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d1e83626-30b0-4c62-9534-4ab1ca78a1cb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-633b81bd-8e60-47f3-81e0-4eacb84d9e41" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-a76c51a4-d0af-4a71-baca-0db0821f8eea" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-7bbce508-89cc-4693-97a6-fa7de4b23dd5">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-37a4c888-a03a-429c-a9b6-02fc3b97250b" style=""><span class="se-fs-fs16 se-ff- se-style-unset" id="SE-70c6b55b-a2f3-48cc-b0d1-f520e92acfde" style="color:#000000;"><b>(13) 인스턴스 생성 대기 시간 변경</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-66eaa0b3-087b-4f13-a932-2c0e59c657f1">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6e605bf3-7edf-4bf5-9adb-d66a4b6ab7cc" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-41a983b4-e01f-4519-b93f-ed26559ac97a" style="color:#000000;">오픈스택에서 인스턴스 생성 시간이 길어지면 에러처리를 하는데,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-34d78ad6-4451-4080-8658-e0e7cade98db" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-b1121b23-58cd-41b4-8f37-b4e3d2edd4f0" style="color:#000000;">인스턴스 생성이 좀 오래 걸려서 인스턴스 생성 대기 시간을 변경해 준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52373b04-088d-4ef5-b35c-b82ba90b456b" style=""><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" id="SE-39c6c1e4-eab4-4005-9aa4-03a3886b7a7a" style="color:#000000;"><b>controller, compute</b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-e10b3c2f-949d-49d6-8a03-f7142ac71821" style="color:#000000;"> 에서 진행한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-323982a7-d974-431f-a375-50c8483d9bee" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-6f2d6ce9-4df2-4287-9de3-c8b7fc38f9c2" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6446218b-6865-40de-b520-6702e53ed1d5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>nova<span class="token se-code-operator">/</span>nova<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6446218b-6865-40de-b520-6702e53ed1d5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ef471a54-5c6a-453f-ab29-79e84412de3b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ddca7cd2-2818-4654-a403-a5b823052033" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-b1a73be7-ec2e-44c6-8111-ca070e6b41a4" style="color:#000000;">[DEFAULT] 섹션에 다음을 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-1c10f27f-1c7a-42dd-8d21-0156e27ec9ae">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">instance_build_timeout <span class="token se-code-operator">=</span> <span class="token se-code-number">3600</span>
+block_device_allocate_retries<span class="token se-code-operator">=</span><span class="token se-code-number">1200</span>
+block_device_allocate_retries_interval<span class="token se-code-operator">=</span><span class="token se-code-number">3</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1c10f27f-1c7a-42dd-8d21-0156e27ec9ae"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-502be117-1106-4184-98ad-224ce9e95dce">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6c6cd870-b913-4b6e-8d8c-a42671b6a0e5" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-6f17b9ff-7360-4b52-a722-2ed88788137f" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee8d011c-1400-4100-9813-087c2f65dc14" style=""><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" id="SE-a75c2b0d-732e-45e1-8bbb-5516deddd955" style="color:#000000;"><b>[ controller ]</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-046ae157-e2b0-4a55-a9e4-5ff8527f8b7e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>api<span class="token se-code-punctuation">.</span>service openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>novncproxy<span class="token se-code-punctuation">.</span>service openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>scheduler<span class="token se-code-punctuation">.</span>service openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>conductor<span class="token se-code-punctuation">.</span>service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-046ae157-e2b0-4a55-a9e4-5ff8527f8b7e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-76749715-072f-490c-913b-3aa608f1dbce">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-427bb23b-1342-4f37-b8ee-5aad24a5afcb" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-c7b10625-e553-4558-9efa-13f91a8c71c1" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7a5663af-8c22-469e-ac0c-0fdc366c25b7" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-702b6d2e-6353-4f0f-8f99-b39d632dc15a" style="color:#000000;">[</span><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" id="SE-26ea922c-3f61-4c9d-9523-4f4c20398505" style="color:#000000;"><b> compute ]</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c60f173f-4f8a-415a-9257-0a079d3894fd">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl restart openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>compute<span class="token se-code-punctuation">.</span>service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c60f173f-4f8a-415a-9257-0a079d3894fd"}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-d1253140-bfe3-4553-99be-98505d5de443">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-0989296c-1f82-4bbc-8386-995c7244f484" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-65c9629b-4bde-4735-bcf8-9cdd1e237004" style="color:#000000;">(14) 환경변수 설정 파일 변경</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-3a46fefe-c0c2-4422-8b9f-00f8be6a6feb">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>keystone_admin</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-3a46fefe-c0c2-4422-8b9f-00f8be6a6feb"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c8821f1f-bfff-4f36-9ff7-66971cfb646e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0839b689-4eb3-434b-ac01-5e669e468169" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-4222b5a4-cf39-47ad-a3ba-ab1c01991ecf" style="color:#000000;">위 파일에서 export OS_PROJECT_NAME=admin 을 다음과 같이 변경.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-9ba2f8ed-6c3b-4be2-a09e-f9ba1dc4236f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">export</span> <span class="token se-code-constant">OS_PROJECT_NAME</span><span class="token se-code-operator">=</span>service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9ba2f8ed-6c3b-4be2-a09e-f9ba1dc4236f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7b943dfa-2872-424b-916f-5bae2c8e5a39">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4aa1c0b8-0315-4cb8-b80e-1258b035520d" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-520f7cf2-b4bf-44ba-b6ed-8817eb594aac" style="color:#000000;">변경 후 저장하고 나가서</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-29fa57d0-969c-4cf1-bca8-c8b9f11f06c3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">source <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span>keystone_admin</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-29fa57d0-969c-4cf1-bca8-c8b9f11f06c3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7863b54d-e952-4fb1-ae2a-3650ce1ab2cc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2e6297a5-a2b1-439c-96c8-64ce80275cbd" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-07532d5f-6732-49cd-97e3-3d5c41ca902d" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-0db6adb0-4612-4e9d-bdf8-b04b71801921">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-b288d663-c8ee-45d1-a585-39bb6e091127" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-6a396c00-a990-46bf-863c-bb9ef6d3498d" style="color:#000000;">(15) 로드밸런스 생성</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-ccb32d56-b61c-48ba-8054-3892d3561c7e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-93c55dad-30e2-4491-9b9c-a98064171312" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-4821f695-1b73-48eb-a6c8-48accf2b086e" style="color:#000000;">방금 만든 이미지로 (볼륨과) 인스턴스 생성.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-59737AEF-090C-4CB1-AACB-E9848E38FBDC">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-59737AEF-090C-4CB1-AACB-E9848E38FBDC", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjZfMTEg/MDAxNjIyMDEwMjg5MTI3.m7nUIJOOr4WxYZGyEXS1uXIUJKGqhb64_ar_-kvwjewg.R1iwy1R05LLPABvYDLsGmG9nCpSveL97hwL3JQ6rc3Yg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-26_%EC%98%A4%ED%9B%84_3.24.46.png", "originalWidth" : "1175", "originalHeight" : "315", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="185" data-width="693" id="SE-59737AEF-090C-4CB1-AACB-E9848E38FBDC_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-c584c1e2-6fab-4c34-8bda-ad7a13d77372">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">openstack loadbalancer create <span class="token se-code-operator">--</span>name lb01 <span class="token se-code-operator">--</span>vip<span class="token se-code-operator">-</span>subnet<span class="token se-code-operator">-</span>id internal<span class="token se-code-operator">-</span>subnet <span class="token se-code-operator">--</span>project service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c584c1e2-6fab-4c34-8bda-ad7a13d77372"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8696ac8b-30fb-4c62-84dc-0ea22912a3fc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-33fd5b2f-f2b1-4455-87f6-42535554f6d4" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-c894b0c4-794c-4e2e-b0ab-015a05e218ec" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-862e9dba-1aec-45aa-8f86-505d887ae9a8">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-b128aeae-40e8-40b7-8472-110882d84148" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-8dc19d0b-493b-4144-9743-86681d9c4ec8" style="color:#000000;">(16) 확인</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-18674087-f037-45fc-9c6c-21dfe3a450a3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">openstack loadbalancer list</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-18674087-f037-45fc-9c6c-21dfe3a450a3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-eb007586-68b7-4785-a59a-60d96dd18b4d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a3d67665-625b-4fd9-81e9-56f21a84a6e2" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-6b626d75-80a3-41f8-b724-1165c62ee565" style="color:#000000;">상태가 active 인 것 체크.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1f986a6-18d5-4326-b1e4-375412e6d282" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9b2a6011-f96c-46e7-ba3d-57be2cef4cb0" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ef2b87de-38ab-4d04-b659-e904e4679899" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-45e46a0f-3b20-40c5-b2af-98cf69498234" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e2c1218-8b2b-4935-9cd1-5425eba5ae06" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-528dda09-cabd-4384-9b93-67ddae838529" style="color:#000000;"># PENDING_CREATE 상태로 꽤 오래 기다려야 한다. . .</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-38195737-7326-4719-8CA2-FBFD7617DBBA">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-38195737-7326-4719-8CA2-FBFD7617DBBA", "src" : "https://postfiles.pstatic.net/MjAyMTA1MjZfNzcg/MDAxNjIyMDEwMDgwMTEz.KnuHOzUkAP_2Q3zfxOLVq5hnuJ0JObn8M7yyo7LHtO0g.im9iyEKcsESmjZnvk8JvxAbUxSEmeq51iYREmhT9voUg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-26_%EC%98%A4%ED%9B%84_3.21.17.png", "originalWidth" : "2130", "originalHeight" : "174", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="56" data-width="693" id="SE-38195737-7326-4719-8CA2-FBFD7617DBBA_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7fb6a3c6-9445-45d9-9937-277241892213">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ab0e6a03-5d6c-479d-9fca-bbfa23b96253" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-64aec925-8895-4fa9-a8f4-a85981ad6cf0" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4e1e17f1-a27c-4633-a9f7-7f5d90671e16" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-a9598d6c-569f-47f8-959e-2bc981adf7bc" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-af330889-15e0-485b-9184-83e6ad159fdf" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-006b4d74-04ba-494c-814e-e86aa9480fb5" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0070cf4d-d7c1-47cc-b5c8-2fac6bcd62eb" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-bea3d295-158b-4997-8566-fbafd01274da" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline" id="SE-c763d42b-e551-4f68-80fd-e70a37354dd3">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-e8650635-6d29-4c90-a6c2-dc0b6d892d13" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-76273d77-8dbe-42be-9bd1-8424f8f07b62" style="color:#ba0000;">에러 :: </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-9fca7bf9-e409-460f-a5e9-05d611b2b92f" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-72d01c47-c1b3-4223-8dc3-d71a113cc98c" style="color:#000000;"><b>오픈스택 Octavia 수동설치시, Amphora 로드밸런스 서비스 에러</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-62aca2b5-971c-498b-9f25-35497e21126e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a1dc425c-2f36-417b-928d-50909b574ba6" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-8a48f7ab-6d36-47a5-9bab-62f3b09d336f" style="color:#000000;">에러 메시지는 다음과 같다,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4eb22148-c4b8-4a54-b6c7-85040e1bcb6d" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-dde0c2c5-7196-4dc9-9845-4021a8afee36" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1773977b-0010-4e89-83ee-d41fc7e62694" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-ff7e1b60-4d53-4b67-b0de-a762f7e99368" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4c516fbf-14b0-4796-a1b1-b48f5d5b13f4" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-bbe81a02-471a-4cba-bec9-f3f64741e908" style="color:#000000;">2021-05-26 15:26:58.430 2904 ERROR</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15c576e2-eaa6-41f1-a5ac-1318b77cd0e1" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-cf7f6796-b986-4222-9a97-0372bfe57cf6" style="color:#000000;">octavia.controller.worker.v1.tasks.amphora_driver_tasks [-]</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fdf9f20c-ce91-41a1-9706-e5624602bf20" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-a74a86bd-aab4-43ef-b84e-943abf6d0e26" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd217fe2-29fd-4a66-8841-3f7ba58599a3" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-6d28acb0-e41e-4975-897c-d350684bae2e" style="color:#000000;">octavia.amphorae.driver_exceptions.exceptions.TimeOutException: contacting the amphora timed out.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7e867b21-2779-4d68-a7c9-31e2a7368b9b" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-2dcbb8ff-1785-4f06-8125-e734036cdb5a" style="color:#000000;">Amphora compute instance failed to become reachable. This either means the compute driver failed to fully boot the instance inside the timeout interval or the instance is not reachable via the lb-mgmt-net.: octavia.amphorae.driver_exceptions.exceptions.TimeOutException: contacting the amphora timed out.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8dfbd596-e133-48cc-84d0-914de9d50729" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-3ed81330-0939-4bd0-adef-e55f459a561f" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-01196e29-d648-4a8c-8d42-8c10a4abbcda" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-f630fa93-ae6f-4695-abeb-b195108d6c2f" style="color:#999999;"><i>Amphora 컴퓨팅 인스턴스에 연결할 수 없습니다. 이는 컴퓨팅 드라이버가 시간 초과 간격 내에 인스턴스를 완전히 부팅하지 못했거나 lb-mgmt-net을 통해 인스턴스에 연결할 수 없음을 의미합니다.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5142d4f8-be14-4a2f-97aa-37fc5f6f768f" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" id="SE-255c78be-8066-4166-bd8d-946ba24247d8" style="color:#999999;"><i>​</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8c9b6fd0-b900-41d6-803c-b280e962fa30" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-80249de8-9244-4ec9-b1bf-6423a2670a89" style="color:#000000;">고칠 수 없는 듯 한 버그같다. . .</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-351676dd-b59e-4d46-9a33-34821858997b" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-feca37b2-42e8-42f9-bd71-d1519c1a6430" style="color:#000000;">그래서 Rocky 버전 수동 설치하여 다시 시도해 봤지만 여전히 뭔가 이상함.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c891acaf-1ce2-420f-8c1c-c286b1268ce6" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-897b0d2e-830c-4371-840d-9baceb78f50e" style="color:#000000;">수동 설치 시 여러가지 프로그램들의 버전이 달라 뭔가 꼬이는 것으로 추정.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a95f690-84a9-4807-88e2-6b103d79ee4e" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-ff2cd1f4-17af-4c86-9d83-5ceb0eb10db1" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d4a88e08-7247-42b9-ac1a-b5e757222f37" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9e6266b9-dc73-4e39-aa3c-0c173158b655" style="color:#000000;">결국 Rocky 버전 팩스택 설치하여 로드밸런스 서비스 정상 작동.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c2345b47-e7c5-4b44-b693-2e8e9f255f13" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-e5adcb27-176f-4a00-9935-31571cd1279c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1adaf57d-fe67-4575-968d-36f30c64ef99" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-78f204cf-8a6a-4f69-8b88-237435f134ff" style="color:#000000;">그래서 Rocky 버전 팩스택 설치부터 다시 포스팅 하였습니다..😢</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

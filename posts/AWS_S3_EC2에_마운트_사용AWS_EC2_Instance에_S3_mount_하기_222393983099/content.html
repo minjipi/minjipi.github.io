@@ -1,0 +1,299 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222393983099 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-fe62a789-0cd4-477a-b11b-2ece9f5bd0dc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-cc5515c7-55ba-4861-b02f-4b2e2a86c1c3" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-1d981e9f-46e9-4d38-934b-beee41fe8e74" style="color:#000000;"><b>[ Amazon Simple Storage Service ]</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-296ba606-ad93-466a-8751-b86701c82d69" style="line-height:1.8;"><span class="se-fs-fs30 se-ff- se-style-unset" id="SE-e9585d7d-9b3e-475a-a338-cb4a349e3331" style="color:#000000;"><b>EC2에 </b></span><span class="se-fs-fs30 se-ff-nanumgothic se-style-unset" id="SE-2522ac23-5c43-41ca-9ff6-4b11afa5d51f" style="color:#000000;"><b>S</b></span><span class="se-fs-fs30 se-ff- se-style-unset" id="SE-1c8887bc-a3b5-4b07-ae40-6766cf0f7423" style="color:#000000;"><b>3 스토리지 마운트</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-9ee3cfc3-24ef-4deb-b344-b8f9aa0b9788" style=""><span class="se-fs-fs16 se-ff- se-weight-unset" id="SE-7a0bcfb7-7fd8-48c6-bcd8-e0f3c5da3912" style="color:#000000;"><i>AWS(Amazon) EC2 Instance에 S3 mount 하기</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-2d5c2e97-b70b-42aa-bf07-31fb4f7a0229">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:387px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2d5c2e97-b70b-42aa-bf07-31fb4f7a0229", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMjk0/MDAxNjIzMzg5MDIzMzA1.WFCbtlJ2a5-FcdfgWYcInCXonud5EnJ-hL544vFVzW0g.ctLTufBTUTiqcxRFyKWmGpNq-oyVutILIv4GlWpyw5cg.PNG.ghdalswl77/S3.png", "originalWidth" : "387", "originalHeight" : "130", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="130" data-width="387" id="SE-2d5c2e97-b70b-42aa-bf07-31fb4f7a0229_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-33f6a2f2-4a21-4f17-ab82-efa4e0784820">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6e2b6028-150b-4040-a985-42cde8b72fb7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-b4b02e7c-5f7f-46e3-802a-ae06fc2a374e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-97dee7f8-2a1d-4c2f-9ba1-af15dd66444b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3d966edb-c09f-4c01-8e9a-d385d3b8ba61" style="color:#000000;"><b>AWS S3를 EC2에 EBS처럼 사용해보자.</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-feecd116-84d7-4444-89b2-1f7a79add096" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-371c167e-937b-4b77-acfc-36165ac8ce7c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-95b2e123-f14a-42db-8f22-11db60560102" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cebef561-16e8-4e26-a533-77be24d3eb13" style="color:#000000;">아마존에서 S3는 매우 유용한 서비스다. 하지만 s3는 object 기반이고 REST http 기반이다 보니 사용함에 있어 많은 불편함이 있다. 그래서 AWS는 최근에 Storage Gateway라는 서비스를 제공한다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e7ca6147-b828-474f-90c9-974ccd89c48d" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-bc2e7ee5-fc68-4408-827b-da49a5c0ea7c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2bbaac67-7de6-407d-8d32-d0df715282a1" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-3a576ec5-1614-4a02-b38c-6cccd2d54480" style="color:#000000;">하지만 Storage Gateway를 설정하여 사용하려면, Local IDC 환경 또는 AWS에 Gateway appliance 를 VM형태로 올려야 하기 때문에 추가 비용이 들고 간단히 사용하기엔 번거롭다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-87623d1f-b043-4bce-b989-9d1ced5a2c54" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-d17dbb2d-24df-462e-b397-40daed7300fc" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f94cfec-12cc-4750-b341-861c31f495b0" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-7ad93bfc-4322-48ae-870e-275ae6805208" style="color:#000000;">이때 간단한 해결책으로 S3를 filesystem 처럼 mount 하여 사용하는 방법이 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-461a47b4-ec67-4f9a-9b67-17168b0e9825" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-4fc9fc3b-e085-403c-aa75-70e6aa22c3e0" style="color:#000000;">바로 s3fs. 오픈소스이며 AWS의 공식지원패키지는 아니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d649de16-04dc-4384-ada8-2c3cc6eec004" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-468ca324-44bf-42be-a7f6-31d0220a8330" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-af22907b-7156-4365-bedd-ed81e6e3606b" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-931cd3f9-da1f-441c-8003-7e32477b0c3a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d3bf28b5-d514-4169-903c-3df4212bbf8a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5d6e1cd5-e12d-4b14-81d7-e1136b187b63" style="color:#000000;">1. 관련 프로그램 설치</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-44c2b19e-6881-4d76-90e0-1de9b8123d00">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs15">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">apt<span class="token se-code-operator">-</span><span class="token se-code-keyword">get</span> update
+apt install s3fs awscli <span class="token se-code-operator">-</span>y</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-44c2b19e-6881-4d76-90e0-1de9b8123d00"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-1972cba6-26a9-44f9-a76e-dcadc9d0a732">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs15">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">s3fs</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1972cba6-26a9-44f9-a76e-dcadc9d0a732"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-201d9cb7-fb5d-40dc-bf81-026f77473a7a">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f3dedf83-53ce-4d47-944d-d02c97c81c9f" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-fd1b2b7d-3fab-4970-9021-4d8a1b46fe58" style="color:#000000;">아래와 같이 뜬다면 정상적으로 설치된 것이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-6bc70797-4db2-4aae-8650-9ccd2149b3b5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs15">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">s3fs</span><span class="token se-code-operator">:</span> missing <span class="token se-code-constant">BUCKET</span> argument<span class="token se-code-punctuation">.</span>
+<span class="token se-code-literal-property property">Usage</span><span class="token se-code-operator">:</span> s3fs <span class="token se-code-constant">BUCKET</span><span class="token se-code-operator">:</span><span class="token se-code-punctuation">[</span><span class="token se-code-constant">PATH</span><span class="token se-code-punctuation">]</span> <span class="token se-code-constant">MOUNTPOINT</span> <span class="token se-code-punctuation">[</span><span class="token se-code-constant">OPTION</span><span class="token se-code-punctuation">]</span><span class="token se-code-operator">...</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6bc70797-4db2-4aae-8650-9ccd2149b3b5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-38adde49-8740-456f-aa5f-938de2a4399f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5a1afbdc-0053-4c91-b606-0d2d4a7334cc" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-69180472-d61c-40a1-a805-8c694fa0a690" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e2b5ce53-7e08-487a-8cb9-6d216a91763a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-5f83e2a3-72f1-4ac3-b61f-4f0cc9ca98c2" style="color:#000000;">2. 인증 작업(</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e1c75790-eee5-4650-9ac4-a33a2200d5a5" style="color:#000000;">IAM)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-bdee2078-53fe-4af1-a358-5ca9f2113e4e">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-bdee2078-53fe-4af1-a358-5ca9f2113e4e", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMTky/MDAxNjIzMzg2MjA4NDkw.zrjMJNyp3ZgVx0YmUxbHHEP23TYg8aH65H7ZWKTwG5wg.8kDd7idMGRELFIixSJ_7dd2bjmv0dzTon4_SaYNFEuYg.PNG.ghdalswl77/image.png", "originalWidth" : "1264", "originalHeight" : "242", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="132" data-width="693" id="SE-bdee2078-53fe-4af1-a358-5ca9f2113e4e_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-fda421a9-3e22-418e-8762-d088d82e2231">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-fda421a9-3e22-418e-8762-d088d82e2231", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfNTEg/MDAxNjIzMzg2MjQ3Njkz.H9hfQPRuZ_sZkfxTHCOpb-lF33GZ4_dR0VMTZs8UDzUg.yiictvQ2_ASh7YkPhdqRK5LKU1CnkT4HcShNIJmoNWMg.PNG.ghdalswl77/image.png", "originalWidth" : "1409", "originalHeight" : "613", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="301" data-width="693" id="SE-fda421a9-3e22-418e-8762-d088d82e2231_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-fdaca850-cc93-455e-b6cb-654109ec9a18">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1284ed03-b760-4d63-bd55-59f587599ce6" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2c5f2299-22f1-42e9-acb5-90d6158f467d" style="color:#000000;">Identity and Access Management(IAM) :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-89f6d44b-5d8d-4e5e-ab11-a7ec483ae2d7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ff472f09-aa69-4076-8311-b67b0ddbc2df" style="color:#000000;">오픈스택의 키스톤 같은 보안 증명 서비스다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2c03f5f9-ed10-4675-8d27-8d31d166aa2a" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-044ed8a6-cafc-4fce-8c21-5ac9408148df" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e9b27a5a-880e-4738-bc82-1388f4c77aa2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7de80e94-3343-4294-8b2d-f623f8c7129c" style="color:#000000;">IAM 키 파일 다운로드</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-2039bb5c-be29-4b43-9f36-0e77e4e5988d">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2039bb5c-be29-4b43-9f36-0e77e4e5988d", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMjg1/MDAxNjIzMzg2MzEwMzgy.0z4cXeqM4pFSHHg4DWdpcbTZ2XaFAipxJlAOJSeW1qkg.vPPaLEHHq-1STUi7Xa4gwlPY5qsFCnMHYfsYqwhk1uIg.PNG.ghdalswl77/image.png", "originalWidth" : "775", "originalHeight" : "454", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="405" data-width="693" id="SE-2039bb5c-be29-4b43-9f36-0e77e4e5988d_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-03c7120d-74cd-43fe-8c46-cf11706cfab1">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-03c7120d-74cd-43fe-8c46-cf11706cfab1", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfODEg/MDAxNjIzMzg2MzIzNzY0.tWnueQpQP-7AhaJLWwctlW-p1CyhM_VHvmqyrQ2RZFcg.dmtqWWQ9TQh3L8VA8JbUzEE0pA2HRUDzg9bYZSdbUVog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-11_%EC%98%A4%ED%9B%84_1.38.38.png", "originalWidth" : "1086", "originalHeight" : "385", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="245" data-width="693" id="SE-03c7120d-74cd-43fe-8c46-cf11706cfab1_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-58f9b1a9-600b-45c8-846d-a4d8df38e654">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-49ec756e-6cdc-4b92-a23e-81b2a2d650da" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-76d8bbfd-f43c-4314-a66f-cd4e818f6b57" style="color:#000000;">[새 액세스 키 만들기]</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9d5063cb-c4df-4848-9a0f-1fb658ed52ed" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-a0c3d043-7644-48d2-9d44-cf83d072cd9a" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-704441ad-10cc-4e14-be88-91dbc9aa3c18">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-704441ad-10cc-4e14-be88-91dbc9aa3c18", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMjQy/MDAxNjIzMzg2MzQ4Nzkw.1IxaobqZmap6-oXeTMi-1OtVvPVOuXmvW3sc1lv-s7Eg.4MN4Get9QTgRKv6kXBPXiZy7IOOoOMYWlzaTea8d4c0g.PNG.ghdalswl77/image.png", "originalWidth" : "917", "originalHeight" : "357", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="269" data-width="693" id="SE-704441ad-10cc-4e14-be88-91dbc9aa3c18_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-0d5fe2b4-b827-42ea-95a0-12e4eac48ee4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bb8f7efe-e0ea-4e05-8680-e3b6382d6147" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-78c915e2-a58f-4df8-ba2b-ba261678b0ee" style="color:#000000;">키 파일 다운로드 클릭해서 받고 열어본다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-9fc619c6-d47f-4a57-8092-11a02ceaef00" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d4503979-0de4-43f8-b0df-ac43e9a10ba5" style="color:#000000;">파일 내용으로 다음을 작성해 준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-484618f3-56cc-48ae-8b24-e64b050f5ec2" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-497903db-e879-4baf-9cb7-424cb034fbf2" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-3dfecd07-b7f0-44ca-92c3-a71c348d800b" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3b01d8e5-170c-4dea-9410-1c35585eeb1a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c25d4ba1-10fb-450d-a56d-725ffe861feb" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-323f2e8d-503c-4c69-b98d-be18a185212a" style="color:#000000;">3. </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-be0f33a5-4f17-436d-bd1e-5d725e005262" style="color:#000000;"><b>.s3fs-creds 파일 작성</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-58ae01b0-f374-409b-b288-12be64ddf4e8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">cd <span class="token se-code-operator">~</span>
+vi <span class="token se-code-punctuation">.</span>s3fs<span class="token se-code-operator">-</span>creds</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-58ae01b0-f374-409b-b288-12be64ddf4e8"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-2ea6f0f0-5b10-469b-a483-6c66e566a273">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:646px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2ea6f0f0-5b10-469b-a483-6c66e566a273", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMTgy/MDAxNjIzMzg2NzQ0NTA1.so5FyXe3GAXeOX-pfRSa2Db_VBFALYNwZi5gI9xEtigg.crAeQoD1nFwY6njbcIMlxSiKj1AG9WhwB8prlggu-4Ig.PNG.ghdalswl77/image.png", "originalWidth" : "646", "originalHeight" : "246", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="246" data-width="646" id="SE-2ea6f0f0-5b10-469b-a483-6c66e566a273_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a3e3a607-e595-41bc-a555-a3d80dca457f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7929ac8a-9417-4f8a-812a-3a17edf7ba48" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-251d9dcc-541b-40d3-bb6e-cfb6d819282d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-367096dc-c2ab-42cc-b20e-f2ec891dfe27" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5bc8c592-97a4-45b6-a520-9de5d2d09067" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-955acb2d-7e1c-425a-84c3-7e53492f57a1" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5e6f8eee-ef3b-492f-a467-bd3409f4e15f" style="color:#000000;">- 파일 권한 변경</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a3d8d5f1-eb2a-4de5-818d-860e6a106847">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">chmod <span class="token se-code-number">600</span> <span class="token se-code-operator">~</span><span class="token se-code-operator">/</span><span class="token se-code-punctuation">.</span>s3fs<span class="token se-code-operator">-</span>creds </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a3d8d5f1-eb2a-4de5-818d-860e6a106847"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c204e12a-af1e-46db-a653-a52e4db53d26">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-34371d87-86c2-458b-a5ae-88fdf0810bcd" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-60ed5920-4b27-4c34-9b6d-a43023547c91" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-122b0249-884f-4479-9113-7f540494025a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">s3fs  <span class="token se-code-punctuation">[</span>버킷 이름<span class="token se-code-punctuation">]</span> <span class="token se-code-punctuation">[</span>특정 디렉토리<span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">[</span>ex<span class="token se-code-punctuation">]</span>
+s3fs minji<span class="token se-code-operator">-</span>kit <span class="token se-code-operator">/</span>s3 <span class="token se-code-operator">-</span>o passwd_file<span class="token se-code-operator">=</span><span class="token se-code-regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">root</span><span class="token regex-delimiter">/</span></span><span class="token se-code-punctuation">.</span>s3fs<span class="token se-code-operator">-</span>creds</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-122b0249-884f-4479-9113-7f540494025a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-efcd0cef-fd58-4796-b107-d1e1741f6796">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6cbc1a5f-d2e1-41d6-837d-2bd3d568f5bd" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-17f16fe7-9fdb-4cd4-a6d5-62f96540aa8e" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dff8cf01-b841-4d52-9990-1aafd4907024" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-75e9ccb0-749e-42e7-8d71-40869297b0bd" style="color:#000000;">- 확인</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-beb230b7-18ca-4074-a047-a08ac64287b4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">df <span class="token se-code-operator">-</span>h</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-beb230b7-18ca-4074-a047-a08ac64287b4"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-072ce722-fdb9-4a57-aa50-c8742ea9edfc">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:472px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-072ce722-fdb9-4a57-aa50-c8742ea9edfc", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMjQy/MDAxNjIzMzg3MjEyMzA4.bHqE7XFhetLhIM9p8bpP8LjKIIyMfNGnNcT5Y4SWoRIg.oy447kmOphIJByponUVpEcIYq-SCExAkfbGgUqy8eWsg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-11_%EC%98%A4%ED%9B%84_1.53.28.png", "originalWidth" : "472", "originalHeight" : "197", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="197" data-width="472" id="SE-072ce722-fdb9-4a57-aa50-c8742ea9edfc_0" src="images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-4326dc7d-df6b-4e0f-b364-fb2ea53536ab">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-08f8692f-15df-4001-97d0-d65627c3f9f7" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b699c9ac-f65b-41ae-a152-87d6bb3b1966" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8707c841-0223-4d4b-b519-ed503d7bae79" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-681f600a-d901-4fd2-93fe-7459cccbd0d1" style="color:#000000;">확인 후 해당 디렉토리로 가보면, 우리가 버킷에 올렸던 파일들이 보인다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ab088b68-a367-47fa-b74a-7b86217f6ae3">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:275px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ab088b68-a367-47fa-b74a-7b86217f6ae3", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMTQ4/MDAxNjIzMzg3MjM1OTA1.t8s3xDPkuiPH_Rf0rlv43Y_sqdEyoouYyzyJnaTkRxUg.RPFX8JRc8IIcSWhXgNC40Uk7w8rvTN4PuWUK-s4H_iog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-06-11_%EC%98%A4%ED%9B%84_1.53.53.png", "originalWidth" : "275", "originalHeight" : "44", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="44" data-width="275" id="SE-ab088b68-a367-47fa-b74a-7b86217f6ae3_0" src="images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-a763dcac-7f91-41a7-824c-6769de15062e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1718d564-4765-42be-b93f-04b707c5d52e" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-1a8e73da-ffc0-43ab-b663-bdff9463d04a" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-41a3c52f-ede0-4b48-bed1-7250ee82421b" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4d0890c8-4d62-48fa-abe7-cf500ad2ef81" style="color:#000000;">여기서 파일을 만들어보고, S3 객체에도 추가되는지 확인한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a2fed4ed-ee06-4de5-988a-de9bdc0c9a08" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8acaef6c-f0d2-4a49-8bf4-4eef7c0f24e0" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-0b9ae79e-9189-42ae-b633-c791d377e1b4">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-0b9ae79e-9189-42ae-b633-c791d377e1b4", "src" : "https://postfiles.pstatic.net/MjAyMTA2MTFfMjMg/MDAxNjIzMzg3NTIxNDgw.QRyTra1LALNW4cuiRMTEc65M1vVd5wBscMrePuLp6yUg.2haT0VhF0DhrnaFiVA1CgJ-HeTfXwcUltsS9IKJZmVAg.PNG.ghdalswl77/image.png", "originalWidth" : "888", "originalHeight" : "577", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="450" data-width="693" id="SE-0b9ae79e-9189-42ae-b633-c791d377e1b4_0" src="images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-346f5ac3-4c68-408f-99ce-26ec4d4a3573">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-94ae66fd-249c-4a99-bcf2-69ca5bbbff80" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-fabf38e0-7ef9-49dc-a296-a97d130a0468" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fd55018b-261d-454f-85e7-b601053de657" style="line-height:1.2307692307692308;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-ad8cd728-7c6a-4947-8caa-44494c42afec" style="color:#000000;">확인 완료 !</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

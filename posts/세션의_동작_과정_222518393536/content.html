@@ -1,0 +1,385 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222518393536 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-d5449f7b-e964-4742-9435-35f4725b66f2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-d276e5cf-804b-49fc-8a29-83d05598bc11" style=""><span class="se-fs-fs19 se-ff-nanumsquare" id="SE-d69d6165-b5a9-4743-9f2b-3d844f17792d" style="">세션의 </span><span class="se-fs-fs19 se-ff-nanumsquare" id="SE-d7769c13-70d3-4abd-ae02-15bafe1d73c8" style=""><b>동작 과정</b></span><span class="se-fs-fs19 se-ff-nanumsquare" id="SE-40dfbd8a-23c3-4623-9ab8-fa83db7bfe65" style=""> 대해 알아보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-e6df593f-7f5f-47fb-94e5-3a007e875979" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-d12a3beb-f6e1-48d2-9ff9-5df9ea906da2" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-50963d40-6bf3-4539-8115-43d2f77d3005" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-f86b3e5f-0215-4eda-98d5-f249f597cbd8" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e192f9a0-979c-44bd-b190-f592cdb9a643" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-13bd6d01-7785-40c0-9909-cf6b1f2ae266" style="color:#000000;">간단한 스프링부트 프로그램과 그림으로 세션 동작 과정에 대해 알아본다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e09c3fe3-25e4-4bdb-88ef-51ea2229239e" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-4f9c0b93-bd61-44e7-837b-1f9f76a8afab" style="">세션의 개념과 특징, 토큰과의 비교 등 이론적인 설명은 아래 링크를 참고해 주세요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b22d4d7a-3cdd-48a3-b2d3-7a7083094cf0" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-be69bc50-8cb1-4b9c-b9a5-134581741c3b" style=""><a class="se-link" href="https://blog.naver.com/ghdalswl77/222517833354" target="_blank"><b>세션이란?</b></a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component" id="SE-c5897728-77b2-4aee-a82e-76354654288e">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222517833354" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Stateful과 Stateless, 세션과 토큰, 인증방식 비교</strong>
+<p class="se-oglink-summary">1. Stateful, Stateless stateless는 서버에서 HTTP와 같은 client의 이전 상태를 기록하지 않는 접...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-c5897728-77b2-4aee-a82e-76354654288e", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222517833354", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMTA5MTVfMjIw%2FMDAxNjMxNjk2MDQ2MzE5.n9nwgtcZZewx6Ep2_FkokavA4WkHCP8a6-C6SCH8LPog.zAZuDzaJKC6FBk4FqXs7ENbs5s0P2LFV54v7dqPTxnQg.PNG.ghdalswl77%2F%25C1%25A6%25B8%25F1_%25BE%25F8%25B4%25C2_%25BE%25C6%25C6%25AE%25BF%25F6%25C5%25A9_11.png%3Ftype%3Dw2%22&amp;type=ff120"}}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f26d2c13-c6fe-45ea-ac26-9320f51fdef5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a7903e44-564c-4c7b-9a38-edf1a8094a65" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-5c8e3436-57de-4267-92b8-fd41ec784b9f" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fc5c7dc5-1229-48b2-ae44-1da21d68c796" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-9642eb09-0f91-4b81-8d0a-763362d298e6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-462b8902-1573-417b-9a22-0e216b59f733" style=""><span class="se-fs-fs19 se-ff-nanumsquare" id="SE-99d48979-f9e2-4972-8ac3-8e3743ab91a0" style="">⚙️ 세션의 </span><span class="se-fs-fs19 se-ff-nanumsquare" id="SE-80a58584-26af-46f1-8782-dbbd7448e988" style=""><b>동작 과정</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e9d8b5c4-5f65-408f-9ca0-316f216990c0">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e9d8b5c4-5f65-408f-9ca0-316f216990c0", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMjAz/MDAxNjMyNzE5MzE4NjEw.88Yxy3ruwJ6CZ-PZe1n2DI_AA9WaAExH6XVRzaGrikwg.3sGeIorlfiu6ugUY3pB-obR8wKIFszBRi7WnIodkadIg.PNG.ghdalswl77/%EC%84%B8%EC%85%98_%EB%8F%99%EC%9E%91_%EA%B3%BC%EC%A0%95.png", "originalWidth" : "773", "originalHeight" : "361", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="323" data-width="693" id="SE-e9d8b5c4-5f65-408f-9ca0-316f216990c0_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-21101038-6df5-4cc0-98d8-bad0dc222b1f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b024eddc-d3a6-4544-ab28-b4b12ed9eb0c" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-3fb11edb-0056-4da5-8366-30a395dc2b13" style="">이 그림에 대해 자세히 알아보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b05305e4-b13e-439a-bc3b-7c8fc7b15994" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-3f82ed6b-f1fc-4bba-a6c6-db1a3071de65" style="">사용자들은 웹 브라우저로 웹서버에 접속한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e8f64c37-28db-4652-94fa-3644c6e1e8b9" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-d8eda0c5-7db7-420b-a2a4-c3c0f241a75f" style="">여기서 웹 서버는 우리가 만든 스프링부트 프로그램이 될 것이다. 아래 그림과 같다,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-de5754db-ff92-4f10-81fe-791de1467d70">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-de5754db-ff92-4f10-81fe-791de1467d70", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTc2/MDAxNjMyNzIyMjE0MDYz.LC9rVb0il6SyQwVULlO3irhYQbRxUOm7iT1k_c8FS2gg.yiYSy8tpv781x5OfzVLR0aoTBnYWnCpRVAbUY7MzQ-Yg.PNG.ghdalswl77/%EC%A0%9C%EB%AA%A9_%EC%97%86%EB%8A%94_%EC%95%84%ED%8A%B8%EC%9B%8C%ED%81%AC_11.png", "originalWidth" : "1121", "originalHeight" : "703", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="434" data-width="693" id="SE-de5754db-ff92-4f10-81fe-791de1467d70_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-01c7c7bf-6567-459e-847f-e3943d315a43">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e0457ac5-8058-4bb0-94ee-7c7059ddfdae" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-d754d741-f66c-4882-862b-ce38f53b2837" style="">프로그램은 일단 여기서 알아볼 세션의 동작과정에 대해서만 스프링 시큐리티로 구현되어 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5452a89a-c3d7-48ce-86b3-b66c4903dad1" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-bb3a0173-b619-4e17-9552-5f4db086bef9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9b30fa34-a28c-4706-b1a7-91d1b32c8d7c" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-306e102e-fa29-4192-a7c5-ba87fe97a55b" style="">[ AllController ]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-15102ea7-4e45-4c3c-b606-178e64684cd1">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Controller
+@<span class="token se-code-function">RequestMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/all"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">AllController</span> <span class="token se-code-punctuation">{</span>
+    @<span class="token se-code-function">GetMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/test"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">test</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">{</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-15102ea7-4e45-4c3c-b606-178e64684cd1"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f12cd1d9-54c1-4b0a-9d17-152167238b5d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e6fe0eb-c5d8-4091-8f7d-fcdfb6799e5f" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-6f3b9a3d-7955-4a5e-8209-6c89d7c26217" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1d99e196-fa25-47c9-80d9-ac81685365bc" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-a33a3f8b-ecd5-4a0d-8068-71885c87f594" style="">[ UserController ]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-4be6a51e-b65d-4435-8b73-2323fdd1b1a8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Controller
+@<span class="token se-code-function">RequestMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/user"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">UserController</span> <span class="token se-code-punctuation">{</span>
+    @<span class="token se-code-function">GetMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/test"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">test</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">HttpServletRequest request</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">{</span>
+        HttpSession session <span class="token se-code-operator">=</span> request<span class="token se-code-punctuation">.</span><span class="token se-code-function">getSession</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        session<span class="token se-code-punctuation">.</span><span class="token se-code-function">setAttribute</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"sessionID"</span><span class="token se-code-punctuation">,</span> <span class="token se-code-string">"토찌"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-4be6a51e-b65d-4435-8b73-2323fdd1b1a8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-25819e13-6420-483d-bf15-00f064ea0fb5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-174d2c10-0305-4052-b072-33b028411cae" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-006fb4b1-f482-4fcb-a379-d26bd85f8149" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21e80ee7-1b09-4e0b-9e1d-53edc32433fb" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-bd4ab67c-8724-41ac-916a-a45cdc9407db" style="">[ SecurityConfig ]</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-1d228a8a-0954-4361-93df-6ace453c580c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">package</span> com<span class="token se-code-punctuation">.</span>example<span class="token se-code-punctuation">.</span>session<span class="token se-code-punctuation">.</span>config<span class="token se-code-punctuation">;</span>
+
+@Configuration
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">SecurityConfig</span> <span class="token se-code-keyword">extends</span> <span class="token se-code-class-name">WebSecurityConfigurerAdapter</span> <span class="token se-code-punctuation">{</span>
+    @Override
+    <span class="token se-code-keyword">protected</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">configure</span><span class="token se-code-punctuation">(</span>HttpSecurity http<span class="token se-code-punctuation">)</span> throws Exception <span class="token se-code-punctuation">{</span>
+        http<span class="token se-code-punctuation">.</span><span class="token se-code-function">authorizeRequests</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">antMatchers</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/all/*"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">permitAll</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-punctuation">.</span><span class="token se-code-function">antMatchers</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/user/*"</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">authenticated</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+
+        http<span class="token se-code-punctuation">.</span><span class="token se-code-function">formLogin</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        http<span class="token se-code-punctuation">.</span><span class="token se-code-function">csrf</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">disable</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1d228a8a-0954-4361-93df-6ace453c580c"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3a46c2fd-6893-488a-9217-61766d3e1c7d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-422e81bc-a3bc-42a7-bdaa-2d82e1e744bb" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-8af4c94f-8278-40d3-9054-b1502d24c5de" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-94578abb-0928-45db-92fa-5b78edea3132" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-5f67e841-0a90-4b84-ba38-f95d58089043" style="">이 프로젝트를 실행해보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-543e5134-9e34-476a-9232-e0768b2c9792" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-ae624d92-5aea-4c8f-8d30-5268bbe88b48" style="">실행 후, 웹 브라우저로 </span><span class="se-fs- se-ff-nanumsquare" id="SE-0df4c3f0-68b2-4df0-9ab7-0b54e5c5e7ac" style=""><a class="se-link" href="http://127.0.0.1:8080/all/test" target="_blank">http://127.0.0.1:8080/all/test</a></span><span class="se-fs- se-ff-nanumsquare" id="SE-6e2edc23-7b44-42d4-9173-100dbec8af40" style=""> 에 접속한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-df8cee5b-eaa6-43cb-835d-45aa88fdf7a3">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:396px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-df8cee5b-eaa6-43cb-835d-45aa88fdf7a3", "src" : "https://postfiles.pstatic.net/MjAyMTA5MTdfMTY4/MDAxNjMxODYwNzAzMjc1.IDgZvKihTsPaIZNvGovKsY7SA2ifMA-E0JCk2pd_nsUg.NEdk1ALzSHMS70riIveyvujZN9YA7iGXHBtb95hYr8Mg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-09-17_%EC%98%A4%ED%9B%84_3.38.19.png", "originalWidth" : "396", "originalHeight" : "147", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="147" data-width="396" id="SE-df8cee5b-eaa6-43cb-835d-45aa88fdf7a3_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7918fece-8415-4477-bb7b-f87c55caee15">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b7012809-9427-419d-bcf5-b01d8ecaae52" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-1f2c47f2-3c62-419d-98de-029d6f2c2b21" style="">사이트에 처음 접속하는 사람들은 이 사이트에 대한 쿠키가 없는 상태다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9e494da5-94ff-4d1f-b9bc-6e4142b25065" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-db95169f-ae19-4cc6-b0f2-c1c9240cd440" style="">쿠키 확인을 해보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ec10720d-0fbc-40a1-85b3-aae37b06c485">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:560px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ec10720d-0fbc-40a1-85b3-aae37b06c485", "src" : "https://postfiles.pstatic.net/MjAyMTA5MTdfMTk1/MDAxNjMxODYxMDExNTA2.SrYhPPTjeINaCU9vIU-xF299MaDKlUyD2lhwgu5NYX0g.5IgKoFFf0rgRqR6CdVI5pPbGeKfOaGYXX82yPIshrJYg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-09-17_%EC%98%A4%ED%9B%84_3.43.23.png", "originalWidth" : "560", "originalHeight" : "327", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="327" data-width="560" id="SE-ec10720d-0fbc-40a1-85b3-aae37b06c485_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7e0728bc-e2b5-4dcf-b8ed-a6b36982e5dd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0f024fc1-0a85-4bc2-993c-25053d0905a7" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-995b5a7d-ba04-4ffc-b1d8-8f85ba65c2fd" style="">쿠키 0개!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8ab739eb-305c-425c-8f35-54f7f1b7cadc" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-41653945-eea5-489e-affd-54622ed12aaf" style="">인증이 필요하지 않은 곳에 접속하면 쿠키는 없다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-90325576-0206-4ba4-8bd7-b522842d1eea" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-187888c4-d301-4d9a-8da1-2a92835125ed" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d470bdcd-ebee-41a8-b59b-53ae7eefd0b1" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-7c69a03c-9c87-49a8-9d39-230e91d3bf90" style="">이번엔 인증이 필요한 곳에 접속해본다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8a40bef1-1a79-459c-b726-36969234efe1" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-e4afa321-341e-46b4-98bb-7dfd3c5ee405" style=""><a class="se-link" href="http://127.0.0.1:8000/user/test" target="_blank">http://127.0.0.1:8000/user/test</a></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-65e1a8d0-de09-46ee-be0c-f10052f1d9f0" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-09121384-451d-439e-a986-ed6f5199f999" style="">(인증된 사람만 접근 가능한 곳)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-6844759f-ca17-4dbe-82e8-cd35ebc3c5c0">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-6844759f-ca17-4dbe-82e8-cd35ebc3c5c0", "src" : "https://postfiles.pstatic.net/MjAyMTA5MTdfMjQ5/MDAxNjMxODYwOTYwODI5.1ri6Frb30s5lns5rM6OmqHC712tXx_u5Lu0M9SsCcrgg.S__5irq4nX4bQuKCSeHMyiJrvfr4QM9WHyGTFy-byTwg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-09-17_%EC%98%A4%ED%9B%84_3.42.36.png", "originalWidth" : "818", "originalHeight" : "357", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="302" data-width="693" id="SE-6844759f-ca17-4dbe-82e8-cd35ebc3c5c0_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-53cf8fa9-72ad-4934-8fda-ffb32f2abb2b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0ee1706b-6eae-4760-914b-217d5ea80fd8" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-e7db68ea-6e29-4270-b568-172d41f7a737" style="">프로젝트에 스프링 시큐리티로 인증이 필요한 페이지 설정을 해뒀고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db59b2e6-6b02-4666-b81b-ad5cce70023f" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-d5164b2a-a13a-4b85-a997-2c7427b280db" style="">그래서 자동으로 로그인 페이지로 이동된 페이지가 보일 것이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-001f2937-614a-456b-88e0-56e0562cd1b8" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-0530d556-a7f3-4aaf-aeb4-ec10f593de94" style="">이렇게 인증이 필요한 곳에 접근해 쿠키를 확인해보면  JSESSIONID 라는 값이 생긴것을 볼 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f218744-6ec3-446a-9329-44d0769de1ef" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-1e696803-7f1d-4662-baea-4ed137e5d428" style="">아래 그림과 같은 상황이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-df8a8188-3d78-4eb4-b20c-372e04b9e819">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-df8a8188-3d78-4eb4-b20c-372e04b9e819", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTE0/MDAxNjMyNzE5NjE0NzIx.lDM3O3UJc7XWik-sMpwVk2dBFZ_YisczJM373xKXkk0g.3ayqZKjCNDKofbkcMT0-qimYxgG_r-z0I0XlwVgMYTkg.PNG.ghdalswl77/SE-df8a8188-3d78-4eb4-b20c-372e04b9e819.png", "originalWidth" : "1210", "originalHeight" : "806", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="461" data-width="693" id="SE-df8a8188-3d78-4eb4-b20c-372e04b9e819_0" src="images/image_6.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-705ebf8d-f6d0-4319-b619-2ea7835cb2ab" style=""><span class="se-fs- se-ff-" id="SE-971890e7-fd37-4f31-81a9-f3ce56fd82e9" style="">쿠키가 없는 상태</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-d0cf7157-12f3-4164-9a85-29fc867113e0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8745138e-2fc5-44fb-9854-a5cd25d99f5a" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-ba7b09fe-b3e1-41c0-b539-2dbdb6caaef7" style="">로그인이 필요한 서비스에 접속을 하는 순간</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3c1a2da2-2288-4a51-8363-fbe08946bf98" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-88fd2159-54f0-4882-870d-a3b655da212e" style="">서버에서는 이 사람의 세션을 만들고,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-c87a016b-eac4-46d5-b190-e35bf81d4c06">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-c87a016b-eac4-46d5-b190-e35bf81d4c06", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTk1/MDAxNjMyNzIyNTExMjgw.7JUJRxX_vjAJZUELIMTugTyFOZ-i47ASNkc-l9hsWnYg.7v3CjJ--Y55F5vE-6QfC4hH2EGzKPQ59p4kXq7Wx-f8g.PNG.ghdalswl77/SE-c87a016b-eac4-46d5-b190-e35bf81d4c06.png", "originalWidth" : "1196", "originalHeight" : "740", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="428" data-width="693" id="SE-c87a016b-eac4-46d5-b190-e35bf81d4c06_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-733abd3e-85d5-4318-a665-a9ad2254bb04">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e624b1da-d30f-4376-a48e-e77a9a4ea18e" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-5d243b3d-3fa1-46a0-b914-125eed19395f" style="">이 사람만 저 사람 세션에 접근할 수 있도록 '세션ID'라는 것을 만들어 준다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-231b80f0-49cf-4e4d-b3cd-e4704a3e2d46">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-231b80f0-49cf-4e4d-b3cd-e4704a3e2d46", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTYy/MDAxNjMyNzIyNTMzOTAy.XgonzCqq8Jeg64nA6NJJHb80oRafsquKIiv7Zi8s67gg.mdecClg3v9He32bpZQ-B0wjKn56y26_PeNacg1U_DNwg.PNG.ghdalswl77/SE-231b80f0-49cf-4e4d-b3cd-e4704a3e2d46.png", "originalWidth" : "1175", "originalHeight" : "756", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="445" data-width="693" id="SE-231b80f0-49cf-4e4d-b3cd-e4704a3e2d46_0" src="images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-437e5efb-5276-4bc0-bee3-4b4655f5b1e2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bd3247cf-b00c-4487-8272-c12b22343843" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-685d9813-d33e-41f7-afb7-5053d4fb178b" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-72c342ac-41a7-4e42-b045-277e635ee962" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-78d7f3bd-4926-441e-85bd-6e148473fbd9" style="">이 세션 ID를 전달받은 사용자1은 이것을 쿠키에 저장한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-6081243b-400e-4564-98d2-d7da9711d8a3">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-6081243b-400e-4564-98d2-d7da9711d8a3", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTc0/MDAxNjMyNzIyNTUzMzEx.lKxxCrwkbBbFP_yiMpLdSyfDIeMLThc7mqfbTaM9VCUg.DaVx7t8238bgA7Oz41bNbhkXT3BBhVuFwn1ppKhPtbUg.PNG.ghdalswl77/SE-6081243b-400e-4564-98d2-d7da9711d8a3.png", "originalWidth" : "1184", "originalHeight" : "772", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="451" data-width="693" id="SE-6081243b-400e-4564-98d2-d7da9711d8a3_0" src="images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7f55edc6-4b7b-4e63-a0a0-489f755bf449">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e8802bfc-bfce-4e4e-ac7a-b67aa508c0c1" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-3c62523e-fbd8-46a7-9920-8c7f18e0fbb1" style="">그럼 이어서 로그인 하는 과정도 살펴보자.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-49395aef-0e58-4d25-b548-91c2a3203f5d" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-f87e1f84-70f9-4149-9d9a-e358f54cb9d4" style="">사용자1은 로그인을 하기 위해서 ID와 PW를 서버로 전달할 것이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-52761184-7450-40b5-8744-c2a5195fe231">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-52761184-7450-40b5-8744-c2a5195fe231", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTgg/MDAxNjMyNzIyNjM1NTU2.75v6Bb_GynyZZ_ECxEOzUIcFnN2GvnBMxXmzoPxu-vUg.Ew5ZNrOaJPjkRdK9h6iUNdHhjMqfpHBiW3By6Iuafo4g.PNG.ghdalswl77/SE-52761184-7450-40b5-8744-c2a5195fe231.png", "originalWidth" : "1176", "originalHeight" : "769", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="453" data-width="693" id="SE-52761184-7450-40b5-8744-c2a5195fe231_0" src="images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-05d650dd-63eb-4a15-9da0-8520dd6030a8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-feabcbe4-82cc-4688-b362-e41b79fb979b" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-7b008c69-5195-4eee-a49d-2f7a123f1073" style="">그럼 전달받은 서버는 해당 ID, PW로 이 사용자가 우리 사용자가 맞는지 확인하고</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ffcfa06c-e7cf-4238-a7ad-c797849e59b3" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-95e5617d-9387-402f-9587-d07ad5f05f88" style="">이 사용자가 우리 사용자가 맞으면, 아까 생성된 사용자1의 세션에 인증 정보를 저장한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ec3d7eab-25be-4189-a583-0f0146182b05">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ec3d7eab-25be-4189-a583-0f0146182b05", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTQw/MDAxNjMyNzIyNjc3MjIw.coG2uK1P6DC9SszhYAPQ9BcAgISCu6km6wUylrsL04Qg.c91X8LP12bxYXPjF67Qx6T_IKlIp0_w86ZJe_BqYjDUg.PNG.ghdalswl77/SE-ec3d7eab-25be-4189-a583-0f0146182b05.png", "originalWidth" : "1164", "originalHeight" : "776", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="462" data-width="693" id="SE-ec3d7eab-25be-4189-a583-0f0146182b05_0" src="images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-0042b209-9616-4c0d-ba82-2c875f7d0573">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c97c40d8-f7eb-4f48-940a-e01d078d328d" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-ff50e61a-6b09-4626-9f8e-390d048b5f63" style="">여기에는 사용자의 ID나.. 사용자의 이름 등 다른 것도 저장할 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8af4dad3-3b57-4f06-aa5e-0db7c540b604" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-a82989ee-797d-4a62-b83b-e0e81714f9bd" style="">이 설명에서는 그냥 '인증'이라는 글자를 저장했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2efdc29b-9779-4555-97cf-316cfee88b14" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-889ef6c0-8460-4d0e-929c-7676d0d5f193" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c56577af-56f1-4a2c-bee7-bb1e1dd60e3d" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-93d12ead-d490-4733-808b-9140da06f54a" style="">이렇게 인증이 끝났다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39fed35f-ff8d-4256-8396-89c92fbedbad" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-6e562ddb-c74d-49b8-9bf5-1a8d284ea02d" style="">그럼 다시 이 사용자가 로그인이 필요한 서비스에 접근할 때, 아까 발급받은 세션ID와 함께 요청을 보낸다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bd933ca2-040a-4668-b4c2-8c3560dc9387" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-701d3ff2-557d-42bf-ad5c-465882aa38c5" style="">이 세션ID는 아까 쿠키에 저장해 두었다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-537feb09-6167-44c5-9153-67364acf1029">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-537feb09-6167-44c5-9153-67364acf1029", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfOTcg/MDAxNjMyNzIyNzA4MDM2.BzxGyAj31YzqToG1FcIl_vyG_5CpMg1tICvczTnmqSAg.qTAgfh2TNKxif8vgefvK0V4zx69ZkzKEBAF-OFnRGEwg.PNG.ghdalswl77/SE-537feb09-6167-44c5-9153-67364acf1029.png", "originalWidth" : "1163", "originalHeight" : "744", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="443" data-width="693" id="SE-537feb09-6167-44c5-9153-67364acf1029_0" src="images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-2d83e44e-7647-42ce-8cd7-ae15e07f4f77">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bb43eb5c-72c2-46ef-a064-a54b91e10d8a" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-663c0fa8-2f04-4d80-9e7d-e0ea33e06852" style="">이 세션ID를 전달받은 서버는 세션ID에 맞는 저장소에 가서 인증이 됐나 안됐나 확인해 본다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1c2e6fe0-81cb-4faf-913f-c816dd792494">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1c2e6fe0-81cb-4faf-913f-c816dd792494", "src" : "https://postfiles.pstatic.net/MjAyMTA5MjdfMTEz/MDAxNjMyNzMxNjY0NTQ0.fuXFxewHwem1vKt4A3IEPSFMDNcVxkuHCon2bPRZe7Eg.asp8FfuOfZ2j6cokwKRdnYg6UbSlGxHHR77nl_5cmIAg.PNG.ghdalswl77/SE-1c2e6fe0-81cb-4faf-913f-c816dd792494.png", "originalWidth" : "1188", "originalHeight" : "792", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="462" data-width="693" id="SE-1c2e6fe0-81cb-4faf-913f-c816dd792494_0" src="images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-64230202-9be5-4431-a12d-aec82fd8e4b2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-142a84b5-b4c1-4f8d-9061-ad28cd06eab0" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-e4a4d891-da44-4b8a-bfee-a37bf53834c2" style="">지금 사용자1은 아까 인증을 받았기 때문에 세션에 '인증됨'이 저장되어 있으니까</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bca2ef5d-6e34-46c1-9e34-050e72cc89bb" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-1bb96096-42c6-46f3-a94b-0d992b96dc28" style="">인증된 사람이라는걸 서버가 알 것이고, 인증이 된 사람이니 접근을 허용해 준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7835ba0e-1432-4d77-994c-59c28edcfec4" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-c4b7ea61-1968-4ee6-815c-d38d2dd88615" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-af10e70a-502f-402d-aad6-77953a8c9977" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-403e3624-ab8b-42d8-b8bc-e24c6edf926f" style="">자 이렇게 인증 과정이 끝났고!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-74eb6f32-6836-44c7-b19e-41846ec23b5e" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-6b73dcc1-576f-4328-9f00-0eded412334d" style="">로그인에 성공해서 인증을 받으면, 접근 가능한 페이지에 접근이 가능해진다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c9ec3353-f96d-4604-b235-37b2a531005c" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-0f301001-d333-4258-89aa-f3aefc249c17" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sticker se-l-default" id="SE-d7485130-969d-4a26-9c5c-05897b9efac3">
+<div class="se-component-content">
+<div class="se-section se-section-sticker se-section-align-center se-l-default">
+<div class="se-module se-module-sticker">
+<a class="__se_sticker_link __se_link" data-linkdata='{"src" : "https://storep-phinf.pstatic.net/linesweet_01/original_9.gif", "packCode" : "linesweet_01", "seq" : "9", "width" : "185", "height" : "160"}' data-linktype="sticker" href="#" onclick="return false;">
+<img alt="" class="se-sticker-image egjs-visible" src="https://storep-phinf.pstatic.net/linesweet_01/original_9.gif?type=pa50_50"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-d219dbc9-f990-41dc-b68c-6fbbf4d80b80">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-56a5db9a-1d35-4cf9-897b-486268091f58" style=""><span class="se-fs- se-ff-nanumsquare" id="SE-a803852d-7085-4957-b3fe-b0fabaefab4e" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

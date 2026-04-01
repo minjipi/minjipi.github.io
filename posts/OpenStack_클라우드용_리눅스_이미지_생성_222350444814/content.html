@@ -1,0 +1,534 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222350444814 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default" id="SE-ed6d1aab-7e38-41d9-9884-eb69e6051753">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e361281-3903-4f3d-9637-cf9cb68d2b60" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-2e7a8fd6-7d9a-42c1-a691-9177fac3422f" style="color:#000000;"><b>클라우드용 리눅스 이미지 만들기</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-a1ed1d30-a4b8-462e-8868-ffa6d7699abc">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-be17a6ef-299b-406d-8195-abd4e437c037" style=""><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" id="SE-3622476e-ee4e-404a-93cb-ca2062255cae" style="color:#000000;">CentOS7 minimal ISO 파일을 이용하여, 클라우드용 이미지 생성하기</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6c6d93f4-28e6-4af5-967d-275932713e6d" style=""><span class="se-fs- se-ff-" id="SE-af552472-6b2c-4681-b41a-dfb3ef233c03" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component" id="SE-235cd011-c73f-4685-88a1-2c2ea11d7806">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="3" rowspan="1" style="width: 100.0%; height: 129.0px;  background-color: #f3fdff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-4c59a255-46d9-4814-8fc4-dc041c95e156" style=""><span class="se-fs-fs19 se-ff-nanummyeongjo se-style-unset" id="SE-3159f553-c56b-4ad3-b7ce-2c535c3fafb1" style="color:#000000;"><b>&lt; ISO 파일로 클라우드용 이미지 만들기 </b></span><span class="se-fs-fs19 se-ff-nanummyeongjo se-style-unset" id="SE-c912020c-ba88-46b7-9981-1b593ebc04a9" style="color:#000000;"><b>요약 &gt;</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f19f8c3f-1deb-4ded-b67e-176746ed9c7b" style=""><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-fe7d8a3a-6fdc-4cda-961b-17b79a51c0bc" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4c6e968d-81e2-443f-826b-e2886efae4ad" style=""><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-84d7bbc7-13b6-4ba1-80ec-2090954190fa" style="color:#000000;">1. QEMU + KVM 에뮬레이터를 실행할 수 있는 환경에서 QEMU + KVM을 이용해 가상머신(qcow2타입의 디스크 이미지를 가진)을 생성</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-15779f0c-52e5-46bc-9c92-328a63600a33" style=""><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-ed4fe5ef-7775-4889-aa1a-36cf1e22f075" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-388559e1-b35d-4a54-9634-e02a42534f4a" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-a98c42e1-5e83-4f43-a62d-4a4b6cd1a847" style="color:#000000;">2. 가상머신에 운영체제 설치</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-e648f638-6193-4a12-801f-edd8f3b6a920" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-969745b1-20e9-4bd2-87a2-b5803abf6083" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-d8c0ea6e-89dc-48ba-b996-c2bed7c4de02" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-2c7aceea-1926-48cb-b95c-694322ecbefe" style="color:#000000;">3. 부팅시 DHCP로 네트워크 설정이 되도록 설정</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-b6414823-c59d-456e-8a75-e8985ac8f3d2" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-f7e0c7e5-6c51-4d71-9b82-70ca490e48b5" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-23ead2b5-67e9-44e7-b87a-2af7efb0416e" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-a68788da-5932-4c97-979b-0c1623040f2f" style="color:#000000;">4. acpid, cloud-init, cloud-utils-growpart</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-f99f5800-664e-4ba2-9826-fff46843add5" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-3f9a66e4-1d86-491b-a363-9e7fa8d434c0" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-dde0e3b3-5308-4ad5-aee7-6eee4df2a48e" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-5f43315b-0d8c-4cdc-a113-1d49b61005bc" style="color:#000000;">5. 추가적인 설정하기 (zeroconf 설정, 부팅 환경설정)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-694ab380-0b35-4510-804e-9aa750d3c083" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-58b407a6-89b1-4cb8-a7f6-edaad9998624" style="color:#000000;">​</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-febd1e16-8040-409e-a6dd-c4cbde1f894b" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" id="SE-4d02003f-f7ab-4868-9359-67076b1d541d" style="color:#000000;">6. 확인 (오픈스택에서 이미지 등록하고 가상머신 생성, QEMU + KVM로 수동으로 가상머신 생성)</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_table", "id" : "SE-235cd011-c73f-4685-88a1-2c2ea11d7806", "data": { "columnCount" : "3" }}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b301b752-df83-45c2-aac6-963be921c558">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-744d04e0-0661-4de0-a1df-a6d4445a5ecc" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-2248b800-4660-4a2c-beba-10a681a75754" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-deb92357-c969-4a58-ba97-e721a997f747">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-44c209b6-9506-4776-82de-c1021f1d1f16" style=""><span class="se-fs- se-ff-" id="SE-d6f4825b-da4e-4379-a597-226c12b679af" style="color:#000000;">실습 환경(이미지 생성) 준비</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-808f26fe-221b-4d89-8b9a-e657fefccfc9">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4b779645-4648-4435-a904-630874fe89fb" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f134749c-c8c7-4ce0-9dd2-c3f42db29ae3" style="color:#000000;">vmware같은 하이퍼바이저 종류인</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-035cd24c-0e9e-478f-a278-e69af76c30aa" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-4f1f77f4-d9e4-4b2f-8dc9-f04af1b086b6" style="color:#000000;"><b>QEMU &amp; KVM 설치.</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-0be460a8-23ca-4959-bf35-2a409404552e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">dnf module install virt
+dnf install virt<span class="token se-code-operator">-</span>manager virt<span class="token se-code-operator">-</span>install virt<span class="token se-code-operator">-</span>viewer libguestfs<span class="token se-code-operator">-</span>tools qemu<span class="token se-code-operator">-</span>img</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0be460a8-23ca-4959-bf35-2a409404552e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-47b8ac0f-a0e8-4ed6-8c87-02fe7f773a71">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a83cb7fa-81a0-4d7f-af4b-d5424da20349" style=""><span class="se-fs- se-ff-" id="SE-74580a01-d916-4783-9278-98f3f677e46b" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-82444f84-7176-4baa-9665-775dee2276f6" style=""><span class="se-fs- se-ff-nanumgothic se-style-unset" id="SE-9c5b1225-4f24-49c0-9141-274af539443f" style="color:#000000;">CentOS7 ISO 파일 다운로드.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-b506e929-9a1f-4b6b-ab85-4a273840efdc">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">wget https<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>mirror<span class="token se-code-punctuation">.</span>umd<span class="token se-code-punctuation">.</span>edu<span class="token se-code-operator">/</span>centos<span class="token se-code-operator">/</span><span class="token se-code-number">7</span><span class="token se-code-operator">/</span>isos<span class="token se-code-operator">/</span>x86_64<span class="token se-code-operator">/</span>CentOS<span class="token se-code-operator">-</span><span class="token se-code-number">7</span><span class="token se-code-operator">-</span>x86_64<span class="token se-code-operator">-</span>Minimal<span class="token se-code-operator">-</span><span class="token se-code-number">2009</span><span class="token se-code-punctuation">.</span>iso</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-b506e929-9a1f-4b6b-ab85-4a273840efdc"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-18643c6e-f81b-4bfd-8904-9599bdf4d32b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7aa48709-6143-45f1-8126-abf7398ff485" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-a3d596fe-b4d6-4ec4-b657-3702286a83b2" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-cf8d0f9c-9b12-463f-a12c-44460f1d4157">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3b81278b-cd25-4cd4-af06-1ae29a7f6a1d" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-7684df38-fdd0-43d3-9f97-f2af587ecf88" style="color:#000000;">(0) qcow2 이미지(디스크) 파일 생성</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-34b70d08-82c7-4efe-bc32-30259b5f4f6c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-211b436f-babe-4872-9a2b-9d0e683e00f2" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-9233a57e-168a-480a-ae5f-3a09d7490047" style="color:#000000;">가상의 하드디스크(비어있는 하드디스크)를 생성하는 것.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-1b502505-b773-47dd-bad8-38e1ec37c800">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">qemu<span class="token se-code-operator">-</span>img create <span class="token se-code-operator">-</span>f qcow2 <span class="token se-code-punctuation">[</span>이미지 파일 위치<span class="token se-code-punctuation">]</span> <span class="token se-code-punctuation">[</span>이미지 파일 크기<span class="token se-code-punctuation">]</span>
+qemu<span class="token se-code-operator">-</span>img create <span class="token se-code-operator">-</span>f qcow2 <span class="token se-code-operator">/</span>virt<span class="token se-code-operator">/</span>centos7<span class="token se-code-punctuation">.</span>qcow2 20G</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-1b502505-b773-47dd-bad8-38e1ec37c800"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-78790a88-bf37-4c59-8b19-6f199974ad5e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-40f451da-d724-43c0-bb75-bbe732f96b7e" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-1d69a96f-2303-47ca-8a9a-5679486139c2" style="color:#000000;">이것으로 가상 머신을(centOS7를 설치할 가상머신을) 생성!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9aab5267-b448-48f4-8c1a-cf68440e6c19" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-ea28553c-5fa7-4da8-9d98-0a26a26b14dd" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3165aabf-524f-4ed7-9a03-d4badf845438" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" id="SE-9e02c2cf-7c98-4e18-a287-70128a139c71" style="color:#000000;"><i>** VMware 에서는 이 작업 시 splite file로 vmdk 파일이 나누어 저장되는데,</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-428dd882-ee02-4de1-9938-a6f128581a1c" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" id="SE-c1b9d5f2-a8af-4580-b29b-15aceadd859e" style="color:#000000;"><i>(손상 시, 피해 최소화를 위해) 여기서는 centos7.qcow 파일이 하나인 듯 single file로 저장된다.</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2c879d93-69ad-4c1e-a059-e4d3649faeab" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" id="SE-ba2030fc-1aa9-4671-856d-251b8a01e358" style="color:#000000;"><i> 그리고 VMware에서도 single file 만들 수 있음!</i></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-64fbe68c-5654-48c6-85b8-8e18150d6350" style=""><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" id="SE-869d20d2-9382-49b8-9d36-ce3e151f9dc8" style="color:#000000;"><i>​</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-c95c74e7-bb5a-4927-ad9b-9d18a7e1d576">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1f6bf70b-990f-4ae2-b030-531e7dc6c4c4" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-e7b095d6-4a7a-4bff-8de3-03b13b238e16" style="color:#000000;">(1) 가상 네트워크 생성</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-37c2e60d-7399-4553-9aca-c047d94b8195">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">virsh net<span class="token se-code-operator">-</span>start <span class="token se-code-keyword">default</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-37c2e60d-7399-4553-9aca-c047d94b8195"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e6533e14-5b22-4978-8d89-ef2af0305256">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de1ce584-307c-43d6-8367-a379573394b7" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-8ee23aa5-c72d-4f9b-aec6-d694cc12c7ad" style="color:#000000;">default 라는 이름의 가상 네트워크 생성.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8e49cff4-be05-44ae-b84d-dc8c71d99fb0" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-f38e84d7-8f45-4e3a-b94a-727f70046c7e" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-5cc6a4b6-946d-42ac-9694-d83497963b8b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">virsh net<span class="token se-code-operator">-</span>list</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-5cc6a4b6-946d-42ac-9694-d83497963b8b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-07c77340-b255-4d73-834b-45d4e5039360">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-77ca8973-3292-4beb-9e56-1500f72fa3ec" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-cc3d0e28-4a4a-4b01-a6dc-67ae27d28381" style="color:#000000;">생성한 가상 네트워크 확인.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-51125b68-f452-40dc-8ac5-eacf72ce9081" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-357ee490-3f14-4c6c-b7e3-1d419076c864" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-ea2dce81-088b-4eaa-ab7a-d1c6980d3759">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-130212cf-895c-4242-877a-53aa9833af2a" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-f12df4c1-0b80-44bd-a747-28f16990a4b0" style="color:#000000;">(2) 가상 머신 생성</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_stripe __se-component" id="SE-17644d8e-aa95-4b35-aab7-807cc61620bf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">virt<span class="token se-code-operator">-</span>install <span class="token se-code-operator">--</span>name centos7 <span class="token se-code-operator">--</span>ram <span class="token se-code-number">1024</span> \
+                    <span class="token se-code-punctuation">[</span>생성할 가상머신 이름<span class="token se-code-punctuation">]</span> <span class="token se-code-punctuation">[</span>생성할 가상머신 메모리<span class="token se-code-punctuation">]</span>
+<span class="token se-code-operator">--</span>disk <span class="token se-code-operator">/</span>virt<span class="token se-code-operator">/</span>centos7<span class="token se-code-punctuation">.</span>qcow2<span class="token se-code-punctuation">,</span>format<span class="token se-code-operator">=</span>qcow2 \
+         <span class="token se-code-punctuation">[</span>가상머신 하드디스크의 경로<span class="token se-code-punctuation">]</span>
+<span class="token se-code-operator">--</span>network network<span class="token se-code-operator">=</span><span class="token se-code-keyword">default</span> \
+           <span class="token se-code-punctuation">[</span>가상머신이 쓸 네트워크<span class="token se-code-punctuation">]</span>
+<span class="token se-code-operator">--</span>graphics vnc<span class="token se-code-punctuation">,</span>listen<span class="token se-code-operator">=</span><span class="token se-code-number">0.0</span><span class="token se-code-number">.0</span><span class="token se-code-number">.0</span> <span class="token se-code-operator">--</span>noautoconsole \
+           <span class="token se-code-punctuation">[</span>vnc설정<span class="token se-code-punctuation">.</span> 가상머신 화면 받아오는<span class="token se-code-punctuation">.</span><span class="token se-code-punctuation">.</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-operator">--</span>os<span class="token se-code-operator">-</span>type<span class="token se-code-operator">=</span>linux <span class="token se-code-operator">--</span>os<span class="token se-code-operator">-</span>variant<span class="token se-code-operator">=</span>centos7<span class="token se-code-punctuation">.</span><span class="token se-code-number">0</span> \
+            <span class="token se-code-punctuation">[</span>운영체제 타입과 종류<span class="token se-code-punctuation">]</span>
+<span class="token se-code-operator">**</span> 생성 가능한 가상머신 목록 확인은 <span class="token se-code-string">'osinfo-query os'</span>로 확인<span class="token se-code-punctuation">.</span>
+<span class="token se-code-operator">--</span>location<span class="token se-code-operator">=</span><span class="token se-code-operator">/</span>virt<span class="token se-code-operator">/</span>CentOS<span class="token se-code-operator">-</span><span class="token se-code-number">7</span><span class="token se-code-operator">-</span>x86_64<span class="token se-code-operator">-</span>Minimal<span class="token se-code-operator">-</span><span class="token se-code-number">2009</span><span class="token se-code-punctuation">.</span>iso
+             <span class="token se-code-punctuation">[</span>운영체제 설치 <span class="token se-code-constant">ISO</span> 이미지 경로<span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-17644d8e-aa95-4b35-aab7-807cc61620bf"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6225a935-efb9-4223-a313-4b161408255f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">virt<span class="token se-code-operator">-</span>install <span class="token se-code-operator">--</span>name centos7 <span class="token se-code-operator">--</span>ram <span class="token se-code-number">1024</span> \
+  <span class="token se-code-operator">--</span>disk <span class="token se-code-operator">/</span>virt<span class="token se-code-operator">/</span>centos7<span class="token se-code-punctuation">.</span>qcow2<span class="token se-code-punctuation">,</span>format<span class="token se-code-operator">=</span>qcow2 \
+  <span class="token se-code-operator">--</span>network network<span class="token se-code-operator">=</span><span class="token se-code-keyword">default</span> \
+  <span class="token se-code-operator">--</span>graphics vnc<span class="token se-code-punctuation">,</span>listen<span class="token se-code-operator">=</span><span class="token se-code-number">0.0</span><span class="token se-code-number">.0</span><span class="token se-code-number">.0</span> <span class="token se-code-operator">--</span>noautoconsole \
+  <span class="token se-code-operator">--</span>os<span class="token se-code-operator">-</span>type<span class="token se-code-operator">=</span>linux <span class="token se-code-operator">--</span>os<span class="token se-code-operator">-</span>variant<span class="token se-code-operator">=</span>centos7<span class="token se-code-punctuation">.</span><span class="token se-code-number">0</span> \
+  <span class="token se-code-operator">--</span>location<span class="token se-code-operator">=</span><span class="token se-code-operator">/</span>virt<span class="token se-code-operator">/</span>CentOS<span class="token se-code-operator">-</span><span class="token se-code-number">7</span><span class="token se-code-operator">-</span>x86_64<span class="token se-code-operator">-</span>Minimal<span class="token se-code-operator">-</span><span class="token se-code-number">2009</span><span class="token se-code-punctuation">.</span>iso
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6225a935-efb9-4223-a313-4b161408255f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1339ea9e-db6a-481d-a56b-dc9a08b86072">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-eba11eea-bdc4-4e9e-9c6c-1f227c747ac8" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-d23128ff-7aa2-4a13-a612-e595bb90883a" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-d951b44d-a73c-4717-b147-c1a8753e868c">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a7b5324e-f7b7-4782-b923-f6829afbc1fc" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-606dd56c-69b6-493a-9acd-7f33d9008bb1" style="color:#000000;">(3) 운영체제 설치 진행</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-2e5eec84-916e-4c02-8e76-cd83e40ad541">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-2e5eec84-916e-4c02-8e76-cd83e40ad541", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTNfNzYg/MDAxNjIwODgxNjY3MTY2.lfbJQFBvf3_EBertI9rKKsMJSTZzbY5Re_LmyYeq2_kg.VEBlBoPd2yU_u0s4QeFvREZqx33XF9m0T6uUcXb0rksg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-13_%EC%98%A4%ED%9B%84_1.43.07.png", "originalWidth" : "3584", "originalHeight" : "2088", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="403" data-width="693" id="SE-2e5eec84-916e-4c02-8e76-cd83e40ad541_0" src="images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b6b8c449-1a0c-4ba9-9086-63008d722d9c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-72769a65-bfd6-4ab3-be71-cb2e3f8b5efa" style=""><span class="se-fs- se-ff-nanumbarungothic" id="SE-0ec52aea-f5d1-418b-8253-0ede61477397" style="color:#000000;">Reboot</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-e525433e-f4d6-4ea4-b743-f67e6075ac24">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:651px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-e525433e-f4d6-4ea4-b743-f67e6075ac24", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTRfMTEz/MDAxNjIwOTUzODE0MDUz.Roem6yqaeBkyniXsMgm_bVyppMiShRttr5ZTPJz1kVUg.PVtF4PISI3OAPCT5Uuxb4_IhyLd1NGUeHZGM8EXjqSUg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-14_%EC%98%A4%EC%A0%84_9.56.50.png", "originalWidth" : "651", "originalHeight" : "523", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="523" data-width="651" id="SE-e525433e-f4d6-4ea4-b743-f67e6075ac24_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-1323cc6d-3e65-468e-b561-e0e182c8eb73">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-24682b55-bb0f-4269-86f9-88fb05d6d598" style=""><span class="se-fs- se-ff-" id="SE-33e9d4f2-99e6-45be-8d38-d0514c3bee83" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-98f74069-e5bb-4156-961e-244c4fed1205">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-70904214-c981-40b8-8fa6-c02d02fb915d" style=""><span class="se-fs- se-ff- se-style-unset" id="SE-27af1933-b2ae-4fa9-878c-0ce00d32c21d" style="color:#000000;">(4) 클라우드용 이미지로 만들기 작업</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-109b74fd-aec2-41d2-a424-3f034ba87146">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2a046efd-0de3-4a64-95e2-b2bb152d9153" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c07aad53-9a10-4fe5-abca-ce42bfa2b987" style="color:#000000;"><b>[0] 네트워크 설정</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a2db3fbe-7070-47c0-bcd7-62cddd6e19fb" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-27ea0b25-ba6c-422b-87ba-c77656e4077b" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bc697452-d4a4-4a97-ad17-1101dd602fe1" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4091bc4e-0e72-4fa9-9f2f-672c64038798" style="color:#000000;">먼저 네트워크 설정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-176f6bae-86df-4d04-9d58-75c1880b24f5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">dhclient  </div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-176f6bae-86df-4d04-9d58-75c1880b24f5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4ae4e497-1240-4256-a314-6515599793ec">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8740a214-2fb4-40de-b3d8-eff33837f5bd" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3f3e873e-7666-4159-9303-87919c0c83ba" style="color:#000000;">자동으로 아이피 할당받고,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e07d0df8-677a-4514-9d14-77b293ed6b40" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4b6d7327-2f7a-45c9-afb1-904ee7660427" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-image se-l-default" id="SE-b1e0d88b-27cf-4dd2-b0c4-e62173ff7cfa">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:444px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-b1e0d88b-27cf-4dd2-b0c4-e62173ff7cfa", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTRfMjIy/MDAxNjIwOTUzOTI0NjQy.yZOn0gHcDBCqzytSl-Xx-IlRoMHOVlKKQ50avkQZJ1Ug.a_vSu3LZ2iA-VhOVu_9OhRb4DjjmnuJRXicez7D_AEwg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-14_%EC%98%A4%EC%A0%84_9.58.41.png", "originalWidth" : "444", "originalHeight" : "23", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="23" data-width="444" id="SE-b1e0d88b-27cf-4dd2-b0c4-e62173ff7cfa_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default" id="SE-1ddde8d9-e2a3-4509-9921-ebdca3910fb6">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:681px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1ddde8d9-e2a3-4509-9921-ebdca3910fb6", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTRfMTYx/MDAxNjIwOTUzOTA3MTIy.J-GdpWwfd8-CGA5MCL5yITaCJ87tprSgVcTTG5NPVH0g._wqBM9mzM9uWDIkSuvLMgpJhxpoKjGQXreTp1FOD3v4g.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-14_%EC%98%A4%EC%A0%84_9.58.23.png", "originalWidth" : "681", "originalHeight" : "247", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="247" data-width="681" id="SE-1ddde8d9-e2a3-4509-9921-ebdca3910fb6_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-9c21e269-ebd8-44ec-b629-03ec73bb00e6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-926af85e-3b41-4507-8d8c-6120b73402dd" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3625873d-7200-4066-898f-1fd7c623b55b" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-46133ef1-c9a9-45f3-858a-28aa66f15f45" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-9f025178-56b8-4669-8584-125d75a05006" style="color:#000000;"><b>[1] acpid 설치 및 자동 실행 설정</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7b1d8f99-a0f9-4a03-bd8b-e24cf3a65f00" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7126ceaf-5761-4df0-a9c6-1e9e5febc677" style="color:#000000;"><b>acpid</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-45842922-3129-4411-b056-915431d51425" style="color:#000000;"> 설치.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1aad751f-7952-4756-bc67-e570030b7334" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c31ee719-4cb6-4ca5-a1d2-7f0b9f850623" style="color:#000000;">하이퍼바이저가 가상머신을 재부팅 또는 종료할 수 있게 해주는 프로그램!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-998305a0-cf54-4ead-a8d4-dc83ff12b74f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">yum install acpid</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-998305a0-cf54-4ead-a8d4-dc83ff12b74f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-3b263240-8a81-4414-ab33-cf64c8ccdf1d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-16404848-f48c-4d5d-8f56-03f0e66e5113" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-344f0fe5-64e7-499a-bb50-f49e2f9876b1" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-24d0d5cd-7d16-47f3-9dcb-d992a0b67206" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0ea84fbe-9c60-4b9c-95c0-c3ef55459238" style="color:#000000;">자동 실행 설정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-79cc3974-8aa4-40fb-93f5-46d474bba50e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl enable acpid</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-79cc3974-8aa4-40fb-93f5-46d474bba50e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-652960ea-0163-4240-9edf-07b631afdc6b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bdf8c129-a364-49e3-9cc4-3ed3ad3d2bb2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-9dfbe89e-3a49-4f11-91e3-0fcadd4e3252" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-abcd8302-ddd3-4de3-af7d-5797280fa96a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2ef09d9d-85d7-42f5-a7d4-d77bcce887d0" style="color:#000000;"><b>[2] cloud-init 설치 및 설정</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f711e74f-ed0e-490c-991f-3b71dc29ddcb" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3206067d-454d-4d25-9b93-72a38a13c37b" style="color:#000000;">cloud-init : 가상머신이 생성될 때 초기화 되어야 하는 호스트 이름, 네트워크 인터페이스, 그리고 인증키를 설정하는 것과 같은 가상 머신 초기 설정을 자동화하는 도구.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-504e9b2e-43b7-45c7-9f06-1f00d261ba97" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3b98c2f3-6009-4fd8-b1b7-138eeae192ba" style="color:#000000;">(여기서는 ssh 공개키를 가상머신에 넣도록 해줄 것임)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cab0537e-8bbe-4116-861b-26a33127b5a0" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-846cdedd-7b67-4c35-b9ce-875b8e6f41a7" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09c3b897-167c-410e-adb4-55fc11e9596d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5d4f2cbe-8490-4ab4-a1a6-818f53eeb24d" style="color:#000000;">cloud-init 설치)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-eef5acb6-e20b-41c0-a33b-5950ced99701">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">yum install cloud<span class="token se-code-operator">-</span>init</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-eef5acb6-e20b-41c0-a33b-5950ced99701"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-59260796-e386-4635-babc-efb02491b4f6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-52a3d2e7-7a79-421d-8a3b-6159c02e16fa" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-469e8731-97c5-42f9-b8db-5f98597898d5" style="color:#000000;">설정파일 위치 : /etc/cloud/cloud.cfg</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bf7dd99e-95ff-4c80-90f9-f7e6d148d5ac" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b8187fc2-3428-4854-a7be-60ed9b8dcab3" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-73d41872-2fdc-4b5f-aa5f-e03f569a439a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f2dbc0d3-f1af-4cf1-b269-3b1c3fdd9d52" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e9b247db-9b0f-427b-ab88-f334207d931d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-1709194a-3f2e-44d1-970e-faaafc01693d" style="color:#000000;"><b>[3] cloud-utils-growpart</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a091fe85-a0e2-43cd-a38d-e6f995411972" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-237dbffa-a595-4458-adc8-78d608ee13d0" style="color:#000000;">하이퍼바이저가 가상머신의 하드디스크 용량을 늘렸다- 줄였다 할 수 있게 해주는 프로그램.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-be684097-9cce-4a19-9abd-8de35baba965">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">yum install cloud<span class="token se-code-operator">-</span>utils<span class="token se-code-operator">-</span>growpart</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-be684097-9cce-4a19-9abd-8de35baba965"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e1528f41-e988-4348-9960-f83a5994807b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e0faa3f1-e28e-4ba4-8c3a-b79c26ccd57e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-67f0a68c-b4c8-4cbd-ab9c-a424c48dadc2" style="color:#000000;">* lvm resize2fs 명령어 처럼,  하드디스크 용량을 자동으로 관리 해주는 것.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-699034f0-eabf-45d5-b1b3-b37fa5a36a84" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0a0789f0-ed28-4144-9d07-e6613691a4ee" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2de3871b-d434-4ce5-92f0-cc6945c40f5b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-482185bb-3442-4b8a-aa41-a405a49e5ee5" style="color:#000000;"><b>[4] zeroconf 설정</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2ba8f192-157f-48dc-8b0a-63560b8fb7de" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-401e374f-3864-4b0b-a838-74ad668becfb" style="color:#000000;">가상머신이 메타데이터 베이스에 접근할 수 있도록 하는 설정.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7d2735f7-01fa-4c43-83d2-5dbc1bde6c02" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-b04b7a0e-6e73-4370-a209-69808c6b91a4" style="color:#000000;">* 메타데이터 베이스 : 오픈스택이 가상머신에 대한 정보(아이피, 에러 등..)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-5b23af66-ca48-40f5-844f-0a53966ee1d5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">echo <span class="token se-code-string">"NOZEROCONF=yes"</span> <span class="token se-code-operator">&gt;&gt;</span> <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>sysconfig<span class="token se-code-operator">/</span>network</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-5b23af66-ca48-40f5-844f-0a53966ee1d5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-5811578b-d381-4928-bedf-92afd1f0afd7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4ea2c971-fadf-4043-8992-cac23f92dcc4" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9a851b99-20fb-4a28-a117-f498905ddaea" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1385939f-af31-4019-a16e-657ba02f219d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4945eff3-e850-4b06-8199-9394ecd4cff6" style="color:#000000;"><b>[5] nova에게 로그를 보여줄 수 있도록 설정</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-dd04529d-807b-40f4-9d2c-d713275096b8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span><span class="token se-code-keyword">default</span><span class="token se-code-operator">/</span>grub</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-dd04529d-807b-40f4-9d2c-d713275096b8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8c733df4-b080-4cf1-ba70-753d6d661fc2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8c94cdd0-e682-409a-9c58-e39a192471d3" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-59e207d8-0ebf-44fc-a79e-6e47e82ae12c" style="color:#000000;">들어가서 rhgb quiet 부분을 console=tty0 console=ttyS0,115200n8 로 변경.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d9d99b34-1379-417e-af6d-fb482471073e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">grub2<span class="token se-code-operator">-</span>mkconfig <span class="token se-code-operator">-</span>o <span class="token se-code-operator">/</span>boot<span class="token se-code-operator">/</span>grub2<span class="token se-code-operator">/</span>grub<span class="token se-code-punctuation">.</span>cfg
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d9d99b34-1379-417e-af6d-fb482471073e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-90f79df9-e180-4102-9934-9ea977ff95c4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-af021808-f1c5-4e93-9355-1c8300ec5837" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-2287e671-7689-4e9a-a177-108754dbf531" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39af07b1-646d-4153-a167-649185fb852f" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-0ac516c2-a6a0-4275-b1be-2c7487753158" style="color:#000000;">[6] 전원 종료</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7cc3bd01-631b-41c4-994e-cb310723c5d7" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-703e6d6a-ece0-4d2c-83b2-2175b7e2e8cb" style="color:#000000;">poweroff</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6c28cdf8-d1f2-4db6-9809-6cb506894b46" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-4955becf-720f-4145-b304-66386af7fc6d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f277e06-ddea-4df9-80b7-fa3a32f13b16" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-fdad8963-716f-4517-b024-fb6a975bc690" style="color:#000000;">[7] 호스트PC에서 다음을 설정</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-be972578-567f-469e-9828-0144c26a6f65">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">virt<span class="token se-code-operator">-</span>sysprep <span class="token se-code-operator">-</span>d <span class="token se-code-punctuation">[</span>가상머신이름<span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-be972578-567f-469e-9828-0144c26a6f65"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ea1ab93d-2ba7-472c-8b5d-97e909f5e1f5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c47b3d1f-f0d7-4354-be34-41accaa06c16" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-e9e5731c-03e2-4be3-a2a4-dc03f05f6d9b" style="color:#000000;">위 명령어로 하드디스크에 기록된 고유값(맥주소 등..)을 삭제한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b2deb13c-8e8b-40c4-9a35-9b34016e100a" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-bc997b02-6290-417a-87f1-3fcef440e777" style="color:#000000;">왜냐면 우리는 이 것으로 여러대의 컴퓨터를 생성할 것이라 이것을 지워주고 사용!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c595258a-31ca-4103-a426-95642952cab3" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-a03c84ee-5344-4bba-ab8b-dd1370bee71b" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d3d75e4e-0680-40b5-a76b-10d1d6284941" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-60eeace6-d8cb-411c-b0d0-ecd4d81ba63d" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a4acd493-de32-44d1-8d36-361f3901b796" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-9971edd0-ec66-4362-8545-5922aaa7d3d6" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-dc86e26b-5f5c-4ecb-9abb-1a0a2439c910">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8c07dd12-42f8-4ee2-a5be-0b6e015cabf5" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-52e6515e-9e49-4634-adf4-9a3e1b3ada38" style="color:#000000;"><b># 🐾</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-2c18d2a8-f9a7-44cd-b0f1-324f7151c45c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-11c18054-c0a4-412c-a4c1-9956f3e512d9" style=""><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" id="SE-fb53f3d4-5d97-4ccf-b169-5ac3d7b9cc2c" style="color:#000000;">위에서 만든 이미지 파일을 오픈스택에 이미지 추가!</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-43c71aa9-a3d5-4b96-8346-0223500dfc3c">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-43c71aa9-a3d5-4b96-8346-0223500dfc3c", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTRfMTUy/MDAxNjIwOTU3OTYyMDY4.DqTv5LrhpY8NpUX1-rDZTQDvH0tmTECBJzkzbv82xpcg.LISmTw0vh9GX-m6NpVMY6KAGpXAacnE4MC5l6SX9AXQg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-14_%EC%98%A4%EC%A0%84_11.05.57.png", "originalWidth" : "955", "originalHeight" : "766", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="555" data-width="693" id="SE-43c71aa9-a3d5-4b96-8346-0223500dfc3c_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b64511e5-4e59-431d-9228-062c766cb6e7">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7f76763b-a63b-412c-9295-bb8a45c1bbb6" style=""><span class="se-fs- se-ff- se-weight-unset se-style-unset" id="SE-0b53d31c-0274-4822-babc-bab92136a14a" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

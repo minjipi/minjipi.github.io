@@ -1,0 +1,476 @@
+<!-- source: https://blog.naver.com/ghdalswl77/224120451721 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-a70f44bb-edf1-4a6c-8b10-812cf3bce0ce">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-349a2ad4-31d0-4fc6-8250-dbd742341370" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-08957893-ae6f-4eb5-945d-0681560b3d97" style="">실제 운영 환경에서 Elasticsearch 7.17.11 업그레이드를 진행하며 겪었던 경험을 기반으로 정리한 글이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2f5c0564-2b4e-4069-b48b-67245ac9e5f3" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-9db81794-4037-4593-b693-29c4ec558745" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-94bf1fb9-fa09-4efe-9533-be33b88991d3" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-609466b5-dde1-4a73-b5df-1f3a6be9b58d" style="">운영 중인 Elasticsearch 클러스터를 업그레이드하는 작업은 언제나 긴장된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c7740bf4-70c4-4082-82bd-3e608dbf97de" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-70a418f7-b072-4f73-b7c8-3db8729b957c" style="">특히 샤드 수가 많은 대규모 클러스터라면 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d61355e4-1a91-4231-8fa2-8b90233614be" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-97bf2ced-f24e-47e2-b7e1-0b0af8206dd5" style="">단순 버전 업데이트를 넘어 클러스터 안정성, 보안 설정, 플러그인 호환성, 운영 중단 최소화까지 함께 고려해야 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-60458C4C-AE09-4983-8CF1-7013ADA0F018" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-1A429A21-8F5A-4DF2-BD82-D57E1F819755" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-a70f44bb-edf1-4a6c-8b10-812cf3bce0ce", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-horizontalLine se-l-line2" id="SE-13d944b3-8e51-44fa-ae09-9db3b241fa9d">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line2 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-39dfbeb7-c6aa-439d-84f3-47ef2a4da272">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-db60630c-70a5-4334-91f1-0007b4deea32" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-516d9582-0660-40b6-9b43-61b8644c2bae" style="">1. 업그레이드 전 사전 점검</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-39dfbeb7-c6aa-439d-84f3-47ef2a4da272", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f358a0d1-921b-471c-a6d2-4223384061aa">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2fe5801e-1fa1-40be-901c-ab7e42f5c1d1" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-110f9685-ded3-4582-ba6f-0ca9b0ee4aa9" style="">가장 먼저 확인한 것은 Kibana Upgrade Assistant였다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-f358a0d1-921b-471c-a6d2-4223384061aa", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-oglink se-l-image __se-component" id="SE-b6700c54-035e-4a6e-ab05-6e04a2a6942a">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail __se_link" data-linkdata='{"id": "SE-b6700c54-035e-4a6e-ab05-6e04a2a6942a", "link": "https://www.elastic.co/guide/en/kibana/7.0/upgrade-assistant.html"}' data-linktype="oglink" href="https://www.elastic.co/guide/en/kibana/7.0/upgrade-assistant.html" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fstatic-www.elastic.co%2Fv3%2Fassets%2Fbltefdd0b53724fa2ce%2Fblt280217a63b82a734%2F6202d3378b1f312528798412%2Felastic-logo.svg%22&amp;type=ff120"/>
+</a>
+<a class="se-oglink-info __se_link" data-linkdata='{"id": "SE-b6700c54-035e-4a6e-ab05-6e04a2a6942a", "link": "https://www.elastic.co/guide/en/kibana/7.0/upgrade-assistant.html"}' data-linktype="oglink" href="https://www.elastic.co/guide/en/kibana/7.0/upgrade-assistant.html" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Upgrade Assistant | Kibana Guide [7.0] | Elastic</strong>
+<p class="se-oglink-summary">The Upgrade Assistant helps you prepare for your upgrade to the next major Elasticsearch version. For example, if you are using 6.8, the Upgrade Assistant helps you to upgrade to 7.0. To access the assistant, open the menu, then go to Stack Management &gt; Elasticsearch &gt; Upgrade Assistant . The assist...</p>
+<p class="se-oglink-url">www.elastic.co</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-b6700c54-035e-4a6e-ab05-6e04a2a6942a", "data" : {"link" : "https://www.elastic.co/guide/en/kibana/7.0/upgrade-assistant.html", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fstatic-www.elastic.co%2Fv3%2Fassets%2Fbltefdd0b53724fa2ce%2Fblt280217a63b82a734%2F6202d3378b1f312528798412%2Felastic-logo.svg%22&amp;type=ff120"}}' data-module-v2='{"type":"v2_oglink", "id" :"SE-b6700c54-035e-4a6e-ab05-6e04a2a6942a", "data" : {"link" : "https://www.elastic.co/guide/en/kibana/7.0/upgrade-assistant.html", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fstatic-www.elastic.co%2Fv3%2Fassets%2Fbltefdd0b53724fa2ce%2Fblt280217a63b82a734%2F6202d3378b1f312528798412%2Felastic-logo.svg%22&amp;type=ff120"}}' type="text/data"></script>
+</div>
+<div class="se-component se-text se-l-default" id="SE-b52d9bcc-12a2-4f31-937a-7ca28768d75e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-E9591017-159A-4929-9B44-0EE4F7794C03" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-CC2A08DB-A167-45C5-B536-D4ECEDF57ED2" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-04D30E87-1A58-4FA1-AAF5-17B2D3814A6B" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-5995189E-5471-4F6A-81BE-8D1E1DD57337" style="">Upgrade Assistant를 통해 확인한 포인트는 다음과 같다.</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1f7b685-fcc0-4de6-ac20-8324ec75a57c" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-15c6ea8b-0869-470c-9f2e-63cf6336ebf4" style="">deprecated setting 여부</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bf800250-d610-4bc7-8521-98fecfcc904e" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-063c2a11-88dc-4c76-8b94-f0f23400064a" style="">인덱스 호환성 문제</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5bc6dab9-360c-4603-aafc-c3081dc0aacf" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-8fed82c9-6194-446b-9652-dcd0f9701a31" style="">reindex 필요 대상</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ae617d7-2802-43e5-8238-a79659a91555" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-3b5dd125-57fc-4693-af3b-b6802d9a6fc6" style="">플러그인 호환성</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-03d3ad73-71ea-4a78-8d13-af8a7e8f0de8" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-BCDAF8DD-716F-4835-A3AA-E25F7A4A8BAD" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-FC508133-E32D-48C0-BB3D-14FB89B0BFCF" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-5e3b5af0-ed7b-449c-aeb9-1f8cf6642d7c" style="">이 단계에서 문제를 놓치면 업그레이드 이후 클러스터가 기동되지 않는 상황이 발생할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-60d486d4-9592-4885-9103-c61f94d28181" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-eb4c7610-c35f-4f80-86a0-3db57730f4f0" style="">​</span></p><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2A749F39-4FE2-4CDC-889B-0CD243869D62" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-f25a0119-f9e1-40d6-8aec-a60ae7c5ab53" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-b52d9bcc-12a2-4f31-937a-7ca28768d75e", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-4fec1a44-92d4-4c3a-a6e9-ede9c0d2d609">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5de6e578-fddd-47a6-b73f-0da73c71b89d" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-1994172f-27ee-475a-90cc-b84fcc8dff76" style="">2. 샤드 재배치 중지</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-4fec1a44-92d4-4c3a-a6e9-ede9c0d2d609", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8f4ad1d1-1d6d-4448-8e8c-bd3b56a5d608">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c949b4c3-e476-4049-8cac-e099bf0e197f" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-7db287d4-ff06-4daa-b2fa-59a073e79bf1" style="">업그레이드 중 노드가 내려가면 Elasticsearch는 자동으로 샤드 재배치를 시도한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-67164499-29e6-4fc0-8f98-fc2956d23d47" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-89aad872-4b84-4776-be33-15f2fb3085bd" style="">대규모 클러스터에서는 이 과정 자체가 부하가 될 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd1eda9d-4271-434b-a56f-b86005a994e9" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-8ff1be6b-fe50-4a3f-85f1-ec3ef525b0fd" style="">그래서 업그레이드 전 반드시 샤드 재배치를 중단한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-982e0a3b-d822-44ad-9fba-ea064e8e07cb" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-05487f25-35d0-4a71-b468-f8b424b2890d" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-8f4ad1d1-1d6d-4448-8e8c-bd3b56a5d608", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a662eb70-4ea3-4192-a4e0-9c7a6a83331f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">PUT</span> _cluster<span class="token se-code-operator">/</span>settings
+<span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"persistent"</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"cluster.routing.allocation.enable"</span><span class="token se-code-operator">:</span> <span class="token se-code-string">"none"</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-constant">PUT</span> _cluster<span class="token se-code-operator">/</span>settings
+<span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"transient"</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"cluster.routing.allocation.enable"</span><span class="token se-code-operator">:</span> <span class="token se-code-string">"none"</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a662eb70-4ea3-4192-a4e0-9c7a6a83331f"}' data-module-v2='{"type":"v2_code", "id" : "SE-a662eb70-4ea3-4192-a4e0-9c7a6a83331f"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e723f7f6-4e6f-4d74-bc77-9a1576249a8a">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">POST</span> _flush<span class="token se-code-operator">/</span>synced</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e723f7f6-4e6f-4d74-bc77-9a1576249a8a"}' data-module-v2='{"type":"v2_code", "id" : "SE-e723f7f6-4e6f-4d74-bc77-9a1576249a8a"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ea1df3cf-e636-4060-a8c1-e679fd69fe74">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b1f453de-747b-408f-8022-3f07e883e537" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-208786c4-2aa6-4fdc-947a-7b01c91fb0da" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-895fff03-60af-41c3-8f9f-fe5a2811ba18" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-96f2ab6e-2f61-4140-ac9a-f5b19f9be3bd" style="">그리고 flush를 수행하는데, </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1fb530c9-748f-4d77-9959-f7f6cb8d205c" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-39ce49e3-a761-47a8-b614-d008cea06adb" style="">이 작업은 트랜잭션 로그를 최소화하고 재기동 시 복구 부담을 줄여준다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2fde5596-5915-4f17-b9d4-69ccb338276e" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-dd9954c2-a0f7-45a5-9098-f0068abfcc52" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-19B5792E-F0DF-4CC7-A0F8-1727FE99C01C" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-930ad668-153b-46d2-877f-d44cd755dc41" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-ea1df3cf-e636-4060-a8c1-e679fd69fe74", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-059ad7f1-1a08-4dd5-9b12-b3f7a7306e46">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6bb2e673-6561-4fda-ac97-eddf4b1f985e" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-a94335c2-bb06-42b8-823f-7426b7afae8b" style="">3. Elasticsearch, Kibana 서비스 중단</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-059ad7f1-1a08-4dd5-9b12-b3f7a7306e46", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-5340eee1-dce5-4389-9d18-b22b2080f09f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl stop elasticsearch
+systemctl status elasticsearch
+
+systemctl stop kibana
+systemctl status kibana
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-5340eee1-dce5-4389-9d18-b22b2080f09f"}' data-module-v2='{"type":"v2_code", "id" : "SE-5340eee1-dce5-4389-9d18-b22b2080f09f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-67af7231-98b7-4d59-a572-08e1d252c09d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-97701da7-a722-4b9b-aef4-47256404f4f6" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-8de1022e-a9c1-4ca2-bcf5-392ed4f19863" style="">추가로 사용하는 플러그인 등이 있다면 마찬가지로 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7ec7e477-26d7-4bb2-9087-efba3efc3004" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-26c1ddb0-cd37-42d9-80e4-68c687f0e2c8" style="color:#ff0010;">백업 후</span><span class="se-fs- se-ff-system se-weight-unset" id="SE-0ae7947a-0386-4183-9ede-f4fdc7a2ea0a" style=""> 제거 등을 수행하면 된다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-85d1bb8e-a4cb-4119-8516-31486e39ade5" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-f9d4dfb1-f1ed-4d8e-93c9-34e0dbb4b228" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-498AF89A-666D-4C80-B3DE-E1BF4AF8F813" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-b5cc2143-d3a5-4e80-a147-c41e165f7047" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-67af7231-98b7-4d59-a572-08e1d252c09d", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-f9420a7b-c2b5-4615-b445-32134229d2ab">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b700cccc-f33d-4a1d-9397-5d6a474c7f19" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-efdc37ea-3f3d-4452-a911-ecbe7de1551d" style="">4. Elasticsearch 7.17.11 설치</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-f9420a7b-c2b5-4615-b445-32134229d2ab", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-50ac5ea4-37ec-4c30-8f54-e862e5cf7d0d">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span>elasticsearch<span class="token se-code-operator">-</span><span class="token se-code-number">7</span><span class="token se-code-punctuation">.</span>x<span class="token se-code-punctuation">]</span>
+name<span class="token se-code-operator">=</span>Elasticsearch repository <span class="token se-code-keyword">for</span> <span class="token se-code-number">7</span><span class="token se-code-punctuation">.</span>x packages
+baseurl<span class="token se-code-operator">=</span>https<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>artifacts<span class="token se-code-punctuation">.</span>elastic<span class="token se-code-punctuation">.</span>co<span class="token se-code-operator">/</span>packages<span class="token se-code-operator">/</span><span class="token se-code-number">7</span><span class="token se-code-punctuation">.</span>x<span class="token se-code-operator">/</span>yum
+gpgcheck<span class="token se-code-operator">=</span><span class="token se-code-number">1</span>
+gpgkey<span class="token se-code-operator">=</span>https<span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>artifacts<span class="token se-code-punctuation">.</span>elastic<span class="token se-code-punctuation">.</span>co<span class="token se-code-operator">/</span><span class="token se-code-constant">GPG</span><span class="token se-code-operator">-</span><span class="token se-code-constant">KEY</span><span class="token se-code-operator">-</span>elasticsearch
+enabled<span class="token se-code-operator">=</span><span class="token se-code-number">0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-50ac5ea4-37ec-4c30-8f54-e862e5cf7d0d"}' data-module-v2='{"type":"v2_code", "id" : "SE-50ac5ea4-37ec-4c30-8f54-e862e5cf7d0d"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d1db508e-4023-4e07-887f-37c98ed98867">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ef128fb9-dd2f-4f4f-aa28-0ef7626cb237" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-3c545e57-162b-4299-9b66-92487f4e5c85" style="">설치할 7.x 버전 저장소 확인 후 설치한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-d1db508e-4023-4e07-887f-37c98ed98867", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a54d604a-91a8-4aaa-a1da-5c02f7c040d8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">apt install elasticsearch<span class="token se-code-operator">=</span><span class="token se-code-number">7.17</span><span class="token se-code-number">.11</span> <span class="token se-code-operator">-</span>y</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a54d604a-91a8-4aaa-a1da-5c02f7c040d8"}' data-module-v2='{"type":"v2_code", "id" : "SE-a54d604a-91a8-4aaa-a1da-5c02f7c040d8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-bf973a07-9d6a-4ab7-ba2a-6452fa25086d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7896140d-538a-48f9-b505-26edd9279cbd" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-6b02163a-53b6-437b-95b7-a97bcff4d25c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5B39A470-E6D4-4BA0-B5CC-C5C814CF2854" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-883E77E9-A6E3-4A79-BAFB-8289459701B3" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-bf973a07-9d6a-4ab7-ba2a-6452fa25086d", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-0d8cc013-0cee-4f5d-a934-2b61ed85b7e5">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-619c5cb5-7028-4ac8-bceb-4ee401b012cb" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-dd6cc6d0-e607-409f-bedb-3959f87a1e36" style="">5. 설정 파일 백업</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-0d8cc013-0cee-4f5d-a934-2b61ed85b7e5", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c2f57c0e-dde4-4baa-92a5-ccba0951b5d8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">mkdir <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>bak
+
+cp <span class="token se-code-operator">-</span>p <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span><span class="token se-code-constant">ES_V6</span><span class="token se-code-number">.5</span><span class="token se-code-number">.4</span><span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-punctuation">.</span>yml \
+      <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span><span class="token se-code-constant">ES_V6</span><span class="token se-code-number">.5</span><span class="token se-code-number">.4</span><span class="token se-code-operator">/</span>bak<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-punctuation">.</span>yml<span class="token se-code-punctuation">.</span>bak
+
+cp <span class="token se-code-operator">-</span>p <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>jvm<span class="token se-code-punctuation">.</span>options \
+      <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>bak<span class="token se-code-operator">/</span>jvm<span class="token se-code-punctuation">.</span>options<span class="token se-code-punctuation">.</span>bak</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c2f57c0e-dde4-4baa-92a5-ccba0951b5d8"}' data-module-v2='{"type":"v2_code", "id" : "SE-c2f57c0e-dde4-4baa-92a5-ccba0951b5d8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f5dc2388-ce3f-4784-8e10-e1dc9850d255">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-151ffece-4a0e-4475-97cb-c0959432f1b1" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-070075d8-45b4-4fb4-be48-89cb5be23a73" style="">systemd / init 설정도 함께 백업했다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c98f0fb-3b0c-47cf-9e40-9e13ed74a2b4" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-aaaa0229-52b4-4931-adbd-fe3e0ea11fc8" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7507AA12-DD6C-4503-9DD0-5B1271EF74DB" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-296567ed-f3ea-48f7-8312-18fdcbef31ed" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1e8a0bd9-64a5-4a20-a67e-dc379be2ac7a" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-a723ee01-0d74-4af8-acce-d9aaa1603e7b" style="">6. systemd, init 스크립트 환경 변수 점검</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6122028f-e999-4bad-9418-8c421e78d2d4" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-0400b7bf-0246-4c46-af31-f81eee7212ae" style="">특히 중요했던 부분은 ES_PATH_CONF, PID_DIR, ES_ENV_FILE 이었다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-09eb98b6-5022-40e6-af0b-eade5f43be98" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-471fa450-0e00-4a2a-9988-71846e24a875" style="">여기서 클러스터 이름이 경로에 반영되지 않으면</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b52134eb-306a-4780-acd2-eec44c24fe45" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-9acbf80b-d9d4-420c-a3bc-fca4e91d446b" style="">노드가 엉뚱한 설정을 읽고 기동 실패하는 경우가 발생한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f5f52b2c-465d-49b0-b850-b49c44f56692" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-c47e9f16-a8f9-4a92-9a49-3b0c703cd53f" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-A058F808-F615-4AC0-9EC1-20AD894E56C1" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-4491ca2b-2f27-44ce-a6e5-22d802ea3abb" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-f5dc2388-ce3f-4784-8e10-e1dc9850d255", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-8280b56f-0274-4470-948d-a942505d7f38">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bd7debd5-4e7b-4f66-aef3-b15c72301e8b" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-20fef946-1790-4931-b16e-fd1df818865c" style="">7. Elasticsearch 7.x 설정 파일 적용 (elasticsearch.yml)</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-8280b56f-0274-4470-948d-a942505d7f38", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_black __se-component" id="SE-759c49f2-a248-40e0-8af7-7be666100827">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">############################
+# Cluster
+############################
+cluster<span class="token se-code-punctuation">.</span>name<span class="token se-code-operator">:</span> my<span class="token se-code-operator">-</span>es<span class="token se-code-operator">-</span>cluster
+
+############################
+# Node
+############################
+node<span class="token se-code-punctuation">.</span>name<span class="token se-code-operator">:</span> $<span class="token se-code-punctuation">{</span><span class="token se-code-constant">HOSTNAME</span><span class="token se-code-punctuation">}</span>
+node<span class="token se-code-punctuation">.</span>roles<span class="token se-code-operator">:</span> <span class="token se-code-punctuation">[</span> master<span class="token se-code-punctuation">,</span> data<span class="token se-code-punctuation">,</span> ingest <span class="token se-code-punctuation">]</span>
+
+############################
+# Path
+############################
+path<span class="token se-code-punctuation">.</span>data<span class="token se-code-operator">:</span> <span class="token se-code-operator">/</span><span class="token se-code-keyword">var</span><span class="token se-code-operator">/</span>lib<span class="token se-code-operator">/</span>elasticsearch
+path<span class="token se-code-punctuation">.</span>logs<span class="token se-code-operator">:</span> <span class="token se-code-operator">/</span><span class="token se-code-keyword">var</span><span class="token se-code-operator">/</span>log<span class="token se-code-operator">/</span>elasticsearch
+
+############################
+# Network
+############################
+network<span class="token se-code-punctuation">.</span>host<span class="token se-code-operator">:</span> _site_
+http<span class="token se-code-punctuation">.</span>port<span class="token se-code-operator">:</span> <span class="token se-code-number">9200</span>
+transport<span class="token se-code-punctuation">.</span>port<span class="token se-code-operator">:</span> <span class="token se-code-number">9300</span>
+
+############################
+# <span class="token se-code-function">Discovery</span> <span class="token se-code-punctuation">(</span><span class="token se-code-number">7</span><span class="token se-code-punctuation">.</span>x<span class="token se-code-punctuation">)</span>
+############################
+discovery<span class="token se-code-punctuation">.</span>seed_hosts<span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> es<span class="token se-code-operator">-</span>node<span class="token se-code-operator">-</span><span class="token se-code-number">01</span>
+<span class="token se-code-operator">-</span> es<span class="token se-code-operator">-</span>node<span class="token se-code-operator">-</span><span class="token se-code-number">02</span>
+<span class="token se-code-operator">-</span> es<span class="token se-code-operator">-</span>node<span class="token se-code-operator">-</span><span class="token se-code-number">03</span>
+
+cluster<span class="token se-code-punctuation">.</span>initial_master_nodes<span class="token se-code-operator">:</span>
+<span class="token se-code-operator">-</span> es<span class="token se-code-operator">-</span>node<span class="token se-code-operator">-</span><span class="token se-code-number">01</span>
+<span class="token se-code-operator">-</span> es<span class="token se-code-operator">-</span>node<span class="token se-code-operator">-</span><span class="token se-code-number">02</span>
+<span class="token se-code-operator">-</span> es<span class="token se-code-operator">-</span>node<span class="token se-code-operator">-</span><span class="token se-code-number">03</span>
+
+############################
+# Bootstrap
+############################
+bootstrap<span class="token se-code-punctuation">.</span>memory_lock<span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+
+############################
+# <span class="token se-code-function">Security</span> <span class="token se-code-punctuation">(</span><span class="token se-code-constant">X</span><span class="token se-code-operator">-</span>Pack 기본 활성화<span class="token se-code-punctuation">)</span>
+############################
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>enabled<span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+
+############################
+# Transport Layer <span class="token se-code-function">Security</span> <span class="token se-code-punctuation">(</span>노드 간 통신<span class="token se-code-punctuation">)</span>
+############################
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>transport<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>enabled<span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>transport<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>verification_mode<span class="token se-code-operator">:</span> certificate
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>transport<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>client_authentication<span class="token se-code-operator">:</span> required
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>transport<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>keystore<span class="token se-code-punctuation">.</span>path<span class="token se-code-operator">:</span> elastic<span class="token se-code-operator">-</span>certificates<span class="token se-code-punctuation">.</span>p12
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>transport<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>truststore<span class="token se-code-punctuation">.</span>path<span class="token se-code-operator">:</span> elastic<span class="token se-code-operator">-</span>certificates<span class="token se-code-punctuation">.</span>p12
+
+############################
+# <span class="token se-code-constant">HTTP</span> Layer <span class="token se-code-function">Security</span> <span class="token se-code-punctuation">(</span><span class="token se-code-constant">REST</span> <span class="token se-code-constant">API</span><span class="token se-code-punctuation">)</span>
+############################
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>http<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>enabled<span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>http<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>keystore<span class="token se-code-punctuation">.</span>path<span class="token se-code-operator">:</span> elastic<span class="token se-code-operator">-</span>http<span class="token se-code-punctuation">.</span>p12
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>http<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>truststore<span class="token se-code-punctuation">.</span>path<span class="token se-code-operator">:</span> elastic<span class="token se-code-operator">-</span>http<span class="token se-code-punctuation">.</span>p12
+
+############################
+# License <span class="token se-code-operator">/</span> Feature Control
+############################
+xpack<span class="token se-code-punctuation">.</span>monitoring<span class="token se-code-punctuation">.</span>collection<span class="token se-code-punctuation">.</span>enabled<span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+xpack<span class="token se-code-punctuation">.</span>watcher<span class="token se-code-punctuation">.</span>enabled<span class="token se-code-operator">:</span> <span class="token se-code-boolean">false</span>
+xpack<span class="token se-code-punctuation">.</span>ml<span class="token se-code-punctuation">.</span>enabled<span class="token se-code-operator">:</span> <span class="token se-code-boolean">false</span>
+xpack<span class="token se-code-punctuation">.</span>graph<span class="token se-code-punctuation">.</span>enabled<span class="token se-code-operator">:</span> <span class="token se-code-boolean">false</span>
+
+############################
+# Index <span class="token se-code-operator">/</span> Cluster Safety
+############################
+action<span class="token se-code-punctuation">.</span>auto_create_index<span class="token se-code-operator">:</span> <span class="token se-code-boolean">true</span>
+cluster<span class="token se-code-punctuation">.</span>max_shards_per_node<span class="token se-code-operator">:</span> <span class="token se-code-number">1000</span>
+
+############################
+# Logging
+############################
+logger<span class="token se-code-punctuation">.</span>org<span class="token se-code-punctuation">.</span>elasticsearch<span class="token se-code-punctuation">.</span>discovery<span class="token se-code-operator">:</span> <span class="token se-code-constant">INFO</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-759c49f2-a248-40e0-8af7-7be666100827"}' data-module-v2='{"type":"v2_code", "id" : "SE-759c49f2-a248-40e0-8af7-7be666100827"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-cced4914-b177-4cae-9066-1b0fe986fe91">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1ddb4ca-deb5-4174-bb2e-387d01a0552b" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-26496486-22ec-4cb6-ba61-6992790917ef" style="">위 설정 파일은 기본적인 elasticsearch.yml 파일 예시이다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2495c19b-fea1-49dc-b339-1eb7df7e4645" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-68e06834-24d4-403f-8855-138450adc215" style="">Elasticsearch 7.x부터는 보안 기능이 기본 활성화되어 있으며,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d9a8771b-24b2-4fac-90ba-8e1d149974a3" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-2404dc06-dd3e-4b53-885c-2751d264ec26" style="">노드 간 통신(Transport)과 REST API(HTTP) 모두 SSL을 적용한 상태에서 업그레이드를 진행했다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4d54512b-0905-41fb-8475-9db440c76487" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-8ffa6399-e53c-48f7-952c-5d822a07a7aa" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-C01B8269-B43D-4909-99D5-5CB6755244E7" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-26722983-1428-40d1-b5b1-50067886f951" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9ced2172-2446-434b-8240-37bce4b390b4" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-be0246de-ef86-4280-8b1c-6b57f6636831" style="">8. Keystore 재생성</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-cced4914-b177-4cae-9066-1b0fe986fe91", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-8212595f-cd75-4cf7-a85f-8c2b78be25b4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">sudo <span class="token se-code-operator">/</span>usr<span class="token se-code-operator">/</span>share<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">-</span>keystore list
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-8212595f-cd75-4cf7-a85f-8c2b78be25b4"}' data-module-v2='{"type":"v2_code", "id" : "SE-8212595f-cd75-4cf7-a85f-8c2b78be25b4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c621599c-14cd-4ef7-8469-de6e9e6be5d2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee46159c-2cd9-4486-ac17-3f4450b846f1" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-568c3636-84aa-4899-94e6-48eac69eacab" style="">기존 keystore 삭제 후 재생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-179cc844-0755-4fbc-8eeb-46225154351e" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-4095b046-65e0-4576-9b12-e9cbc4b9ac15" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-c621599c-14cd-4ef7-8469-de6e9e6be5d2", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-07440b3d-c0e0-4c2b-98d4-b6f708503fee">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">sudo rm <span class="token se-code-operator">-</span>f <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-punctuation">.</span>keystore
+sudo <span class="token se-code-operator">/</span>usr<span class="token se-code-operator">/</span>share<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">-</span>keystore create</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-07440b3d-c0e0-4c2b-98d4-b6f708503fee"}' data-module-v2='{"type":"v2_code", "id" : "SE-07440b3d-c0e0-4c2b-98d4-b6f708503fee"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-df1debca-69f5-4da8-86cc-e269a965b9aa">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c43d3063-a261-4b8c-9796-47fb7913d22a" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-bf2cb2db-cc09-49af-856a-dd842c754e6c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-505069f5-9484-4b86-bf9b-8ae3dba67fb4" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-1321bca1-f39e-4ed6-8b71-e8b5ca38f235" style="">참고로 해당 작업은 전체 클러스터를 중단한 상태에서 수행했으며,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fd19b0fd-2b45-4c0b-87f7-0eab68f9ed40" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-2522bee8-d64d-4a6a-8ecf-43cd5f287df6" style="">운영 중 keystore 삭제는 절대 수행하지 않는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f57d1769-1fb1-40ca-9206-333ea0be521c" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-814D03D1-E756-42C1-AFC8-172C85B8278D" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9946f9f6-b273-42cd-b890-a740bff5d3f2" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-e151c385-74fc-44a9-a03b-51699fd1d008" style="">패스워드 재등록</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-df1debca-69f5-4da8-86cc-e269a965b9aa", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-904ff6fe-cdcc-428a-9b3d-c736d229ea34">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">sudo <span class="token se-code-operator">/</span>usr<span class="token se-code-operator">/</span>share<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">-</span>keystore add \
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>transport<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>keystore<span class="token se-code-punctuation">.</span>secure_password
+
+sudo <span class="token se-code-operator">/</span>usr<span class="token se-code-operator">/</span>share<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>elasticsearch<span class="token se-code-operator">-</span>keystore add \
+xpack<span class="token se-code-punctuation">.</span>security<span class="token se-code-punctuation">.</span>transport<span class="token se-code-punctuation">.</span>ssl<span class="token se-code-punctuation">.</span>truststore<span class="token se-code-punctuation">.</span>secure_password</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-904ff6fe-cdcc-428a-9b3d-c736d229ea34"}' data-module-v2='{"type":"v2_code", "id" : "SE-904ff6fe-cdcc-428a-9b3d-c736d229ea34"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-88d0bdbf-8d16-4b77-94be-f094e56a8cc0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-408d07ce-77bb-4370-8e26-1dfd90531429" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-206e3d17-bb96-4b9f-ba18-646fda6db3cb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4e023f01-69f7-4945-b0a9-297061b6d121" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-fd5f146a-c4e0-4863-97c2-2b2356b8f8ad" style="">이 과정이 빠지면 노드 간 통신 자체가 실패한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ebb86117-d89e-48ba-bd50-f91540e19212" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-91a04a6c-c4d1-45e6-b842-27a7cd94e6b8" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-DF126FD3-1C8F-452C-8D5E-4603372A0D59" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-f6809c4a-69d2-4ab3-8e43-154227277b30" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-88d0bdbf-8d16-4b77-94be-f094e56a8cc0", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-0fffffa2-c0fb-400f-b475-194991974c00">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-797128a1-94cd-4282-befe-7263856321c3" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-c4a38040-61b3-4ac2-9352-75937a138867" style="">9. Kibana 설치</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-0fffffa2-c0fb-400f-b475-194991974c00", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-e772e4a8-1efb-4c43-b941-0f96f4a32834">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">apt install kibana<span class="token se-code-operator">=</span><span class="token se-code-number">7.17</span><span class="token se-code-number">.11</span> <span class="token se-code-operator">-</span>y</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e772e4a8-1efb-4c43-b941-0f96f4a32834"}' data-module-v2='{"type":"v2_code", "id" : "SE-e772e4a8-1efb-4c43-b941-0f96f4a32834"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-69728856-3732-4cc6-8ffc-98a36476f880">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ae66f0cc-7fc9-46db-9f71-f6ff72278434" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-df148561-dcf3-4fd9-ba8b-9c277a059b42" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-F6A1A82D-2A9B-4A04-BC7D-A1E0726CD590" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-945D7BDE-6754-481B-A194-3A16557E27F2" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-69728856-3732-4cc6-8ffc-98a36476f880", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-1969334b-ef3f-4a42-8f3b-f5a292b4ac20">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-39f43f17-7d09-4253-9f0f-2fc6f5e9c805" style=""><span class="se-fs-fs19 se-ff-system se-weight-unset" id="SE-dbe6933c-818b-4451-9890-7125d891f9f3" style="">10. 샤드 재배치 풀기</span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_sectionTitle", "id": "SE-1969334b-ef3f-4a42-8f3b-f5a292b4ac20", "data": {"ctype": "sectionTitle"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-9a4d8cbb-329a-4c1f-8061-91a7d6b6a8b4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">curl <span class="token se-code-operator">-</span>u <span class="token se-code-operator">&lt;</span><span class="token se-code-constant">USER</span><span class="token se-code-operator">&gt;</span><span class="token se-code-operator">:</span><span class="token se-code-operator">&lt;</span><span class="token se-code-constant">PASSWORD</span><span class="token se-code-operator">&gt;</span> <span class="token se-code-operator">-</span><span class="token se-code-constant">XPUT</span> \
+<span class="token se-code-string">"http://localhost:9200/_cluster/settings"</span> \
+<span class="token se-code-operator">-</span><span class="token se-code-constant">H</span> <span class="token se-code-string">'Content-Type: application/json'</span> <span class="token se-code-operator">-</span>d '<span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"persistent"</span><span class="token se-code-operator">:</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-string-property property">"cluster.routing.allocation.enable"</span><span class="token se-code-operator">:</span> <span class="token se-code-keyword">null</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>'
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-9a4d8cbb-329a-4c1f-8061-91a7d6b6a8b4"}' data-module-v2='{"type":"v2_code", "id" : "SE-9a4d8cbb-329a-4c1f-8061-91a7d6b6a8b4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d07b2d00-43ea-4b7f-b603-c280dce802f5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-00103368-e729-4b56-aed1-a28a39e6adf3" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-6f151668-8029-41f4-b5d6-7782734f0a68" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-23CC529A-416B-4A12-B12A-DEF07B898F74" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-CC6BAD9B-0359-4B7A-A0EA-4E84AE26DAA9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a9261e03-9a74-4976-96af-0a4e10914532" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-d8135437-1010-4172-8dcd-dcdb08c91dbe" style="">끝!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-21a2dfeb-f282-4f39-9956-bb8cd293347d" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-b62e7d75-ac4f-4c59-83c0-f0422619d308" style="">추가로, 버전 업그레이 작업에서는 백업과 롤백 계획이 꼭 준비되어 있어야 한다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-de9b7793-1d34-44b5-bc1b-a801157a0344" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-bbbeee00-c6e5-4b92-83d6-336b250accae" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a41527e4-0671-441a-8cee-fcd2a4b889a1" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-9d3681b5-cb57-4328-9798-6ee2fe52ab7d" style="">이 글이 Elasticsearch 클러스터를 운영하거나</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1470b980-220b-429a-92ec-32d2377e1230" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-0a0f86e2-87b6-4814-8c9d-7314dd12d09e" style="">7.x 업그레이드를 앞둔 분들에게 도움되는 체크리스트가 되었으면 한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-d07b2d00-43ea-4b7f-b603-c280dce802f5", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

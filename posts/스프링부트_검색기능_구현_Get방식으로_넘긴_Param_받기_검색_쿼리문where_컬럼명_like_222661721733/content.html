@@ -1,0 +1,130 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222661721733 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-67417093-3818-446e-ae5a-f4f67f79aa35">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-335d94d1-f36b-4d25-bcb8-b93e0ea56d29" style=""><span class="se-fs- se-ff-" id="SE-ced72766-f4af-40cd-a056-1735524e9aa0" style="color:#777777;">스프링부트, 리액트로 검색 기능 구현하는데 가장 먼저 한 부분을 정리.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-45793300-2b4e-4ff4-bb17-b44f4235c8ee" style=""><span class="se-fs- se-ff-" id="SE-5b1cc75e-d05e-4fb0-9707-cf0f1801158b" style="color:#777777;">(Spring Boot로 Parameter 전달 받는 방법, Spring Boot Get방식으로 넘긴 값 받기)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a6ae208a-6f48-4ef1-b0ab-d24d85591cf4" style=""><span class="se-fs- se-ff-" id="SE-ac2acdbd-92ba-4fa8-8d97-6429acc935fa" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a9c42c16-e9de-413b-9ca0-df6a3f1fb4f8" style=""><span class="se-fs- se-ff-" id="SE-ad3a6c21-4802-40e4-a3fd-bb9198888be0" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-50e4d283-8dca-4441-96c2-d7bf21e5370e" style=""><span class="se-fs- se-ff-" id="SE-7458937b-957d-43e3-945d-07970dc1c7d9" style="">검색은 get 방식이다. get 방식으로 검색어를 입력하면 입력된 단어를 받는다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-957a440d-6869-45db-88e6-d92be0cedbbf" style=""><span class="se-fs- se-ff-" id="SE-33b05e00-9187-4505-9c9a-841fee2455a5" style="">스프링부트 get 방식으로 넘긴 값을 전달 받아보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-f0acf0ef-ee5c-400b-ae15-a3d598865627">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-f0acf0ef-ee5c-400b-ae15-a3d598865627", "src" : "https://postfiles.pstatic.net/MjAyMjAzMDJfMjY2/MDAxNjQ2MTg2OTA3NTUx.Y8oolz1C4T_WRozMX_22TSqru3QJC3STrTeJQ8w7pOUg.Q9E6wKYigDLrVW3UQhr3Bau4MVtYmLwYXlIxrNhj7ZIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-03-02_%EC%98%A4%EC%A0%84_11.08.22.png", "originalWidth" : "1470", "originalHeight" : "550", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="259" data-width="693" id="SE-f0acf0ef-ee5c-400b-ae15-a3d598865627_0" src="images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b9fc5f13-eae4-41b8-88ec-b8a5d6987ac1" style=""><span class="se-fs- se-ff-" id="SE-f4641832-029a-48a1-be23-e42c11e64c98" style="">get 방식</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-cb968063-3754-4731-ac67-ebb54206fed5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c5edb266-25b8-4d03-9654-158d999f2ec3" style=""><span class="se-fs- se-ff-" id="SE-6946f025-f180-442a-9aec-b7dff116a32c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cfe01034-daa7-4688-8ee6-65b2c54a6433" style=""><span class="se-fs- se-ff-" id="SE-fb5d0fb2-c9fa-4fc5-9a94-1dcc47493e32" style="">java 클래스에 아래와 같이 추가한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-996e7f10-9d13-40d5-acec-44988e8862f6">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@<span class="token se-code-function">GetMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/search"</span><span class="token se-code-punctuation">)</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">getSearchProducts</span><span class="token se-code-punctuation">(</span>
+        @<span class="token se-code-function">RequestParam</span><span class="token se-code-punctuation">(</span>value <span class="token se-code-operator">=</span> <span class="token se-code-string">"search"</span><span class="token se-code-punctuation">)</span> String search<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">try</span> <span class="token se-code-punctuation">{</span>
+            List<span class="token se-code-operator">&lt;</span>GetProductRes<span class="token se-code-operator">&gt;</span> getProductResList <span class="token se-code-operator">=</span> productService<span class="token se-code-punctuation">.</span><span class="token se-code-function">getSearchProducts</span><span class="token se-code-punctuation">(</span>word<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">BaseResponse</span><span class="token se-code-operator">&lt;</span><span class="token se-code-operator">&gt;</span><span class="token se-code-punctuation">(</span>getProductResList<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span> <span class="token se-code-keyword">catch</span> <span class="token se-code-punctuation">(</span>Exception exception<span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">BaseResponse</span><span class="token se-code-operator">&lt;</span><span class="token se-code-operator">&gt;</span><span class="token se-code-punctuation">(</span>BaseResponseStatus<span class="token se-code-punctuation">.</span><span class="token se-code-constant">FAIL</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-operator">*</span> 참고로 위 코드는 아래처럼 @RequestParam<span class="token se-code-operator">-</span> 부분을 생략해도 된다<span class="token se-code-punctuation">.</span>
+@<span class="token se-code-function">GetMapping</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"/search"</span><span class="token se-code-punctuation">)</span> <span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">getSearchProducts</span><span class="token se-code-punctuation">(</span>String word<span class="token se-code-punctuation">)</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-996e7f10-9d13-40d5-acec-44988e8862f6"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-78697cb6-6dc9-4183-a182-c162306fd4a4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-af8e1ff0-a7f3-481b-92a1-4e1bc2fc7fbb" style=""><span class="se-fs- se-ff-" id="SE-ebcb1e24-fa55-48a3-b2c3-1f5e9faf2627" style="">요청 성공하면 productService의 getSearchProducts 메서드에 word를 전달해 호출하고, 서비스는 Dao를 호출해서 검색 쿼리를 실행한다. </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-45acb778-51fb-4dbf-b314-512f4a93c7f5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-constant">SELECT</span> <span class="token se-code-operator">*</span> <span class="token se-code-constant">FROM</span> 테이블명 where 컬럼명 like <span class="token se-code-string">'문자(열)'</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-45acb778-51fb-4dbf-b314-512f4a93c7f5"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-ee12e181-8cc1-4cba-b97f-e1907169fdd2">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:450px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ee12e181-8cc1-4cba-b97f-e1907169fdd2", "src" : "https://postfiles.pstatic.net/MjAyMjAzMDJfMjMx/MDAxNjQ2MTg3NTA2NjQx.xzxCWf0jpAd5WJ6CKwk_kmb12osQtl-VyVDvjWQ1sFAg.OitGsISb2VF-CekIFyuiu-t6V37wFK6YS30qAFqBiMMg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-03-02_%EC%98%A4%EC%A0%84_11.18.23.png", "originalWidth" : "834", "originalHeight" : "216", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="116" data-width="450" id="SE-ee12e181-8cc1-4cba-b97f-e1907169fdd2_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-8c787420-9af7-4b95-9ff1-6e095c2aa2c6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0b4da6ce-9a69-4ce8-a231-0d941bfb623b" style=""><span class="se-fs- se-ff-" id="SE-f17361ea-7fb3-418e-8527-cd6b2c4f1a4e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bac88ce3-42c4-46ad-8722-5d4000c9025d" style=""><span class="se-fs- se-ff-" id="SE-ca9e98b4-b94a-462a-b61c-cfac8a360568" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1c9f89c-adf1-4b08-bb0d-851154d46184" style=""><span class="se-fs- se-ff-" id="SE-66b36e63-5d17-457a-9fc9-01097f0e0e1c" style="">실패하면 에러인 BaseResponseStatus.FAIL가 돌아온다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a951d5ee-10b4-4a1e-9778-2a083734684d" style=""><span class="se-fs- se-ff-" id="SE-c51ece50-aa0b-447c-9936-1419f916c096" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-107380c4-a919-4e8f-ab63-e5900ba39851" style=""><span class="se-fs- se-ff-" id="SE-3ddefc77-25f1-40a5-85da-c65243a00436" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-641691a4-d15a-4fb2-9e72-4760c7a4023e" style=""><span class="se-fs- se-ff-" id="SE-8b64fb50-9283-45c7-b0d6-4678447bb465" style=""><i>요청URL</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-945d2278-1d55-4535-83f9-1c9cd6e19969">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-literal-property property">http</span><span class="token se-code-operator">:</span><span class="token se-code-operator">/</span><span class="token se-code-operator">/</span>localhost<span class="token se-code-operator">:</span><span class="token se-code-number">8080</span><span class="token se-code-operator">/</span>hello<span class="token se-code-operator">/</span>word<span class="token se-code-operator">?</span><span class="token se-code-operator">=</span>test</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-945d2278-1d55-4535-83f9-1c9cd6e19969"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b6de4476-77bb-42f2-a447-82c90c5cb00c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-66738105-6997-4232-85ce-6bfaf730831b" style=""><span class="se-fs- se-ff-" id="SE-96dc06fc-c8dd-41c3-b733-ca402bcd75ab" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ca920fac-c42c-4383-887a-23e20fb03e27" style=""><span class="se-fs- se-ff-" id="SE-06374047-eebf-4835-80c2-412ddaea600d" style=""><i>응답</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-7e2f6375-4aa8-4fa8-9cc4-9da60d286480">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-7e2f6375-4aa8-4fa8-9cc4-9da60d286480", "src" : "https://postfiles.pstatic.net/MjAyMjAzMDJfMjA5/MDAxNjQ2MTg2NzMzMzA4.SpoTNf_nHklDePJEaY1wQwzdZZ9MAFBkaW8yOADMK-og.tEmw4b_nBF8WEYcJ4PeBwldWF7pBfI_WBRYhsgTzEHog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-03-02_%EC%98%A4%EC%A0%84_11.05.28.png", "originalWidth" : "1350", "originalHeight" : "620", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="229" data-width="500" id="SE-7e2f6375-4aa8-4fa8-9cc4-9da60d286480_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-19ec9ef1-3363-4868-bcda-848f0eb001b8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d472d409-4d6d-4a0e-8a20-4462050c02f0" style=""><span class="se-fs- se-ff-" id="SE-eb106a74-2a68-4ece-bb3d-46a17bacf421" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fd04d342-b59f-4fd2-b23c-298f54621aa3" style=""><span class="se-fs- se-ff-" id="SE-16ce6593-6ba8-4846-98d2-029fe746695e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c3484307-2f08-492c-a585-606c4f708085" style=""><span class="se-fs- se-ff-" id="SE-9a58ebcc-d70e-49eb-a37b-a169e1cb0b72" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-99cadbcb-601a-4b9e-9a81-26596b52462c" style=""><span class="se-fs- se-ff-" id="SE-39c82177-e6b1-439a-94ae-3a940ac6d61c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-fd41f471-48e2-4aa6-8059-96ecbb866589" style=""><span class="se-fs- se-ff-" id="SE-bcd4bea1-5608-4326-a98e-604ddeea70b7" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7326509d-76e0-4e2a-9fd3-e8d4429eb95b" style=""><span class="se-fs-fs13 se-ff-" id="SE-23f6174a-8bbc-43cc-81fc-26a9b3f52422" style="">참고 : </span><span class="se-fs-fs13 se-ff-" id="SE-7f873669-5c2e-4e1e-bc4a-90b47304e7b4" style=""><a class="se-link" href="https://easy-coding.tistory.com/2" target="_blank">https://easy-coding.tistory.com/2</a></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

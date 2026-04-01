@@ -1,0 +1,672 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222355703299 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default" id="SE-4686453f-ae13-4479-8526-5f38030a6668">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-f292b6bf-58d9-4420-8508-b1cca99032da" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0ff2340a-4f87-4238-9861-cf5d1e85f89c" style="color:#000000;"><b>[OpenStack]</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default" id="SE-e9069825-05cb-4caa-9c3f-bb956f9cb871">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-dcd166e4-f094-4ba1-8bc5-84afd5249832" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6be297be-10e3-4783-8f62-52c81346097d" style="color:#000000;"><b>Linuxbridge agent를 OVS agent로 바꾸기</b></span></p><!-- } SE-TEXT --></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-429c6e6d-a778-4510-8721-c76d814284bf">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-88c87eec-0fcf-4598-83ef-256bc4681cf2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-02d63acd-7544-4710-a776-6cf7abc31149" style="color:#000000;">(오픈스택 로드밸런스를 위해)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2b63b71b-2430-495c-9a4b-fd351d81783d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2ceb5d08-78ab-47b3-b553-9bed30924179" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5e0b515d-2538-44b4-af36-1bd9abcf3cf4" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3b53a6ed-f5f0-4ae2-aa0a-799b1dea0bda" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-051a7597-36fd-4abb-9b05-b4ef0d8d15f2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a7c8d83b-a97e-49b9-bae3-3a04850c8aec" style="color:#000000;">(컨트롤러 노드)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-80cbec3e-d917-4cb7-a972-b7f603be2ff9" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-55342378-502f-483d-b653-326fe4b455ed" style="color:#000000;">1)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-26365513-986b-4f20-9cf3-d93f8a7fccc5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs15">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">dnf <span class="token se-code-operator">-</span>y install openstack<span class="token se-code-operator">-</span>neutron<span class="token se-code-operator">-</span>openvswitch libibverbs</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-26365513-986b-4f20-9cf3-d93f8a7fccc5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-b4d2b701-a0c4-4f4b-8fde-f8949ed888f4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-995e1555-0c11-4e14-ab2e-2945f7f9a577" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6149771d-4729-4fbf-838a-82598e71eb4c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9f5a9b9a-300a-46b1-8f6c-ed0e4a0a8328" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f4345ef5-e720-48cb-8e29-ef9ccc572a01" style="color:#000000;">2) 설정 파일 변경</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-943e6eec-b56d-44d7-8e90-41f822a75036">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>neutron<span class="token se-code-operator">/</span>dhcp_agent<span class="token se-code-punctuation">.</span>ini</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-943e6eec-b56d-44d7-8e90-41f822a75036"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-11c89a0b-4b71-4d02-ad97-c1f6125afd27">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span><span class="token se-code-constant">DEFAULT</span><span class="token se-code-punctuation">]</span>
+			interface_driver <span class="token se-code-operator">=</span> openvswitch
+			dhcp_driver <span class="token se-code-operator">=</span> neutron<span class="token se-code-punctuation">.</span>agent<span class="token se-code-punctuation">.</span>linux<span class="token se-code-punctuation">.</span>dhcp<span class="token se-code-punctuation">.</span>Dnsmasq
+			enable_isolated_metadata <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-11c89a0b-4b71-4d02-ad97-c1f6125afd27"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-0546f031-fd86-45eb-ab65-819777b52a2e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dd3a80a2-41a5-4d82-a597-684b4dfe0476" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d9290147-537a-4669-9d1e-caa08f93a504" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a65e91b4-1a94-441f-aff2-47baec1024a7" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-df281c99-b28f-4c6d-afa0-747956153e23" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-e99e04b2-9197-4988-aaa3-bee4458c82b3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>neutron<span class="token se-code-operator">/</span>l3_agent<span class="token se-code-punctuation">.</span>ini</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-e99e04b2-9197-4988-aaa3-bee4458c82b3"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-be77c90c-529d-468e-bd83-7fb45b1ba52d">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:342px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-be77c90c-529d-468e-bd83-7fb45b1ba52d", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTdfMTMx/MDAxNjIxMjE5MTI1ODU2.LyiyourF_NxRRiM-h7u4KF-oyqRLksLwiLxYOIFmAdcg.6bFJw1SJ1ICkWmvTupO9XWjY1D84RRSqzwHwgy74dCsg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-17_%EC%98%A4%EC%A0%84_11.38.42.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="83" data-width="342" id="SE-be77c90c-529d-468e-bd83-7fb45b1ba52d_0" src="images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8333425c-ccb9-4053-9bfd-4cb267858c27" style=""><span class="se-fs- se-ff-" id="SE-b735f5cf-009c-4bad-a53d-d8b2977aade6" style="">변경 전</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-5d3c1758-37e2-4557-9363-ede41dfe2b40">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4b70049e-9932-4e05-b321-49b58ed6d348" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-21644881-56f3-4564-aefc-caca6c2edc0c" style="color:#000000;">여기에 다음을 수정, 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-a59748bf-fe27-4c6a-b9a8-b71c3548172c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">interface_driver <span class="token se-code-operator">=</span> openvswitch
+dhcp_driver <span class="token se-code-operator">=</span> neutron<span class="token se-code-punctuation">.</span>agent<span class="token se-code-punctuation">.</span>linux<span class="token se-code-punctuation">.</span>dhcp<span class="token se-code-punctuation">.</span>Dnsmasq
+enable_isolated_metadata <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-a59748bf-fe27-4c6a-b9a8-b71c3548172c"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-29982bde-9196-49ef-aba4-004e50a9128e">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:364px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-29982bde-9196-49ef-aba4-004e50a9128e", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTdfNTIg/MDAxNjIxMjE5MTY0MTE3.gGUkns6gWCbALbPXZB0m38l6z-dMS2NtMXaKeUe3rfUg.QdHLjOx-FLqUgwmIM9EoTfVjm3PbtvI79RH3QTR2w3Mg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-17_%EC%98%A4%EC%A0%84_11.39.21.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="103" data-width="364" id="SE-29982bde-9196-49ef-aba4-004e50a9128e_0" src="images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7a70cf1a-d1d5-49b7-9b51-db210e44d47e">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5394bfc1-e171-4f39-929e-a65f2562249f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5b45c038-1cef-403f-b126-15001f487dbd" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b386ccfa-33c5-4eab-9ee1-97c5f673710a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-0bf039c6-3bc5-4157-8836-b9da0f149d78" style="color:#000000;">(2) </span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-3f53692b-2992-4f16-9ef1-a59bb46a05bc">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>neutron<span class="token se-code-operator">/</span>plugins<span class="token se-code-operator">/</span>ml2<span class="token se-code-operator">/</span>ml2_conf<span class="token se-code-punctuation">.</span>ini</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-3f53692b-2992-4f16-9ef1-a59bb46a05bc"}' type="text/data"></script>
+</div> <div class="se-component se-image se-l-default" id="SE-c15efa54-59e0-4100-a282-88dcec7c797f">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:362px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-c15efa54-59e0-4100-a282-88dcec7c797f", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTdfMjY1/MDAxNjIxMjE5MjU5MzE3.ar7A9ZI92gXdS1pMlBzXFFjVOkWSvlosmNmuxshPooMg.ghIip9DidRE3ojsFqUEcVGB4ScsYvEeVLozJGKitCLIg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-17_%EC%98%A4%EC%A0%84_11.40.55.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="81" data-width="362" id="SE-c15efa54-59e0-4100-a282-88dcec7c797f_0" src="images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e890c993-564a-46db-acf4-004ddb7d4e39">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-60e5e477-c178-4a64-945a-ba226f54e986" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c492a208-9dbd-44ee-a7ec-d87e11c5c4f6" style="color:#000000;">위 부분([ml2])을 다음처럼 수정, 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-47da2819-59f1-41d7-a3b7-a5c4c265856f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">type_drivers <span class="token se-code-operator">=</span> flat<span class="token se-code-punctuation">,</span>vlan<span class="token se-code-punctuation">,</span>gre<span class="token se-code-punctuation">,</span>vxlan
+tenant_network_types <span class="token se-code-operator">=</span>
+mechanism_drivers <span class="token se-code-operator">=</span> openvswitch</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-47da2819-59f1-41d7-a3b7-a5c4c265856f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c80a7c60-70fe-4893-9bf8-b85fdc32d2ae">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d997c4cb-66b1-49a5-b7dc-5d8ec2ef1130" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-fbd207c2-89ad-49f6-9846-2b8e010e8208" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d3890903-81c9-46ab-ae80-f47bf55316f9" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-bf939a6e-23f4-47b2-96ee-5ab923e04e0e" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-dfbf0417-a028-4bf5-a4a6-da700406e253">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>neutron<span class="token se-code-operator">/</span>plugins<span class="token se-code-operator">/</span>ml2<span class="token se-code-operator">/</span>openvswitch_agent<span class="token se-code-punctuation">.</span>ini</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-dfbf0417-a028-4bf5-a4a6-da700406e253"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-4ced6695-af9e-41e7-9040-edd882818ec8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c44e3a7-7b89-41b3-a3bf-bb0a4c682112" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b4e2d73b-dc2c-4892-a630-487d3988eed6" style="color:#000000;">위 설정 파일 맨 마지막에 다음을 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-7381d1fd-7973-40aa-8049-4a23689d999b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span>securitygroup<span class="token se-code-punctuation">]</span>
+			firewall_driver <span class="token se-code-operator">=</span> openvswitch
+			enable_security_group <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span>
+			enable_ipset <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-7381d1fd-7973-40aa-8049-4a23689d999b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ac39410f-9fc6-449c-a131-2b3eb0dd4644">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79c1a7b5-6641-454f-b7d6-8a85befeec1b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7a264f10-dfc6-4693-9991-11dc94fc4ddf" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2753e603-ab03-41b2-b906-26db43854a62" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a86eb31a-b436-4ea1-8115-7088cfc2fa97" style="color:#000000;">(4)</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_stripe __se-component" id="SE-5e0e3f33-ce22-4e43-88bb-60967a729358">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>nova<span class="token se-code-operator">/</span>nova<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-5e0e3f33-ce22-4e43-88bb-60967a729358"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-06ca568c-7a93-4943-80eb-f37a33d9d5c4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-078958ed-823b-4689-8bed-1a06bef0cbf3" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-44c31478-4bba-4ef6-907a-2eecdc9dd3c1" style="color:#000000;">[DEFAULT] 섹션에 다음을 추가</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-ed06d203-26c4-4b61-8b2c-4ac1fad91d9f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">			use_neutron <span class="token se-code-operator">=</span> True
+			linuxnet_interface_driver <span class="token se-code-operator">=</span> nova<span class="token se-code-punctuation">.</span>network<span class="token se-code-punctuation">.</span>linux_net<span class="token se-code-punctuation">.</span>LinuxOVSInterfaceDriver
+			firewall_driver <span class="token se-code-operator">=</span> nova<span class="token se-code-punctuation">.</span>virt<span class="token se-code-punctuation">.</span>firewall<span class="token se-code-punctuation">.</span>NoopFirewallDriver</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ed06d203-26c4-4b61-8b2c-4ac1fad91d9f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-004bec32-4c81-4db3-b75d-0d40217598f0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-397d696b-5f69-4fd0-b9b5-491602ac687e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-581ab100-9063-4022-80ea-a29ec65ef508" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0fc3116d-e3db-46cf-82c9-4c03a13913c2" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e302cf0a-43c0-4ce5-99ac-79f28016ab81" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-ba99d5b7-a0c0-42d7-ba92-b7d8c9da2daf">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">su <span class="token se-code-operator">-</span>s <span class="token se-code-operator">/</span>bin<span class="token se-code-operator">/</span>bash neutron <span class="token se-code-operator">-</span>c <span class="token se-code-string">"neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugin.ini upgrade head"</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-ba99d5b7-a0c0-42d7-ba92-b7d8c9da2daf"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9de4841d-904a-4de2-982c-1d5ee92f0255">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-328cbf30-3ee6-43f3-9bfe-90c2a3098484" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e7044f2f-4a7c-4dd3-bbae-a80ad3f7017b" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f1509520-0a52-4a46-be7a-c76bf578656d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d5bd6df3-689d-42ae-8aa2-5fb05838c859" style="color:#000000;">시스템들 재시작</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-f8291aeb-fe01-4153-86a4-9f45cbe5ab15">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl enable openvswitch
+systemctl restart openvswitch
+	
+systemctl restart neutron<span class="token se-code-operator">-</span>server neutron<span class="token se-code-operator">-</span>metadata<span class="token se-code-operator">-</span>agent neutron<span class="token se-code-operator">-</span>openvswitch<span class="token se-code-operator">-</span>agent<span class="token se-code-punctuation">.</span>service
+systemctl restart openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>api</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f8291aeb-fe01-4153-86a4-9f45cbe5ab15"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-91adcd71-b21e-4cfe-af76-412bbbcf77b0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-89800f25-8f78-43d3-869d-e44f05cbb49d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a20cdf5b-a4e6-458e-a02f-ed5669a80ba8" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-dc3126c9-2e84-4756-804f-549276411385" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-400d4ca2-9bce-43a7-a4c7-2cf4b755e80b" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-778207f4-34ec-470f-b86e-811017e4e277" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-aefa7d8f-60a5-4414-a0d3-1fad56bd09c5" style="color:#000000;">확인 ::</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4c3deb40-7c26-4c4f-a84d-b77040d6257c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2d35f333-c3e0-433c-a118-21897d9573ed" style="color:#000000;">Open vSwitch agent 추가된 것 확인.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-00fbe8a7-c5e7-4bf1-b243-afcc8eae9b23">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-00fbe8a7-c5e7-4bf1-b243-afcc8eae9b23", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTdfMjg4/MDAxNjIxMjIwMDUxNzc0.wMbOCm6yDNE8Ii65v2F7upzc61adWAdMKGKxwU7OQsEg.GUNz6zPUSMAQ9WVRHDW2bVN4DKcncy0F7X4HmiXrVfsg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-17_%EC%98%A4%EC%A0%84_11.54.03.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="109" data-width="693" id="SE-00fbe8a7-c5e7-4bf1-b243-afcc8eae9b23_0" src="images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-76980527-93c3-4fca-9a6d-2003a7e33bc5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-c16a2c60-96c2-4f71-884d-49155d1d5b11" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-758f3708-c2a1-40bd-97fd-1faad22594ab" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-580b833b-ebc7-4660-bd31-306d6a54d934" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-9b08746b-d88e-49ef-8f2d-25941a94e76f" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-42bc5a6a-9bfe-43ed-860f-d25f204c3a44" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-8e7c55e4-143a-45d8-8a42-a8486212f124" style="color:#000000;">리눅스 브릿지 오픈스택에서 제거 ::</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-d9cdeace-7e8a-4e00-8793-70e46fe4e352">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl disable neutron<span class="token se-code-operator">-</span>linuxbridge<span class="token se-code-operator">-</span>agent<span class="token se-code-punctuation">.</span>service
+systemctl stop neutron<span class="token se-code-operator">-</span>linuxbridge<span class="token se-code-operator">-</span>agent<span class="token se-code-punctuation">.</span>service</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-d9cdeace-7e8a-4e00-8793-70e46fe4e352"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-71ebcebf-4703-4255-94a4-b0e797553c1b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a8d10319-5e0c-475b-9e6e-0cdfeb8b6046" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b0b94472-110e-48f6-a61d-64851cc03e80" style="color:#000000;">이렇게까지하면 지워지긴 하지만,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a74aa4fd-3220-4a05-a6aa-8e9de4a7b88d" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4f4dcfd6-7426-487c-9458-4aa314df2d85" style="color:#000000;">아래처럼 openstack network agent list 에는 남아있음.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-ca0e0586-7b08-4cf5-a5ab-a04421e70068">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:432px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-ca0e0586-7b08-4cf5-a5ab-a04421e70068", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTdfMjg1/MDAxNjIxMjIwMjcwMTA4.GMUancLoe1dJ_AzjqoyGJguZGdmP_VgwGIDqIU6L3m8g.DH22hYgkDhAtcSd81JkzMLZ1q25gFI7I2vjxUgKxz7wg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-17_%EC%98%A4%EC%A0%84_11.57.47.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="159" data-width="432" id="SE-ca0e0586-7b08-4cf5-a5ab-a04421e70068_0" src="images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-48c45cde-d629-46a8-876c-23a9bb3ce684">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f003e319-d1cb-4ad3-bc52-3f0d03ed004c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-3d70d012-1bbf-4421-93ac-fabfbc0e806b" style="color:#000000;">이것도 지워주기 위해 리스트에서 ID를 확인하고,</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-65b30328-4e2b-48e4-862d-da650caff8a3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">openstack network agent <span class="token se-code-keyword">delete</span> <span class="token se-code-punctuation">[</span>확인한 <span class="token se-code-constant">ID</span><span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-65b30328-4e2b-48e4-862d-da650caff8a3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-984665e9-fa7d-4582-b4f5-f17dd10d5231">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7028bff4-a9aa-4d07-8ae5-0b46d0672469" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6b7c3388-0091-4ead-a327-d005859e88d0" style="color:#000000;">위 명령어 실행 후 다시 리스트 확인해보면</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-129a412d-8728-4138-8399-180cad76a8d1">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:428px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-129a412d-8728-4138-8399-180cad76a8d1", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTdfMTEz/MDAxNjIxMjIwNDQ2OTc2.a6Xoqm1Fc45CwJdBQqqHkJhcdScrjO3G0L8lH5GsGq4g.UMf59LepYeu5-WJkRyw-D3c02F2spxxqWANPia8lZtog.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-17_%EC%98%A4%ED%9B%84_12.00.44.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="139" data-width="428" id="SE-129a412d-8728-4138-8399-180cad76a8d1_0" src="images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-21a57abc-ec2a-403e-b337-9ac07dc27f42">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8188abc9-f42d-4dc3-ab37-3d905f582fe5" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-377f75a2-61e6-4f63-8425-c5e86272ee11" style="color:#000000;">지워진 것 확인!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-2d8877b1-dc2d-4517-be37-3fc9b53144f1" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-7df264f3-aed8-4522-b90a-a43421c2e248" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9c25be0f-cb9b-4f1c-96b8-b516357fbc5a" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-158828d8-5550-464f-84bf-0402a2c50031" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-181b2f71-704f-422b-a3d1-2a94867440c0" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b09de941-4d82-4c82-9e5f-77d755c798d6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a12d2801-af2e-443f-91c3-5edfeb270e9f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-99fa252f-b346-42ea-ba82-bbcd47413412" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4ec26d5f-aad4-493f-ad7c-9a4c2f3ae415" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-deaa5a3b-908a-48d8-b835-9dcc7af79423" style="color:#000000;">[2] compute 노드</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cda98491-5be8-4374-aa21-40abe32e62bb" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-305f9fcb-921b-4972-b4ab-d9e92337382f" style="color:#000000;">컴퓨트 노드에서 작업.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8811af6e-7b31-4930-9f3b-4ff3bc63af2f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-370c9b28-cc81-4887-b218-e0cc02290923" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-56c5cdc5-199c-4a08-a285-3569805d48d4">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">dnf <span class="token se-code-operator">-</span>y install openstack<span class="token se-code-operator">-</span>neutron<span class="token se-code-operator">-</span>openvswitch openstack<span class="token se-code-operator">-</span>neutron<span class="token se-code-operator">-</span>ml2</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-56c5cdc5-199c-4a08-a285-3569805d48d4"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-faa88153-a7b4-4e49-9270-83f6e76f1571">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d459b3e1-5303-4ed8-b3a1-5030d29f458e" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d390bd0a-26c9-436c-9934-85095a4a5bff" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_stripe __se-component" id="SE-131035d2-4eef-413f-a31a-8ab6892125f9">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>neutron<span class="token se-code-operator">/</span>neutron<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-131035d2-4eef-413f-a31a-8ab6892125f9"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-fcff93be-0a95-4ed3-9204-4ea2471595bb">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a20dc2d4-f52d-4888-bee1-54867d2e7231" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c66bd12b-5889-4f3a-b790-8d934367aaf9" style="color:#000000;">[DEFAULT] 섹션에 다음을 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6d3d1a8d-4708-4e9a-acde-1336bace89a5">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">core_plugin <span class="token se-code-operator">=</span> ml2
+service_plugins <span class="token se-code-operator">=</span> router
+state_path <span class="token se-code-operator">=</span> <span class="token se-code-operator">/</span><span class="token se-code-keyword">var</span><span class="token se-code-operator">/</span>lib<span class="token se-code-operator">/</span>neutron
+allow_overlapping_ips <span class="token se-code-operator">=</span> True</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6d3d1a8d-4708-4e9a-acde-1336bace89a5"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8311ab03-a1f8-4db5-a0fd-c788d6fefe2d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-12587638-79f8-4b3d-8984-40e5820cac33" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-74cf85e7-2ddd-439d-8f24-24d49a37b3c9" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-0817a321-cc6a-487e-a7c3-60af136325a8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>neutron<span class="token se-code-operator">/</span>plugins<span class="token se-code-operator">/</span>ml2<span class="token se-code-operator">/</span>ml2_conf<span class="token se-code-punctuation">.</span>ini</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-0817a321-cc6a-487e-a7c3-60af136325a8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-da591bd2-2205-4f15-9fd4-774925315d71">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-81c9343d-948b-446b-9f36-33e1096b3eaa" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-c9848fe7-8b8d-4c7e-a021-88d98f082058" style="color:#000000;">맨 마지막 줄에 추가</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-c71aa1bd-f583-4a6b-9243-30da03b41e44">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span>ml2<span class="token se-code-punctuation">]</span>
+			type_drivers <span class="token se-code-operator">=</span> flat<span class="token se-code-punctuation">,</span>vlan<span class="token se-code-punctuation">,</span>gre<span class="token se-code-punctuation">,</span>vxlan
+			tenant_network_types <span class="token se-code-operator">=</span> vxlan
+
+<span class="token se-code-punctuation">[</span>ml2_type_flat<span class="token se-code-punctuation">]</span>		
+			flat_networks <span class="token se-code-operator">=</span> provider
+
+<span class="token se-code-punctuation">[</span>ml2_type_vxlan<span class="token se-code-punctuation">]</span>
+			vni_ranges <span class="token se-code-operator">=</span> <span class="token se-code-number">1</span><span class="token se-code-operator">:</span><span class="token se-code-number">1000</span>
+<span class="token se-code-punctuation">[</span>securitygroup<span class="token se-code-punctuation">]</span>
+			firewall_driver <span class="token se-code-operator">=</span> openvswitch
+			enable_security_group <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span>
+			enable_ipset <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c71aa1bd-f583-4a6b-9243-30da03b41e44"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c50387f6-a9f8-4d28-b7c3-878368c03f84">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-6fb41a20-ed28-45a5-9398-8e05865d417b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e4514b2a-6e57-4ecf-bfa6-accb3c675233" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-f1b95e52-9541-4427-babd-28891a983916">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>neutron<span class="token se-code-operator">/</span>plugins<span class="token se-code-operator">/</span>ml2<span class="token se-code-operator">/</span>openvswitch_agent<span class="token se-code-punctuation">.</span>ini</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-f1b95e52-9541-4427-babd-28891a983916"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-d1f9670c-3f49-47d8-957d-d45aa11e31f2">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b7bb9cf3-42c0-4383-a23f-39575dec112c" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6e26a55f-d214-45af-ab94-99e548cd70ae" style="color:#000000;">마지막 줄에 추가.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-216829ce-dc78-414d-bcf5-dc71f843f53e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-punctuation">[</span>agent<span class="token se-code-punctuation">]</span>
+			tunnel_types <span class="token se-code-operator">=</span> vxlan
+			prevent_arp_spoofing <span class="token se-code-operator">=</span> True
+
+<span class="token se-code-punctuation">[</span>ovs<span class="token se-code-punctuation">]</span>
+			local_ip <span class="token se-code-operator">=</span> <span class="token se-code-punctuation">[</span>컴퓨트 노드 <span class="token se-code-constant">IP</span><span class="token se-code-punctuation">]</span>
+<span class="token se-code-punctuation">[</span>securitygroup<span class="token se-code-punctuation">]</span>
+			firewall_driver <span class="token se-code-operator">=</span> openvswitch
+			enable_security_group <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span>
+			enable_ipset <span class="token se-code-operator">=</span> <span class="token se-code-boolean">true</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-216829ce-dc78-414d-bcf5-dc71f843f53e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e6b3a602-7ef5-495a-b186-b3b573708a03">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ee886a76-c1eb-488a-b3d0-23e71c714fe5" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-2e221319-668e-4b24-bd60-c9beb2d2a557" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-50dbefa0-91ad-4a5e-aa0c-122b679d57fe">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">vi <span class="token se-code-operator">/</span>etc<span class="token se-code-operator">/</span>nova<span class="token se-code-operator">/</span>nova<span class="token se-code-punctuation">.</span>conf</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-50dbefa0-91ad-4a5e-aa0c-122b679d57fe"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-7df50a2b-eac7-4169-90ab-686a0221628b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0795e4fc-76e0-4d36-a51b-07333e08a910" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-cd88e788-9629-4878-a713-98db5dc558d0" style="color:#000000;">[DEFAULT] 섹션에 추가</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-2a793300-665b-4594-bdf6-f2729f6614a7">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">use_neutron <span class="token se-code-operator">=</span> True
+linuxnet_interface_driver <span class="token se-code-operator">=</span> nova<span class="token se-code-punctuation">.</span>network<span class="token se-code-punctuation">.</span>linux_net<span class="token se-code-punctuation">.</span>LinuxOVSInterfaceDriver
+firewall_driver <span class="token se-code-operator">=</span> nova<span class="token se-code-punctuation">.</span>virt<span class="token se-code-punctuation">.</span>firewall<span class="token se-code-punctuation">.</span>NoopFirewallDriver</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-2a793300-665b-4594-bdf6-f2729f6614a7"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8fedaeb0-14d4-4bfa-9fa5-0a8be9ade3e5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ccf6fd0a-b837-4d23-b960-4ce9e2e50882" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-5bffa1c8-f23a-489c-9643-5b5aa6708d72" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-0f32c614-fb81-4c9f-8e7b-b4ae6538bb37" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-eff7fff0-cf99-4133-aa22-29659c433b99" style="color:#000000;">서비스 시작</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-bf05a17b-5624-4992-b072-6a97aa9bee32">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">systemctl enable openvswitch
+systemctl restart openvswitch
+	
+systemctl enable neutron<span class="token se-code-operator">-</span>openvswitch<span class="token se-code-operator">-</span>agent
+systemctl restart neutron<span class="token se-code-operator">-</span>openvswitch<span class="token se-code-operator">-</span>agent
+systemctl restart openstack<span class="token se-code-operator">-</span>nova<span class="token se-code-operator">-</span>compute</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bf05a17b-5624-4992-b072-6a97aa9bee32"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-2b3f5ab2-378e-4478-8949-233866157860">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-54774a4a-0937-47db-9042-310523ef3683" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-a50b7ebc-7f40-4981-ab12-c660f85e3f4c" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-8690d27e-4f78-4def-b18c-8887e578a8c4" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-26087e04-aa3d-4868-b15b-ed7b47c3be32" style="color:#000000;">Linux bridge agent의 ID 확인.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-1626337a-6997-4746-965d-15074be9596e">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:429px;">
+<div class="se-module se-module-image" style="">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" data-linkdata='{"id" : "SE-1626337a-6997-4746-965d-15074be9596e", "src" : "https://postfiles.pstatic.net/MjAyMTA1MTdfMjYx/MDAxNjIxMjIxMTk3NTQ1.E7F_amzNt6z9CoKsjVdixvB2d_TQYOXk3tI-2h5OsTgg.SOMxrAPvGgWpOybruK9TSFJVqTyS-VW1tYkf_ngVZvgg.PNG.ghdalswl77/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2021-05-17_%EC%98%A4%ED%9B%84_12.13.14.png", "linkUse" : "false", "link" : ""}' data-linktype="img" onclick="return false;" style="">
+<img alt="" class="se-image-resource egjs-visible" data-height="140" data-width="429" id="SE-1626337a-6997-4746-965d-15074be9596e_0" src="images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-952df860-7ced-470e-b29f-a92409758201">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7b0f6335-caa3-4b3c-91c6-e3bfa4986a4f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-b2e6525c-1dd8-4ecb-9f00-0a56c97f44e6" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-37ae422d-d9c1-4aba-8c88-664d1f6e0820" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-e8232709-c038-4951-aba9-2d0e99e4c80c" style="color:#000000;"><b>리눅스 브릿지 오픈스택에서 제거 하는 법</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b11d9ed8-8251-40f8-aa4f-daa4ea87eb39" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-d91407a4-5667-4885-ab4d-1e72c1713a92" style="color:#000000;"><b>(제거해도 다시 살아나는 경우)</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-90207ec1-ebb8-481a-a4ac-b757e447f86b" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-eee6201d-ff17-44b9-b51d-eddf693a3e73" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e8311eb0-6ea3-47d3-8a4c-db0f87050255" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-6e542bb7-1cec-47bb-bbdd-27443e6bdd4b" style="color:#000000;">*** 컴퓨트에서도</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-dcea60f2-7124-45d5-b6d6-3b07470f2416">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">	systemctl disable neutron<span class="token se-code-operator">-</span>linuxbridge<span class="token se-code-operator">-</span>agent<span class="token se-code-punctuation">.</span>service
+	systemctl stop neutron<span class="token se-code-operator">-</span>linuxbridge<span class="token se-code-operator">-</span>agent<span class="token se-code-punctuation">.</span>service
+	
+	openstack network agent list 명령어로 <span class="token se-code-constant">ID</span>를 확인하고
+
+	openstack network agent <span class="token se-code-keyword">delete</span> <span class="token se-code-punctuation">[</span>확인한 <span class="token se-code-constant">ID</span><span class="token se-code-punctuation">]</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-dcea60f2-7124-45d5-b6d6-3b07470f2416"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-e4fd4aa8-5e21-402f-95e7-a36cb3a3a511">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f372bc42-bdfd-4843-bccf-ccbd38855928" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-521ee0fd-2db7-46c4-af46-44e62ed20d39" style="color:#000000;">다음을 해 주어야 다시 안살아남 !!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-79fb54f2-98af-4c98-b549-f23932820472" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-889444a8-a70d-4dac-a70a-fc255c42fe25" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-a21ddaa8-02da-45cf-8ea9-48d54c0ddea7" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-f0ab2701-d0a7-4a87-86ee-b9cd0ef48bd2" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b356d30b-1e8e-4c41-a530-355f91b070b3" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-4cf77d01-3600-4e39-879e-13bdf4ef2376" style="color:#000000;">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ffc3c070-bbcc-4e1e-bd99-6c289269f65f" style=""><span class="se-fs- se-ff-nanumbarungothic se-style-unset" id="SE-fc231863-dc4c-40c6-8d99-0643d458b207" style="color:#000000;">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

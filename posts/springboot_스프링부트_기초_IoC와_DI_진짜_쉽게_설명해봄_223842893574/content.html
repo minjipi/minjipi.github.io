@@ -1,0 +1,419 @@
+<!-- source: https://blog.naver.com/ghdalswl77/223842893574 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-e48e9876-6c3a-4fd3-8818-ae8fc0d5aab4">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-1504a9e5-5b1e-4b1a-bd69-0a0bdfed853e" style=""><span class="se-fs- se-ff-system" id="SE-fd783469-8549-4d95-aa87-e60b49c59c3f" style="">안녕하세요 토찌 입니다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e0948b92-bdb0-4dad-b12e-17b7031cb1bc" style=""><span class="se-fs- se-ff-system" id="SE-2671fc6d-6c46-47cf-8567-2941ce764a70" style="">오늘은 스프링에서 필수 개념인 IoC와 DI에 대해 진짜 쉽게 정리해 봅니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-FAB6F67B-1349-40AB-93EA-036A3C69AA36" style=""><span class="se-fs- se-ff-system" id="SE-2E73A4B4-6A61-4E07-93CC-899FAFDD36D9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-54f6de07-9804-4915-9e10-122dc22eb1a8" style=""><span class="se-fs- se-ff-system" id="SE-197c0cc7-e6b8-4b5f-8019-beca247d72f3" style="">Spring에 대해 공부 중이시라면, </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-61237238-5D8F-4F76-BB97-C146A4390BB2" style=""><span class="se-fs- se-ff-system" id="SE-5C7ED4B8-34DC-4131-B6A6-BAC0BBBA9E85" style="">IoC(제어의 역전)라는 용어도 한 번쯤 들어봤을 겁니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-39ecc0f5-22a0-4f34-9ab5-023db0d2320b" style=""><span class="se-fs- se-ff-system" id="SE-5b902b67-071a-4139-bc0f-4a7fba854e4d" style=""><b>제어의 역전</b></span><span class="se-fs- se-ff-system" id="SE-228112D3-E766-4E76-85F1-F7FD29B708DE" style="">이란 간단히 말해서 객체의 생성과 생명주기를 개발자가 직접 관리하지 않고 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-2722a140-223a-4ca9-bf82-33628b066b0c" style=""><span class="se-fs- se-ff-system" id="SE-8990c2b4-5ff5-4069-b073-d33bb8764aeb" style="">스프링 컨테이너가 대신 관리해 주는 개념입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-acda293f-4e57-4a3c-a607-3e18004856cb" style=""><span class="se-fs- se-ff-system" id="SE-160d4347-764e-4cb8-9dfe-4099b50997d6" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-394f498d-4453-465e-962b-c28c2b58f7f2" style=""><span class="se-fs- se-ff-system" id="SE-a858e9f5-ae85-4010-b096-2696e6b36d97" style="">그런데 이 말이 이해가 잘 되시나요? 😲</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-5469362A-685D-4E8D-89B3-06CD7453B9E8" style=""><span class="se-fs- se-ff-system" id="SE-E94A61EF-AA23-48BC-BEB0-7740024D9984" style="">되신다면 이 글을 끝까지 보실 필요는 없고요!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-85177874-4c6d-4122-8c26-2cabbb03a696" style=""><span class="se-fs- se-ff-system" id="SE-17a8680b-b85a-42a1-8f39-f9b762d27393" style="">저는 처음에 스프링을 배울 때 이 개념이 추상적으로 느껴져서 어려웠는데요,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-81ce3e6e-0c3c-443f-baf8-f28e71d8ea79" style=""><span class="se-fs- se-ff-system" id="SE-088f5cdb-c7b4-474b-a9e4-d530b262dc91" style="">그래서 오늘은 아주 쉽게 </span><span class="se-fs- se-ff-system" id="SE-10103d03-858a-4338-a067-d197bd48200e" style=""><b>IoC와 DI 개념</b></span><span class="se-fs- se-ff-system" id="SE-988124a4-9384-4735-ac8f-02cc33c660a7" style="">을 정리해 보려고 합니다. 예제와 함께요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-A0DA0260-C025-44B0-BDC7-A992B3687DBA" style=""><span class="se-fs- se-ff-system" id="SE-2AC28DBD-E2A0-4948-9308-45C8F2BC3A95" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-44c83a23-6e86-49a4-82f1-a10d74722caa" style=""><span class="se-fs- se-ff-system" id="SE-ffa57fb0-d69e-40b8-bb2b-3190014679ec" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-e48e9876-6c3a-4fd3-8818-ae8fc0d5aab4", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-9eea255b-8d6c-407a-a722-0c992c93125e">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-f4e15b77-301b-434e-b4bd-f9fec46a10cc" style=""><span class="se-fs-fs16 se-ff-" id="SE-32dfe65e-c95b-4a00-93a7-57ba1eacc15b" style="">1. 기존 자바에서 객체를 생성하고 관리하는 방식</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7108985d-88a0-404d-bac1-c6054c3a62b8">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e6d1eff4-0454-416b-8fca-ef828bb28544" style=""><span class="se-fs- se-ff-system" id="SE-3b9664b6-32e8-449e-8907-23a2a3b4713c" style="">스프링을 사용하기 전, 일반적인 자바 개발에서는 객체를 개발자가 직접 생성하고 관리했습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-C843C2E6-33D3-4602-A0EF-1D94914AA928" style=""><span class="se-fs- se-ff-system" id="SE-EF3FB4E6-2CA9-49B9-A294-FFC65B98CED7" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-7108985d-88a0-404d-bac1-c6054c3a62b8", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-6134e27e-25aa-4ef2-a809-162580b0b9c8">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">interface</span> <span class="token se-code-class-name">Coffee</span> <span class="token se-code-punctuation">{</span>
+    String <span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Americano</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Coffee</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> String <span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"Americano"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Latte</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Coffee</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> String <span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"Latte"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-6134e27e-25aa-4ef2-a809-162580b0b9c8"}' data-module-v2='{"type":"v2_code", "id" : "SE-6134e27e-25aa-4ef2-a809-162580b0b9c8"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-aa267e38-063b-4eb7-9c44-4e6294ee9bf5">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-7871ae6d-8594-4845-8c92-b8c698e3d8a2" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-eeb49886-4dff-4f39-8b46-6d5940305a51" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-69a39e69-b9e7-4c00-8716-111c13478ee1" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-1c20be56-9915-46fc-a51e-b0fbe4654556" style="">Coffee라는 인터페이스를 정의하고, 이를 구현한 Americano와 Latte 클래스가 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-290ea907-8703-4b6d-9cec-b4737692a931" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-842306a7-92ad-4784-bf37-c56144691baf" style="">별문제가 없어 보이지만, 이 방식에는 큰 한계가 있었죠.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-c8fdf401-ef29-4d99-9f8f-7e810a924f0c" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-33aafd23-994c-441c-989a-f28bdd77f705" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-aa267e38-063b-4eb7-9c44-4e6294ee9bf5", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-2c1d02b2-0333-4e94-a215-6db9a474c3ee">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">CoffeeShop</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> Coffee coffee<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">CoffeeShop</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-comment">// 현재 Americano 객체만 생성</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>coffee <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">Americano</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">serveCoffee</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"오늘의 커피 추천: "</span> <span class="token se-code-operator">+</span> coffee<span class="token se-code-punctuation">.</span><span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-2c1d02b2-0333-4e94-a215-6db9a474c3ee"}' data-module-v2='{"type":"v2_code", "id" : "SE-2c1d02b2-0333-4e94-a215-6db9a474c3ee"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-80acdb37-a367-44f2-bc1d-73ac177a510f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-b817ebb9-09d4-4f8c-954b-588bd47edda4" style=""><span class="se-fs- se-ff-system" id="SE-6a770dcb-7767-4c78-8993-0960e51e7d6e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-E49BCBE5-715E-43A8-81BA-EEAFC7AD4F7C" style=""><span class="se-fs- se-ff-system" id="SE-7246072A-A3AC-4A7B-998F-6690E4DED8C2" style="">이 예시에서 CoffeeShop 클래스는 Americano 객체만 직접 생성하고 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-2082994f-3e41-4e9a-8df7-00022fb22e9f" style=""><span class="se-fs- se-ff-system" id="SE-b72a8cd9-7bf0-437d-9fd0-1e997d4ac159" style="">만약 CoffeeShop에서 다른 커피인 Latte를 사용해야 한다면, 코드를 직접 수정해야 합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-a22cb8a0-fbf4-4067-97ec-92b005fe120b" style=""><span class="se-fs- se-ff-system" id="SE-3ac93651-2895-4317-9241-6cb14a679326" style="">바로 이런 경우를 CoffeeShop 클래스는 Americano와 </span><span class="se-fs- se-ff-system" id="SE-9a39ae60-7232-4dc1-81b6-30fad9b75377" style=""><b>강하게 결합</b></span><span class="se-fs- se-ff-system" id="SE-21dc84be-a524-40e1-835e-f7fd64a1aa02" style="">되어 있다고 할 수 있는데요,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-5c212e69-73da-4b8c-8966-464ce1a49187" style=""><span class="se-fs- se-ff-system" id="SE-aba364cf-9343-469c-970a-e72e9412e5a9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-5688b8ce-f45b-4597-9909-e131addd1247" style=""><span class="se-fs- se-ff-system" id="SE-5161c716-3011-47e9-bd16-5231ae21c7c5" style="">즉, Latte를 사용해야 할 경우, CoffeeShop 클래스를 수정해야 하는데</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-225ea3aa-bdcc-4d4a-a6dd-ea988de2f23b" style=""><span class="se-fs- se-ff-system" id="SE-b256a351-f1bb-473f-98e8-1162ecd933cd" style="">이는 소프트웨어 개발에서 좋은 설계 원칙인 OCP(Open/Closed Principle, 개방-폐쇄 원칙)를 위반하는 방식입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-cc552421-4568-4683-a28c-4efe88fbc5ad" style=""><span class="se-fs- se-ff-system" id="SE-2128a411-0361-4957-90cb-b1bf98a06851" style="">OCP는 '확장에는 열려 있고, 수정에는 닫혀 있어야 한다'는 원칙이죠.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-94a2753e-9e35-4d33-b416-251580186751" style=""><span class="se-fs- se-ff-system" id="SE-e885e908-bf38-4480-abbb-6bc359b33e9e" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-1d6c2bd1-c2bf-48f2-a43b-2377f61cf91e" style=""><span class="se-fs- se-ff-system" id="SE-d1d76394-92d0-46af-900a-f9a7246eff39" style="">또 새로운 커피 종류가 추가되어도 CoffeeShop 클래스를 수정해야 하므로, </span><span class="se-fs- se-ff-system" id="SE-ba80a8b0-5ab5-494e-a03a-d43f01598e19" style=""><b>유지보수</b></span><span class="se-fs- se-ff-system" id="SE-0cde1ded-4fb2-485c-a73c-f35aede7d948" style="">가 어려워지고 </span><span class="se-fs- se-ff-system" id="SE-a543e722-75ab-47ec-b3ca-34cfd34d6601" style=""><b>확장성</b></span><span class="se-fs- se-ff-system" id="SE-0aef02f3-c159-4bc4-87b3-18315a2202e0" style="">이 부족합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-07d06796-21f6-4073-a112-249acd974166" style=""><span class="se-fs- se-ff-system" id="SE-5c582b5f-e28b-48eb-b976-8893a2a02c36" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-c5b4cdf6-510f-44c1-92a5-56530b99b6e1" style=""><span class="se-fs- se-ff-system" id="SE-957b24d1-a7ff-423e-8669-98bb395c38da" style="">이 문제를 해결하기 위해 등장한 개념이 바로 IoC, 제어의 역전입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-51b03ce8-99a1-419d-8c6c-9ecab25e82f5" style=""><span class="se-fs- se-ff-system" id="SE-2e78e102-6b72-427b-bdb5-1bfacfbdd8d2" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-80acdb37-a367-44f2-bc1d-73ac177a510f", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-10e91fe5-29ec-42de-85e3-37a923310a95">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-7fa6ea6b-6b95-440b-b848-4acc0c45f4a9" style=""><span class="se-fs-fs16 se-ff-" id="SE-aef8fdc6-56ea-478f-829a-2273a2cc9195" style="">2. IoC (제어의 역전)</span></p><!-- } SE-TEXT --></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-b7bc99e2-7a30-4554-af0b-595d6b8e3595" style=""><span class="se-fs- se-ff-" id="SE-33b054e9-f6c5-4bc4-bd32-9ae985d4a774" style="">스프링이 객체를 관리하는 방식</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-45216291-95d3-4957-af9d-6d9904f0a664">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-cec7d12d-7336-4a59-9cf9-92a2cdd6cb30" style=""><span class="se-fs- se-ff-system" id="SE-9bd605d7-6be1-410d-a496-d5dfd7c731af" style="">CoffeeShop 클래스는 </span><span class="se-fs- se-ff-system" id="SE-35bd0a1c-90c4-47c5-a363-2ba5452943b6" style=""><b>직접 객체를 생성하는 대신,</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-73454e62-eb20-4c98-b5fa-dcc081926be4" style=""><span class="se-fs- se-ff-system" id="SE-e2733ee0-cb3d-46ae-ba2a-1013239c8dea" style=""><b>외부에서 Coffee 객체를 주입받는 구조</b></span><span class="se-fs- se-ff-system" id="SE-cc5099e8-2f09-4a27-84f9-8b0ab676b9ae" style="">로 변경되어야 합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-23cc2570-037e-4895-945e-61e2a07e5725" style=""><span class="se-fs- se-ff-system" id="SE-96c277f3-f292-43c3-9844-5d318e590e98" style="">이렇게 구조를 바꾸면 클래스 간 결합도가 낮아지고, 커피 타입을 변경할 때도 클래스 자체를 수정할 필요 없이 객체만 바꿔서 주입하면 되겠죠!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-02b775fe-36fb-4193-9475-ac8811708e6e" style=""><span class="se-fs- se-ff-system" id="SE-80d55580-8b23-4291-a87f-f0098811f249" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-80621558-fbf9-44f4-a2b3-566024d698b4" style=""><span class="se-fs- se-ff-system" id="SE-087c7536-8a06-4eb4-aa33-0505b44c973a" style="">기존 자바에서는 new 키워드를 사용해 개발자가 직접 객체를 생성하고 관리해야했지만,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-fa060223-69f2-4d5d-aa80-5923682e40a0" style=""><span class="se-fs- se-ff-system" id="SE-6dba3d4c-6dd1-45ea-9412-81257471e3a5" style="">스프링에서는 이 작업을 모두 스프링 컨테이너가 대신 해줍니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-b2a0117c-7a3f-4acd-9eb4-6ec2403c3131" style=""><span class="se-fs- se-ff-system" id="SE-b8383713-b7ba-4e43-88d0-734a1f58b731" style="">개발자는 ‘이 객체는 스프링이 관리해 줘!’라는 의미로 어노테이션 이라는 것만 붙여주면 됩니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-a8fdbda6-468e-4298-80db-70d71f13f8c4" style=""><span class="se-fs- se-ff-system" id="SE-ce6d3aeb-fddb-42e4-9ba1-59bcf0969712" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-45216291-95d3-4957-af9d-6d9904f0a664", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-quotation se-l-quotation_line" id="SE-f3332bbc-6624-4037-89db-2c6671e9d925">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-8125124e-eb0d-4047-98a3-3ef67d9afa33" style=""><span class="se-fs-fs15 se-ff-" id="SE-f90fdbc4-c014-45c8-863c-efa1f7b54e79" style=""><b>개선된 코드 </b></span><span class="se-fs-fs15 se-ff-" id="SE-5559f785-0dc1-49bd-944a-7d87d8919ae1" style="">(스프링을 사용한 DI)</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component" id="SE-c4b3eb83-13bb-49fa-aa16-d0a753fc861e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">public</span> <span class="token se-code-keyword">interface</span> <span class="token se-code-class-name">Coffee</span> <span class="token se-code-punctuation">{</span>
+    String <span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+
+@Component
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Americano</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Coffee</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> String <span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"Americano"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+
+@Component
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">Latte</span> <span class="token se-code-keyword">implements</span> <span class="token se-code-class-name">Coffee</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> String <span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"Latte"</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c4b3eb83-13bb-49fa-aa16-d0a753fc861e"}' data-module-v2='{"type":"v2_code", "id" : "SE-c4b3eb83-13bb-49fa-aa16-d0a753fc861e"}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_black __se-component" id="SE-185dd1f0-5383-4ece-a1a3-840d8afc93e1">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Component
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">CoffeeShop</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> Coffee coffee<span class="token se-code-punctuation">;</span>
+<span class="token se-code-comment">// 생성자 주입을 통해 외부에서 coffee 객체를 주입받음</span>
+    @Autowired
+    <span class="token se-code-keyword">public</span> <span class="token se-code-function">CoffeeShop</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">Coffee coffee</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>coffee <span class="token se-code-operator">=</span> coffee<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">serveCoffee</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        System<span class="token se-code-punctuation">.</span>out<span class="token se-code-punctuation">.</span><span class="token se-code-function">println</span><span class="token se-code-punctuation">(</span><span class="token se-code-string">"오늘의 커피 추천: "</span> <span class="token se-code-operator">+</span> coffee<span class="token se-code-punctuation">.</span><span class="token se-code-function">getName</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-185dd1f0-5383-4ece-a1a3-840d8afc93e1"}' data-module-v2='{"type":"v2_code", "id" : "SE-185dd1f0-5383-4ece-a1a3-840d8afc93e1"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-1fa49d76-fad6-4b5b-8496-32848f886fab">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-5b0e4750-efaf-449d-b2de-b71287c8fcfa" style=""><span class="se-fs- se-ff-system" id="SE-fabfad65-a689-464f-9198-42777cd02fe4" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-9bf72893-4ba4-43f4-a250-089eebec92d2" style=""><span class="se-fs- se-ff-system" id="SE-e91c64b3-dad1-4c54-8a3e-c5b1a5af93ec" style="">이제 CoffeeShop 클래스는 Coffee 인터페이스에 의존합니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-2db091e2-1c57-4caf-8feb-f9940c464465" style=""><span class="se-fs- se-ff-system" id="SE-6d9b936e-aaff-443f-b251-2d5e6f35a0c3" style="">어떤 커피 객체를 쓸지는 스프링이 알아서 주입해 주기 때문에, CoffeeShop 클래스 내부에 직접 객체를 생성할 필요가 없습니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-bcdd46f9-eeb9-4370-ad0d-739be2b6839b" style=""><span class="se-fs- se-ff-system" id="SE-050cfdbe-35b5-4af7-a733-388836fe0a67" style="">커피 타입을 변경하려면 주입받는 객체만 바꾸면 됩니다. (바꾸는 방법은 다른 포스팅에서 설명합니다.) </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-97d12d25-bd8c-4f50-b3ae-4eb9fc1e51bf" style=""><span class="se-fs- se-ff-system" id="SE-a5163de8-b965-49e5-bef3-c0c788cf9b54" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e7521b7f-7671-46c8-92bc-4cc02cca243f" style=""><span class="se-fs- se-ff-system" id="SE-f0765955-36d4-457a-848f-0683f74b3185" style="">이렇게 되면 새로운 커피 타입을 추가할 때도 CoffeeShop 클래스를 수정하지 않고, </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-59253e69-3d83-4af8-b3d6-b480a3e3a8b6" style=""><span class="se-fs- se-ff-system" id="SE-5af01813-975a-40e2-9b0b-55e3862fd889" style="">새로운 커피 클래스를 추가하기만 하면 되기 때문에 OCP (개방폐쇄 원칙)을 자연스럽게 준수할 수 있습니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-a88aea2a-ab96-4f69-981e-5f513fd8917f" style=""><span class="se-fs- se-ff-system" id="SE-50673e9b-4c5e-4555-8374-a784ad52dc36" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-1fa49d76-fad6-4b5b-8496-32848f886fab", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-22db641d-2d77-4838-8cce-97992c3bfbac">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-f0c76a9d-303d-41b7-a52c-b5c847eb9b6b" style=""><span class="se-fs-fs15 se-ff-" id="SE-499192bc-4aeb-4257-8d45-c48e722108d2" style="">💡 </span><span class="se-fs-fs15 se-ff-" id="SE-bc8e4fc0-77c2-4074-9fb7-832d16b2ed3b" style=""><b>어노테이션</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-811324d3-a01d-4602-94a6-8888bf0374c6">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-2d129c23-6cb2-48e0-bdeb-53f3735367f0" style=""><span class="se-fs- se-ff-system" id="SE-a77342ee-cb15-4011-af80-fbb07faeded3" style="">이 코드에서 핵심은 @Component, @Autowired와 같은 어노테이션입니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e08741ad-6747-4367-ae23-473559c34665" style=""><span class="se-fs- se-ff-system" id="SE-92f81933-f486-49f8-a8f4-5b4c7bc008b7" style="">이 어노테이션들은 스프링에게 "이 클래스는 스프링이 관리해야 할 객체입니다~!"라고 알려주는 신호입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-241eed20-1da2-43db-9e9b-bd4626baf1c6" style=""><span class="se-fs- se-ff-system" id="SE-98e399bd-6ae5-42b4-b965-2673d57ea2b4" style="">스프링은 이 어노테이션이 붙은 클래스들을 자동으로 생성하고, 필요한 곳에 알아서 주입해주는 거죠.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-187697e9-f289-4316-9488-ef7f10b05e35" style=""><span class="se-fs- se-ff-system" id="SE-6ae5620e-00a8-4c4d-b424-8cac33fd99e8" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-c5e67088-cbff-4ad7-bf6a-38d67399feb9" style=""><span class="se-fs- se-ff-system" id="SE-a8a85a86-f18e-4140-9b49-0a90ab41142d" style="">이렇게 등록된 클래스는 Bean이라는 이름으로 스프링 컨테이너에 등록되며, </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-43b1a1c8-8b35-4b0b-937c-2650b1d92969" style=""><span class="se-fs- se-ff-system" id="SE-3f2d0d04-48d0-428b-a6b2-9fff6e594ebe" style="">필요한 곳에 자동으로 주입됩니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-af9a7a7c-bb59-403c-865c-1ded183ca2d3" style=""><span class="se-fs- se-ff-system" id="SE-f85ae11d-90ba-4b4e-8a01-88cf2652e393" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-b4f1a7d8-f159-4ffb-92e5-ef04dbed4793" style=""><span class="se-fs- se-ff-system" id="SE-3f5c6f9d-a6a3-4b20-9dea-45170365ebbd" style="">즉, 스프링이 알아서 객체를 생성하고, 생성자에 해당 객체를 주입해 주기 때문에 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e77f808e-5608-4f49-bbf9-9dbd3ef6e293" style=""><span class="se-fs- se-ff-system" id="SE-cfa4a726-c68a-4729-9e86-42d880184344" style="">개발자는 객체 생성 방식에 대해 고민할 필요 없이, 필요한 객체를 주입받아 사용하기만 하면 됩니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-c98f6341-8ab5-4993-8973-6365fcb43c31" style=""><span class="se-fs- se-ff-system" id="SE-65143200-90b0-4d10-b87c-7cbbc251cf0a" style="">이 구조 덕분에 코드도 더 깔끔해지고, 클래스 간 결합도는 느슨해져서 유지보수가 쉬워집니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-578cb2ba-08b8-4ed0-b33a-39179a2b0891" style=""><span class="se-fs- se-ff-system" id="SE-da92bf8e-1032-49c0-8585-cd274a5ae0eb" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e8d2c404-e81f-4bc8-8ba3-0bfb4562bb93" style=""><span class="se-fs- se-ff-system" id="SE-BA056553-4709-48BC-BDDA-04BF281624A2" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-4AD64341-7B87-4F74-AEC5-1637012B6EF2" style=""><span class="se-fs- se-ff-system" id="SE-8aaa208b-ec78-4f94-8e6e-1fbecc71c856" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-811324d3-a01d-4602-94a6-8888bf0374c6", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-2cc52d73-8a61-4971-b48a-1f40861469f4">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-fb9571aa-6ec8-49d3-b668-acfc016dfd55" style=""><span class="se-fs-fs15 se-ff-" id="SE-3bd64e14-f202-4fe9-acee-5d4db3ec3b76" style=""><b>📍 IoC와 기존 방식 비교</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-table se-l-table_layout1 __se-component" id="SE-ff699f89-1503-43d5-91cd-bb2732fb9be4">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout1 se-section-align-left" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #f5feff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-efe5acb7-e04f-44ff-baf7-ad2c802eb8fc" style=""><span class="se-fs- se-ff-" id="SE-87e1f8f6-6b7d-4d6e-a932-38f094dce6c3" style=""><b>기존 방식</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #f5feff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-44aa0124-b3a6-494f-bbf2-8fb06a9d900b" style=""><span class="se-fs- se-ff-" id="SE-009b0d19-7cd2-4c7e-9a56-09b080da9e1a" style=""><b>스프링 IoC</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-6881bba3-af05-4d20-863b-5df2943f31f6" style=""><span class="se-fs- se-ff-" id="SE-4ad98bc0-3770-49cf-884b-eb9ad12c163b" style="">객체를 new 키워드로 직접 생성</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-0342767b-e6b9-4148-aa61-fb5a92e7c2be" style=""><span class="se-fs- se-ff-" id="SE-b36e4503-196f-4d52-8efb-86e89f379ae7" style="">스프링 컨테이너가 객체를 생성</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-1bb79231-851e-4dab-b389-9e62e72fb1cf" style=""><span class="se-fs- se-ff-" id="SE-c1f04de2-d38f-42a7-8d64-72540b9c5ac4" style="">개발자가 객체 생명주기를 직접 관리</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-9ad659d2-59f5-42da-8781-2948fba84b96" style=""><span class="se-fs- se-ff-" id="SE-12bb0a8f-d022-437d-af77-1511168096d1" style="">스프링이 객체 생명주기 관리</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-bd14181e-316c-4e07-9e06-6e7cea72af4e" style=""><span class="se-fs- se-ff-" id="SE-d48d7a75-f300-4f26-abee-b01eea53fcfc" style="">강한 결합 (Tightly Coupled)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-213aad4e-ed57-443a-aa05-c0e42b8280b6" style=""><span class="se-fs- se-ff-" id="SE-b9bbafe0-390d-4454-952e-7769bbccb307" style="">느슨한 결합 (Loosely Coupled)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-c472502c-2d2d-4430-90b3-493d0a44b705" style=""><span class="se-fs- se-ff-" id="SE-a437776f-dab0-405d-bedb-8098649db377" style="">유지 보수 어려움</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-31935b16-48c1-4da8-967c-5c9526d05244" style=""><span class="se-fs- se-ff-" id="SE-87de9877-2dfe-426f-8399-9f48d7eead6e" style="">유지 보수 용이</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_table", "id" : "SE-ff699f89-1503-43d5-91cd-bb2732fb9be4", "data": { "columnCount" : "2" }}' data-module-v2='{"type": "v2_table", "id": "SE-ff699f89-1503-43d5-91cd-bb2732fb9be4", "data": {"ctype": "table", "columnCount": "2"  }}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-9374ba77-f25b-4d1a-99a4-b760b96f43ec">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-3d82195a-57fa-4d05-9676-d7b409d28f07" style=""><span class="se-fs- se-ff-system" id="SE-74a18915-ca6c-460a-88e8-8cbff5e45ad9" style=""><b>​</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-9374ba77-f25b-4d1a-99a4-b760b96f43ec", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-ddc8c9b2-c9ff-4c69-b09e-edd363b7ff39">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-87c1d24b-e5c8-482f-93db-c02f533d3a01" style=""><span class="se-fs-fs16 se-ff-" id="SE-05dd4075-a762-4044-a69b-f60951903a7e" style="">3.  의존성 주입 DI</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-44216c21-756d-4cba-9cba-7462a58aa9aa">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-7e0df92c-dc26-4acd-bb7f-ef9e48636205" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-aada11fc-f4c2-4d13-8bf7-4f1e2dafc416" style="">이 의존성 주입 방법으로는 아래 네 가지가 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-34c4edf8-5215-44b3-99d5-42e31e222409" style=""><span class="se-fs- se-ff-system" id="SE-f668dc22-011e-4ed9-b2a8-6505652c9f20" style=""><b>​</b></span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-9e9a7f17-471f-469d-aced-d73e18c719e0" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-326c2015-5f33-4fba-bd1d-67a318746772" style="">@Autowired (필드 주입)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-94c77172-fe02-4a3d-91b6-f2078f4b081f" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-b04c6de0-b337-4b1f-bf3a-128b80198a6e" style="">Setter 주입</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-42fe9cc7-726c-4267-9d33-8c4a6cf8f449" style=""><span class="se-fs- se-ff-system" id="SE-ee6bd77d-1160-40b9-a95d-7d94b3cffd2b" style=""><b>생성자 주입 </b></span><span class="se-fs- se-ff-system se-weight-unset" id="SE-79009c20-5dfb-4d62-9c86-1492e6baf090" style="">(스프링에서 권장하는 방식)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-2906d23f-0fca-43c2-8db7-7a730e1a4925" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-737a138b-3e20-4f20-b75e-3227b235bfd0" style="">매개변수 주입</span></p></li></ol><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-d4cfe56b-fd36-4956-aa06-a2e30b83f913" style=""><span class="se-fs- se-ff-system" id="SE-ac401eb1-3c38-4a9a-90f5-caf325cf287a" style=""><b>​</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-a75317c6-daea-4cbb-bb9e-3f434ddfd6af" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-5397a2f4-b65c-42fd-9af1-1b346eecbab4" style="">이 중에서 가장 권장되는 방법은 3번, </span><span class="se-fs- se-ff-system" id="SE-d11bcf54-5336-4cc9-bc31-6bd76ec8e435" style=""><b>생성자 주입입니다.</b></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-44216c21-756d-4cba-9cba-7462a58aa9aa", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-66363dd4-6b3c-489d-88db-ba971afe585b">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">@Controller
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">TestController</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">private</span> final TestService testService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-function">TestController</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">TestService testService</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">this</span><span class="token se-code-punctuation">.</span>testService <span class="token se-code-operator">=</span> testService<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-66363dd4-6b3c-489d-88db-ba971afe585b"}' data-module-v2='{"type":"v2_code", "id" : "SE-66363dd4-6b3c-489d-88db-ba971afe585b"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-ff73364d-a09c-4a6e-8b73-bd5f6bed7212">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-75C684DA-5C57-4A85-B35B-2F3937F8C96F" style=""><span class="se-fs- se-ff-system" id="SE-3DD6F768-B244-45CA-BAE0-EFEC133D9C80" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-f9acb4df-7d07-43da-82bc-af2b5134146a" style=""><span class="se-fs- se-ff-system" id="SE-885806b3-ee31-4bf1-89a7-3bf0438e3155" style=""><i>의존성 주입 방법에 대한 자세한 글을 이 링크를 참고해 주세요!</i></span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-ff73364d-a09c-4a6e-8b73-bd5f6bed7212", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-oglink se-l-large_image __se-component" id="SE-f0936bf1-c386-403c-804d-36e7d3c175e0">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-left">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-thumbnail __se_link" data-linkdata='{"id": "SE-f0936bf1-c386-403c-804d-36e7d3c175e0", "link": "https://blog.naver.com/ghdalswl77/222711099525"}' data-linktype="oglink" href="https://blog.naver.com/ghdalswl77/222711099525" target="_blank">
+<img alt="" class="se-oglink-thumbnail-resource egjs-visible" src="https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjA0MjVfMTgg%2FMDAxNjUwODc3MzYyMDk0.6E6T3t5B6Dz4UO-bw35VY1GA-mzI3q97Xz8Pg35eAuEg.d-HFCyPCEKJA1WimaFO7zvUEg8iwRONcEbxuLN9aYA8g.PNG.ghdalswl77%2Fboot.png%3Ftype%3Dw2%22&amp;type=ff500_300"/>
+</a>
+<a class="se-oglink-info __se_link" data-linkdata='{"id": "SE-f0936bf1-c386-403c-804d-36e7d3c175e0", "link": "https://blog.naver.com/ghdalswl77/222711099525"}' data-linktype="oglink" href="https://blog.naver.com/ghdalswl77/222711099525" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입, @RequiredArgsConstructor과 @Autowired 차이점)</strong>
+<p class="se-oglink-summary">순환 참조 에러 덕분에 자주쓰는 @Autowired 어노테이션과 @RequiredArgsConstructor에 대해 찾아보고 ...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_oglink", "id" :"SE-f0936bf1-c386-403c-804d-36e7d3c175e0", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222711099525", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjA0MjVfMTgg%2FMDAxNjUwODc3MzYyMDk0.6E6T3t5B6Dz4UO-bw35VY1GA-mzI3q97Xz8Pg35eAuEg.d-HFCyPCEKJA1WimaFO7zvUEg8iwRONcEbxuLN9aYA8g.PNG.ghdalswl77%2Fboot.png%3Ftype%3Dw2%22&amp;type=ff500_300"}}' data-module-v2='{"type":"v2_oglink", "id" :"SE-f0936bf1-c386-403c-804d-36e7d3c175e0", "data" : {"link" : "https://blog.naver.com/ghdalswl77/222711099525", "isVideo" : "false", "thumbnail" : "https://dthumb-phinf.pstatic.net/?src=%22https%3A%2F%2Fblogthumb.pstatic.net%2FMjAyMjA0MjVfMTgg%2FMDAxNjUwODc3MzYyMDk0.6E6T3t5B6Dz4UO-bw35VY1GA-mzI3q97Xz8Pg35eAuEg.d-HFCyPCEKJA1WimaFO7zvUEg8iwRONcEbxuLN9aYA8g.PNG.ghdalswl77%2Fboot.png%3Ftype%3Dw2%22&amp;type=ff500_300"}}' type="text/data"></script>
+</div>
+<div class="se-component se-text se-l-default" id="SE-3f60eccb-ab63-40ea-9d84-2875b9c2086d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-aed4ead7-384f-4b24-be74-2df485187a72" style=""><span class="se-fs- se-ff-system" id="SE-0d38ef18-8b1c-4643-bae0-a51089faea73" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-8a4d97b6-db25-444f-8138-eaee207e1137" style=""><span class="se-fs- se-ff-system" id="SE-30b1ccf0-1762-4e9f-94c1-675d4e887014" style="">이 '생성자 주입' 방법이 가장 권장되는 이유는</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-fec8bd81-6838-4242-9f38-b0b1caebd2ff" style=""><span class="se-fs- se-ff-system" id="SE-b139d48d-2ee8-4456-b864-ac3423bca02b" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-1ba2ffd1-610a-4973-b785-2126ef645c7b" style=""><span class="se-fs- se-ff-system" id="SE-7ad78563-6662-4f7d-ad0b-850ceff70404" style="">1) 객체가 생성될 때 반드시 의존성이 주입되므로 null을 걱정할 필요가 없고 (불변성 보장)</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-db921ecb-9fc6-4570-8130-eeb18f9149d2" style=""><span class="se-fs- se-ff-system" id="SE-9e260d6d-b3b1-46e9-be2e-ccd909c1742b" style="">2) 테스트 코드 작성이 간편해져서 유연하게 Mock 객체를 넣을 수 있으며,</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e06f0691-1baf-4a5b-b611-6cebc15aee6a" style=""><span class="se-fs- se-ff-system" id="SE-34afe711-6351-4fc9-8cd8-64bb9ed56280" style="">3) final 키워드를 사용하여 의존성이 반드시 주입되도록 강제되기 때문이이에요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-ad6b0bba-59e4-49ee-abf0-3ca3ec646596" style=""><span class="se-fs- se-ff-system" id="SE-c3d9fc36-dc59-445a-a4e3-7b00c81c59e8" style="">이게 무슨 뜻이냐면, final 키워드를 통해 해당 의존성을 </span><span class="se-fs- se-ff-system" id="SE-1f728963-1894-4a87-8eb3-e008d68a6100" style=""><b>변하지 않는 필수 값으로 간주</b></span><span class="se-fs- se-ff-system" id="SE-8560e1c4-0330-4d55-9104-4ca3c8b4f815" style="">하게 만들 수 있다는 겁니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-b600aa1f-8bc3-4003-a691-79c39a7e6d0c" style=""><span class="se-fs- se-ff-system" id="SE-af2a5e2b-359a-4c58-b9f1-4fb3a56d7f48" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-bf6e9b1e-8011-4075-b0fe-83d72f89e5da" style=""><span class="se-fs- se-ff-system" id="SE-93851de6-9565-4c5d-9159-4ee89a24811b" style="">final이 붙어 있으면 나중에 set 하거나 바꿀 수 없기 때문에, 해당 객체는 '절대적으로 필요한 값'이라는 걸 코드로 보장할 수 있다는 뜻이에요. 결과적으로 개발자가 실수로 빼먹거나 변경하지 못하도록 막아줍니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-426edd95-6776-4e64-898e-f3c1943023e6" style=""><span class="se-fs- se-ff-system" id="SE-89fec543-f5c8-4659-9df1-bb9e07ad6981" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-6eefc139-3c6f-4ebf-8935-003c95b052c8" style=""><span class="se-fs- se-ff-system" id="SE-382fe6da-73d0-4eed-9d9b-0101c8a1af06" style="">한마디로 final이 붙어 있으면 나중에 set 하거나 바꿀 수 없기 때문에, </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-45973d97-d2cc-4cd9-a439-951b156f4451" style=""><span class="se-fs- se-ff-system" id="SE-ebbc1d0b-f34d-43ba-99ce-6d9531a182c0" style="">해당 객체는 '절대적으로 필요한 값'이라는 걸 코드로 보장할 수 있다는 뜻이에요. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-55c12eee-ceaa-4423-9a54-2c3305a89e62" style=""><span class="se-fs- se-ff-system" id="SE-ad9989b7-d0fc-4af9-9c0f-ddf9d95152fa" style="">결과적으로 개발자가 실수로 빼먹거나 변경하지 못하도록 막아줍니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e0463b00-7528-4010-949d-c1b5873ea480" style=""><span class="se-fs- se-ff-system" id="SE-96ffd97e-7107-4d70-83b8-f58cc02a0ddf" style="">안정적인 객체 상태를 유지하는 데 굉장히 큰 도움이 되죠.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-d889ad8e-6ec1-45d7-bc72-bc45ebf7b96c" style=""><span class="se-fs- se-ff-system" id="SE-79d4f410-b16f-4e9d-8435-87afce62095d" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-3D99B775-2BC3-4B0D-A072-8B1E147BE247" style=""><span class="se-fs- se-ff-system" id="SE-1518bd5c-f7c1-43d3-b0e8-828eb4c1b1a1" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-3f60eccb-ab63-40ea-9d84-2875b9c2086d", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_line" id="SE-140ae863-d969-47e6-ac3d-26f18139d7c9">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-e1e6fe30-a4da-4937-88d5-f2523f8e8b06" style=""><span class="se-fs-fs16 se-ff-" id="SE-ae23e71d-8611-4a3d-9a01-1cc241d4fac0" style="">4. 확인</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-95c548b3-fb34-4368-9dd2-de5443b9f025">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-2e943ba4-3e1e-49b0-8beb-3f73ad428024" style=""><span class="se-fs- se-ff-system" id="SE-0e276a87-df22-4827-9f13-0fdeb0d8334d" style="">4-1. </span><span class="se-fs- se-ff-system" id="SE-d5fbd4af-86a0-4b3e-a7ad-163f96f2f78e" style=""><b>Postman이나 브라우저에서 실행해 보기</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-46fe9349-ff47-4dc2-8c5f-0c4e54c84e46" style=""><span class="se-fs- se-ff-system" id="SE-08e85f32-1c72-4049-8f7c-f28bf402c4a6" style="">가장 간단한 방법은 실제로 애플리케이션을 실행해보고, Postman이나 브라우저를 통해 테스트하는 것입니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-15cfcf77-3789-4a47-b1ff-b35227966c1a" style=""><span class="se-fs- se-ff-system" id="SE-5daf16e3-9fd1-437d-9614-3d541bd7b207" style="">예를 들어, TestController에 매핑된 주소가 /coffee라면 </span><span class="se-fs- se-ff-system" id="SE-1e27159c-4252-4d43-81f9-2de4608e8d39" style=""><a class="se-link __se_link" data-linkdata='{"id": "SE-1e27159c-4252-4d43-81f9-2de4608e8d39", "link": "http://localhost:8080/coffee"}' data-linktype="text" href="http://localhost:8080/coffee" target="_blank"><u>http://localhost:8080/coffee</u></a></span><span class="se-fs- se-ff-system" id="SE-e3f8ce5e-dad6-4b87-9567-45a0331fb17b" style=""> 와 같이 직접 접속해서, 응답으로 어떤 커피가 출력되는지 확인해볼 수 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-c1dc9f4f-9253-49aa-b62f-33682286ebea" style=""><span class="se-fs- se-ff-system" id="SE-0dc283e7-5990-4831-b404-12f3fcb257f3" style="">이렇게 요청을 보내보면, 우리가 직접 new 하지 않았던 Coffee 객체가 자동으로 주입되어 동작하는 걸 확인할 수 있죠.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-efa800fe-02f0-4dea-b253-e1477082bbc4" style=""><span class="se-fs- se-ff-system" id="SE-53d6f965-70e0-4bf2-93ae-6825c13a6dd1" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-bb39ae02-e602-4d08-b6d0-369a2c476a41" style=""><span class="se-fs- se-ff-system" id="SE-83cdb706-32e0-4810-8ce2-0a46667664c9" style="">4-2. </span><span class="se-fs- se-ff-system" id="SE-703fd42d-7439-4bc4-87f2-34312e5e4a00" style=""><b>스프링이 객체를 자동으로 생성하는 과정 디버깅</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-5e805292-8d10-4d42-90b2-944756a98ffd" style=""><span class="se-fs- se-ff-system" id="SE-33623f83-2990-426c-80bc-95f989423afc" style="">조금 더 깊게 확인하고 싶다면, </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-e25cf29f-3852-4193-b176-7dab30074eb9" style=""><span class="se-fs- se-ff-system" id="SE-6e651c93-d564-49ec-b098-55aadc0221c0" style="">TestController 클래스의 생성자에 중단점을 걸고 디버깅을 실행해 보세요.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-f2f78334-dd65-4e83-ad4a-73125ad9ce1f" style=""><span class="se-fs- se-ff-system" id="SE-7525d45a-1bfd-4842-8fbc-68823695f826" style="">생성자에 진입하는 순간, 스프링이 어떻게 testService 같은 의존 객체를 주입해주는지 과정을 따라가볼 수 있습니다!</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-c6a1120b-2995-4110-a73d-2a7946ee79b2" style=""><span class="se-fs- se-ff-system" id="SE-fb67203c-4da7-473d-93c4-5a091a0141d3" style="">이 과정에서 우리가 명시적으로 new TestService() 같은 객체 생성을 하지 않았음에도, 스프링이 미리 생성해 둔 Bean을 주입해주는 것을 확인할 수 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-0b31629e-f9c2-4cc7-937e-da79a8c2c5fd" style=""><span class="se-fs- se-ff-system" id="SE-e66dd772-83dd-41ff-a0fb-457b4eaed53b" style="">즉, 객체 생성과 주입을 개발자가 하지 않아도, 스프링이 알아서 처리해주고 있는 셈이죠.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-a3fcd695-3c16-4047-a8c2-56a9beb6e62a" style=""><span class="se-fs- se-ff-system" id="SE-74fff642-8e30-420f-bf74-8d98ae4e61b9" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-9dcaa211-ddf3-4e92-aa05-f0c8e0d3e8ec" style=""><span class="se-fs- se-ff-system" id="SE-ca941d94-dabf-41b4-9d6e-27a198f0c075" style="">4-3. Bean 조회해 보기</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-388ab623-f758-4fd6-a20a-f30963bdbef7" style=""><span class="se-fs- se-ff-system" id="SE-6052526a-5aee-4101-b7bf-567fd7ec8d06" style="">마지막으로 스프링이 생성한 Bean 목록을 직접 확인하는 방법도 있습니다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-4ce99e99-314c-45cb-895b-5c84a93e0caf" style=""><span class="se-fs- se-ff-system" id="SE-beac96dd-e09b-4364-bf10-ad3e0ec53bdd" style="">아래 코드를 실행하면, 스프링 컨테이너에서 관리하는 모든 Bean의 이름이 출력될 것입니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-95c548b3-fb34-4368-9dd2-de5443b9f025", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-bc8f55b8-18aa-4afd-a153-1c53a5a679a2">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">import</span> org<span class="token se-code-punctuation">.</span>springframework<span class="token se-code-punctuation">.</span>context<span class="token se-code-punctuation">.</span>ApplicationContext<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">import</span> org<span class="token se-code-punctuation">.</span>springframework<span class="token se-code-punctuation">.</span>context<span class="token se-code-punctuation">.</span>annotation<span class="token se-code-punctuation">.</span>AnnotationConfigApplicationContext<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">import</span> java<span class="token se-code-punctuation">.</span>util<span class="token se-code-punctuation">.</span>Arrays<span class="token se-code-punctuation">;</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">class</span> <span class="token se-code-class-name">BeanCheck</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">public</span> <span class="token se-code-keyword">static</span> <span class="token se-code-keyword">void</span> <span class="token se-code-function">main</span><span class="token se-code-punctuation">(</span><span class="token se-code-parameter">String[] args</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+        ApplicationContext context <span class="token se-code-operator">=</span> <span class="token se-code-keyword">new</span> <span class="token se-code-class-name">AnnotationConfigApplicationContext</span><span class="token se-code-punctuation">(</span>DemoApplication<span class="token se-code-punctuation">.</span>class<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        String<span class="token se-code-punctuation">[</span><span class="token se-code-punctuation">]</span> beanNames <span class="token se-code-operator">=</span> context<span class="token se-code-punctuation">.</span><span class="token se-code-function">getBeanDefinitionNames</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+        Arrays<span class="token se-code-punctuation">.</span><span class="token se-code-function">stream</span><span class="token se-code-punctuation">(</span>beanNames<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">.</span><span class="token se-code-function">forEach</span><span class="token se-code-punctuation">(</span>System<span class="token se-code-punctuation">.</span>out<span class="token se-code-operator">:</span><span class="token se-code-operator">:</span>println<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-punctuation">}</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-bc8f55b8-18aa-4afd-a153-1c53a5a679a2"}' data-module-v2='{"type":"v2_code", "id" : "SE-bc8f55b8-18aa-4afd-a153-1c53a5a679a2"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-567f1bfd-3432-4280-a910-fcdb61791cbd">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-3d622efb-4d70-47b1-879f-8cb82d363db4" style=""><span class="se-fs- se-ff-system" id="SE-85668316-729f-49c2-9116-da038494b675" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-CCA8CDF0-B39B-40EC-B81F-0E4D06C8E8B7" style=""><span class="se-fs- se-ff-system" id="SE-9D32B1AF-9236-48E9-8BD5-9A3D1B546B12" style="">코드를 실행하면, 스프링 컨테이너가 어떤 객체들을 관리하고 있는지 리스트로 쭉 출력됩니다. </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-49a594a9-0a05-4e6b-9238-f033e3ba16ed" style=""><span class="se-fs- se-ff-system" id="SE-75fe9b1d-7687-47c3-8f34-aac42d0a4412" style="">이걸 보면 “아, 진짜 스프링이 다 관리해주는구나!” 라는 게 실감 날 거예요.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-567f1bfd-3432-4280-a910-fcdb61791cbd", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-sticker se-l-default" id="SE-8f923213-c434-4113-8bcd-a28d16355908">
+<div class="se-component-content">
+<div class="se-section se-section-sticker se-section-align-center se-l-default">
+<div class="se-module se-module-sticker">
+<a class="__se_sticker_link __se_link" data-linkdata='{"src" : "https://storep-phinf.pstatic.net/ogq_621609bae76df/original_14.png", "packCode" : "ogq_621609bae76df", "seq" : "14", "width" : "185", "height" : "160"}' data-linktype="sticker" href="#" onclick="return false;">
+<img alt="" class="se-sticker-image egjs-visible" src="https://storep-phinf.pstatic.net/ogq_621609bae76df/original_14.png?type=p100_100"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-3cfd4d4b-bf78-4377-919d-17da57d71b18">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-ca8a62b9-08d6-4111-9681-5802e73d6031" style=""><span class="se-fs- se-ff-system" id="SE-308a6231-fbad-4c96-a06d-68af6853e52f" style="">스프링이 IoC 컨테이너에서 객체를 어떻게 생성하고 관리하는지 쉽게 이해되셨나요?</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-5bf8c209-8d17-4f08-8024-1d1906436ecd" style=""><span class="se-fs- se-ff-system" id="SE-f296efd5-86e9-4e5c-9ec9-dfb80ba2cdd1" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-72B952E4-9B8A-4B98-820D-83EA8091228F" style=""><span class="se-fs- se-ff-system" id="SE-32EECB55-0012-4AC7-9707-57F77DC3FC6A" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-3cfd4d4b-bf78-4377-919d-17da57d71b18", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-quotation se-l-quotation_postit" id="SE-c0dd07ef-c141-4827-88ec-f305e57683c9">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_postit">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-center" id="SE-03cd6aea-1134-426f-89a8-766ed5627a95" style=""><span class="se-fs- se-ff-" id="SE-18a25a6c-d1d0-42f7-b55d-c77c842819b9" style="">📝 </span><span class="se-fs- se-ff-" id="SE-16401b4a-e6a0-4a2a-aaee-df3563fbaf9e" style=""><b>IoC와 DI 핵심 요약</b></span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-7db6cd43-8988-4c31-87d5-9346c63b5d4c">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-16ab6a34-f12c-44fd-9d61-f1d466d17aca" style=""><span class="se-fs- se-ff-nanummaruburi se-weight-unset" id="SE-f042ff38-0d5c-4055-affe-3ce82dca087b" style="background-color:#eef5ff;"> IoC (Inversion of Control) </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-714deaf6-9e76-40c0-a036-e5bd55df4722" style=""><span class="se-fs- se-ff-nanummaruburi se-weight-unset" id="SE-af320409-c677-4081-9d0f-f903dd18db39" style="">객체의 생성과 관리를 개발자가 아니라 스프링 컨테이너가 담당</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-7d2e2696-7fc9-4ea7-ae7b-8814e6f03085" style=""><span class="se-fs- se-ff-nanummaruburi se-weight-unset" id="SE-dd8404ec-c1a6-434e-a34d-eed7ce3fdc5c" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-846725c2-075e-4a9b-9166-e1b8737ff239" style=""><span class="se-fs- se-ff-nanummaruburi se-weight-unset" id="SE-1b2600ac-be1e-44ec-adf7-93109e0d300f" style="background-color:#eef5ff;"> DI (Dependency Injection) </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-92af9a62-1d05-4489-a71d-a5dc0950e292" style=""><span class="se-fs- se-ff-nanummaruburi se-weight-unset" id="SE-79b23eac-9620-4afe-a40d-ed65ffba1521" style="">객체 간 의존 관계를 스프링이 자동으로 주입</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-773cc0b8-426f-41cc-aab5-8d30c8d9cfb8" style=""><span class="se-fs- se-ff-nanummaruburi se-weight-unset" id="SE-7244e459-41f6-4aaf-8c83-98908e80ad79" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-justify" id="SE-C96CD3F9-1139-479E-B494-57F75A53F89F" style=""><span class="se-fs- se-ff-system se-weight-unset" id="SE-61c341c2-f89b-40d8-91b7-29ee320e1d50" style="">​</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-7db6cd43-8988-4c31-87d5-9346c63b5d4c", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="se-component se-horizontalLine se-l-line1" id="SE-99b04bb2-833a-4b6b-9f40-d9f60154672c">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-left">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default" id="SE-703b75dc-395c-4013-94b1-fa8ef4600d93">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-9ef6527b-327d-4877-be29-8cc37e7e7058" style=""><span class="se-fs-fs13 se-ff-system se-weight-unset" id="SE-422664e3-bf06-4a04-9864-4268e818a983" style="">궁금한 점이나 틀린 내용이 있다면 </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-left" id="SE-376A4116-43F6-4F55-A093-A92DE61D248E" style=""><span class="se-fs-fs13 se-ff-system se-weight-unset" id="SE-74ED334D-0655-4600-B305-C2B01B2DB55D" style="">언제든지 댓글 달아주세요 ! 🥹</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module-v2='{"type": "v2_text", "id": "SE-703b75dc-395c-4013-94b1-fa8ef4600d93", "data": {"ctype": "text"  }}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 214px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>

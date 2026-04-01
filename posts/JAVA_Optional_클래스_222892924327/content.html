@@ -1,0 +1,203 @@
+<!-- source: https://blog.naver.com/ghdalswl77/222892924327 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default" id="SE-1d112fd4-2b12-4add-ae2d-1475eed6cb4f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d1d242f4-b165-4d9d-a49a-a0208e900340" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-7fed88c0-a8dc-4825-90b9-2a386d859b9f" style="color:#999999;">Spring Data JPA를 사용하며 CrudRepository의 findById 메서드 리턴 타입인 Optional 클래스를 살펴보았다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-68a7f8c9-f5c1-4036-a32d-42cdbc203574" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-2b952cb1-cb00-4ee3-840d-d4ec8c59113a" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-d025a46b-d4c3-4809-8742-d01cfa98f1d2" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-3599bd72-b93a-4cba-9201-9572188aacad" style="">Optional은 Java 8에 추가된 새로운 API이며 'null일 수도 있는 객체'를 감싸는 일종의 Wrapper 클래스로, 여러 if 로직 대신 언어 차원에서 null 문제를 해결할 수 있게 해준다. 한마디로 null 처리를 세련되게 다룰 수 있게 도와주는 녀석이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-c2bee0d1-5fb6-4f1c-af02-99e523eca427">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Optional<span class="token se-code-operator">&lt;</span><span class="token se-code-constant">T</span><span class="token se-code-operator">&gt;</span> optional</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-c2bee0d1-5fb6-4f1c-af02-99e523eca427"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-348625c2-3574-46e0-a11b-5f12b340af3b">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-164315ab-d28f-47af-b41d-2a44dcecb50a" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-0a0d37eb-8a62-4c10-89a1-73cf09928935" style="">이러한 optional 변수 내부에는 null이 아닌 T 객체가 있을 수도 있고 null이 있을 수도 있다. Optional 클래스는 여러 가지 API를 제공하여 null일 수도 있는 객체를 다룰 수 있도록 돕는다. null 처리를 세련되게 다룰 수 있다고 했는데, 이 말에 두 가지 물음표를 달 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-default" id="SE-b84948b7-2dd9-46ac-96bc-fa828df6f89d">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-default">
+<blockquote class="se-quotation-container">
+<div class="se-module se-module-text se-quote"><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f0a3e1da-7d1e-498c-a528-db8008434558" style=""><span class="se-fs-fs15 se-ff- se-style-unset" id="SE-0641dcdb-c1c6-42c3-84d4-1c834ffe1cfe" style="">왜 null 처리를 세련되게 해야하나? 어떻게?</span></p><!-- } SE-TEXT --></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-5a9f7485-3f0f-4858-b8c8-76792f50341d">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-05362532-6f79-440c-a510-fbbf758c27c5" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-74dd73d5-5821-4f34-acb0-4961d4ffbfea" style="">우선 NullPointerException를 피해야 하기 때문이다. NullPointerException과 같은 실행 중단은 실제 운영중인 서비스에 있어 치명적인 상황을 불러 일으킨다. 따라서 이렇게 NullPointerException이 발생할만한 상황을 예측하여 if문 등을 사용해 null 처리를 했었다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-41c7dbd7-ebd9-4c43-9544-5cde778f7a2c">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript"><span class="token se-code-keyword">if</span><span class="token se-code-punctuation">(</span>a<span class="token se-code-operator">!=</span><span class="token se-code-keyword">null</span><span class="token se-code-punctuation">)</span> <span class="token se-code-punctuation">{</span>
+<span class="token se-code-keyword">return</span> a<span class="token se-code-punctuation">;</span>
+<span class="token se-code-punctuation">}</span>
+<span class="token se-code-keyword">return</span> <span class="token se-code-string">"a is null"</span><span class="token se-code-punctuation">;</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-41c7dbd7-ebd9-4c43-9544-5cde778f7a2c"}' type="text/data"></script>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-1"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-1_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-text se-l-default" id="SE-9d821d4f-7792-4b2f-9dfe-e3641c338788">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5f2f66e6-29db-47e4-a53d-75c7b5efacda" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-41e21857-3fae-470d-851a-1c0e2ea432e0" style="">하지만 이와 같은 방법은 NullPointerException이 발생할만한 모든 상황을 예측해야 하며, if문 등을 통한 null 처리는 핵심 로직과 관련된 코드의 가독성을 해칠 수 있다는 문제가 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c77c178-862c-4339-bb2f-49353bb93026" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-c63d6664-e6f6-454e-bc2a-d91b8acc9e18" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-65e13014-f303-4fee-aaef-7e8958b46f40" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-bed03f80-0e5c-492b-8fb6-bb91d8483e03" style="">그럼 이제 Optional&lt;T&gt; findById(ID id) CrudRepository의 findById를 살펴보는 것으로 Optional에 대해 간단하게 살펴보자.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default" id="SE-4b011a78-1f85-4b1c-8e14-33a5ab31e7df">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image" style=""><div class="se-state-error" style="">
+<div class="se-state-error-detail">
+<div class="se-state-error-text">존재하지 않는 이미지입니다.</div>
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default" id="SE-e9018c78-6c0b-455c-afc8-c5bfbb9ae27f">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-37dc6936-326c-417c-a9c0-220a7848d034" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-d05fce13-01fe-4deb-8226-6de08476fe18" style="">findById는 Entity의 id로 검색을 해서, Optional&lt;T&gt;를 리턴 타입으로 반환하는 메서드이다. 따라서 다음과 같이 isPresent() 를 이용하여 Optional 내부에 객체가 들어있는지 확인한 후에 get()을 이용해 반환된 객체를 꺼내 쓸 수 있다.</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-b14d4a72-bd9d-42fc-ac2e-fa167837f275" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-e48ae534-ffb8-45c6-bbcf-49951223e83b" style="">​</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4c07bbaa-5278-43bd-918a-6deb6f3db239" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-c8a3d6e7-3e62-4fa0-b2eb-420aa16a92f7" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-033def36-dd46-4d8f-b517-23e5fdc4d5f5" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-4c1a4048-760a-4cde-a899-11655eaf6cd3" style="">1. Optional 객체 생성</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-91d5c45f-e0a9-4b73-bad8-2e3b7deb54bf" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-23af65ee-5515-4872-b296-02bf65f11605" style=""><b>📍Optional.empty()</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-7c742241-cbb6-407d-b049-f9f936efbe52" style=""> :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-66fbb2d8-805e-4abf-a29d-0a57f19d2352" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-dbdb6d94-8d72-4c7d-b6dd-12e20bf6a589" style="">비어있는 Optional 객체로 생성한다. 따라서 이 내부에 있는 Member 객체는 null이고, 이 객체는 Optional 내부적으로 미리 생성해놓은 Singleton 인스턴스이다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent-2"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent-2_tgtLREC" name="" scrolling="no" style="width: 100%; height: 168px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div><div class="se-component se-code se-l-code_stripe __se-component" id="SE-224342f7-367c-45b7-802f-b46f1e77d542">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Optional<span class="token se-code-operator">&lt;</span>Member<span class="token se-code-operator">&gt;</span> optionalMember <span class="token se-code-operator">=</span> Optional<span class="token se-code-punctuation">.</span><span class="token se-code-function">empty</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-224342f7-367c-45b7-802f-b46f1e77d542"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-0cc43563-57f9-435b-910f-fb36bb972991">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-4f1a95ab-be20-40bc-8a8f-b2801b271d34" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-d0e92737-33c7-48e3-9df3-0c2eff113bc6" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-7d716b17-68b6-4f8f-b1a5-3b6f6a53e70c" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-c7adb1e9-6cf4-458f-a2f2-ca051f0f93bd" style=""><b>📍Optional.of(value)</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-546504b0-e1c2-496d-8377-e0cc9ad40085" style=""> :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-99e1ca8c-44a2-4f0a-b347-6ad60350279a" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-6780f5da-8972-4052-b15e-35dfcc8a559e" style="">인자 value를 담고 있는 Optional 객체로 생성한다. 이 객체는 미리 만들어 놓은 null이 아닌 객체를 넘기면 되는데, 만약 인자로 넘긴 객체가 null이라면 NullPointerException이 발생할 수 있다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-30df3023-0548-42c0-9f15-d76afd677c6e">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Optional<span class="token se-code-operator">&lt;</span>Member<span class="token se-code-operator">&gt;</span> optionalMember <span class="token se-code-operator">=</span> Optional<span class="token se-code-punctuation">.</span><span class="token se-code-function">value</span><span class="token se-code-punctuation">(</span>member<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-30df3023-0548-42c0-9f15-d76afd677c6e"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f644de22-af60-4fee-80f8-4a4759066764">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-9af0b2d4-01e8-4dc5-81fc-3a74bac6efb8" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-19509b6e-51c1-4f21-98fa-ee0772552ff5" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-1b1b9739-1c9f-4d8b-999d-8105055f3cd9" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-4e9791b2-35f8-4831-870a-05316075baa2" style=""><b>📍Optional.ofNullable(value) :</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f971e99c-ec8c-444d-b6e0-7f157817fafd" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-b4922965-7a83-424c-bf8d-5d71324593cd" style="">null일 수도 있고 아닐 수도 있는 객체를 담아 Optional 객체를 생성합니다. 만약 member가 null인지 null이 아닌지 확신이 서지 않는다면 이 방법으로 Optional 객체를 생성하면 됩니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-828cb767-881f-40a1-9633-93a0c525688f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Optional<span class="token se-code-operator">&lt;</span>Member<span class="token se-code-operator">&gt;</span> optionalMember <span class="token se-code-operator">=</span> Optional<span class="token se-code-punctuation">.</span><span class="token se-code-function">ofNullable</span><span class="token se-code-punctuation">(</span>member<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-828cb767-881f-40a1-9633-93a0c525688f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-c7e487aa-a515-46c6-b068-fa69997931a3">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-038d5f9c-0299-4863-8311-fa31dee2270b" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-c7afc90e-9132-4857-93d0-af56de975123" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-63791b5c-cfa4-4e44-abfc-68152c4a4b2b" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" id="SE-ecdc87ec-23a4-43b8-8f03-14ec6da86152" style="">2. Optional 객체 접근</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-bc69d480-57e4-4b88-a887-a1ca8e48873e" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-38df35ea-f0e1-42f8-a417-58449d5b0762" style=""><b>📍get() :</b></span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-3dc2d7f3-46df-41d3-928e-52b22f6761e1" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-3e9b424d-ca60-4e0f-b305-0ad6243cfb13" style="">Optional 내부에 담긴 객체를 반환한다. 만약, null인 객체라면 NoSuchElementException이 발생한다. 따라서, isPresent() 로 체크한 후에 이 get 메서드를 사용한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-96250afe-b70e-4e2d-9409-5f71f0390128">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Member member <span class="token se-code-operator">=</span> optionalMember<span class="token se-code-punctuation">.</span><span class="token se-code-function">get</span><span class="token se-code-punctuation">(</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-96250afe-b70e-4e2d-9409-5f71f0390128"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-f648407b-6d59-4f0c-a024-35114d16d0c0">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-5c713313-cad9-46a6-bbff-af7144a0bea1" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-96ea18f3-d8f6-4417-88d4-3ed74802ae10" style="">Optional 내부에 담긴 객체가 null이 아니라면 담겨 있는 객체를 반환하고, null이라면 인자로 넘겨준 함수형 인자를 통해 생성된 예외를 발생시킨다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-aef56cd0-4a98-4132-b4c0-3c7d30c6274f">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Member member <span class="token se-code-operator">=</span> optionalMember<span class="token se-code-punctuation">.</span><span class="token se-code-function">orElseThrow</span><span class="token se-code-punctuation">(</span>NullPointerException<span class="token se-code-operator">:</span><span class="token se-code-operator">:</span><span class="token se-code-keyword">new</span><span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-aef56cd0-4a98-4132-b4c0-3c7d30c6274f"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-8aa5c18c-9551-41e5-bb02-09ecf5695d86">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-cfd9165b-0ac1-4a24-b4fb-f82c6c9cf17d" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-7cd8aec7-b760-44a9-b708-ef49f3939471" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-73e679c9-0cf4-4374-b709-1fd39163c636" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-20dcab1b-6771-4562-b52d-ea8bbd9363ce" style=""><b>📍orElse(T other)</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-0f1b2a67-1c4c-404f-b755-fd78ffef811a" style=""> :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e318c8d1-2fce-4488-87d3-2566ef5e420f" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-c22f4484-f583-4620-8189-fa181ca128fc" style="">Optional 내부에 담긴 객체가 null이 아니라면 담겨있는 객체를 반환하고, null이라면 인자로 넘겨준 member1이라는 객체를 반환합니다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component" id="SE-653429d3-3778-4076-b4d4-0073df026ed3">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<div class="se-module se-module-code se-fs-fs13">
+<div class="se-code-source">
+<div class="__se_code_view language-javascript">Member member <span class="token se-code-operator">=</span> optionalMember<span class="token se-code-punctuation">.</span><span class="token se-code-function">orElse</span><span class="token se-code-punctuation">(</span>member1<span class="token se-code-punctuation">)</span><span class="token se-code-punctuation">;</span></div>
+</div>
+</div>
+</div>
+</div>
+<script class="__se_module_data" data-module='{"type":"v2_code", "id" : "SE-653429d3-3778-4076-b4d4-0073df026ed3"}' type="text/data"></script>
+</div> <div class="se-component se-text se-l-default" id="SE-be00d77a-ecc6-4f0e-8e0c-d9bd7d7d84ed">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-e7a661ab-4ba1-4162-a726-ca174ba7c791" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-ee12408d-0170-4273-afe1-9ee868bba970" style=""> </span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-ac3b929e-733c-4983-8714-5549000a8474" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-9d940be6-47dd-4ca8-88f1-82f69af57b1a" style="">📍</span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-84ccf69e-b115-4293-b077-c9b778ef817f" style=""><b>orElseGet</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-de0e8862-14c7-4a89-a650-e8f76e629dc8" style="">(Supplier&lt;? extends T&gt; other) :</span></p><!-- } SE-TEXT --><!-- SE-TEXT { --><p class="se-text-paragraph se-text-paragraph-align-" id="SE-f8c0cbf6-a0fa-483a-8c4e-d0d542a2faf0" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" id="SE-70efeffb-9f48-466f-83ce-9b0b297593f2" style="">Optional 내부에 담긴 객체가 null이 아니라면 담겨있는 객체를 반환하고, null이라면 인자로 넘겨준 함수형 인자를 통해 생성된 객체를 반환한다.</span></p><!-- } SE-TEXT -->
+</div>
+</div>
+</div>
+</div> <div class="ssp-adcontent align_center"><div class="ssp_adcontent_inner" id="ssp-adcontent"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe frameborder="no" id="ssp-adcontent_tgtLREC" name="" scrolling="no" style="width: 100%; height: 177px; visibility: inherit; border: 0px; vertical-align: bottom;" tabindex="0" title="AD"></iframe></div></div></div></div>
