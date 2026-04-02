@@ -77,11 +77,57 @@
     return resolvePath(`posts/${post.slug}/${post.thumb}`);
   }
 
+  /**
+   * 페이지 URL 반환 (file:// 환경에서는 /index.html 형식으로 변환)
+   * @param {string} path  예) "/about", "/"
+   * @returns {string}
+   */
+  var isLocal = window.location.protocol === 'file:' ||
+                window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1';
+
+  function getPageUrl(path) {
+    if (!isLocal) return path;
+    if (!path || path === '/') return BASE_URL + 'index.html';
+    var clean = path.replace(/^\//, '').replace(/\/$/, '');
+    return BASE_URL + clean + '/index.html';
+  }
+
   // 전역 노출
   window.BASE_URL = BASE_URL;
   window.resolvePath = resolvePath;
   window.postContentPath = postContentPath;
   window.getThumbPath = getThumbPath;
+  window.getPageUrl = getPageUrl;
+  window.IS_LOCAL = isLocal;
+
+  // 로컬 환경에서 절대경로 네비게이션 링크 보정
+  if (isLocal) {
+    document.addEventListener('DOMContentLoaded', function() {
+      // /path 형태의 site-relative 링크를 file:// 절대경로로 변환
+      document.querySelectorAll('a[href]').forEach(function(el) {
+        var path = el.getAttribute('href') || '';
+        // 절대경로이고 외부 링크가 아닌 것만 처리
+        if (!path.startsWith('/') || path.startsWith('//')) return;
+        // URL 파라미터 분리
+        var qIdx = path.indexOf('?');
+        var pathname = qIdx >= 0 ? path.slice(0, qIdx) : path;
+        var query = qIdx >= 0 ? path.slice(qIdx) : '';
+        var clean = pathname.replace(/^\//, '').replace(/\/$/, '');
+
+        if (!clean) {
+          // "/" → index.html
+          el.href = BASE_URL + 'index.html' + query;
+        } else if (clean.includes('.')) {
+          // 확장자 있으면 그대로 (예: index.html?cat=...)
+          el.href = BASE_URL + clean + query;
+        } else {
+          // 서브디렉토리 (예: /about → about/index.html, /posts/slug → posts/slug/index.html)
+          el.href = BASE_URL + clean + '/index.html' + query;
+        }
+      });
+    });
+  }
 
   console.log("[PathResolver] BASE_URL:", BASE_URL);
 })();

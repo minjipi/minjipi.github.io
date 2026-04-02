@@ -3,7 +3,11 @@
 
 document.addEventListener("DOMContentLoaded", function() {
   var params = new URLSearchParams(window.location.search);
-  var slug = params.get("slug");
+  // Support both ?slug=... query param and /posts/{slug} clean URL path
+  var slug = params.get("slug") || (function() {
+    var m = window.location.pathname.match(/\/posts\/([^\/]+)\/?$/);
+    return m ? decodeURIComponent(m[1]) : null;
+  })();
 
   if (!slug) { showError("잘못된 접근입니다."); return; }
 
@@ -11,13 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
   if (idx === -1) { showError("글을 찾을 수 없습니다."); return; }
 
   var post = POSTS[idx];
-  var prev = idx + 1 < POSTS.length ? POSTS[idx + 1] : null;
-  var next = idx - 1 >= 0           ? POSTS[idx - 1] : null;
 
   document.title = post.title + " - minj.devlog";
 
   renderPost(post);
-  renderPostNav(prev, next);
+  renderCategoryPostList(post, idx);
 });
 
 // ── 글 본문 렌더링 ──────────────────────────────────────────
@@ -27,17 +29,21 @@ function renderPost(post) {
 
   var thumbPath = window.getThumbPath ? window.getThumbPath(post) : null;
 
+  var BASE = (window.BASE_URL || '/').replace(/\/$/, '') + '/';
+  var isFile = window.IS_LOCAL;
+  var indexUrl = isFile ? BASE + 'posts/index.html' : '/posts';
+
   container.innerHTML =
     '<div class="post-detail-header">' +
       '<div class="post-detail-meta">' +
-        '<span class="post-cat-badge" onclick="window.location.href=\'index.html?cat=' + encodeURIComponent(post.category) + '\'" style="cursor:pointer;">' + escHtml(post.category) + '</span>' +
+        '<span class="post-cat-badge" onclick="window.location.href=\'' + indexUrl + '?cat=' + encodeURIComponent(post.category) + '\'" style="cursor:pointer;">' + escHtml(post.category) + '</span>' +
         '<span class="post-date">' + formatDate(post.date) + '</span>' +
       '</div>' +
       '<h1 class="post-detail-title">' + escHtml(post.title) + '</h1>' +
       (post.tags && post.tags.length
         ? '<div class="post-detail-tags">' +
             post.tags.map(function(t) {
-              return '<span class="post-tag" onclick="window.location.href=\'index.html?tag=' + encodeURIComponent(t) + '\'" style="cursor:pointer;">#' + escHtml(t) + '</span>';
+              return '<span class="post-tag" onclick="window.location.href=\'' + indexUrl + '?tag=' + encodeURIComponent(t) + '\'" style="cursor:pointer;">#' + escHtml(t) + '</span>';
             }).join('') +
           '</div>'
         : '') +
@@ -141,6 +147,14 @@ function injectContent(rawHtml, post) {
 
   body.innerHTML = '<div class="post-body naver-post">' + cleaned + '</div>';
 
+  // 원본 블로그 링크 추가
+  if (post.source_url) {
+    var sourceDiv = document.createElement('div');
+    sourceDiv.className = 'post-source-link';
+    sourceDiv.innerHTML = '원본 글: <a href="' + post.source_url + '" target="_blank" rel="noopener noreferrer">네이버 블로그에서 보기 →</a>';
+    body.appendChild(sourceDiv);
+  }
+
   // 이미지 경로 보정 (상대경로 images/xxx → posts/{slug}/images/xxx)
   fixImagePaths(body, post.slug);
 }
@@ -235,24 +249,76 @@ function showSummaryFallback(post) {
     : '<div class="post-content-placeholder"><div class="placeholder-icon">📄</div><p>본문 내용이 없습니다.</p></div>';
 }
 
-// ── 이전/다음 글 네비게이션 ─────────────────────────────────
-function renderPostNav(prev, next) {
+// ── 같은 카테고리 글 목록 ────────────────────────────────────
+var CPL_PAGE_SIZE = 5;
+
+function renderCategoryPostList(post) {
   var container = document.getElementById("postNav");
   if (!container) return;
-  container.innerHTML =
-    '<div class="post-nav-inner">' +
-      '<div class="post-nav-item post-nav-prev">' +
-        (prev
-          ? '<a href="post.html?slug=' + prev.slug + '"><span class="nav-label">← 이전 글</span><span class="nav-title">' + escHtml(prev.title) + '</span></a>'
-          : '<span class="nav-empty">이전 글 없음</span>') +
-      '</div>' +
-      '<div class="post-nav-item post-nav-next">' +
-        (next
-          ? '<a href="post.html?slug=' + next.slug + '"><span class="nav-label">다음 글 →</span><span class="nav-title">' + escHtml(next.title) + '</span></a>'
-          : '<span class="nav-empty">다음 글 없음</span>') +
-      '</div>' +
-    '</div>' +
-    '<div class="post-nav-back"><a href="index.html">← 목록으로</a></div>';
+
+  var catPosts = POSTS.filter(function(p) { return p.category === post.category; })
+    .sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
+
+  var currentCatIdx = catPosts.findIndex(function(p) { return p.slug === post.slug; });
+
+  function postLink(slug) {
+    return window.IS_LOCAL
+      ? (window.BASE_URL || '') + 'post.html?slug=' + slug
+      : '/posts/' + slug;
+  }
+
+  var BASE = (window.BASE_URL || '/').replace(/\/$/, '') + '/';
+  var isFile = window.IS_LOCAL;
+  var catUrl = isFile
+    ? BASE + 'posts/index.html?cat=' + encodeURIComponent(post.category)
+    : '/posts?cat=' + encodeURIComponent(post.category);
+  var listUrl = isFile ? BASE + 'posts/index.html' : '/posts';
+
+  var total = catPosts.length;
+  var totalPages = Math.ceil(total / CPL_PAGE_SIZE);
+  var currentPage = Math.floor(currentCatIdx / CPL_PAGE_SIZE) + 1;
+
+  function renderPage(page) {
+    var start = (page - 1) * CPL_PAGE_SIZE;
+    var pageItems = catPosts.slice(start, start + CPL_PAGE_SIZE);
+
+    var itemsHtml = pageItems.map(function(p, i) {
+      var num = start + i + 1;
+      var isCurrent = p.slug === post.slug;
+      return '<div class="cpl-item' + (isCurrent ? ' cpl-item-current' : '') + '">' +
+        '<span class="cpl-num">' + num + '</span>' +
+        '<a href="' + postLink(p.slug) + '" class="cpl-post-title">' + escHtml(p.title) + '</a>' +
+        '<span class="cpl-date">' + formatDate(p.date) + '</span>' +
+      '</div>';
+    }).join('');
+
+    var paginationHtml = totalPages > 1
+      ? '<div class="cpl-pagination">' +
+          '<button class="cpl-page-btn" onclick="window._cplGoPage(' + (page - 1) + ')" ' + (page <= 1 ? 'disabled' : '') + '>이전</button>' +
+          '<span class="cpl-page-info">' + page + ' / ' + totalPages + '</span>' +
+          '<button class="cpl-page-btn" onclick="window._cplGoPage(' + (page + 1) + ')" ' + (page >= totalPages ? 'disabled' : '') + '>다음</button>' +
+        '</div>'
+      : '';
+
+    container.innerHTML =
+      '<div class="category-post-list">' +
+        '<div class="cpl-header">' +
+          '<span class="cpl-title">이 블로그 <strong>' + escHtml(post.category) + '</strong> 카테고리 글</span>' +
+          '<a href="' + catUrl + '" class="cpl-view-all">전체글 보기 (' + total + ')</a>' +
+        '</div>' +
+        '<div class="cpl-list">' + itemsHtml + '</div>' +
+        paginationHtml +
+        '<div class="cpl-back"><a href="' + listUrl + '">← 목록으로</a></div>' +
+      '</div>';
+  }
+
+  window._cplGoPage = function(page) {
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    renderPage(page);
+  };
+
+  renderPage(currentPage);
 }
 
 // ── 에러 표시 ───────────────────────────────────────────────

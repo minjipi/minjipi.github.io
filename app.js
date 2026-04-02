@@ -10,14 +10,15 @@ let activeTag = null;
 
 // ── INIT ──────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  // URL 파라미터로 태그 필터 처리 (post.js에서 태그 클릭 시)
   const params = new URLSearchParams(window.location.search);
+  const catParam = params.get("cat");
   const tagParam = params.get("tag");
-  if (tagParam) {
+  if (catParam) {
+    filterCat(catParam);
+  } else if (tagParam) {
     filterTag(tagParam);
   } else {
-    renderHashtags();
-    renderPosts();
+    filterCat("Backend/Spring Boot");
   }
   setupSearch();
 });
@@ -110,6 +111,13 @@ function filterTag(tag) {
   renderPosts();
 }
 
+// ── 썸네일 로드 실패 핸들러 ───────────────────────────────────
+window._thumbError = function (img) {
+  var emoji = img.getAttribute("data-emoji") || "📝";
+  img.parentElement.innerHTML =
+    '<span class="thumb-placeholder">' + emoji + "</span>";
+};
+
 // ── RENDER POSTS ──────────────────────────────────────────────
 function renderPosts() {
   const container = document.getElementById("postList");
@@ -125,15 +133,22 @@ function renderPosts() {
   container.innerHTML = page
     .map((p, i) => {
       const thumbPath = getThumbPath(p);
+      const emoji = getCatEmoji(p.category);
+      const safeAlt = (p.title || "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;");
+      const thumbHtml = thumbPath
+        ? '<img src="' +
+          thumbPath +
+          '" alt="' +
+          safeAlt +
+          '" loading="lazy" data-emoji="' +
+          emoji +
+          '" onerror="window._thumbError(this)">'
+        : '<span class="thumb-placeholder">' + emoji + "</span>";
       return `
     <div class="post-card" style="animation-delay:${i * 0.05}s" onclick="goPost('${p.slug}')">
-      <div class="post-card-thumb">
-        ${
-          thumbPath
-            ? `<img src="${thumbPath}" alt="${p.title}" loading="lazy" onerror="this.parentElement.innerHTML='<span class=\\"thumb-placeholder\\">${getCatEmoji(p.category)}</span>'" />`
-            : `<span class="thumb-placeholder">${getCatEmoji(p.category)}</span>`
-        }
-      </div>
+       <div class="post-card-thumb">${thumbHtml}</div>
       <div class="post-card-body">
         <div class="post-card-meta">
           <span class="post-cat-badge">${p.category}</span>
@@ -188,7 +203,11 @@ function goPage(n) {
 }
 
 function goPost(slug) {
-  window.location.href = `post.html?slug=${slug}`;
+  if (window.IS_LOCAL) {
+    window.location.href = (window.BASE_URL || "") + "post.html?slug=" + slug;
+  } else {
+    window.location.href = "/posts/" + slug;
+  }
 }
 
 // ── CATEGORY TOGGLE ───────────────────────────────────────────
@@ -291,15 +310,15 @@ function getCatEmoji(cat) {
     "Search/Kafka": "📨",
     "Linux/Administration": "🐧",
     "Linux/Troubleshooting": "🔧",
-    "Security": "🔒",
+    Security: "🔒",
     "IoT/RaspberryPi": "🍓",
-    "DevTools": "🛠️",
+    DevTools: "🛠️",
     "DevOps/Ansible": "🤖",
     "Frontend/React": "⚛️",
-    "Database": "🐬",
-    "Network": "🌐",
-    "AI": "🤖",
-    "Life": "📖",
+    Database: "🐬",
+    Network: "🌐",
+    AI: "🤖",
+    Life: "📖",
   };
   return map[cat] || "📝";
 }

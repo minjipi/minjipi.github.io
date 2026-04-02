@@ -1,5 +1,5 @@
 // sidebar.js - 공통 사이드바 컴포넌트
-// index.html: filterCat() 함수로 동작 / about.html: index.html?cat= 링크로 동작
+// index.html: filterCat() 함수로 동작 / 그 외: BASE_URL 기반 링크로 동작
 
 (function () {
   const CATEGORIES = [
@@ -33,14 +33,14 @@
       ],
     },
     {
-      label: "🐧 Linux &amp; Systems",
+      label: "Linux &amp; Systems",
       children: [
         { label: "Linux Administration", cat: "Linux/Administration" },
         { label: "System Troubleshooting", cat: "Linux/Troubleshooting" },
       ],
     },
     {
-      label: "🔒 Security",
+      label: "Security",
       children: [{ label: "Web &amp; Network Security", cat: "Security" }],
     },
     {
@@ -62,24 +62,26 @@
       label: "AI",
       children: [{ label: "AI 활용 &amp; 팁", cat: "AI" }],
     },
-    {
-      label: "📖 Life &amp; Logs",
-      children: [{ label: "Retrospective", cat: "Life" }],
-    },
   ];
 
   function buildSidebar() {
     const isIndex = typeof filterCat === "function";
+    const BASE = window.BASE_URL || "/";
+    const pgUrl =
+      window.getPageUrl ||
+      function (p) {
+        return BASE + p.replace(/^\//, "");
+      };
     const chevronSVG = `<svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
 
     const groups = CATEGORIES.map(({ label, children }) => {
       // children이 1개면 label 자체를 클릭 가능한 링크로 렌더링
       if (children.length === 1) {
         const { cat } = children[0];
-        const onclick = isIndex
-          ? `filterCat('${cat}'); return false;`
-          : null;
-        const href = isIndex ? "#" : `index.html?cat=${encodeURIComponent(cat)}`;
+        const onclick = isIndex ? `filterCat('${cat}'); return false;` : null;
+        const href = isIndex
+          ? "#"
+          : `${pgUrl("/posts")}?cat=${encodeURIComponent(cat)}`;
         return `
         <div class="cat-group">
           <a href="${href}" class="cat-toggle cat-toggle-link" ${onclick ? `onclick="${onclick}"` : ""}>
@@ -92,7 +94,7 @@
         .map(({ label: lbl, cat }) => {
           const link = isIndex
             ? `<a href="#" onclick="filterCat('${cat}'); return false;">${lbl}</a>`
-            : `<a href="index.html?cat=${encodeURIComponent(cat)}">${lbl}</a>`;
+            : `<a href="${pgUrl("/posts")}?cat=${encodeURIComponent(cat)}">${lbl}</a>`;
           return `<li>${link}</li>`;
         })
         .join("");
@@ -109,13 +111,13 @@
 
     const allLink = isIndex
       ? `<a href="#" class="cat-all" onclick="filterCat(null); return false;">전체 글 보기</a>`
-      : `<a href="index.html" class="cat-all">전체 글 보기</a>`;
+      : `<a href="${pgUrl("/posts")}" class="cat-all">전체 글 보기</a>`;
 
     return `
       <nav class="category-nav">
         <div class="sidebar-section-title">카테고리</div>
         <div class="cat-group cat-intro">
-          <a href="about.html" class="cat-intro-link">
+          <a href="${pgUrl("/")}" class="cat-intro-link">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <circle cx="12" cy="8" r="4"/>
               <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
@@ -145,11 +147,16 @@
     if (!container) return;
 
     const isIndex = typeof filterCat === "function";
+    const _pg =
+      window.getPageUrl ||
+      function (p) {
+        return (window.BASE_URL || "/") + p.replace(/^\//, "");
+      };
     container.innerHTML = sorted
       .map(([tag, cnt]) =>
         isIndex
           ? `<span class="hashtag" onclick="filterTag('${tag}')">#${tag} <small style="opacity:.6">${cnt}</small></span>`
-          : `<a href="index.html?tag=${tag}" class="hashtag" style="text-decoration:none;">#${tag} <small style="opacity:.6">${cnt}</small></a>`,
+          : `<a href="${_pg("/posts")}?tag=${encodeURIComponent(tag)}" class="hashtag" style="text-decoration:none;">#${tag} <small style="opacity:.6">${cnt}</small></a>`,
       )
       .join("");
   }
