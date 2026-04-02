@@ -13,14 +13,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const catParam = params.get("cat");
   const tagParam = params.get("tag");
+  const qParam = params.get("q");
+
   if (catParam) {
     filterCat(catParam);
   } else if (tagParam) {
     filterTag(tagParam);
+  } else if (qParam) {
+    appDoSearch(qParam);
   } else {
     filterCat("Backend/Spring Boot");
   }
   setupSearch();
+
+  // search-nav.js 가 posts 페이지에서 doSearch를 호출할 수 있도록 연결
+  window.appDoSearch = appDoSearch;
 });
 
 // ── 썸네일 경로 보정 ──────────────────────────────────────────
@@ -146,6 +153,7 @@ function renderPosts() {
           emoji +
           '" onerror="window._thumbError(this)">'
         : '<span class="thumb-placeholder">' + emoji + "</span>";
+
       return `
     <div class="post-card" style="animation-delay:${i * 0.05}s" onclick="goPost('${p.slug}')">
        <div class="post-card-thumb">${thumbHtml}</div>
@@ -218,51 +226,19 @@ function toggleCat(btn) {
 }
 
 // ── SEARCH ────────────────────────────────────────────────────
-function setupSearch() {
-  const input = document.getElementById("searchInput");
-  const results = document.getElementById("searchResults");
-  if (!input) return;
+// 검색창 UI는 search-nav.js 가 담당합니다.
+// setupSearch()는 하위호환을 위해 빈 함수로 유지합니다.
+function setupSearch() {}
 
-  input.addEventListener("input", () => {
-    const q = input.value.trim().toLowerCase();
-    if (!q) {
-      results.classList.remove("open");
-      return;
-    }
-
-    const found = POSTS.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        (p.summary || "").toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q)) ||
-        p.category.toLowerCase().includes(q),
-    ).slice(0, 6);
-
-    if (!found.length) {
-      results.innerHTML = `<div class="search-result-item"><div class="sr-title">검색 결과 없음</div></div>`;
-    } else {
-      results.innerHTML = found
-        .map(
-          (p) => `
-        <div class="search-result-item" onclick="goPost('${p.slug}')">
-          <div class="sr-title">${highlight(p.title, q)}</div>
-          <div class="sr-meta">${p.category} · ${formatDate(p.date)}</div>
-        </div>
-      `,
-        )
-        .join("");
-    }
-    results.classList.add("open");
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".search-wrap")) results.classList.remove("open");
-  });
-}
-
-function doSearch() {
-  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+function appDoSearch(q) {
+  if (q === undefined) q = "";
+  q = q.trim().toLowerCase();
   if (!q) return;
+
+  // 검색창에 검색어 복원
+  const input = document.getElementById("searchInput");
+  if (input && input.value.toLowerCase() !== q) input.value = q;
+
   filteredPosts = POSTS.filter(
     (p) =>
       p.title.toLowerCase().includes(q) ||
@@ -275,9 +251,15 @@ function doSearch() {
   const bar = document.getElementById("filterBar");
   bar.style.display = "flex";
   document.getElementById("filterLabel").textContent =
-    `"${q}" 검색 결과 (${filteredPosts.length}개)`;
-  document.getElementById("searchResults").classList.remove("open");
+    `🔍 "${q}" 검색 결과 (${filteredPosts.length}개)`;
+  const results = document.getElementById("searchResults");
+  if (results) results.classList.remove("open");
   renderPosts();
+}
+
+// 하위 호환용 별칭
+function doSearch() {
+  appDoSearch();
 }
 
 // ── HELPERS ───────────────────────────────────────────────────

@@ -3,6 +3,10 @@
 
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="refresh" content="0; url=/about" />
   <title>minj.devlog</title>
@@ -12,19 +16,13 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-
 </head>
 
 <body>
-  <header class="topbar">
+  <header class="topbar" style="position:relative;">
     <a href="about.html" class="logo">minj<span class="logo-dot">.</span></a>
     <div class="topbar-right">
-      <a href="index.html"
-        style="font-size:0.82rem; color:var(--text-secondary); padding: 6px 14px; border:1px solid var(--border); border-radius:var(--radius); transition: color 0.15s, border-color 0.15s;"
-        onmouseover="this.style.color='var(--accent)';this.style.borderColor='var(--accent)'"
-        onmouseout="this.style.color='var(--text-secondary)';this.style.borderColor='var(--border)'">
-        블로그 글 보기 →
-      </a>
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
     </div>
   </header>
 
@@ -50,7 +48,6 @@
             다양한 기술과 안정적인 서비스 개발에 관심이 많으며, 경험을 문서화하고 공유하는 것을 좋아합니다.
           </p>
         </div>
-
 
         <div class="about-section">
           <div class="about-section-label">Project</div>
@@ -109,26 +106,16 @@
   <script src="posts.js"></script>
   <script src="path-resolver.js"></script>
   <script src="sidebar.js"></script>
+  <script src="search-nav.js"></script>
   <script>
     function copyEmail(element) {
-      const email = element.innerText;
       const badge = element.nextElementSibling;
-
-      // 클립보드 복사
-      navigator.clipboard.writeText(email).then(() => {
-        // 복사 완료 배지 표시
+      navigator.clipboard.writeText(element.innerText).then(() => {
         badge.classList.add('show');
-
-        // 1.5초 후 배지 숨기기
-        setTimeout(() => {
-          badge.classList.remove('show');
-        }, 1500);
-      }).catch(err => {
-        console.error('복사 실패:', err);
-      });
+        setTimeout(() => badge.classList.remove('show'), 1500);
+      }).catch(() => {});
     }
   </script>
-
 </body>
 
 </html>

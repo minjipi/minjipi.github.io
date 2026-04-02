@@ -576,7 +576,7 @@ const POSTS = [
     title: "HTML :: html 회원가입 폼 만들기",
     summary:
       'html로만 회원가입 폼 만들기! 스크립트 입히기 전 입니당 < html > < head > < meta charset = "utf-8" > < title > 회원가입 폼 < / title > < / head > <',
-    category: "Backend/Java",
+    category: "Frontend/React",
     tags: [],
     date: "2026-03-31",
     thumb: "posts/HTML_html_회원가입_폼_만들기_222043927253/images/image_1.jpg",
@@ -586,8 +586,8 @@ const POSTS = [
     slug: "HTML_meta_태그_meta_태그_쓰는_곳_222063581059",
     title: "HTML :: meta 태그, meta 태그 쓰는 곳",
     summary:
-      "meta 태그 정의 및 특징 ​ <meta> 태그는 해당 문서에 대한 정보인 메타데이터(metadata)를 정의할 때 사용 합니다. <meta> 요소는 <base>, <link>, <script>, <style>, ",
-    category: "Backend/Java",
+      "meta 태그 정의 및 특징 <meta> 태그는 해당 문서에 대한 정보인 메타데이터(metadata)를 정의할 때 사용 합니다. <meta> 요소는..",
+    category: "Frontend/React",
     tags: [],
     date: "2026-03-31",
     thumb: null,
@@ -598,7 +598,7 @@ const POSTS = [
     title: "HTML :: table, table-border 속성 (솔직히 이것만 알면 html끝)",
     summary:
       "자바스크립트 하기 전 필수 코스 HTML #a link 링크를 추가할 때 사용하는 <a> 태그. 링크를 만들 때는 2가지 정보가 필요하다. 이동하려는 실제 웹페이지 주소(=URL) 와 내가 만든 웹페이지에서 보여지는",
-    category: "Backend/Java",
+    category: "Frontend/React",
     tags: [],
     date: "2026-03-31",
     thumb:

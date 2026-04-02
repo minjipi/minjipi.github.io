@@ -59,8 +59,7 @@ function renderPost(post) {
       : '') +
     '<div class="post-detail-body" id="postBody">' +
       '<div class="post-content-placeholder"><div style="font-size:2rem;">⏳</div><p>본문 불러오는 중...</p></div>' +
-    '</div>' +
-    '';
+    '</div>';
 
   loadContent(post);
   loadSourceUrl(post);

@@ -14,7 +14,7 @@
     {
       label: "Backend",
       children: [
-        { label: "Java / Kotlin", cat: "Backend/Java" },
+        { label: " Java", cat: "Backend/Java" },
         { label: "Spring Boot", cat: "Backend/Spring Boot" },
         { label: "Python / Django", cat: "Backend/Python" },
         { label: "API &amp; Architecture", cat: "Backend/API & Architecture" },
@@ -127,11 +127,7 @@
         </div>
         ${groups}
         ${allLink}
-      </nav>
-      <div class="hashtag-section">
-        <div class="sidebar-section-title">태그</div>
-        <div class="hashtag-list" id="hashtagList"></div>
-      </div>`;
+      </nav>`;
   }
 
   function renderHashtags() {
@@ -169,7 +165,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById("sidebar");
     if (sidebar) sidebar.innerHTML = buildSidebar();
-    if (typeof POSTS !== "undefined") renderHashtags();
   });
 
   // toggleCat을 전역으로 노출 (HTML의 onclick에서 호출)
