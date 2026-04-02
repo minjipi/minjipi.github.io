@@ -35,9 +35,15 @@ function renderPost(post) {
 
   container.innerHTML =
     '<div class="post-detail-header">' +
-      '<div class="post-detail-meta">' +
-        '<span class="post-cat-badge" onclick="window.location.href=\'' + indexUrl + '?cat=' + encodeURIComponent(post.category) + '\'" style="cursor:pointer;">' + escHtml(post.category) + '</span>' +
-        '<span class="post-date">' + formatDate(post.date) + '</span>' +
+      '<div class="post-detail-header-top">' +
+        '<div class="post-detail-meta">' +
+          '<span class="post-cat-badge" onclick="window.location.href=\'' + indexUrl + '?cat=' + encodeURIComponent(post.category) + '\'" style="cursor:pointer;">' + escHtml(post.category) + '</span>' +
+          '<span class="post-date">' + formatDate(post.date) + '</span>' +
+        '</div>' +
+        '<a id="postSourceBtn" class="post-source-btn" style="display:none;" target="_blank" rel="noopener noreferrer">' +
+          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>' +
+          '원본 글 보기' +
+        '</a>' +
       '</div>' +
       '<h1 class="post-detail-title">' + escHtml(post.title) + '</h1>' +
       (post.tags && post.tags.length
@@ -54,7 +60,7 @@ function renderPost(post) {
     '<div class="post-detail-body" id="postBody">' +
       '<div class="post-content-placeholder"><div style="font-size:2rem;">⏳</div><p>본문 불러오는 중...</p></div>' +
     '</div>' +
-    '<div id="postSourceLink" class="post-source-link" style="display:none"></div>';
+    '';
 
   loadContent(post);
   loadSourceUrl(post);
@@ -222,10 +228,10 @@ function loadSourceUrl(post) {
     .then(function(r) { return r.ok ? r.json() : null; })
     .then(function(meta) {
       if (!meta || !meta.source_url) return;
-      var el = document.getElementById('postSourceLink');
-      if (!el) return;
-      el.innerHTML = '<a href="' + meta.source_url + '" target="_blank" rel="noopener noreferrer">원본 게시글 바로가기 →</a>';
-      el.style.display = '';
+      var btn = document.getElementById('postSourceBtn');
+      if (!btn) return;
+      btn.href = meta.source_url;
+      btn.style.display = 'inline-flex';
     })
     .catch(function() {});
 }

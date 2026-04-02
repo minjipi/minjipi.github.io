@@ -19,7 +19,15 @@
       <a href="/posts" class="topnav-link">posts</a>
       <a href="/" class="topnav-link">about</a>
     </nav>
-
+    <div class="topbar-right">
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="검색..." autocomplete="off" onkeydown="if(event.key==='Enter') doTopSearch()" />
+        <button class="search-btn" onclick="doTopSearch()" aria-label="검색">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
   </header>
 
   <div class="layout">
@@ -50,6 +58,84 @@
         if (slug) link.href = `editor.html?slug=${slug}`;
       }
     }
+  </script>
+  <script>
+    // ── 상단 nav 검색 ──────────────────────────────────────────
+    (function () {
+      function goPost(slug) {
+        if (window.IS_LOCAL) {
+          window.location.href = (window.BASE_URL || '') + 'post.html?slug=' + slug;
+        } else {
+          window.location.href = '/posts/' + slug;
+        }
+      }
+
+      function goPostsList(q) {
+        var base = window.IS_LOCAL
+          ? (window.BASE_URL || '') + 'posts/index.html'
+          : '/posts';
+        window.location.href = base + '?q=' + encodeURIComponent(q);
+      }
+
+      function formatDate(d) {
+        if (!d) return '';
+        var p = d.split('-');
+        return p[0] + '.' + p[1] + '.' + p[2];
+      }
+
+      function highlight(text, q) {
+        return text.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), function(s) {
+          return '<mark style="background:var(--accent-light);color:var(--accent)">' + s + '</mark>';
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        var input = document.getElementById('searchInput');
+        var results = document.getElementById('searchResults');
+        if (!input || typeof POSTS === 'undefined') return;
+
+        input.addEventListener('input', function () {
+          var q = input.value.trim().toLowerCase();
+          if (!q) { results.classList.remove('open'); return; }
+
+          var found = POSTS.filter(function (p) {
+            return p.title.toLowerCase().includes(q) ||
+              (p.summary || '').toLowerCase().includes(q) ||
+              p.tags.some(function (t) { return t.toLowerCase().includes(q); }) ||
+              p.category.toLowerCase().includes(q);
+          }).slice(0, 6);
+
+          if (!found.length) {
+            results.innerHTML = '<div class="search-result-item"><div class="sr-title">검색 결과 없음</div></div>';
+          } else {
+            results.innerHTML = found.map(function (p) {
+              return '<div class="search-result-item" onclick="(function(){' +
+                (window.IS_LOCAL
+                  ? 'window.location.href=\'' + (window.BASE_URL || '') + 'post.html?slug=' + p.slug + '\''
+                  : 'window.location.href=\'/posts/' + p.slug + '\'') +
+                '})()">' +
+                '<div class="sr-title">' + highlight(p.title, q) + '</div>' +
+                '<div class="sr-meta">' + p.category + ' · ' + formatDate(p.date) + '</div>' +
+                '</div>';
+            }).join('');
+          }
+          results.classList.add('open');
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!e.target.closest('.search-wrap')) results.classList.remove('open');
+        });
+      });
+
+      window.doTopSearch = function () {
+        var q = (document.getElementById('searchInput') || {}).value;
+        if (!q || !q.trim()) return;
+        var base = window.IS_LOCAL
+          ? (window.BASE_URL || '') + 'posts/index.html'
+          : '/posts';
+        window.location.href = base + '?q=' + encodeURIComponent(q.trim());
+      };
+    })();
   </script>
 </body>
 
