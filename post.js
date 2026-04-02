@@ -53,9 +53,11 @@ function renderPost(post) {
       : '') +
     '<div class="post-detail-body" id="postBody">' +
       '<div class="post-content-placeholder"><div style="font-size:2rem;">⏳</div><p>본문 불러오는 중...</p></div>' +
-    '</div>';
+    '</div>' +
+    '<div id="postSourceLink" class="post-source-link" style="display:none"></div>';
 
   loadContent(post);
+  loadSourceUrl(post);
 }
 
 // ── 본문 로딩: content.html 우선, 없으면 index.html fallback ──
@@ -147,14 +149,6 @@ function injectContent(rawHtml, post) {
 
   body.innerHTML = '<div class="post-body naver-post">' + cleaned + '</div>';
 
-  // 원본 블로그 링크 추가
-  if (post.source_url) {
-    var sourceDiv = document.createElement('div');
-    sourceDiv.className = 'post-source-link';
-    sourceDiv.innerHTML = '원본 글: <a href="' + post.source_url + '" target="_blank" rel="noopener noreferrer">네이버 블로그에서 보기 →</a>';
-    body.appendChild(sourceDiv);
-  }
-
   // 이미지 경로 보정 (상대경로 images/xxx → posts/{slug}/images/xxx)
   fixImagePaths(body, post.slug);
 }
@@ -218,6 +212,22 @@ function cleanNaverHtml(root, slug) {
   });
 
   return root.innerHTML;
+}
+
+// ── 원본 게시글 링크 (meta.json에서 source_url 로드) ──────────
+function loadSourceUrl(post) {
+  if (window.location.protocol === 'file:') return;
+  var base = window.BASE_URL || '';
+  fetch(base + 'posts/' + post.slug + '/meta.json')
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(meta) {
+      if (!meta || !meta.source_url) return;
+      var el = document.getElementById('postSourceLink');
+      if (!el) return;
+      el.innerHTML = '<a href="' + meta.source_url + '" target="_blank" rel="noopener noreferrer">원본 게시글 바로가기 →</a>';
+      el.style.display = '';
+    })
+    .catch(function() {});
 }
 
 // ── 이미지 경로 보정 ─────────────────────────────────────────
