@@ -1224,7 +1224,7 @@ const POSTS = [
       "📦 MSA 스프링부트(Spring Boot)와 스프링클라우드(Spring Cloud) 버전 호환, BOM(pom.xml)",
     summary:
       "​ 1. 스프링부트 스프링클라우드 버전 호환 스프링부트(Spring Boot)와 스프링 클라우드(Spring Cloud) 이 둘의 버전을 맞춰주어야 한다. 아래는 스프링 공식 사이트의 버전 표다. Release Tr",
-    category: "Backend/API & Architecture",
+    category: "Backend/MSA",
     tags: [],
     date: "2026-03-31",
     thumb:
@@ -1237,7 +1237,7 @@ const POSTS = [
       "MSA 아키텍처 Spring Cloud Netflix 구조 히스트릭스, 터빈, 유레카 서버, Config 서버, Zuul 서버",
     summary:
       "Spring Cloud Netflix Spring Cloud 는, Spring boot를 기반으로 MSA 구축에 특화된 라이브러리들의 집합이다. Spring Cloud에는 Eureka, Hystrix, Ribbon,",
-    category: "Backend/API & Architecture",
+    category: "Backend/MSA",
     tags: [],
     date: "2026-03-31",
     thumb:
@@ -1250,7 +1250,7 @@ const POSTS = [
       "📦 MSA 아키텍처 프로젝트, 모노리틱 아키텍쳐 VS 마이크로 서비스 아키텍쳐",
     summary:
       "마이크로 서비스 아키텍쳐를 이해하려면 먼저 모노리틱 아키텍쳐 스타일에 대해서 이해해야 한다. 모노리틱 아키텍쳐 스타일은, 기존의 전통적인 웹 시스템 개발 스타일로 하나의 애플리케이션 내에 모든 로직들이 모두 들어 가",
-    category: "Backend/API & Architecture",
+    category: "Backend/MSA",
     tags: [],
     date: "2026-03-31",
     thumb:
@@ -1263,7 +1263,7 @@ const POSTS = [
       "MSA 아키텍처 프로젝트, 시작 (MSA 아키텍처, MSA 적용사례, Netflix OSS, Spring Cloud Netflix)",
     summary:
       "해당 포스팅은 마이크로서비스 아키텍처(MSA 아키텍처)를 활용하여 커피 주문(가입, 주문, 상태) 시스템을 구축하는 프로젝트의 보고서 를 요약한 것 입니다. ​ 1. IT 업계의 트렌드, MSA 2. MSA, 무엇인",
-    category: "Backend/API & Architecture",
+    category: "Backend/MSA",
     tags: [],
     date: "2026-03-31",
     thumb:
@@ -1677,7 +1677,7 @@ const POSTS = [
     title: "📬 Pub/Sub구조 (비동기, Pub/Sub 비동기 작동)",
     summary:
       "micro-frontends 를 공부하다가 자꾸 눈에 띄는 Pub/Sub구조. Pub/Sub구조에 대해 간단히 정리한 포스팅이다. ​ # Pub/Sub 구조 Pub/Sub 구조는 '비동기식' 메세징 패턴. 그렇다면 ",
-    category: "Backend/API & Architecture",
+    category: "Backend/Architecture",
     tags: [],
     date: "2026-03-31",
     thumb:
@@ -2680,7 +2680,7 @@ const POSTS = [
     title: "👀 옵저버 패턴 (micro-frontends)",
     summary:
       "micro-frontends 를 공부하다가 자꾸 눈에 띄는 Pub/Sub구조. Pub/Sub구조와 옵저버 패턴 에 대해 간단히 정리한 포스팅이다. ​ # Pub/Sub 구조 Pub/Sub 구조는 '비동기식' 메세징 ",
-    category: "Backend/API & Architecture",
+    category: "Backend/Architecture",
     tags: [],
     date: "2026-03-31",
     thumb: null,
@@ -3158,7 +3158,7 @@ const POSTS = [
     title: "API 와 Endpoint ? (둘 다 정확히 알고 있다면 안 봐도 되는 글)",
     summary:
       "API 와 Endpoint의 차이점? 둘 다 정확히 알고 있다면 안 봐도 되는 글. ​ API 와 Endpoint의 차이 한 줄 정리 ​ API가 두 시스템(어플리케이션)이 상호작용할 수 있게 하는 프로토콜의 총집합",
-    category: "Backend/API & Architecture",
+    category: "Backend/Architecture",
     tags: [],
     date: "2026-03-30",
     thumb:
@@ -3170,7 +3170,7 @@ const POSTS = [
     title: "AWS API Gateway와 Lambda를 활용해 REST API 구축하기 1",
     summary:
       "AWS에서 API Gateway 와 Lambda 를 활용해 REST API 구축 하기! ​ Lambda Function부터 만들어야 합니다. 우선 AWS홈페이지에서 Lambda 카테고리로 들어갑니다. ​ ​ [함수생",
-    category: "Backend/API & Architecture",
+    category: "Backend/Architecture",
     tags: [],
     date: "2026-03-30",
     thumb:
@@ -3985,7 +3985,7 @@ const POSTS = [
     title: "SpringBoot REST API, 'RESTful API란?'",
     summary:
       "[SpringBoot] REST API로 변경하기 ​ 'REST API란?' ​ ​ 어제 진행중이었던 개인 프로젝트의 구조를 전체적으로 수정했다. 일반적인 어플리케이션이 그렇듯, 내 프로젝트 또한 백엔드 서버와 클라",
-    category: "Backend/API & Architecture",
+    category: "Backend/Architecture",
     tags: [],
     date: "2026-03-30",
     thumb:
@@ -4285,7 +4285,7 @@ const POSTS = [
     title: "promise, await, async, axios 정리",
     summary:
       "REST API + 리액트에 비동기 통신 라이브러리 axios를 사용. ​ 동기, 비동기? 자바스크립트에서 동기, 비동기 작업의 대표적인 예시는 다음과 같다. 동기 작업 은 일반적으로 우리가 작성하는 코드. 이 코드",
-    category: "AI",
+    category: "Frontend/React",
     tags: [],
     date: "2026-03-30",
     thumb:
@@ -4686,7 +4686,7 @@ const POSTS = [
     title: "사용자가 증가하면 서버를 어떻게 확장해야할까?",
     summary:
       "언젠가 수많은 사용자가 서비스를 이용한다면 과연 이 서버가 감당할수 있을까? 서비스 플랫폼을 개발하며 반드시 고민해야하는 문제인 것 같다. 사용자가 증가하면 서버를 어떻게 확장해야할까? ​ 1. 더 좋은 성능을 가진",
-    category: "Backend/API & Architecture",
+    category: "Backend/Architecture",
     tags: [],
     date: "2026-03-30",
     thumb:

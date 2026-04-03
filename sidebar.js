@@ -17,8 +17,8 @@
         { label: " Java", cat: "Backend/Java" },
         { label: "Spring Boot", cat: "Backend/Spring Boot" },
         { label: "Python / Django", cat: "Backend/Python" },
-        { label: "API &amp; Architecture", cat: "Backend/API & Architecture" },
-        { label: "테스트", cat: "Backend/Testing" },
+        { label: "Architecture", cat: "Backend/Architecture" },
+        { label: "MSA", cat: "Backend/MSA" },
       ],
     },
     {
