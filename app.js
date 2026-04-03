@@ -288,6 +288,7 @@ function getCatEmoji(cat) {
     "Backend/Python": "🐍",
     "Backend/Architecture": "🔗",
     "Backend/MSA": "🏛️",
+    "Media": "🎬",
     "Backend/Testing": "🧪",
     "Cloud/OpenStack": "🏗️",
     "Cloud/AWS": "☁️",
