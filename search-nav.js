@@ -5,6 +5,14 @@
 (function () {
   function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
+  function wordMatch(text, q) {
+    try {
+      return new RegExp('\\b' + escRe(q) + '\\b', 'i').test(text);
+    } catch(e) {
+      return text.toLowerCase().includes(q);
+    }
+  }
+
   function highlight(text, q) {
     return text.replace(new RegExp(escRe(q), 'gi'), function (s) {
       return '<mark style="background:var(--accent-light);color:var(--accent)">' + s + '</mark>';
@@ -97,10 +105,10 @@
       }
 
       var found = POSTS.filter(function (p) {
-        return p.title.toLowerCase().includes(q)
-          || (p.summary || '').toLowerCase().includes(q)
-          || p.tags.some(function (t) { return t.toLowerCase().includes(q); })
-          || p.category.toLowerCase().includes(q);
+        return wordMatch(p.title, q)
+          || wordMatch(p.summary || '', q)
+          || p.tags.some(function (t) { return wordMatch(t, q); })
+          || wordMatch(p.category, q);
       }).slice(0, 6);
 
       results.innerHTML = found.length

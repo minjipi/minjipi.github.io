@@ -239,11 +239,15 @@ function appDoSearch(q) {
   const input = document.getElementById("searchInput");
   if (input && input.value.toLowerCase() !== q) input.value = q;
 
+  const wordMatch = (text) => {
+    try { return new RegExp('\\b' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(text); }
+    catch(e) { return text.toLowerCase().includes(q); }
+  };
   filteredPosts = POSTS.filter(
     (p) =>
-      p.title.toLowerCase().includes(q) ||
-      (p.summary || "").toLowerCase().includes(q) ||
-      p.tags.some((t) => t.toLowerCase().includes(q)),
+      wordMatch(p.title) ||
+      wordMatch(p.summary || "") ||
+      p.tags.some((t) => wordMatch(t)),
   ).sort((a, b) => new Date(b.date) - new Date(a.date));
   activeFilter = null;
   activeTag = null;
@@ -282,7 +286,8 @@ function getCatEmoji(cat) {
     "Backend/Java": "☕",
     "Backend/Spring Boot": "🌱",
     "Backend/Python": "🐍",
-    "Backend/API & Architecture": "🔗",
+    "Backend/Architecture": "🔗",
+    "Backend/MSA": "🏛️",
     "Backend/Testing": "🧪",
     "Cloud/OpenStack": "🏗️",
     "Cloud/AWS": "☁️",
