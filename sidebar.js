@@ -9,7 +9,7 @@
     },
     {
       label: "Network",
-      children: [{ label: "Network", cat: "Network" }],
+      children: [{ cat: "Network" }],
     },
     {
       label: "Backend",
@@ -41,7 +41,7 @@
     },
     {
       label: "Security",
-      children: [{ label: "Web &amp; Network Security", cat: "Security" }],
+      children: [{ cat: "Security" }],
     },
     {
       label: "DevTools &amp; Tips",
@@ -53,6 +53,10 @@
     {
       label: "IoT &amp; Hardware",
       children: [{ label: "Raspberry Pi", cat: "IoT/RaspberryPi" }],
+    },
+    {
+      label: "Media",
+      children: [{ cat: "Media" }],
     },
     {
       label: "Frontend",

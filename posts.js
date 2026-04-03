@@ -356,11 +356,10 @@ const POSTS = [
   {
     id: 31,
     slug: "CSS_margin_적용_불가_에러_진짜_이게_안될리가_없는데_안될_때_해결법_222303056808",
-    title:
-      "CSS 'margin 적용 불가 에러' (진짜 이게 안될리가 없는데 안될 때' 해결법)",
+    title: "CSS margin 적용 불가 에러",
     summary:
       "http://localhost:8080/ [CSS 파일 경로] ​ 들어가서 내가 고친 부분이 적용이 되었나 확인. ​ 적용이 안됐다면 Command + Shift + R (mac 기준) 로 새로고침 하거나, 서버 재",
-    category: "DevTools",
+    category: "Frontend/React",
     tags: [],
     date: "2026-03-31",
     thumb:
@@ -3414,24 +3413,12 @@ const POSTS = [
       "posts/Elasticserach_index_readonly_전환_현상_223203963240/images/image_1.jpg",
   },
   {
-    id: 286,
-    slug: "FFmpeg로_동영상_고화질_GIF_만드는_법_223974304617",
-    title: "FFmpeg로 동영상 고화질 GIF 만드는 법",
-    summary:
-      'git commit -m "궁극의 GIF 만들기 여정 2" ​ 동영상을 gif로 변환하는 여정이 영화라면, 이번 포스팅에서는 주인공 친구급인 ffmpeg 에 대해 알아보고 ffmpeg를 사용해 GIF 파일을 생성 해',
-    category: "DevTools",
-    tags: [],
-    date: "2026-03-30",
-    thumb:
-      "posts/FFmpeg로_동영상_고화질_GIF_만드는_법_223974304617/images/image_1.jpg",
-  },
-  {
     id: 287,
     slug: "GIF_파일이란_GIF_파일_구조_LZW_압축_방식_223953976591",
     title: "GIF 파일이란? GIF 파일 구조, LZW 압축 방식",
     summary:
       "All of Gif GIF 파일 구조와 LZW 압축 방식에 대하여 ​ Intro. 우노하나 만해 gif ​ ​ 요즘 흩날려라 천본앵 보다 더 인기가 좋아진 우노하나 만해 GIF 입니다. ​ 다들 좋아하는 명장면 몇 ",
-    category: "DevTools",
+    category: "Media",
     tags: [],
     date: "2026-03-30",
     thumb: null,
@@ -3439,10 +3426,10 @@ const POSTS = [
   {
     id: 288,
     slug: "GIF의_혁신_gifski_gif_만들기_사이트_추천_223998926014",
-    title: "GIF의 혁신 gifski (gif 만들기 사이트 추천)",
+    title: "GIF의 혁신 gifski",
     summary:
       'git commit -m "고품질 GIF 만들기 여정 3" ​ 지난 포스팅에서는 FFmpeg 를 사용해 동영상을 GIF로 변환하는 과정을 다뤘습니다. ​ FFmpeg로 동영상 고화질 GIF 만드는 법 git comm',
-    category: "DevTools",
+    category: "Media",
     tags: [],
     date: "2026-03-30",
     thumb:
@@ -4372,7 +4359,7 @@ const POSTS = [
     title: "고품질 gif 만드는 법 (동영상 변환 사이트 추천)",
     summary:
       "gif 만들때, 어떤 사이트를 사용하시나요? ezgif? gif converter? ​ 그럼 GIF를 만든 결과물을 보고 이런 고민을 하셨을 겁니다. ​ 왜 내 GIF는 이렇게 뚝뚝 끊기지? gif ​ 이유는 바로 ",
-    category: "DevTools",
+    category: "Media",
     tags: [],
     date: "2026-03-30",
     thumb:
@@ -4436,38 +4423,29 @@ const POSTS = [
     thumb: null,
   },
   {
-    id: 371,
-    slug: "다_포기했습니다_222340132736",
-    title: "다 포기했습니다.",
-    summary: "​ 웰컴투마이 프리서버 ​",
-    category: "Life",
-    tags: [],
-    date: "2026-03-30",
-    thumb: "posts/다_포기했습니다_222340132736/images/image_1.jpg",
-  },
-  {
     id: 372,
     slug: "동영상_GIF_변환하는_사이트_만들기_first_commit_223974239609",
-    title: "동영상 GIF 변환하는 사이트 만들기, first commit",
+    title: "동영상 GIF 변환하는 사이트 만들기 1",
     summary:
       "Intro. 내가 더 잘 만들지도? ​ 블로그 좀 하는 사람이라면 동영상 Gif 변환 프로그램을 종종 쓸 것이다. 나도 자주 사용하는 사람 중 하나인데, 썩 맘에 드는 gif 변환 프로그램이 없었다. ​ 네이버 블로",
-    category: "DevTools",
+    category: "Media",
     tags: [],
     date: "2026-03-30",
     thumb:
       "posts/동영상_GIF_변환하는_사이트_만들기_first_commit_223974239609/images/image_1.jpg",
   },
+  ,
   {
     id: 373,
-    slug: "동영상_GIF_파일_변환_무료_사이트_추천_3가지_223954077898",
-    title: "동영상 GIF 파일 변환 무료 사이트 추천 3가지",
+    slug: "FFmpeg로_동영상_고화질_GIF_만드는_법_223974304617",
+    title: "동영상 GIF 변환하는 사이트 만들기 2 | FFmpeg",
     summary:
-      "블로그 좀 해보신 분이라면, 한번 쯤은 동영상을 gif로 변환 해보셨을텐데요. ​ 오늘은 제가 잘 사용하고 있는 동영상 mp4 GIF 파일 변환 무료 사이트 3개 추천 해봅니다. ​ 블로그 수익화, 블로그 지수에 관",
-    category: "DevTools",
+      'git commit -m "궁극의 GIF 만들기 여정 2" ​ 동영상을 gif로 변환하는 여정이 영화라면, 이번 포스팅에서는 주인공 친구급인 ffmpeg 에 대해 알아보고 ffmpeg를 사용해 GIF 파일을 생성 해',
+    category: "Media",
     tags: [],
     date: "2026-03-30",
     thumb:
-      "posts/동영상_GIF_파일_변환_무료_사이트_추천_3가지_223954077898/images/image_1.jpg",
+      "posts/FFmpeg로_동영상_고화질_GIF_만드는_법_223974304617/images/image_1.jpg",
   },
   {
     id: 374,
@@ -4486,7 +4464,7 @@ const POSTS = [
     title: "디지털 풍화가 생기는 이유! JPEG 압축 방식에 대하여",
     summary:
       "디지털 풍화는 왜 생길까? Compress my cat to JPG ​ 디지털 풍화.. 다들 뭔지 아시져..? ​ 누가 쓴 글을 캡쳐해서 SNS에 올리고, 그걸 또 누가 캡쳐해서 커뮤니티에 올리고, 또 그걸 누가 캡",
-    category: "DevTools",
+    category: "Media",
     tags: [],
     date: "2026-03-30",
     thumb:
@@ -5083,11 +5061,10 @@ const POSTS = [
   {
     id: 425,
     slug: "파일명_변경_사이트_추천_Img_Renamer_Pro_블로그_이미지_탭_노출_꿀팁_223946555881",
-    title:
-      "파일명 변경 사이트 추천 Img Renamer Pro | 블로그 이미지 탭 노출 꿀팁",
+    title: "파일명 변경 사이트 추천 Img Renamer Pro",
     summary:
       "Intro. 블로그 포스팅을 하다 보면 수십 개의 이미지 파일명을 한번에 변경해야 하는 경우가 굉장히 자주 생깁니다. ​ 참고로 이렇게 바꿔주는 이유는 포스팅에 첨부하는 이미지 파일명이나 설명도 네이버 키워드로 잡히",
-    category: "DevTools",
+    category: "Media",
     tags: [],
     date: "2026-03-30",
     thumb:
