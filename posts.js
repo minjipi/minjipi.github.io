@@ -3426,7 +3426,7 @@ const POSTS = [
   {
     id: 288,
     slug: "GIF의_혁신_gifski_gif_만들기_사이트_추천_223998926014",
-    title: "GIF의 혁신 gifski",
+    title: "동영상 GIF 변환하는 사이트 만들기 3 | gifski",
     summary:
       'git commit -m "고품질 GIF 만들기 여정 3" ​ 지난 포스팅에서는 FFmpeg 를 사용해 동영상을 GIF로 변환하는 과정을 다뤘습니다. ​ FFmpeg로 동영상 고화질 GIF 만드는 법 git comm',
     category: "Media",
@@ -4356,7 +4356,7 @@ const POSTS = [
   {
     id: 365,
     slug: "고품질_gif_만드는_법_동영상_변환_사이트_추천_224064580554",
-    title: "고품질 gif 만드는 법 (동영상 변환 사이트 추천)",
+    title: "동영상 GIF 변환하는 사이트 만들기 4 | 사용법",
     summary:
       "gif 만들때, 어떤 사이트를 사용하시나요? ezgif? gif converter? ​ 그럼 GIF를 만든 결과물을 보고 이런 고민을 하셨을 겁니다. ​ 왜 내 GIF는 이렇게 뚝뚝 끊기지? gif ​ 이유는 바로 ",
     category: "Media",
@@ -5059,18 +5059,6 @@ const POSTS = [
       "posts/통신하기_전_반드시_필요한_ARP_프로토콜_ARP_프로토콜의_구조_ARP_프로토콜의_통신_과정_222241976327/images/image_1.jpg",
   },
   {
-    id: 425,
-    slug: "파일명_변경_사이트_추천_Img_Renamer_Pro_블로그_이미지_탭_노출_꿀팁_223946555881",
-    title: "파일명 변경 사이트 추천 Img Renamer Pro",
-    summary:
-      "Intro. 블로그 포스팅을 하다 보면 수십 개의 이미지 파일명을 한번에 변경해야 하는 경우가 굉장히 자주 생깁니다. ​ 참고로 이렇게 바꿔주는 이유는 포스팅에 첨부하는 이미지 파일명이나 설명도 네이버 키워드로 잡히",
-    category: "Media",
-    tags: [],
-    date: "2026-03-30",
-    thumb:
-      "posts/파일명_변경_사이트_추천_Img_Renamer_Pro_블로그_이미지_탭_노출_꿀팁_223946555881/images/image_1.jpg",
-  },
-  {
     id: 426,
     slug: "포트포워딩_222074614433",
     title: "포트포워딩",
@@ -5082,3 +5070,5 @@ const POSTS = [
     thumb: null,
   },
 ];
+
+if (typeof window !== "undefined") window.POSTS = POSTS;
