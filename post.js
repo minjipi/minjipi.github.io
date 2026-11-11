@@ -156,6 +156,16 @@ function injectContent(rawHtml, post) {
 
   // 이미지 경로 보정 (상대경로 images/xxx → posts/{slug}/images/xxx)
   fixImagePaths(body, post.slug);
+
+  // 대표 이미지가 본문 이미지와 같은 그림이면 위에서 한 번 더 보여 주지 않음
+  var hero = document.querySelector(".post-detail-thumb img");
+  if (hero) {
+    var heroFile = (hero.getAttribute("src") || "").split("/").pop();
+    var same = heroFile && Array.prototype.some.call(body.querySelectorAll("img"), function(img) {
+      return (img.getAttribute("src") || "").split("/").pop() === heroFile;
+    });
+    if (same) hero.parentElement.style.display = "none";
+  }
 }
 
 // ── 네이버 HTML 클린업 ─────────────────────────────────────────

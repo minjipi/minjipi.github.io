@@ -272,18 +272,6 @@ const POSTS = [
       "posts/AWS_RDS_데이터베이스_EC2_서버_구축_222095154568/images/image_1.jpg",
   },
   {
-    id: 24,
-    slug: "AWS_RDS_데이터베이스_EC2_서버_구축_222095163288",
-    title: "AWS :: RDS 데이터베이스 EC2 서버 구축",
-    summary:
-      "1) 보안그룹에 접속할 ec2 아이피를 'db에' 3306 포트 허용. aws에서 디비를 관리해줌 2) ec2에 mysql-client 설치. mysql -u admin -p -h [디비서버의 도메인] mys",
-    category: "Cloud/AWS",
-    tags: [],
-    date: "2020-09-21",
-    thumb:
-      "posts/AWS_RDS_데이터베이스_EC2_서버_구축_222095163288/images/image_1.jpg",
-  },
-  {
     id: 25,
     slug: "AWS_RDS_데이터베이스_서버_구축_222095136457",
     title: "AWS :: RDS 데이터베이스 서버 구축",
@@ -352,18 +340,6 @@ const POSTS = [
     date: "2021-06-17",
     thumb:
       "posts/AWS_스프링부트_프로젝트_배포_시_느려지는_현상톰캣_서비스_등록_222401006556/images/image_1.jpg",
-  },
-  {
-    id: 31,
-    slug: "CSS_margin_적용_불가_에러_진짜_이게_안될리가_없는데_안될_때_해결법_222303056808",
-    title: "CSS margin 적용 불가 에러",
-    summary:
-      "http://localhost:8080/ [CSS 파일 경로] 들어가서 내가 고친 부분이 적용이 되었나 확인. 적용이 안됐다면 Command + Shift + R (mac 기준) 로 새로고침 하거나, 서버 재",
-    category: "Frontend/Web",
-    tags: [],
-    date: "2021-04-08",
-    thumb:
-      "posts/CSS_margin_적용_불가_에러_진짜_이게_안될리가_없는데_안될_때_해결법_222303056808/images/image_1.jpg",
   },
   {
     id: 32,
@@ -534,40 +510,16 @@ const POSTS = [
       "posts/Docker_도커란_가상머신_vs_도커_컨테이너_222244191242/images/image_1.jpg",
   },
   {
-    id: 46,
-    slug: "GPIOpy_221990811293",
-    title: "GPIO.py",
-    summary:
-      '​ import RPi.GPIO as GPIO import time ​ GPIO.setmode(GPIO.BCM) ​ print "Setup LED pins as outputs" ​ GPIO.setup(23, GPIO',
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-06-05",
-    thumb: null,
-  },
-  {
     id: 47,
-    slug: "GPT로_쓴_글_복붙하셨죠_이거_다_걸리는_중_입니다_223845113173",
-    title: "GPT로 쓴 글, 복붙하셨죠? 이거 다 걸리는 중 입니다.",
+    slug: "ChatGPT_글의_보이지_않는_공백_U202F_확인과_제거_223845113173",
+    title: "ChatGPT 글에 섞인 보이지 않는 공백(U+202F) 확인하고 제거하기",
     summary:
-      "챗지피티로 글 쓰셨던 분들 필독! ⚠️ GPT로 쓴 글, 복붙하셨죠? 이 문자 하나 때문에 100% 걸립니다.. 문제의 챗지피티 워터마크 지우는 방법 알려드려요. 최근 업데이트된 GPT-4(o4-min",
+      "ChatGPT가 쓴 글에 섞여 나오던 U+202F(Narrow No-Break Space)가 어떤 문자인지, 온라인 도구와 JavaScript·Python 코드로 찾는 방법, 에디터와 코드로 지우는 방법을 정리했어요.",
     category: "AI",
     tags: [],
     date: "2025-04-24",
     thumb:
-      "posts/GPT로_쓴_글_복붙하셨죠_이거_다_걸리는_중_입니다_223845113173/images/image_1.jpg",
-  },
-  {
-    id: 48,
-    slug: "HTML_CSS_JQuery_여러줄_소스_한줄로_한줄_소스_여러줄_정렬css_minify_to_normal_222077211710",
-    title:
-      "HTML, CSS, JQuery :: 여러줄 소스 한줄로, 한줄 소스 여러줄 정렬(css minify to normal)",
-    summary:
-      "짱좋다...*_* #CSS_여러줄소스_한줄로_합치기 : http://cssminifier.com/ #Javascript_html_여러줄소스_한줄로_합치기 : http://javascriptcompresso",
-    category: "Frontend/Web",
-    tags: [],
-    date: "2020-09-01",
-    thumb:
-      "posts/HTML_CSS_JQuery_여러줄_소스_한줄로_한줄_소스_여러줄_정렬css_minify_to_normal_222077211710/images/image_1.jpg",
+      "posts/ChatGPT_글의_보이지_않는_공백_U202F_확인과_제거_223845113173/images/image_3.jpg",
   },
   {
     id: 49,
@@ -636,17 +588,6 @@ const POSTS = [
     date: "2021-04-07",
     thumb:
       "posts/JAVA_JAVA_MySQL_연동_JDBC_가장_친절하게_설명된_글_222302315869/images/image_1.jpg",
-  },
-  {
-    id: 55,
-    slug: "JAVA_JDBC_JSP_실수들_222302626407",
-    title: "JAVA :: JDBC JSP 실수들",
-    summary:
-      "1. 데이터 순서 맞춰주기 2. 실행은 톰캣을 실행해서, / 뒤에 url 입력. * html 페이지를 실행하는 것이 아님.",
-    category: "Backend/Java",
-    tags: [],
-    date: "2021-04-08",
-    thumb: "posts/JAVA_JDBC_JSP_실수들_222302626407/images/image_1.jpg",
   },
   {
     id: 56,
@@ -885,18 +826,6 @@ const POSTS = [
       "posts/Java_자바_기초_원하는_단의_구구단_코드_자바_trycatch문_222023939217/images/image_1.jpg",
   },
   {
-    id: 76,
-    slug: "Java_자바로_타이머_만들기_java_타이머_소스코드_222003532819",
-    title: "Java | 자바로 타이머 만들기 (java 타이머 소스코드)",
-    summary:
-      "벼락치기용 자바 타이머 만들기 핸드폰을 안 볼 요량으로 만들었다 package Timer ; import java . io . * ; public class Timer { static String timerB",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-06-17",
-    thumb:
-      "posts/Java_자바로_타이머_만들기_java_타이머_소스코드_222003532819/images/image_1.jpg",
-  },
-  {
     id: 77,
     slug: "Java개발자면접_디자인패턴_싱글톤_싱글톤_구현방식_주의점_단점_222940107954",
     title:
@@ -908,17 +837,6 @@ const POSTS = [
     date: "2022-11-28",
     thumb:
       "posts/Java개발자면접_디자인패턴_싱글톤_싱글톤_구현방식_주의점_단점_222940107954/images/image_1.jpg",
-  },
-  {
-    id: 78,
-    slug: "Kali_Linum_20173_비밀번호_222318872293",
-    title: "Kali Linux 2017.3 비밀번호",
-    summary:
-      "=== Kali Linum 2017.3 === ID : root PW : osboxes.org === === === === === === kali kali 라고 생각했었는뎅. 아니었다",
-    category: "Security",
-    tags: [],
-    date: "2021-04-22",
-    thumb: "posts/Kali_Linum_20173_비밀번호_222318872293/images/image_1.jpg",
   },
   {
     id: 79,
@@ -1204,17 +1122,6 @@ const POSTS = [
     date: "2021-01-29",
     thumb:
       "posts/MAC_Os_vmware_fusion_12_설치_could_not_open_devvmmon_파이프_연결_해제_222224453142/images/image_1.jpg",
-  },
-  {
-    id: 102,
-    slug: "MAC_Os_포트번호_명령어_sudo_lsof_nP_i4TCPPORT_번호_grep_LISTEN_222224352399",
-    title:
-      "MAC Os 포트번호 명령어 sudo lsof -nP -i4TCP:{PORT 번호} | grep LISTEN",
-    summary: "sudo lsof - nP - i4TCP : { PORT } | grep LISTEN",
-    category: "Linux/Troubleshooting",
-    tags: [],
-    date: "2021-01-29",
-    thumb: null,
   },
   {
     id: 103,
@@ -1758,8 +1665,8 @@ const POSTS = [
   },
   {
     id: 146,
-    slug: "Python_파이썬_데이터_입출력_지각생_수지니를_위한_설익은_발행_222071282290",
-    title: "Python:: 파이썬 데이터 입출력 (지각생 수지니를 위한 설익은 발행)",
+    slug: "Python_파이썬_데이터_입출력_222071282290",
+    title: "Python :: 파이썬 데이터 입출력",
     summary:
       "데이터 입출력 프로그래밍에서는 다양한 입출력 방식을 제공해준다! - 표준 입출력 - 파일 입출력 - DB 입출력 - 네트워크 입출력 파일 입출력 표준 입력 input() : 키보드로 입력받음 -> 표준 출력",
     category: "Backend/Python",
@@ -1901,17 +1808,6 @@ const POSTS = [
       "posts/Raspberry_Pi_라즈베리파이_마이크_스피커_연결_222106346851/images/image_1.jpg",
   },
   {
-    id: 158,
-    slug: "Raspberry_Pi_라즈베리파이_버튼_코드_222091744304",
-    title: "Raspberry Pi :: 라즈베리파이 버튼 코드",
-    summary:
-      "# - * - coding : utf - 8 - * - import RPi . GPIO as GPIO import time button_pin = 15 GPIO . setwarnings ( False ) GPIO .",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-09-17",
-    thumb: null,
-  },
-  {
     id: 159,
     slug: "Raspberry_Pi_라즈베리파이_온도대기압고도_센서_222092789462",
     title: "Raspberry Pi :: 라즈베리파이 온도/대기압/고도 센서",
@@ -1962,29 +1858,6 @@ const POSTS = [
       "posts/Raspberry_Pi_라즈베리파이_웹_mqtt_통신_222091273092/images/image_1.jpg",
   },
   {
-    id: 163,
-    slug: "Raspberry_Pi_라즈베리파이_초기_설정_값_백업_222089847946",
-    title: "Raspberry Pi :: 라즈베리파이 초기 설정 값 백업",
-    summary:
-      "어제 라즈베리파이에 설정한 값을 이미지로 저장해서 백업해두자 다운로드 (토찌의 이름을 걸고 이상한 파일 아님) 라즈베리파이 파일들을-> 바탕화면에 이미지파일로 만들고 있는 중 그럼 담에 또 초기세팅 다시",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-09-15",
-    thumb:
-      "posts/Raspberry_Pi_라즈베리파이_초기_설정_값_백업_222089847946/images/image_1.jpg",
-  },
-  {
-    id: 164,
-    slug: "Raspberry_Pi_라즈베리파이_초음파_센서_거리측정_코드_222091223117",
-    title: "Raspberry Pi :: 라즈베리파이 초음파 센서 거리측정 코드",
-    summary:
-      "# - * - coding : utf - 8 - * - import paho . mqtt . client as mqtt import RPi . GPIO as GPIO import time TRIG = 23 ECHO",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-09-16",
-    thumb: null,
-  },
-  {
     id: 165,
     slug: "Raspberry_Pi_라즈베리파이_토양_수분센서_222292782826",
     title: "Raspberry Pi :: 라즈베리파이 '토양 수분센서'",
@@ -1995,17 +1868,6 @@ const POSTS = [
     date: "2021-03-30",
     thumb:
       "posts/Raspberry_Pi_라즈베리파이_토양_수분센서_222292782826/images/image_1.jpg",
-  },
-  {
-    id: 166,
-    slug: "Raspberry_Pi_라즈베리파이로_연주_222091013366",
-    title: "Raspberry Pi :: 라즈베리파이로 연주",
-    summary:
-      "- GND - I/O - VCC # - * - coding : utf - 8 - * - import paho . mqtt . client as mqtt import RPi . GPIO as GPIO import",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-09-16",
-    thumb: null,
   },
   {
     id: 167,
@@ -2029,17 +1891,6 @@ const POSTS = [
     date: "2020-10-04",
     thumb:
       "posts/Raspberry_Pi_라즈베리파이에_Opencv_설치하기_222106348523/images/image_1.jpg",
-  },
-  {
-    id: 169,
-    slug: "Raspberry_Pi_서보모터_제어_코드_222091129629",
-    title: "Raspberry Pi :: 서보모터 제어 코드",
-    summary:
-      "# - * - coding : utf - 8 - * - import paho . mqtt . client as mqtt import RPi . GPIO as GPIO import time GPIO . setwarni",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-09-16",
-    thumb: null,
   },
   {
     id: 170,
@@ -2419,18 +2270,6 @@ const POSTS = [
     date: "2020-04-07",
     thumb:
       "posts/라즈베리_파이_원격으로_접속하기PC에서_SSH_원격_접속_Windows_Linux_PuTTY_221895500041/images/image_1.jpg",
-  },
-  {
-    id: 204,
-    slug: "라즈베리_파이_웹_통신_for_유진님_222090889170",
-    title: "라즈베리 파이 웹 통신 for 유진님",
-    summary:
-      "1) ping 2) nslookup === 통신 확인 === 3) netstat -anlp | grep 1883(확인할 포트번호) === 포트번호 확인 === mosquitto 확인 mosquitto 다시 끄",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-09-16",
-    thumb:
-      "posts/라즈베리_파이_웹_통신_for_유진님_222090889170/images/image_1.jpg",
   },
   {
     id: 205,
@@ -2864,15 +2703,15 @@ const POSTS = [
   },
   {
     id: 242,
-    slug: "지피티_워터마크_검사기_AI로_쓴_글은_누락될까_224015187653",
-    title: "지피티 워터마크 검사기? AI로 쓴 글은 누락될까?",
+    slug: "GPT_워터마크_U202F_이슈_정리와_AI_글_검색_노출_기준_224015187653",
+    title: "'GPT 워터마크(U+202F)'는 진짜 워터마크일까? 문자 워터마크의 한계와 AI 글 검색 노출 기준",
     summary:
-      "GPT, AI로 쓴 포스팅은 누락될까요? 아니요. 누락되는 AI 글은 따로 있습니다. 이번 포스팅에서 지피티 워터마크에 대한 진실을 밝히고, 어떤 글이 누락되는지 설명해 보려고 합니다. 블로그 하시는 분들은 아래",
+      "한때 GPT 워터마크로 불린 U+202F 이슈가 어떻게 정리됐는지, 보이지 않는 문자가 워터마크가 되기 어려운 이유, 네이버와 구글이 AI로 쓴 글을 어떤 기준으로 다루는지 정리했어요.",
     category: "AI",
     tags: [],
     date: "2025-09-20",
     thumb:
-      "posts/지피티_워터마크_검사기_AI로_쓴_글은_누락될까_224015187653/images/image_1.jpg",
+      "posts/GPT_워터마크_U202F_이슈_정리와_AI_글_검색_노출_기준_224015187653/images/image_1.jpg",
   },
   {
     id: 243,
@@ -3227,19 +3066,6 @@ const POSTS = [
       "posts/CentOS_network_속상한_네트워크_ip_수동_설정_222257493559/images/image_1.jpg",
   },
   {
-    id: 272,
-    slug: "ChatGPT_나와_대화할_때_느끼는_감정을_여과없이_미화하지_않고_있는_그대로_표현하여_이미지로_생성해봐_224177959983",
-    title:
-      "ChatGPT 나와 대화할 때 느끼는 감정을  여과없이 미화하지 않고 있는  그대로 표현하여 이미지로 생성해봐",
-    summary:
-      "한때 유행했던건데.. chatGPT에게 나와 대화할 때 느끼는 감정을 여과없이 미화하지 않고 있는 그대로 표현하여 이미지로 생성해봐 라고 지시하는 것. 동생이 해보라고 해서 해봤는데 이렇게 나왔어요",
-    category: "AI",
-    tags: [],
-    date: "2026-02-09",
-    thumb:
-      "posts/ChatGPT_나와_대화할_때_느끼는_감정을_여과없이_미화하지_않고_있는_그대로_표현하여_이미지로_생성해봐_224177959983/images/image_1.jpg",
-  },
-  {
     id: 273,
     slug: "DHCP_할당_확인_실습_222436891708",
     title: "DHCP 할당 확인 실습",
@@ -3530,8 +3356,7 @@ const POSTS = [
     category: "Backend/Spring Boot",
     tags: [],
     date: "2022-10-15",
-    thumb:
-      "posts/JPA_jpa_지연로딩_사용_주의점_jpa_지연_로딩과_조회_성능_최적화_222900610613/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 300,
@@ -3688,17 +3513,6 @@ const POSTS = [
     date: "2022-07-03",
     thumb:
       "posts/MySQL_데이터_추가_수정_삭제_INSERT_UPDATE_DELETE_222798329301/images/image_1.jpg",
-  },
-  {
-    id: 313,
-    slug: "MySQL_접속_권한_222279471862",
-    title: "MySQL 접속 권한",
-    summary:
-      "create user test01 identified by 'Dkagh1234!' ; select host , user from mysql . user ; create user 'test02' @ '192.168",
-    category: "Database",
-    tags: [],
-    date: "2021-03-18",
-    thumb: "posts/MySQL_접속_권한_222279471862/images/image_1.jpg",
   },
   {
     id: 314,
@@ -4112,15 +3926,15 @@ const POSTS = [
   },
   {
     id: 348,
-    slug: "Springboot_맴버가입_이메일_중복_메서드_Unique_제약조건_222891505229",
+    slug: "Springboot_멤버가입_이메일_중복_메서드_Unique_제약조건_222891505229",
     title: "[Springboot] 멤버가입 이메일 중복 메서드 (Unique 제약조건)",
     summary:
-      "JPA springboot 맴버가입 이메일 중복 로직을 구현하며.. 코드만 봤을 때 다음의 문제점 무엇일까? private void validMemberEmailDuplicate ( String email ) { i",
+      "JPA springboot 멤버가입 이메일 중복 로직을 구현하며.. 코드만 봤을 때 다음의 문제점 무엇일까? private void validMemberEmailDuplicate ( String email ) { i",
     category: "Backend/Spring Boot",
     tags: [],
     date: "2022-10-04",
     thumb:
-      "posts/Springboot_맴버가입_이메일_중복_메서드_Unique_제약조건_222891505229/images/image_1.jpg",
+      "posts/Springboot_멤버가입_이메일_중복_메서드_Unique_제약조건_222891505229/images/image_1.jpg",
   },
   {
     id: 349,
@@ -4414,14 +4228,15 @@ const POSTS = [
   },
   {
     id: 374,
-    slug: "두바이_쫀득_오픈클로openclaw_224179778505",
-    title: "두바이 쫀득 오픈클로(openclaw)",
+    slug: "OpenClaw_오픈클로란_셀프호스팅_AI_에이전트_224179778505",
+    title: "OpenClaw(오픈클로)란? 조언 대신 직접 실행하는 셀프 호스팅 AI 에이전트",
     summary:
-      "샤갈! 여러분 저는 앞으로 단 '30일' 안에 천마넌 을 뿌릴겁니다. 유행하는 말을 한번 해보고 싶었어요..ㅎ 유행하는건 다 해보는 사람이라 이번에 두쫀쿠도 잔뜩 만들어 봤고요 재밌었다 🫠 이제 두",
+      "OpenClaw는 내 컴퓨터나 서버에 직접 설치하는 오픈소스 AI 에이전트예요. 챗봇처럼 방법만 알려 주는 게 아니라 메신저로 받은 지시를 직접 실행해요. 챗봇과의 차이, 설치할 기기, 무엇을 자동화할지 정한 기준을 정리했어요.",
     category: "AI",
     tags: [],
     date: "2026-02-11",
-    thumb: "posts/두바이_쫀득_오픈클로openclaw_224179778505/images/image_1.jpg",
+    thumb:
+      "posts/OpenClaw_오픈클로란_셀프호스팅_AI_에이전트_224179778505/images/image_4.jpg",
   },
   {
     id: 375,
@@ -4566,16 +4381,6 @@ const POSTS = [
     tags: [],
     date: "2022-02-21",
     thumb: null,
-  },
-  {
-    id: 387,
-    slug: "방화벽_SOPHOS_3_222340091740",
-    title: "🧱 방화벽 :: SOPHOS /3",
-    summary: "",
-    category: "Security",
-    tags: [],
-    date: "2021-05-06",
-    thumb: "posts/방화벽_SOPHOS_3_222340091740/images/image_1.jpg",
   },
   {
     id: 388,
@@ -4863,17 +4668,6 @@ const POSTS = [
     date: "2022-04-26",
     thumb:
       "posts/스프링부트_카카오_로그인_하기_JWTOAuth2_2_222711530197/images/image_1.jpg",
-  },
-  {
-    id: 412,
-    slug: "스프링부트_타임리프_th_에러_표시_날_때_해결_222583449086",
-    title: "스프링부트 타임리프 th 에러 표시 날 때 [해결]",
-    summary:
-      "스프링부트 타임리프 th 에러 표시 날 때.. implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5' 위 한 줄 이면 해결~~",
-    category: "Backend/Spring Boot",
-    tags: [],
-    date: "2021-12-01",
-    thumb: null,
   },
   {
     id: 413,
