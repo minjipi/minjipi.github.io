@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Do it 네트워크 기초 Https 패킷 실습 문제 오류와 해결방법 | minj.devlog</title>
+  <meta name="description" content="Do it 네트워크 기초 Https 패킷 실습 문제 오류와 해결방법 제가 지난번 포스팅에서 추천했던 개발 도서, Do it 네트워크 기초 에서 실습을 진행하다 보면 http 패킷 캡쳐 실습에서 책 대로 안되는 부분이 하나 있습니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/doit-network-https-packet-lab-fix/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Do it 네트워크 기초 Https 패킷 실습 문제 오류와 해결방법" />
+  <meta property="og:description" content="Do it 네트워크 기초 Https 패킷 실습 문제 오류와 해결방법 제가 지난번 포스팅에서 추천했던 개발 도서, Do it 네트워크 기초 에서 실습을 진행하다 보면 http 패킷 캡쳐 실습에서 책 대로 안되는 부분이 하나 있습니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/doit-network-https-packet-lab-fix/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/doit-network-https-packet-lab-fix/images/image_1.jpg" />
+  <meta property="article:published_time" content="2026-03-06" />
+  <meta property="article:section" content="Network" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Do it 네트워크 기초 Https 패킷 실습 문제 오류와 해결방법", "description": "Do it 네트워크 기초 Https 패킷 실습 문제 오류와 해결방법 제가 지난번 포스팅에서 추천했던 개발 도서, Do it 네트워크 기초 에서 실습을 진행하다 보면 http 패킷 캡쳐 실습에서 책 대로 안되는 부분이 하나 있습니다.", "datePublished": "2026-03-06", "dateModified": "2026-03-06", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/doit-network-https-packet-lab-fix/", "image": "https://minjipi.github.io/posts/doit-network-https-packet-lab-fix/images/image_1.jpg", "articleSection": "Network"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="doit-network-https-packet-lab-fix">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Network">Network</a>
+              <time class="post-date" datetime="2026-03-06">2026.03.06</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/224206731715" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Do it 네트워크 기초 Https 패킷 실습 문제 오류와 해결방법</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/224206731715 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-system">Do it 네트워크 기초 </span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-system"><b>Https 패킷 실습 문제 오류와 해결방법</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">제가 지난번 포스팅에서 추천했던 개발 도서, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>Do it 네트워크 기초</b></span><span class="se-fs- se-ff-system">에서 실습을 진행하다 보면 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">http 패킷 캡쳐 실습에서 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">책 대로 안되는 부분이 하나 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info __se_link" href="https://product.kyobobook.co.kr/detail/S000213766983" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Do it! IT 서비스 이해를 위한 네트워크 기초 | 심준보 - 교보문고</strong>
+<p class="se-oglink-summary">Do it! IT 서비스 이해를 위한 네트워크 기초 | 개발자에게 필요한 네트워크의 기초부터 응용까지 그림으로 이해하고 실습으로 체험하며 배운다!개발을 하다가 네트워크 지식의 부족함을 느꼈다면? 이 책으로 네트워크 기초……</p>
+<p class="se-oglink-url">product.kyobobook.co.kr</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이유는 출판 당시에는 실습 사이트(www.easyspub.co.kr)가 </span><span class="se-fs- se-ff-system"><b>HTTP</b></span><span class="se-fs- se-ff-system"> 프로토콜을 사용했지만, 며칠 전 보안 강화를 위해 </span><span class="se-fs- se-ff-system"><b>HTTPS(SSL/TLS)</b></span><span class="se-fs- se-ff-system"> 프로토콜이 적용되었더라구요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그래서 와이어샤크로 패킷을 캡처하면 책 내용에서 처럼 평문(Plain Text) 데이터가 보이는 대신, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/doit-network-https-packet-lab-fix/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">위 이미지처럼 이렇게 아무것도 안 보입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">왜 이럴까요?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">2. 이거 왜 안돼요?</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">왜 이런 현상이 발생하나요?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">우리가 흔히 쓰는 </span><span class="se-fs- se-ff-system"><b>HTTPS</b></span><span class="se-fs- se-ff-system">는 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">기존의 데이터 전송 규약인 HTTP에 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">SSL(Secure Sockets Layer) 또는 TLS(Transport Layer Security)라는 </span><span class="se-fs- se-ff-system"><b>암호화 계층</b></span><span class="se-fs- se-ff-system">을 한 겹 씌운 형태입니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그냥 지나가던 데이터에 금고를 채워 안전하게 보내는 것과 같죠.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/doit-network-https-packet-lab-fix/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">암호화된 HTTPS</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">HTTP 방식은 통신 과정에서 해커가 데이터를 가로채면 아이디, 비밀번호 같은 민감한 정보가 그대로 노출되는 취약점이 있었는데 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">HTTPS를 사용하면 다음 이미지와 같이 통신 내용이 알아볼 수 없는 암호문으로 변환됩니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:200px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/doit-network-https-packet-lab-fix/images/image_3.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">알아볼 수 있으신 분?</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그래서 중간에서 누군가 데이터를 훔쳐본다 하더라도, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">열쇠가 없으면 알아볼 수 없는 외계어처럼 보이게 되는 것이죠. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">3. 해결 방법</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">HTTP 전용 실습 사이트 이용하기</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그래서 책의 실습인 http 프로토콜을 사용하는 사이트 패킷을 들여다 보는 방법은 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">암호화를 적용하지 않은 사이트를 이용하는 방법입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/doit-network-https-packet-lab-fix/images/image_4.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">대체 주소: </span><span class="se-fs- se-ff- se-weight-unset"><a class="se-link __se_link" href="http://httpforever.com" target="_blank">httpforever.com</a></span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">요즘은 왠만해선 다 https를 사용하기 때문에 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">http 프로토콜을 사용하는 사이트를 찾기가 힘들었는데 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">이런 사이트가 하나 있었습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">외국 IT 교육자가 보안 연구 및 학습을 위해 일부러 암호화를 적용하지 않은 사이트 입니다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>대체 주소:</b></span><span class="se-fs- se-ff-system se-weight-unset"> </span><span class="se-fs- se-ff-system se-weight-unset"><a class="se-link __se_link" href="http://httpforever.com" target="_blank">httpforever.com</a></span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>방법:</b></span><span class="se-fs- se-ff-system"> 책에 나온 주소(www.easyspub.co.kr) 대신 위 주소를 입력하고 패킷을 캡처하세요.</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-default">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">귀찮다면요?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/doit-network-https-packet-lab-fix/images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">제가 캡쳐 해왔습니다.</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset">대체 주소인 </span><span class="se-fs- se-ff-system se-weight-unset">httpforever.com</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">와이어샤크 패킷 캡쳐 이미지 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset">이런 식으로 우리가 읽고 이해할 수 있는 평문이 보인다고 생각하시면 돼요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset">그러면, </span><span class="se-fs- se-ff-system se-weight-unset">HTTPS가 적용된 현재의 이지스퍼블리싱 사이트 패킷은 어떻게 보일까요?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/doit-network-https-packet-lab-fix/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/doit-network-https-packet-lab-fix/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset">이미지를 보면 왼쪽에 복잡하게 나열된 숫자와 오른쪽에 뭔 소린가 싶은 문자가 있죠.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset">여기서 복잡하게 나열된 숫자는 16진수고, </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset">그것을 우리가 읽을 수 있는 문자로 변환한 것이 오른쪽 영역에 점(.)과 의미 없는 알파벳이에요. </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset">뭔 소리인지 모르겠죠? 해커도 모를 거에요.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset">이것이 HTTPS 암호화의 결과물입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system">책에 나온 실습이 그대로 되지 않아 띠용스러우셨겠지만, 오히려 이번 기회를 통해 </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system">왜 모든 사이트가 HTTPS로 가야만 하는지를 직접 확인할 수 있었습니다. 👍🏻</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:200px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/doit-network-https-packet-lab-fix/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system">갈수록 개인정보 보호와 보안이 중요해지고 있는 요즘, HTTP와 HTTPS는 개발자뿐만 아니라 </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system">IT 시대를 살아가는 우리 모두에게 기본 중의 기본!</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system">기본에 충실한 개발 생활 보내세요 ^_^</span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

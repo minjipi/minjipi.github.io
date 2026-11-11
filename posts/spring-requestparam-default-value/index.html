@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>컨트롤러 @RequestParam 기본값 설정하기(@RequestParam(required = false)) | minj.devlog</title>
+  <meta name="description" content="@Controller에서 파라미터를 하나 받아보자. @GetMapping(&quot;/test/{cnt}&quot;) public String methodName(@RequestParam int cnt){ // TODO.." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-requestparam-default-value/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="컨트롤러 @RequestParam 기본값 설정하기(@RequestParam(required = false))" />
+  <meta property="og:description" content="@Controller에서 파라미터를 하나 받아보자. @GetMapping(&quot;/test/{cnt}&quot;) public String methodName(@RequestParam int cnt){ // TODO.." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-requestparam-default-value/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-requestparam-default-value/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-03-07" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "컨트롤러 @RequestParam 기본값 설정하기(@RequestParam(required = false))", "description": "@Controller에서 파라미터를 하나 받아보자. @GetMapping(\"/test/{cnt}\") public String methodName(@RequestParam int cnt){ // TODO..", "datePublished": "2022-03-07", "dateModified": "2022-03-07", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-requestparam-default-value/", "image": "https://minjipi.github.io/posts/spring-requestparam-default-value/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-requestparam-default-value">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-03-07">2022.03.07</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222666049200" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">컨트롤러 @RequestParam 기본값 설정하기(@RequestParam(required = false))</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-requestparam-default-value/images/image_1.jpg" alt="컨트롤러 @RequestParam 기본값 설정하기(@RequestParam(required = false))" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222666049200 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">@Controller에서 파라미터를 하나 받아보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@GetMapping("/test/{cnt}")
+public String methodName(@RequestParam int cnt){
+// TODO..
+return "test";
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;">위와 같이 코드를 작성하면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;">"localhost:8080/test/3"과 같이 호출했을 때 cnt 값이 3이 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;">여기서 만약 "localhost:8080/test"와 같이 변수를 넣어주지 않으면 에러가 발생한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Resolved [org.springframework.web.bind.MissingPathVariableException: Missing URI template variable 'cnt' for method parameter of type int
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;">@RequestParam은 Controller 메소드의 파라미터와 웹요청 파라미터와 맵핑하기 위한 어노테이션인데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;">관련 속성은 아래와 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 79%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.21%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">이름</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 15.71%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">타입</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 68.08%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">설명</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.21%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">value</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 15.71%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">String</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 68.08%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">파라미터 이름</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.21%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">required</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 15.71%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">boolean</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 68.08%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">해당 파라미터가 반드시 필수인지의 여부. 기본값은 true.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;">required 조건이 없으면 기본값은 true, 즉 필수 파라미터이다. 파라미터 pageNo가 존재하지 않으면 Exception이 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;">이럴 때는 아래와 같이 처리할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@GetMapping(value = {"/test/{cnt}", "/test"})
+public String methodName(@RequestParam(required = false) Integer cnt){
+// TODO..
+return "test";
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">또 다른 해결방법으로는 Optional도 있다는데 이는 다음 기회에!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">에러 자세한 원인: </span><span class="se-fs- se-ff-"><a class="se-link" href="https://devbox.tistory.com/entry/Spring-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC-%EB%A9%94%EC%84%9C%EB%93%9C%EC%9D%98-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%ED%83%80%EC%9E%85" target="_blank">https://devbox.tistory.com/entry/Spring-%EC%BB%A8%ED%8A%B8%EB%A1%A4%EB%9F%AC-%EB%A9%94%EC%84%9C%EB%93%9C%EC%9D%98-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0-%ED%83%80%EC%9E%85</a></span><span class="se-fs- se-ff-"> 참고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

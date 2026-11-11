@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GNS3 0.8.7 + vmWare fusion 방화벽 실습 환경 구축 | minj.devlog</title>
+  <meta name="description" content="# 아래 환경 구축 Start ! 0. 가상머신 세팅 Delete로 싹 지워줌! 지우는 이유는 그냥 보기 깔끔한게 안헷갈리구 좋으니까.. 1. Server IP 설정 2." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/gns3-vmware-fusion-firewall-lab/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="GNS3 0.8.7 + vmWare fusion 방화벽 실습 환경 구축" />
+  <meta property="og:description" content="# 아래 환경 구축 Start ! 0. 가상머신 세팅 Delete로 싹 지워줌! 지우는 이유는 그냥 보기 깔끔한게 안헷갈리구 좋으니까.. 1. Server IP 설정 2." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/gns3-vmware-fusion-firewall-lab/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/gns3-vmware-fusion-firewall-lab/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-05-04" />
+  <meta property="article:section" content="Network" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "GNS3 0.8.7 + vmWare fusion 방화벽 실습 환경 구축", "description": "# 아래 환경 구축 Start ! 0. 가상머신 세팅 Delete로 싹 지워줌! 지우는 이유는 그냥 보기 깔끔한게 안헷갈리구 좋으니까.. 1. Server IP 설정 2.", "datePublished": "2021-05-04", "dateModified": "2021-05-04", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/gns3-vmware-fusion-firewall-lab/", "image": "https://minjipi.github.io/posts/gns3-vmware-fusion-firewall-lab/images/image_1.jpg", "articleSection": "Network"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="gns3-vmware-fusion-firewall-lab">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Network">Network</a>
+              <time class="post-date" datetime="2021-05-04">2021.05.04</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222337546933" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">GNS3 0.8.7 + vmWare fusion 방화벽 실습 환경 구축</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222337546933 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b># 아래 환경 구축</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Start !</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i><b>0. 가상머신 세팅</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:648px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">Delete로 싹 지워줌!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">지우는 이유는 그냥 보기 깔끔한게 안헷갈리구 좋으니까..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><i><b>1. Server IP 설정</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><i><b>2. Firewall IP 설정</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b># ens-33</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b># ens-36</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b># ens-37</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"># 방화벽 설정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sysctl -w net.ipv4.ip_forward=1
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">이 명령어를 실행해줘야, 라우터처럼 다른 가상머신들끼리 인터넷 하게 해줄 수 있음.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><i><b>3. kali ip 설정</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><i><b>4. 윈도우  ip 설정</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_17.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:397px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/gns3-vmware-fusion-firewall-lab/images/image_18.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">📍</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">Firewall 가상머신을 라우터처럼 쓰려고 하는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">Firewall이 Admin, Server의 게이트웨이. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">그러니까 Firewall의 IP주소를 게이트웨이로 써주는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

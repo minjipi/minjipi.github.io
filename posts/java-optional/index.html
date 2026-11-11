@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[JAVA] Optional 클래스 | minj.devlog</title>
+  <meta name="description" content="Spring Data JPA를 사용하며 CrudRepository의 findById 메서드 리턴 타입인 Optional 클래스를 살펴보았다. Optional은 Java 8에 추가된 새로운 API이며 &#x27;null일 수도 있는 객체&#x27;를 감싸는 일종의 Wrapper 클래스로, 여러" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-optional/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[JAVA] Optional 클래스" />
+  <meta property="og:description" content="Spring Data JPA를 사용하며 CrudRepository의 findById 메서드 리턴 타입인 Optional 클래스를 살펴보았다. Optional은 Java 8에 추가된 새로운 API이며 &#x27;null일 수도 있는 객체&#x27;를 감싸는 일종의 Wrapper 클래스로, 여러" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-optional/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-optional/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-10-06" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[JAVA] Optional 클래스", "description": "Spring Data JPA를 사용하며 CrudRepository의 findById 메서드 리턴 타입인 Optional 클래스를 살펴보았다. Optional은 Java 8에 추가된 새로운 API이며 'null일 수도 있는 객체'를 감싸는 일종의 Wrapper 클래스로, 여러", "datePublished": "2022-10-06", "dateModified": "2022-10-06", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-optional/", "image": "https://minjipi.github.io/posts/java-optional/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-optional">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2022-10-06">2022.10.06</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222892924327" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[JAVA] Optional 클래스</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/java-optional/images/image_1.jpg" alt="[JAVA] Optional 클래스" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222892924327 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#999999;">Spring Data JPA를 사용하며 CrudRepository의 findById 메서드 리턴 타입인 Optional 클래스를 살펴보았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">Optional은 Java 8에 추가된 새로운 API이며 'null일 수도 있는 객체'를 감싸는 일종의 Wrapper 클래스로, 여러 if 로직 대신 언어 차원에서 null 문제를 해결할 수 있게 해준다. 한마디로 null 처리를 세련되게 다룰 수 있게 도와주는 녀석이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Optional&lt;T&gt; optional
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">이러한 optional 변수 내부에는 null이 아닌 T 객체가 있을 수도 있고 null이 있을 수도 있다. Optional 클래스는 여러 가지 API를 제공하여 null일 수도 있는 객체를 다룰 수 있도록 돕는다. null 처리를 세련되게 다룰 수 있다고 했는데, 이 말에 두 가지 물음표를 달 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-default">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff- se-style-unset">왜 null 처리를 세련되게 해야하나? 어떻게?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">우선 NullPointerException를 피해야 하기 때문이다. NullPointerException과 같은 실행 중단은 실제 운영중인 서비스에 있어 치명적인 상황을 불러 일으킨다. 따라서 이렇게 NullPointerException이 발생할만한 상황을 예측하여 if문 등을 사용해 null 처리를 했었다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+if(a!=null) {
+return a;
+}
+return "a is null";
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">하지만 이와 같은 방법은 NullPointerException이 발생할만한 모든 상황을 예측해야 하며, if문 등을 통한 null 처리는 핵심 로직과 관련된 코드의 가독성을 해칠 수 있다는 문제가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">그럼 이제 Optional&lt;T&gt; findById(ID id) CrudRepository의 findById를 살펴보는 것으로 Optional에 대해 간단하게 살펴보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">findById는 Entity의 id로 검색을 해서, Optional&lt;T&gt;를 리턴 타입으로 반환하는 메서드이다. 따라서 다음과 같이 isPresent() 를 이용하여 Optional 내부에 객체가 들어있는지 확인한 후에 get()을 이용해 반환된 객체를 꺼내 쓸 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset">1. Optional 객체 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"><b>📍Optional.empty()</b></span><span class="se-fs-fs15 se-ff-system se-style-unset"> :</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">비어있는 Optional 객체로 생성한다. 따라서 이 내부에 있는 Member 객체는 null이고, 이 객체는 Optional 내부적으로 미리 생성해놓은 Singleton 인스턴스이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Optional&lt;Member&gt; optionalMember = Optional.empty();
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"><b>📍Optional.of(value)</b></span><span class="se-fs-fs15 se-ff-system se-style-unset"> :</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">인자 value를 담고 있는 Optional 객체로 생성한다. 이 객체는 미리 만들어 놓은 null이 아닌 객체를 넘기면 되는데, 만약 인자로 넘긴 객체가 null이라면 NullPointerException이 발생할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Optional&lt;Member&gt; optionalMember = Optional.value(member);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"><b>📍Optional.ofNullable(value) :</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">null일 수도 있고 아닐 수도 있는 객체를 담아 Optional 객체를 생성합니다. 만약 member가 null인지 null이 아닌지 확신이 서지 않는다면 이 방법으로 Optional 객체를 생성하면 됩니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Optional&lt;Member&gt; optionalMember = Optional.ofNullable(member);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset">2. Optional 객체 접근</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"><b>📍get() :</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">Optional 내부에 담긴 객체를 반환한다. 만약, null인 객체라면 NoSuchElementException이 발생한다. 따라서, isPresent() 로 체크한 후에 이 get 메서드를 사용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Member member = optionalMember.get();
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">Optional 내부에 담긴 객체가 null이 아니라면 담겨 있는 객체를 반환하고, null이라면 인자로 넘겨준 함수형 인자를 통해 생성된 예외를 발생시킨다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Member member = optionalMember.orElseThrow(NullPointerException::new);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"><b>📍orElse(T other)</b></span><span class="se-fs-fs15 se-ff-system se-style-unset"> :</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">Optional 내부에 담긴 객체가 null이 아니라면 담겨있는 객체를 반환하고, null이라면 인자로 넘겨준 member1이라는 객체를 반환합니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Member member = optionalMember.orElse(member1);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">📍</span><span class="se-fs-fs15 se-ff-system se-style-unset"><b>orElseGet</b></span><span class="se-fs-fs15 se-ff-system se-style-unset">(Supplier&lt;? extends T&gt; other) :</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset">Optional 내부에 담긴 객체가 null이 아니라면 담겨있는 객체를 반환하고, null이라면 인자로 넘겨준 함수형 인자를 통해 생성된 객체를 반환한다.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

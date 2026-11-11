@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📦 MSA 스프링부트(Spring Boot)와 스프링클라우드(Spring Cloud) 버전 호환, BOM(pom.xml) | minj.devlog</title>
+  <meta name="description" content="1. 스프링부트 스프링클라우드 버전 호환 스프링부트(Spring Boot)와 스프링 클라우드(Spring Cloud) 이 둘의 버전을 맞춰주어야 한다. 아래는 스프링 공식 사이트의 버전 표다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/msa-spring-boot-spring-cloud-version-bom/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="📦 MSA 스프링부트(Spring Boot)와 스프링클라우드(Spring Cloud) 버전 호환, BOM(pom.xml)" />
+  <meta property="og:description" content="1. 스프링부트 스프링클라우드 버전 호환 스프링부트(Spring Boot)와 스프링 클라우드(Spring Cloud) 이 둘의 버전을 맞춰주어야 한다. 아래는 스프링 공식 사이트의 버전 표다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/msa-spring-boot-spring-cloud-version-bom/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/msa-spring-boot-spring-cloud-version-bom/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-27" />
+  <meta property="article:section" content="Backend/MSA" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "📦 MSA 스프링부트(Spring Boot)와 스프링클라우드(Spring Cloud) 버전 호환, BOM(pom.xml)", "description": "1. 스프링부트 스프링클라우드 버전 호환 스프링부트(Spring Boot)와 스프링 클라우드(Spring Cloud) 이 둘의 버전을 맞춰주어야 한다. 아래는 스프링 공식 사이트의 버전 표다.", "datePublished": "2021-06-27", "dateModified": "2021-06-27", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/msa-spring-boot-spring-cloud-version-bom/", "image": "https://minjipi.github.io/posts/msa-spring-boot-spring-cloud-version-bom/images/image_1.jpg", "articleSection": "Backend/MSA"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="msa-spring-boot-spring-cloud-version-bom">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FMSA">Backend/MSA</a>
+              <time class="post-date" datetime="2021-06-27">2021.06.27</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222411835056" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">📦 MSA 스프링부트(Spring Boot)와 스프링클라우드(Spring Cloud) 버전 호환, BOM(pom.xml)</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222411835056 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">1. 스프링부트 스프링클라우드 버전 호환</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">스프링부트(Spring Boot)와 스프링 클라우드(Spring Cloud) 이 둘의 버전을 맞춰주어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래는 스프링 공식 사이트의 버전 표다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-table_layout2 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout2 se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>Release Train</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>Boot Version</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2020.0-Release-Notes" target="_blank">2020.0.x</a></span><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"> aka Ilford</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">2.4.x, 2.5.x (Starting with 2020.0.3)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-Hoxton-Release-Notes" target="_blank">Hoxton</a></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">2.2.x, 2.3.x (Starting with SR5)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://github.com/spring-projects/spring-cloud/wiki/Spring-Cloud-Greenwich-Release-Notes" target="_blank">Greenwich</a></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">2.1.x</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://github.com/spring-projects/spring-cloud/wiki/Spring-Cloud-Finchley-Release-Notes" target="_blank">Finchley</a></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">2.0.x</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://github.com/spring-projects/spring-cloud/wiki/Spring-Cloud-Edgware-Release-Notes" target="_blank">Edgware</a></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">1.5.x</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://github.com/spring-projects/spring-cloud/wiki/Spring-Cloud-Dalston-Release-Notes" target="_blank">Dalston</a></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.7;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">1.5.x</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="2" rowspan="1" style="width: 100.0%; height: 29.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-nanumbarungothic" style="color:#000000;">출처 </span><span class="se-fs-fs13 se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="https://spring.io/projects/spring-cloud" target="_blank">https://spring.io/projects/spring-cloud</a></span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">나의 경우, 프로젝트에서 스프링부트 버전 2.4.x 버전을 사용할 예정이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그래서 사이트 가장 위에 있는 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>2020.0.x </b></span><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>aka Ilford </b></span><span class="se-fs-fs16 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">로 들어가보니</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/msa-spring-boot-spring-cloud-version-bom/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">다음과 같이 어떤 라이브러리에 어떤 버전을 설정해줘야 하는지 정리되어 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-spring-boot-spring-cloud-version-bom/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"><a class="se-link" href="https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2020.0-Release-Notes" target="_blank">https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2020.0-Release-Notes</a></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">여기를 참고해 그에 맞는 버전의 라이브러리를 찾아 다음과 같이 설정해주었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ext 버전 0.3
+
+스프링 클라우드 config server
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '3.0.4'
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.2'
+   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.2'
+
+
+스프링 클라우드 eureka server
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '3.0.4'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '3.0.3'
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.2'
+   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.2'
+
+
+스프링 클라우드 zuul server
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '3.0.4'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.3'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '3.0.3'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: '2.2.8.RELEASE'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: '2.2.8.RELEASE'
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.2'
+   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.2'
+
+스프링 클라우드 turbine server
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '3.0.4'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.3'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.8.RELEASE'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-turbine', version: '1.4.7.RELEASE'
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.2'
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.2'
+   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.2'
+
+스프링 클라우드 hystrix dashboard
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '3.0.4'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '3.0.3'
+   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix-dashboard', version: '2.2.8.RELEASE'
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.2'
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.2'
+   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.2'
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이렇게 의존하는 라이브러리를 제공해주는 모듈을 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>Bom</b></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">(Bill Of Material)이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>BOM</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(Bill Of Materials)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Bill Of Materials의 약어로,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">일종의 특별한 POM 파일이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">프로젝트에서 사용하는 Dependency들을 한 곳에서 관리하고 싶을 때 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">스프링을 사용하다보면 spring-context, spring-web, spring-tx 등등 각각의 라이브러리에 버전을 기재해서 po</span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="http://m.xml%EC%9D%84" target="_blank">m.xml을</a></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"> 작성하게 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+# pom.xml
+POM(Project Object Model)을 설정하는 부분으로 프로젝트 내 빌드 옵션을 설정하는 부분이다.
+메이븐에 참조하는 설정 파일.
+
+
+# POM
+프로젝트의 정보 및 설정을 담고 있는 XML 파일.
+프로젝트를 빌드하기 위한 Dependency를 관리하는데 사용된다.
+
+
+# Maven
+Maven은 자바 프로젝트의 빌드(build)를 자동화 해주는 빌드 툴(build tool)이다.
+즉, 자바 소스를 compile하고 package해서 deploy하는 일을 자동화 해주는 것이다.
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이렇게 하다 보면 서로 다른 버전의 spring framework 라이브러리가 include될 수가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">따라서 maven에 spring bom(bill of materials)을 import하면 각기 다른 spring framework가 include되는 것을 방지하고, 필요한 spring framework 라이브러리 마다 별도의 버전을 기재할 필요가 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

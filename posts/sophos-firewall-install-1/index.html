@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🧱 방화벽 :: SOPHOS 설치, 초기 설정 /1 | minj.devlog</title>
+  <meta name="description" content="1. 가상 머신 생성 리눅스 버전 : Other Linux 2.6 Kernel CPU : 1개 메모리 : 2GB (2048) 디스크 : 40GB 네트워크 어댑터 : 3개 (VMnet1, VMnet2, VMnet3)" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/sophos-firewall-install-1/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="🧱 방화벽 :: SOPHOS 설치, 초기 설정 /1" />
+  <meta property="og:description" content="1. 가상 머신 생성 리눅스 버전 : Other Linux 2.6 Kernel CPU : 1개 메모리 : 2GB (2048) 디스크 : 40GB 네트워크 어댑터 : 3개 (VMnet1, VMnet2, VMnet3)" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/sophos-firewall-install-1/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/sophos-firewall-install-1/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-05-04" />
+  <meta property="article:section" content="Security" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "🧱 방화벽 :: SOPHOS 설치, 초기 설정 /1", "description": "1. 가상 머신 생성 리눅스 버전 : Other Linux 2.6 Kernel CPU : 1개 메모리 : 2GB (2048) 디스크 : 40GB 네트워크 어댑터 : 3개 (VMnet1, VMnet2, VMnet3)", "datePublished": "2021-05-04", "dateModified": "2021-05-04", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/sophos-firewall-install-1/", "image": "https://minjipi.github.io/posts/sophos-firewall-install-1/images/image_1.jpg", "articleSection": "Security"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="sophos-firewall-install-1">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Security">Security</a>
+              <time class="post-date" datetime="2021-05-04">2021.05.04</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222337690636" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">🧱 방화벽 :: SOPHOS 설치, 초기 설정 /1</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/sophos-firewall-install-1/images/image_1.jpg" alt="🧱 방화벽 :: SOPHOS 설치, 초기 설정 /1" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222337690636 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">1. 가상 머신 생성</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">리눅스 버전 : Other Linux 2.6 Kernel</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">CPU : 1개</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">메모리 : 2GB (2048)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">디스크 : 40GB</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">네트워크 어댑터 : 3개 (VMnet1, VMnet2, VMnet3)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">2. 설치</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">Start -&gt; Ok -&gt; English -&gt; Asia -&gt; Seoul -&gt; Next -&gt;</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/sophos-firewall-install-1/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">내부망 인터페이스 선택 :</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">이건 아래 이것과 순서 매치된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:544px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">3. 초기 설정</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">1) 관리자 패스워드 설정</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">웹 브라우저에서 설치할 때 설정한 IP의 4444번 포트로 접속</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">ex) </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"><a class="se-link" href="https://10.10.10.10:4444/" target="_blank">https://10.10.10.10:4444/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">📍 관리자 패스워드 주의해서 설정 !</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">2) 기타 설정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">내부 네트워크 확인 후 Next, 외부 네트워크 설정 후 Next</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:49.09090909090909%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_15.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:50.909090909090914%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">여기 설정은 옆 이미지(자신이 구축한 방화벽 환경)를 참고.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-install-1/images/image_17.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">접속 성공.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

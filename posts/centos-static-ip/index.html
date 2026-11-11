@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[CentOS network] 속상한 네트워크 ip 수동 설정 | minj.devlog</title>
+  <meta name="description" content="맥북 / vmware fusion 입니다. 가상머신 network-scripts 파일을 수정해서 네트워크를 설정하는 방법. network-scripts/ifcfg-ens 에 네트워크 구성 파일들이 있다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/centos-static-ip/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[CentOS network] 속상한 네트워크 ip 수동 설정" />
+  <meta property="og:description" content="맥북 / vmware fusion 입니다. 가상머신 network-scripts 파일을 수정해서 네트워크를 설정하는 방법. network-scripts/ifcfg-ens 에 네트워크 구성 파일들이 있다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/centos-static-ip/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/centos-static-ip/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-02-26" />
+  <meta property="article:section" content="Network" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[CentOS network] 속상한 네트워크 ip 수동 설정", "description": "맥북 / vmware fusion 입니다. 가상머신 network-scripts 파일을 수정해서 네트워크를 설정하는 방법. network-scripts/ifcfg-ens 에 네트워크 구성 파일들이 있다.", "datePublished": "2021-02-26", "dateModified": "2021-02-26", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/centos-static-ip/", "image": "https://minjipi.github.io/posts/centos-static-ip/images/image_1.jpg", "articleSection": "Network"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="centos-static-ip">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Network">Network</a>
+              <time class="post-date" datetime="2021-02-26">2021.02.26</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222257493559" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[CentOS network] 속상한 네트워크 ip 수동 설정</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/centos-static-ip/images/image_1.jpg" alt="[CentOS network] 속상한 네트워크 ip 수동 설정" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222257493559 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><i>맥북 / vmware fusion 입니다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">가상머신 network-scripts 파일을 수정해서 네트워크를 설정하는 방법.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">network-scripts/ifcfg-ens 에 네트워크 구성 파일들이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 네트워크 어댑터 설정</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">가상머신과는 별개의 프로그램</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/centos-static-ip/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/centos-static-ip/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">vmnet2으로 설정.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. network-scripts/ifcfg-</span><span class="se-fs- se-ff-"><b>ens</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(ifconfig로 ens 넘버 확인. 이게 안 맞는 경우가 가끔 있다.)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/centos-static-ip/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">33번 장치 맞고.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/sysconfig/network-scripts/ifcfg-ens33
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">vi 편집기로 내용을 수정하자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">수정 할 땐 a 를 눌러 편집모드로 전환.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/centos-static-ip/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+BOOTPROTO = static
+ONBOOT = yes
+
+IPADDR = [알아서] // 난 vmnet2번 대역의 192.168.100.대역에서 대충 101로.
+NETMASK = 255.255.255.0
+GATEWAY = 192.168.100.2
+DNS1 = 8.8.8.8
+﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">각각의 자세한 내용:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>BOOTPROTO</b></span><span class="se-fs- se-ff-"> : ip 할당 방법. none: 없음 / static: 수동 / dhcp: 동적.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>IPADDR : </b></span><span class="se-fs- se-ff- se-weight-unset">ip를 수동으로 지정할 때 ip주소 입력. 자동일 경우 지운다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>NETMASK</b></span><span class="se-fs- se-ff- se-weight-unset"> : ip를 수동으로 지정할 때 ip주소의 넷마스크 입력 입력. 자동일 경우 지운다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>GATEWAY : </b></span><span class="se-fs- se-ff- se-weight-unset">192.168.100</span><span class="se-fs- se-ff-"><b>.2 </b></span><span class="se-fs- se-ff- se-weight-unset">/ 이건 아래에서 자세히 설명.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>DNS : </b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-wrappingParagraph se-l-inner-big-left">
+<div class="se-component-content">
+<div class="se-component-slot se-component-slot-float">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/centos-static-ip/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+<div class="se-component-slot">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">* 보통 게이트웨이는 대역대 x.x.x.1 을 많이 사용하지만, 1은 가상머신의 장치주소에 사용된다. 본체 컴퓨터에 ifconfig를 쳐서 확인해보면 vmware들이 .1 을 쓰고 있는것을 확인할 수 있다. 어쨌든 그래서 보통 게이트웨이는 1을 사용하지만 여기서는 vmware가 1을 가져갔기 때문에 2를사용한다.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ONBOOT : 부트 시 랜카드를 자동으로 켜는 것의 유/무.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">수정을 다 했다면</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+:wq
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">를 입력해 위 변경 사항을 저장하고 편집 모드를 나간다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. 시스템 재시작</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl restart network
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3-1. ifconfig 확인</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ip 설정이 잘 변경되었는지 확인하자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">4. ping 확인</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ping 8.8.8.8
+    구글 DNS 서버와의 통신
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이게 된다? ip 설정 잘했음.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">안된다? 아래로.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ping [ 내 아이피 ]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이게 안된다? 나와의 통신이 되지 않는 상황.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">-&gt; 나한테 문제가 있는 상황이니 내 ip 주소를 잘못 설정했거나 내 랜카드에 문제가 있는 것이라 생각하고 그 부분을 고치면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이게 된다? 그럼 나와의 통신은 되는 것. 아래로.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ping [ 게이트웨이 ]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이것도 된다? 아래로.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+route
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">route 명령어로 'default gateway' 가 제대로 설정되어 있나 확인.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">내가 지금 방구석에서- 강남역이라는 외부 세계로 나가려면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">일단 이 방구석 문을 열고 나가야 하는데, 이 방구석 문 = </span><span class="se-fs- se-ff-">default </span><span class="se-fs- se-ff-">gateway 라고 보면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">default gateway가 없다? 방에 문이 없는 상황...</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">게이트웨이 설정에 문제가 있으면 ping 8.8.8.8, 구글이라는 외부 세상으로 나가기 위해, 인터넷을 하기위해 거쳐야 하는 문이 없는 것이나 마찬가지라 인터넷이 안되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">default gateway 가 보이지 않는다면 위에 수정한 </span><span class="se-fs- se-ff- se-weight-unset">ens 에서 게이트웨이를 안써줬거나, 잘못 썼을 가능성이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/centos-static-ip/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래서 결국 이렇게까지 뜨면 인터넷이 되더라....</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i><b>그래도 안된다 ! </b></i></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ping 8.8.8.8 이 되었는데도 인터넷 접속(구글 접속)이 안된다..?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ping 8.8.8.8
+[문제 없음]
+
+ping www.google.com
+[이름 혹은 서비스를 알 수 없습니다.]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">구글이 관리하는 ip 8.8.8.8 통신이 된다면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">www.google.com 통신 또한 되어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위의 경우는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">DNS인 도메인 네임 서버를 설정해 주지 않았거나 원래 있던 파일이 지워져서 발생하는 문제다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이럴 땐..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/resolv.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기로 들어가서,</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+search localdomain.com
+nameserver 8.8.8.8
+
+혹은 168.126.63.1
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이렇게 수정해주고.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl restart network
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">네트워크 설정 후 적용하는 명령어를 적어준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/centos-static-ip/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그럼 잘 될거예용!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래도 안되면...</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+search localdomain.com
+nameserver 168.126.63.1 [아래 표 참고!]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이렇게 수정해보는건요...?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/centos-static-ip/images/image_9.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://hwsecter.tistory.com/412" target="_blank">https://hwsecter.tistory.com/412</a></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래도 안되면 저도 모르겠어요 ㅠ.ㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">📣</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">네트워크는 아래 책 추천드립니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://product.kyobobook.co.kr/detail/S000213766983" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Do it! IT 서비스 이해를 위한 네트워크 기초 | 심준보 - 교보문고</strong>
+<p class="se-oglink-summary">Do it! IT 서비스 이해를 위한 네트워크 기초 | 개발자에게 필요한 네트워크의 기초부터 응용까지 그림으로 이해하고 실습으로 체험하며 배운다!개발을 하다가 네트워크 지식의 부족함을 느꼈다면? 이 책으로 네트워크 기초……</p>
+<p class="se-oglink-url">product.kyobobook.co.kr</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">비전공자였지만 ‘doit 네트워크’ 책을 쓰신 저자분의 강의를 듣고</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">현재 규모있는 기업의 백엔드 개발자가 되었습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">공부를 시작하시는 모든 분들 화이팅 입니다 !</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

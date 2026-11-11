@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS :: AWS의 컴퓨팅 서비스 | minj.devlog</title>
+  <meta name="description" content="[ Amazon Web Services ] AWS 의 컴퓨팅 서비스 (1) EC2 서비스란? Amazon Elastic Compute Cloud(Amazon EC2)는 AWS 클라우드에서 확장식 컴퓨팅을 제공한다" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/aws-compute-services/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="AWS :: AWS의 컴퓨팅 서비스" />
+  <meta property="og:description" content="[ Amazon Web Services ] AWS 의 컴퓨팅 서비스 (1) EC2 서비스란? Amazon Elastic Compute Cloud(Amazon EC2)는 AWS 클라우드에서 확장식 컴퓨팅을 제공한다" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/aws-compute-services/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/aws-compute-services/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-10" />
+  <meta property="article:section" content="Cloud/AWS" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "AWS :: AWS의 컴퓨팅 서비스", "description": "[ Amazon Web Services ] AWS 의 컴퓨팅 서비스 (1) EC2 서비스란? Amazon Elastic Compute Cloud(Amazon EC2)는 AWS 클라우드에서 확장식 컴퓨팅을 제공한다", "datePublished": "2021-06-10", "dateModified": "2021-06-10", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/aws-compute-services/", "image": "https://minjipi.github.io/posts/aws-compute-services/images/image_1.jpg", "articleSection": "Cloud/AWS"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="aws-compute-services">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FAWS">Cloud/AWS</a>
+              <time class="post-date" datetime="2021-06-10">2021.06.10</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222392274920" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">AWS :: AWS의 컴퓨팅 서비스</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/aws-compute-services/images/image_1.jpg" alt="AWS :: AWS의 컴퓨팅 서비스" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222392274920 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"><b>[ Amazon Web Services ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs30 se-ff-nanumgothic se-style-unset" style="color:#000000;"><b>AWS</b></span><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>의 컴퓨팅 서비스</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs30 se-ff-nanumgothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(1) </span><span class="se-fs- se-ff-"><b>EC2 서비스란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon Elastic Compute Cloud(Amazon EC2)는 AWS 클라우드에서 확장식 컴퓨팅을 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon EC2를 사용하면 하드웨어에 선투자할 필요가 없어 더 빠르게 애플리케이션을 개발하고 배포할 수 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon EC2를 통해 원하는 만큼 가상 서버를 구축하고 보안 및 네트워크 구성과 스토리지 관리가 가능함. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon EC2는 요건이나 갑작스러운 인기 증대 등 변동사항에 따라 확장하거나 축소할 수 있어 트래픽 예측 필요성이 줄어든다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(2) </span><span class="se-fs- se-ff-"><b>EC2의 기능</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><b>1. 인스턴스: 가상 컴퓨팅 환경</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">2. Amazon 머신 </span><span class="se-fs- se-ff-nanumbarungothic"><b>이미지</b></span><span class="se-fs- se-ff-nanumbarungothic">(AMI): 서버에 필요한 운영체제와 여러 소프트웨어들이 적절히 구성된 상태로 제공되는 템플릿으로 인스턴스를 쉽게 만들 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/aws-compute-services/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">3. 인스턴스 유형: 인스턴스를 위한 CPU, 메모리, 스토리지, 네트워킹 용량의 여러 가지 구성 제공.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">4. 키 쌍을 사용해 인스턴스 로그인 정보 보호(AWS는 공용키를 저장하고 사용자는 개인 키를 안전한 장소에 보관하는 방식)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">5. 인스턴스 스토어 볼륨: 임시 데이터를 저장하는 스토리지 볼륨으로 인스턴스 종료 시 삭제됨</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">6. Amazon Elastic Block Store(Amazon EBS): 가상의 하드디스트, 즉 Amazon EBS 볼륨을 사용해 영구 스토리지 볼륨에 데이터 저장</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">7. 인스턴스와 Amazon EBS 볼륨 등의 리소스를 다른 물리적 장소에서 액세스할 수 있는 리전 및 가용 영역</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">8. 보안 그룹을 사용해 인스턴스에 연결할 수 있는 프로토콜, 포트, 소스 IP 범위를 지정하는 방화벽 기능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">9. 탄력적 IP 주소(EIP): 동적 클라우드 컴퓨팅을 위한 고정 IPv4 주소</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(3) AMI 및 인스턴스</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">1) </span><span class="se-fs- se-ff-nanumbarungothic"><b>AMI 이란?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon 머신 이미지(AMI)는 필요한 소프트웨어가 이미 구성되어 있는 템플릿. (예: 운영 체제, 애플리케이션 서버, 애플리케이션)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">AMI에서 인스턴스를 바로 시작할 수 있는데 이 인스턴스는 AMI의 사본으로, 클라우드에서 실행되는 가상 서버다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">2) 인스턴스</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">동일한 AMI에서 다른 유형의 인스턴스를 실행할 수 있다. 인스턴스 유형에 따라 인스턴스에 사용되는 호스트 컴퓨터의 하드웨어가 결정된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">각 인스턴스 유형은 서로 다른 컴퓨팅 및 메모리 기능을 제공하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">인스턴스에서 실행하려는 애플리케이션 또는 소프트웨어에 필요한 메모리 양과 컴퓨팅 파워를 기준으로 인스턴스 유형을 선택 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(4) 지역과 가용 영역(리전과 AZ)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon EC2는 세계 각지의 여러 곳에서 호스팅되고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">이 위치들은 리전과 가용 영역으로 구성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">각 리전은 개별 지리 영역입니다. 각 리전은 가용 영역이라고 알려진 격리된 위치를 여러 개 가지고 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon EC2는 여러 위치에 인스턴스, 데이터 등 리소스를 배치할 수 있는 기능을 제공함.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">리소스는 특별하게 이를 지정하지 않을 경우 복제되지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon은 최신 기술을 탑재한 고가용성 데이터 센터를 운영 중이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">드물기는 하지만 동일한 위치에 있는 인스턴스의 가용성에 영향을 미치는 장애가 발생할 수도 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그런 장애의 영향을 받는 단일한 위치에서 모든 인스턴스를 호스팅하는 경우에는 모든 인스턴스가 사용이 불가능해질 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">1) </span><span class="se-fs- se-ff-nanumbarungothic"><b>리전(지역)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">각 Amazon EC2 리전은 다른 Amazon EC2 리전에서 완전히 격리되도록 설계.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">이를 통해 가장 강력한 내결함성 및 안정성을 달성할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">리소스를 볼 때 해당 리전에 배치된 리소스만 표시된다. 이는 리전이 서로 격리되어 있기 때문이며, AWS는 각 리전 간에 자동으로 리소스를 복제하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">인스턴스를 시작할 때 동일한 리전에 위치하고 있는 AMI를 선택해야 한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">AMI가 다른 리전에 있는 경우는 해당 AMI를 사용할 리전으로 복사할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">단, 리전 간 데이터 전송은 비용이 청구된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">2) </span><span class="se-fs- se-ff-nanumbarungothic"><b>가용 영역(AZ)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">가용 영역은 기본적으로 서로 격리되어 있지만, 한 리전의 가용 영역들은 낮은 수준의 지연 시간을 가진 링크를 통해 연결되어 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">인스턴스를 실행할 때 사용자가 직접 가용 영역을 선택하거나 AWS가 사용자를 위해 가용 영역을 선택하도록 할 수 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">복수의 가용 영역에 걸쳐 인스턴스를 배포했을 때 하나의 인스턴스에 장애가 발생한 경우를 대비하여, 다른 가용 영역의 인스턴스가 장애가 발생한 인스턴스 관련 요청을 처리할 수 있도록 애플리케이션을 설계할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">또한 탄력적 IP 주소를 사용하여 한 가용 영역에서 인스턴스의 장애가 발생한 경우, 다른 가용 영역의 인스턴스로 주소를 신속하게 매핑함으로써 인스턴스의 장애를 마스킹할 수 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(5) </span><span class="se-fs- se-ff-"><b>EC2 요금</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://aws.amazon.com/ko/ec2/pricing/" target="_blank">https://aws.amazon.com/ko/ec2/pricing/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon EC2 인스턴스를 구매하는 방법에는 온디맨드, 예약 인스턴스 및 스팟 인스턴스를 비롯하여 4가지 방법이 있다.(아래 참고) 또한, 고객 전용 물리적 서버에 EC2 인스턴스 용량을 제공하는 전용 호스팅을 구매할 수 도 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">1) </span><span class="se-fs- se-ff-nanumbarungothic"><b>온디멘드</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">온디맨드 인스턴스에서는,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">실행하는 인스턴스에 따라 시간당 또는 초당 컴퓨팅 파워에 대한 비용을 지불한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">쓰고 싶을 때 쓸 만큼 쓰는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">다음에 해당하는 사람이 쓰면 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">- 선결제 금액이나 장기 약정 없이 저렴하고 유연하게 Amazon EC2를 사용하기 원하는 사용자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">- 단기의 갑작스럽거나 예측할 수 없는 워크로드가 있으며, 중단되어서는 안 되는 애플리케이션.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">- Amazon EC2에서 처음으로 개발 또는 테스트 중인 애플리케이션.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">2) </span><span class="se-fs- se-ff-nanumbarungothic"><b>예약 인스턴스</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">예약 인스턴스는 온디맨드 인스턴스 요금과 비교하여 상당한 할인 혜택(최대 75%)을 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">또한, 예약 인스턴스를 특정 가용 영역에 지정하면 용량 예약이 제공되므로, 필요할 때 예약한 인스턴스를 시작할 수 있다는 확신을 가질 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">예약 인스턴스가 적합한 경우:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">- 수요가 꾸준한 애플리케이션</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">- 예약 용량이 필요할 수 있는 애플리케이션</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">- 총 컴퓨팅 비용을 절감하기 위해 1년 또는 3년 동안 EC2를 사용하기로 약정할 수 있는 고객</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">3) </span><span class="se-fs- se-ff-nanumbarungothic"><b>스팟 인스턴스 🚨</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">Amazon EC2 스팟 인스턴스를 사용하면 온디맨드 요금보다 최대 90% 할인된 가격으로 예비 Amazon EC2 컴퓨팅 용량을 요청할 수 있다. 긴급하게 쓸 사람이 이용하면 좋다! 예를들어 갑자기 확 떠서, 예약 인스턴스는 불가능하고, 근데 이게 오늘만 반짝 하고 말 것 같을 때 사용하기에 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">시작 및 종료 시간이 자유로운 애플리케이션,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">컴퓨팅 가격이 매우 저렴해야만 수익이 나는 애플리케이션,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">대량의 서버용량 추가로 긴급히 컴퓨팅 파워가 필요한 사용자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">4) </span><span class="se-fs- se-ff-nanumbarungothic"><b>전용 호스팅</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">전용 호스팅은 고객 전용의 물리적 EC2 서버다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">서버 한 대 통으로 쓰겠다!는 것. 가상의 컴퓨터가 아니라 성능은 조금 더 좋을 수 있겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">전용 호스팅을 사용하면 Windows Server, SQL Server, SUSE Linux Enterprise Server(라이선스 약관에 따름)를 비롯한 기존 서버 한정.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">소프트웨어 라이선스를 사용할 수 있으므로 비용을 절감할 뿐 아니라 규정 준수 요구 사항도 충족할 수 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">5) 프리 티어</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://aws.amazon.com/ko/free/" target="_blank">https://aws.amazon.com/ko/free/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(6) EC2 생성하기</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:52.47108307045215%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-compute-services/images/image_3.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:47.52891692954785%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-compute-services/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">선택한 이미지에서, 이 스토리지 추가의 볼륨으로 데이터들이 복사된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">다음으로 쭉쭉 넘어가자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-compute-services/images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">아래 체크박스에 체크하고, 인스턴스 시작.</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-compute-services/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">만들어진 인스턴스에 접속해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:658px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-compute-services/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-nanumbarungothic"><i>*  pem 파일은 openSSL 이기 때문에 putty 로 접속하려면, putty 프로그램에서 putty gen으로 키 변환이 필요하다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-compute-services/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">접속 후, root로 로그인 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo su - root
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">끝 !</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">너무 간단한 EC2 생성 및 접속.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

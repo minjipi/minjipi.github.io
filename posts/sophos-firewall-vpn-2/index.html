@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🧱 방화벽 :: SOPHOS VPN /2 | minj.devlog</title>
+  <meta name="description" content="🔗 VPN 이란? Virtual Private Network, 가상 사설망이라고 한다. 특정 네트워크 대역끼리 사설 네트워크를 만들어서 연결할 때, 하나하나 실제 네트워크.선을 연결해서 만들어야 하지만 현실적으로 비용이 많이 들고 물리적인 보안에 취약하다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/sophos-firewall-vpn-2/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="🧱 방화벽 :: SOPHOS VPN /2" />
+  <meta property="og:description" content="🔗 VPN 이란? Virtual Private Network, 가상 사설망이라고 한다. 특정 네트워크 대역끼리 사설 네트워크를 만들어서 연결할 때, 하나하나 실제 네트워크.선을 연결해서 만들어야 하지만 현실적으로 비용이 많이 들고 물리적인 보안에 취약하다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/sophos-firewall-vpn-2/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/sophos-firewall-vpn-2/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-05-06" />
+  <meta property="article:section" content="Security" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "🧱 방화벽 :: SOPHOS VPN /2", "description": "🔗 VPN 이란? Virtual Private Network, 가상 사설망이라고 한다. 특정 네트워크 대역끼리 사설 네트워크를 만들어서 연결할 때, 하나하나 실제 네트워크.선을 연결해서 만들어야 하지만 현실적으로 비용이 많이 들고 물리적인 보안에 취약하다.", "datePublished": "2021-05-06", "dateModified": "2021-05-06", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/sophos-firewall-vpn-2/", "image": "https://minjipi.github.io/posts/sophos-firewall-vpn-2/images/image_1.jpg", "articleSection": "Security"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="sophos-firewall-vpn-2">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Security">Security</a>
+              <time class="post-date" datetime="2021-05-06">2021.05.06</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222340129904" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">🧱 방화벽 :: SOPHOS VPN /2</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222340129904 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b>🔗 VPN 이란?</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">Virtual Private Network, 가상 사설망이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">특정 네트워크 대역끼리 사설 네트워크를 만들어서 연결할 때, 하나하나 실제 네트워크.선을 연결해서 만들어야 하지만 현실적으로 비용이 많이 들고 물리적인 보안에 취약하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">따라서 그 대신에 인터넷 네트워크 상으로 통신할 때</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">암호화 기술을 이용하여 특정한 사용자만 알아볼 수 있는 방식으로 통신하는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-nanumsquare" style="color:#000000;"><b>1) VPN 종류</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:217px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/sophos-firewall-vpn-2/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">📍 </span><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b>2계층 : PPTP(MS에서 개발), L2TP(Cisco에서 개발)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">📍 3계층 : IPsec(IP 기반), IPv4, IPv6 모두 지원</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">IPsec의 모드:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">- AH(전송모드, 터널모드, 주로 인증)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">- ESP(투명모드, 터널모드, 주로 암호화)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">*터널모드는 기존의 IP헤더를 암호화해서 감추고, 새로운 IP헤더를 캡슐화한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">📍 </span><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b>AH(인증 헤더)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">기본 패킷 : [원본 IP 헤더][상위 헤더][Data]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">전송 모드 : [원본 IP 헤더][AH][상위 헤더][Data]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">터널 모드 : [새 IP 헤더][AH][원본IP 헤더][상위 헤더][Data]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">📍</span><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b> ESP(암호화 헤더)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">기본 패킷 : [원본 IP 헤더][상위 헤더][Data]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">전송 모드 : [원본 IP 헤더][ESP][상위 헤더][Data][ESP Tail][ESP Auth]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">터널 모드 : [새 IP 헤더][ESP][원본IP 헤더][상위 헤더][Data][ESP Tail][ESP Auth]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">📍 </span><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b>4계층 : SSL(Secure Socket Layer, TLS)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">SSL 프로토콜의 종류</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">- Handshake : 암호화에 사용할 알고리즘을 서로 합의</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">- Change Chiper Spec : 협상한 암호키 이용, 레코드 암호화 명령</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">- Alert : 에러 메시지 전달</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">- Record : 데이터 암호화</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">    *네트워크 보안에서 SSL Strip, HeartBleed</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line5">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><b>⚙️ </b></span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"><b>VPN Remote Access 설정</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">이름은 그냥 VPN 로 지정하고.. (상관 X)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">하나하나 해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:304px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">설정하는 이유 : 외부에서 설정 하는 것이기 때문</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:305px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:403px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">기본 설정 되어있는.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:210px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:299px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">저장.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">여기서 접속할 수 있는 클라이언트 프로그램 다운.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">여기서 스위치를 켠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;">다음과 같은 방화벽 추가.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:670px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222340091740" target="_blank">https://blog.naver.com/ghdalswl77/222340091740</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222340091740" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">🧱 방화벽 :: SOPHOS /3</strong>
+<p class="se-oglink-summary">특별한 일년의 기록</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">.......</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">모르겠습니다 방화벽</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">그냥.. 아무나 서버에 들어오세요 ㅎㅎ</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:415px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/sophos-firewall-vpn-2/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

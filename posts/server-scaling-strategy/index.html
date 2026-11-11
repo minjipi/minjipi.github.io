@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>사용자가 증가하면 서버를 어떻게 확장해야할까? | minj.devlog</title>
+  <meta name="description" content="언젠가 수많은 사용자가 서비스를 이용한다면 과연 이 서버가 감당할수 있을까? 서비스 플랫폼을 개발하며 반드시 고민해야하는 문제인 것 같다. 사용자가 증가하면 서버를 어떻게 확장해야할까? 1. 더 좋은 성능을 가진 서버로 업그레이드한다. =&gt; Scale Up 2." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/server-scaling-strategy/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="사용자가 증가하면 서버를 어떻게 확장해야할까?" />
+  <meta property="og:description" content="언젠가 수많은 사용자가 서비스를 이용한다면 과연 이 서버가 감당할수 있을까? 서비스 플랫폼을 개발하며 반드시 고민해야하는 문제인 것 같다. 사용자가 증가하면 서버를 어떻게 확장해야할까? 1. 더 좋은 성능을 가진 서버로 업그레이드한다. =&gt; Scale Up 2." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/server-scaling-strategy/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/server-scaling-strategy/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-10-11" />
+  <meta property="article:section" content="Backend/Architecture" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "사용자가 증가하면 서버를 어떻게 확장해야할까?", "description": "언젠가 수많은 사용자가 서비스를 이용한다면 과연 이 서버가 감당할수 있을까? 서비스 플랫폼을 개발하며 반드시 고민해야하는 문제인 것 같다. 사용자가 증가하면 서버를 어떻게 확장해야할까? 1. 더 좋은 성능을 가진 서버로 업그레이드한다. => Scale Up 2.", "datePublished": "2021-10-11", "dateModified": "2021-10-11", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/server-scaling-strategy/", "image": "https://minjipi.github.io/posts/server-scaling-strategy/images/image_1.jpg", "articleSection": "Backend/Architecture"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="server-scaling-strategy">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FArchitecture">Backend/Architecture</a>
+              <time class="post-date" datetime="2021-10-11">2021.10.11</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222533904073" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">사용자가 증가하면 서버를 어떻게 확장해야할까?</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222533904073 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">언젠가 수많은 사용자가 서비스를 이용한다면 과연 이 서버가 감당할수 있을까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">서비스 플랫폼을 개발하며 반드시 고민해야하는 문제인 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">사용자가 증가하면 서버를 어떻게 확장해야할까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1. 더 좋은 성능을 가진 서버로 업그레이드한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">=&gt; </span><span class="se-fs- se-ff-system"><b>Scale Up</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. 서버를 여러대 설치하여 다수의 서버가 이를 처리하도록 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">=&gt; </span><span class="se-fs- se-ff-system"><b>Scale Out</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system"><b>🆙 Scale Up</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Scale Up은 단어 뜻 그대로 수직적인 확장 방법을 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">서버에 CPU나 메모리 등을 추가하여 서버 자체의 성능을 증강시켜 처리능력을 향상시키는 방법이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>Scale Up을 사용한 성능 향상의 장점</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+1. 단순히 서버의 장비를 추가하거나 교체하면 되기 때문에 구축 및 설계가 간단함
+2. 별도의 컨트롤러나 네트워크 인프라 비용 등이 발생하지 않음.
+3. 별도의 서버를 추가하지 않기 때문에 여러대의 서버를 관리하면서 발생할 수 있는 데이터 정합성 문제에서 자유로움
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">하지만.. Scale Up의 성능향상에는 한계가 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+1. 하나의 서버에는 추가할 수 있는 부품의 개수가 제한되어 있다.
+2. 한정된 자원을 초과하여 성능을 향상시키기 위해서는 서버 자체를 변경해야 한다.
+3. 매번 장비가 업그레이드 될 때마다 서버의 장비를 교체하는 것은 비용이라는 문제가 존재하기 때문에 지속적인 확장이 불가능하다.
+4. 하나의 서버에서 모든 트래픽을 감당해야 하기 때문에 장애극복 기능이 현저히 떨어지게 된다.
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">여기서 가장 중요한 문제점은 마지막 항목이다. 아무리 서버의 성능을 향상시키더라도 하나의 서버에 트래픽이 집중되는 문제는 여전히 남아있다. 또한 서버를 하나만 사용한다는 것은 곧 서버가 다운되면 시스템 전체의 장애로 이어진다는 점. 때문에 해당 서버가 복구되기 전까지 정상적으로 서비스를 운영할 수 없는 상황이 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system"><b>↔️ Scale Out</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Scale Out은 Scale Up과는 반대로 수평적인 확장을 의미한다. 서버 자체의 성능을 향상시키는 방법이 아닌 서버의 대수를 늘려서 성능을 향상시키는 방법이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>Scale Out을 사용한 성능 향상의 장점</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1. 필요에 따라 서버의 개수를 추가하거나 감소시킬 수 있기 때문에 확장이 유연함.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. 여러대의 서버를 이용한 분산처리가 가능하기 때문에 특정 서버에 트래픽이 집중되어 부하가 발생하는 것을 분산할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">3. 하나의 서버에 장애가 발생하더라도 다른 서버에서 서비스 제공이 가능하기 때문에 시스템의 가용성을 높일 수 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>Scale Out을 사용한 성능 향상의 문제점</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1. 서버를 추가하는 복잡성 때문에 Scale Up 보다 유연한 확장이 가능하지만, 무한정으로 확장이 가능하지 않다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. 여러대의 서버를 관리하기 위한 설계와 구현이 복잡해지고 이에 따른 관리 비용 또한 증가하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">3. 서버의 개수가 늘어난 만큼 문제 발생의 잠재적인 원인 또한 증가할 가능성이 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">4. 서버 각각의 성능이나 안정성 면에서는 Scale Up 방식보다 뒤쳐질 수 밖에 없다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">5. 데이터 불일치 문제 (정합성)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Scale Out에서 고민해야하는 가장 큰 문제점은 바로 </span><span class="se-fs- se-ff-system"><b>데이터 불일치</b></span><span class="se-fs- se-ff-system"> 문제다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">만약 로그인된 사용자의 정보와 같은 특정 정보가 특정 서버에만 저장되어있다면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">만약 로드 밸런서에 의해 사용자의 요청이 다른 서버로 매칭된다면 해당 서버에는 사용자의 데이터가 존재하지 않기 때문에 사용자는 다시 로그인을 시도해야 하는 상황이 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>Scale Up과 Scale Out 중 어떤 방식을 써야 할까?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/server-scaling-strategy/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>https://www.factioninc.com/blog/hybrid-multi-cloud/scale-up-vs-scale-out-scale-out-nas-meets-multi-cloud/</b></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">데이터의 정합성을 요구하는 데이터베이스 서버나 금융거래와 같이 빠르고 정확한 처리가 필요하고 잦은 갱신이 발생하는 환경에서는 고성능의 Scale Up 방식이 적합하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">메일 서버, 게시판 서버, 데이터 읽기 전용 애플리케이션, 웹 서버 등 높은 병렬성을 실현하기 쉬우며 데이터의 정합성 유지가 쉬운 환경에서는 Scale Out이 적합할 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">내가 구현하려는 서비스 또한 쇼핑몰 서비스의 특성상, 평상시에도 많은 유저 트래픽이 발생하며 수 많은 거래 정보 요청들을 병렬적으로 처리해야한다. 또 특정 서버에 장애가 발생하더라도 정상적으로 서비스를 제공할 수 있어야 할 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이러한 점들을 고려했을 때 트래픽을 분산시켜줄 수 있고, 시스템의 신뢰성이 높은 Scale Out 방식이 적합할 것이라는 결론을 내렸다. 그럼 또 문제는,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">사용자의 로그인 정보와 위치정보 등 특정 데이터를 반드시 필요로하는 서비스이기 때문에 Scale Out을 적용함으로써 발생할 수 있는 데이터 불일치 문제다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">다음 포스팅에서 이에 대한 해결책인 Sticky Session, Session Clustering, redis 에 대해 알아보도록 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><b>다음 글</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222764535050" target="_blank">https://blog.naver.com/ghdalswl77/222764535050</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222764535050" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">다중 서버 환경에서의 Session 관리 (Sticky Session, Session Clustering, Redis Session Storage)</strong>
+<p class="se-oglink-summary">현재 한대의 WAS 서버로 세션을 처리하고 있다. 추후 서버의 대수를 늘린 후에는 세션을 어디에 저장할 ...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system">참고:</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="http://www.slideshare.net/charsyam2/massive-service-basic?fbclid=IwAR1k06teUf2LSOUAlfLIaqR4pTGoGFblQ5Kte5qG2raVtKCaST1FJmxhUBQ" target="_blank">www.slideshare.net/charsyam2/massive-service-basic?fbclid=IwAR1k06teUf2LSOUAlfLIaqR4pTGoGFblQ5Kte5qG2raVtKCaST1FJmxhUBQ</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

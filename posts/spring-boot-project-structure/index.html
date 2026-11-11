@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spring Boot🍃 스프링부트 프로젝트 생성, 스프링부트 프로젝트 구조 | minj.devlog</title>
+  <meta name="description" content="Spring Boot 🍃 스프링부트 프로젝트 생성 하는 법과 스프링부트 프로젝트 구조 (src/main/java, src/main/resources, src/test/java, build.gradle) 에 대해 알아본다. 1." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-project-structure/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Spring Boot🍃 스프링부트 프로젝트 생성, 스프링부트 프로젝트 구조" />
+  <meta property="og:description" content="Spring Boot 🍃 스프링부트 프로젝트 생성 하는 법과 스프링부트 프로젝트 구조 (src/main/java, src/main/resources, src/test/java, build.gradle) 에 대해 알아본다. 1." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-project-structure/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-project-structure/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-07-30" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Spring Boot🍃 스프링부트 프로젝트 생성, 스프링부트 프로젝트 구조", "description": "Spring Boot 🍃 스프링부트 프로젝트 생성 하는 법과 스프링부트 프로젝트 구조 (src/main/java, src/main/resources, src/test/java, build.gradle) 에 대해 알아본다. 1.", "datePublished": "2021-07-30", "dateModified": "2021-07-30", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-project-structure/", "image": "https://minjipi.github.io/posts/spring-boot-project-structure/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-project-structure">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-07-30">2021.07.30</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222451010229" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Spring Boot🍃 스프링부트 프로젝트 생성, 스프링부트 프로젝트 구조</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-boot-project-structure/images/image_1.jpg" alt="Spring Boot🍃 스프링부트 프로젝트 생성, 스프링부트 프로젝트 구조" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222451010229 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-nanummyeongjo"><b>Spring Boot</b></span><span class="se-fs-fs16 se-ff-nanummyeongjo"> 🍃</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:228px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-boot-project-structure/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-"><b>스프링부트 프로젝트 생성</b></span><span class="se-fs-fs16 se-ff-">하는 법과</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-"><b>스프링부트 프로젝트 구조</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-"><i>(src/main/java, src/main/resources, src/test/java, build.gradle)</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-">에 대해 알아본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-nanummyeongjo"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 스프링부트 프로젝트 생성</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[New Project] </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[ Spring initializr ]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위와같이 설정 하고 Next,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Next,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Next,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">마지막으로 앞에 입력했던 프로젝트 이름을 입력하고 Finish를 클릭하면 스프링부트 프로젝트가 생성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">2. </span><span class="se-fs- se-ff-" style="color:#000000;"><b>스프링부트 프로젝트 구조</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">프로젝트를 생성했다면, 이제 스프링부트 프로젝트의 구조에 대해 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다음 네 파트로 나누어 설명한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(1) src/main/java</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(2) src/main/resources</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(3) src/test/java</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(4) build.gradle</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#ff0010;">1)</span><span class="se-fs-fs24 se-ff-" style="color:#ff0010;"><b> src/main/java</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">: 클래스, 인터페이스 등 자바 파일이 저장되는 곳.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:506px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">[1] </span><span class="se-fs- se-ff-" style="color:#000000;"><b>SevletInitializer 클래스</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">스프링부트 war 프로젝트 생성시,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">SpringBootServletInitializer를 상속받는 </span><span class="se-fs- se-ff-" style="color:#000000;"><b>ServletInitializer 클래스</b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"> 파일이 생성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">이 파일의 용도는 무엇일까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">스프링부트 웹 애플리케이션을 배포할 때 jar를 이용하기도 하지만, 전통적인 방식인 war 파일로 배포하는 경우가 있다. 이때 SpringBootServletInitializer를 상속받아 배포하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">지금(Servlet 3.0 이후)은 아니지만, Apache Tomcat이 구동될때 web.xml을 읽어 웹 애플리케이션을 구성하기 때문에- 원래 스프링 웹 애플리케이션이 Tomcat에서 동작되기 위해서는 아래와 같이 web.xml의 ApplicationContext 등록해줘야 했다. (</span><span class="se-fs-fs19 se-ff-nanummyeongjo se-style-unset" style="color:#292929;background-color:#ffffff;"><a class="se-link" href="https://medium.com/@SlackBeck/spring-boot-%EC%9B%B9-%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EC%9D%84-war%EB%A1%9C-%EB%B0%B0%ED%8F%AC%ED%95%A0-%EB%95%8C-%EC%99%9C-springbootservletinitializer%EB%A5%BC-%EC%83%81%EC%86%8D%ED%95%B4%EC%95%BC-%ED%95%98%EB%8A%94%EA%B1%B8%EA%B9%8C-a07b6fdfbbde" target="_blank"><b>사라진 web.xml</b></a></span><span class="se-fs-fs19 se-ff-nanummyeongjo se-style-unset" style="color:#292929;background-color:#ffffff;"><b> </b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">:과거 web.xml 작업을 하셨던 분의 글)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+&lt;servlet&gt;
+&lt;servlet-name&gt;example&lt;/servlet-name&gt;
+&lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+&lt;servlet-name&gt;example&lt;/servlet-name&gt;
+&lt;url-pattern&gt;/&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-" style="color:#000000;"><b>💡 web.xml 이란?</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">WebApplication의 Deployment Descriptor로서 XML형식의 파일</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"><i>web.xml 파일은 웹 어플리케이션의 배포 설명자로, 각 어플리케이션의 환경을 설정하는 역할을 한다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"><i>서버가 처음 로딩될 때 읽어들이고, 해당 환경설정에 대해 tomcat에 적용하여 서버를 시작한다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"><i>모든 Web application은 반드시 하나의 web.xml파일을 가져야하고, WEB-INF폴더 아래에 위치해있다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"><i>web.xml파일의 설정들은 Web Application 시작시 메모리에 로딩된다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"><i> 브라우저가 Java Servlet에 접근하기 위해 WAS(TOMCAT)에 필요한 정보를 알려줘야 해당하는 Servlet을 호출할수있으며, 이것을 정하는곳이 web.xml이다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">그런데 Servlet 3.0으로 스펙이 업데이트 되면서 이 web.xml설정을 WebApplicationInitializer 인터페이스를 구현하여 대신 할 수 있게 되었고, 이를 구현한 SpringBootServletInitializer를 상속받아 외부 Tomcat에서 스프링부트가 실행되도록 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">SpringBootServletInitializer를 상속 받는 다는 것은 tomcat 같은 Servlet Container 환경에서 Spring Boot 애플리케이션 동작 가능 하도록 웹 애플리케이션 컨텍스트를 구성한다는 의미.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">(즉, war 파일로 빌드하고 배포하지 않을 거라면 SpringBootServletInitializer를 상속할 필요가 없다는 의미다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">[2] </span><span class="se-fs- se-ff-" style="color:#000000;"><b>프로젝트이름+Application 클래스</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">메인 클래스</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">프로젝트를 생성하면 @SpringBootApplciation 어노테이션을 사용하는 프로젝트명+Application의 이름의 자바 클래스 파일을 볼 수 있다. 프로젝트가 동작할 수 있게 해주는 메인 클래스 파일이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">@SpringBootApplication 어노테이션은 @ComponentScan, @Configuration, @EnableAutoConfiguration을 함께 사용한것과 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#ff9300;">2)</span><span class="se-fs-fs24 se-ff-" style="color:#ff9300;"><b> src/main/resources</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">: html, css, js, image, 설정파일 등이 저장되는 곳.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:502px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">templates 폴더, static 폴더, application.properties 파일이 기본적으로 생성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">[1]</span><span class="se-fs- se-ff-" style="color:#000000;"><b> static 폴더</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">css, fonts, images, plugin, scripts 등의 정적 리소스 파일이 위치한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">[2] </span><span class="se-fs- se-ff-" style="color:#000000;"><b>template 폴더</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">기존의 스프링은 HTML 내에 자바 코드를 삽입하는 방식의 JSP를 사용했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">디렉터리의 위치도 웹 디렉터리에 해당하는 src/main/webapp 안에 존재했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">그러나 이 방식은 war 파일로 패키지화되었을 경우에만 정적 리소스를 정상적으로 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">그래서 스프링 부트는 src/main/resources 디렉터리 내에서 화면과 관련된 파일을 관리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">타임리프(Thymeleaf) 템플릿 엔진의 사용을 권장하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">이 타임리프는 JSP와 마찬가지로 HTML 내에서 데이터를 처리하는 데 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"><i>타임리프에 대한 것은 게시판을 구현하면서 차근차근 알아가 보도록 하자.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>[3] application.properties 파일</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:342px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">웹 애플리케이션을 실행하면서 자동으로 로딩되는 파일.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">application.properties 파일은 스프링 부트 전체 프로젝트의 설정을 저장하는 곳이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">이 파일에 설정되어져 있는 정보를 최우선적으로 따른다. (자바 파일에 설정되어져 있어도 이 application.properties 파일에 다른 설정이 저장되어져 있으면 의미가 없다)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">예를 들어 톰캣(Tomcat)과 같은 WAS(포트 번호, 콘텍스트 패스 등)의 설정이나, 데이터베이스 관련 정보 등 각각으로 분리되어 있는 XML 또는 자바 기반의 설정을 해당 파일에 Key-Value 형식으로 지정해서 처리할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">마찬가지로 자세한 부분은 게시판을 구현하면서 알아가 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#007433;">3)</span><span class="se-fs-fs24 se-ff-" style="color:#007433;"><b> src/test/java</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">: 테스트코드가 저장되는 곳.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:494px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">복잡한 설정없이 바로 테스트가 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">[1] 프로젝트이름+ApplicationTests 클래스</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#004e82;">4) </span><span class="se-fs-fs24 se-ff-" style="color:#004e82;"><b>build.gradle</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">: gradle 설정 파일</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:498px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">-&gt; 프로젝트 '빌드'(프로젝트를 실행할 수 있는 형태로 만드는 것) 도구.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">이전 글에서 프로젝트를 생성하면서 프로젝트의 Type을 그레이들(Gradle)로 선택했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#333333;">(기존의 스프링은 pom.xml에 여러 개의 dependency를 추가해서 라이브러리를 관리하는 방식의 메이븐(Maven)을 사용하였는데, 라이브러리의 버전 문제, 충돌 문제, 종속적인 문제 등이 자주 발생하는 이유로 요즘엔 그레이들을 선호하는 추세.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">메이븐은 하나의 라이브러리를 추가하려면 평균적으로 네 줄 이상의 코드를 작성해야 하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">그레이들은 단 한 줄의 코드로 라이브러리를 추가할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">우리는 해당 파일에 필요한 라이브러리들을 차근차근 추가해서 개발을 진행할 예정이며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">해당 파일에 추가한 라이브러리는 Project and External Dependencies에서 확인할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-project-structure/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-" style="color:#000000;">참고 사이트:</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-" style="color:#000000;"><a class="se-link" href="http://www.javapractices.com/topic/TopicAction.do?Id=205" target="_blank">http://www.javapractices.com/topic/TopicAction.do?Id=205</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-" style="color:#000000;"><a class="se-link" href="https://webdevtechblog.com/%EC%9D%B8%ED%85%94%EB%A6%AC%EC%A0%9C%EC%9D%B4%EB%A1%9C-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-b73b4b71a669" target="_blank">https://webdevtechblog.com/%EC%9D%B8%ED%85%94%EB%A6%AC%EC%A0%9C%EC%9D%B4%EB%A1%9C-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-b73b4b71a669</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

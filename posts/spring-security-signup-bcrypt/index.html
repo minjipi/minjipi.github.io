@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spring Security 회원가입 (BCryptPasswordEncoder) | minj.devlog</title>
+  <meta name="description" content="스프링부트 환경에서 BCryptPasswordEncoder를 이용한 회원가입 암호화 구현 시큐리티의 구조 웹에서 스프링 시큐리티는 기본적으로 아래와 같이 필터 기반으로 동작한다. 많은 필터들이 존재하며, DispatcherServlet 을 호출하기 전에 거치게 된다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-security-signup-bcrypt/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Spring Security 회원가입 (BCryptPasswordEncoder)" />
+  <meta property="og:description" content="스프링부트 환경에서 BCryptPasswordEncoder를 이용한 회원가입 암호화 구현 시큐리티의 구조 웹에서 스프링 시큐리티는 기본적으로 아래와 같이 필터 기반으로 동작한다. 많은 필터들이 존재하며, DispatcherServlet 을 호출하기 전에 거치게 된다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-security-signup-bcrypt/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-security-signup-bcrypt/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-03-11" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Spring Security 회원가입 (BCryptPasswordEncoder)", "description": "스프링부트 환경에서 BCryptPasswordEncoder를 이용한 회원가입 암호화 구현 시큐리티의 구조 웹에서 스프링 시큐리티는 기본적으로 아래와 같이 필터 기반으로 동작한다. 많은 필터들이 존재하며, DispatcherServlet 을 호출하기 전에 거치게 된다.", "datePublished": "2022-03-11", "dateModified": "2022-03-11", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-security-signup-bcrypt/", "image": "https://minjipi.github.io/posts/spring-security-signup-bcrypt/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-security-signup-bcrypt">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-03-11">2022.03.11</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222670000675" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Spring Security 회원가입 (BCryptPasswordEncoder)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-security-signup-bcrypt/images/image_1.jpg" alt="Spring Security 회원가입 (BCryptPasswordEncoder)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222670000675 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><i>스프링부트 환경에서 BCryptPasswordEncoder를 이용한 회원가입 암호화 구현</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>시큐리티의 구조</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">웹에서 스프링 시큐리티는 기본적으로 아래와 같이 필터 기반으로 동작한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">많은 필터들이 존재하며, DispatcherServlet 을 호출하기 전에 거치게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자세한 동작 구조는.. </span><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222498106263" target="_blank">Spring Security 스프링시큐리티 동작 구조</a></span><span class="se-fs- se-ff-"> 링크에 잘 설명되어 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-security-signup-bcrypt/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">프로젝트에 Spring Security 적용하기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(Gradle)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+implementation 'org.springframework.boot:spring-boot-starter-security'
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">dependencies를 추가한 다음에 적절한 패키지를 생성하고, WebSecurityConfig 클래스를 추가한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">패키지는 스프링 프로젝트의 패키지 하부에 있어야 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위와같이 설정해주면, 이제 사이트 전체가 잠겨서 비밀번호를 쳐야 접근할 수 있게 된다. 원활한 프로젝트 진행을 위해 일단 페이지의 인증을 몇가지 해제한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.cors().configurationSource(request -&gt; new CorsConfiguration().applyPermitDefaultValues());
+// CSRF 해제
+        httpSecurity.csrf().disable()
+.authorizeRequests().antMatchers("/member/*").permitAll()
+.antMatchers("/product/**").permitAll().
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자원에 대한 접근을 풀고, 밑에서는 세부적인 설정을 따로 넣어준다. 일단은 원활한 진행을 위해 product/아래 경로에 대해 permitAll을 줬다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">회원가입 로직</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">MemberDao.java</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class MemberDao {
+private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+this.jdbcTemplate = new JdbcTemplate(dataSource);
+}
+public PostMemberRes createMember(PostMemberReq postMemberReq) {
+        String createMemberQuery = "insert into Member (email, password, nickname) VALUES (?, ?, ?)";
+        Object[] createMemberParams = new Object[]{postMemberReq.getEmail(), postMemberReq.getPassword(), postMemberReq.getNickname(),
+};
+this.jdbcTemplate.update(createMemberQuery, createMemberParams);
+        String getLastInsertIdxQuery = "select last_insert_id()";
+        int lastInsertIdx = this.jdbcTemplate.queryForObject(getLastInsertIdxQuery, int.class);
+return new PostMemberRes(lastInsertIdx, 1);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">email, password, nickname을 디비에 저장하는 createMember 메소드 구현.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">MemberService.java</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Service
+public class MemberService {
+    @Autowired
+    MemberDao memberDao;
+public PostMemberRes createMember(PostMemberReq postMemberReq) {
+return memberDao.createMember(postMemberReq);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">서비스에서 createMember 메소드 호출.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">MemberController.java</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@RestController
+@RequestMapping("/member")
+public class MemberController {
+
+    @ResponseBody
+    @PostMapping("/signup")
+public BaseResponse&lt;PostMemberRes&gt; createMember(@RequestBody PostMemberReq postMemberReq) {
+try {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            postMemberReq.setPassword(passwordEncoder.encode(postMemberReq.getPassword()));
+
+            PostMemberRes postMemberRes = memberService.createMember(postMemberReq);
+return new BaseResponse&lt;&gt;(postMemberRes);
+} catch (Exception exception) {
+            System.out.println(exception);
+return new BaseResponse&lt;&gt;(BaseResponseStatus.FAIL);
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링 시큐리티에서 지원해주는 BCryptPasswordEncoder를 이용해 회원 비밀번호를 암호화하고, setPassword로 postMemberReq.getPassword에 저장.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">memberService의 createMember 메소드에 postMemberReq 전달하고 이를 저장한 postMemberRes를 반환.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">프론트는 리액트로 구현했다. 비밀번호 입력 후 가입 버튼을 누르면 정상적으로 회원가입이 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/spring-security-signup-bcrypt/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [nickname, setNickname] = useState("");
+let body = {
+email: email,
+password: password,
+nickname: nickname
+  };
+const onSubmit = async () =&gt; {
+try {
+const response = await axios.post(
+"http://localhost:8080/member/signup",
+        body,
+{
+headers: { "Content-Type": "application/json" },
+}
+);
+} catch (e) {
+      console.log(e);
+}
+};
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">정상적으로 구현했다면, 위와같이 암호화된 비밀번호가 저장된것을 확인할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

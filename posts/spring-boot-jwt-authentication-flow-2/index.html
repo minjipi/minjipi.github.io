@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스프링부트 JWT 인증 과정 (더 좋은 코드) | minj.devlog</title>
+  <meta name="description" content="프로젝트를 진행하면서 저번에 올렸던 &#x27;JWT 인증 과정&#x27; 포스팅에 별로인 코드가 있는 것을 알았다 로그인 과정에서 불필요하게 디비 접속을 한번 더 하더라..! 그래서 문제점과 해결 방법에 대해 적어본다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-jwt-authentication-flow-2/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="스프링부트 JWT 인증 과정 (더 좋은 코드)" />
+  <meta property="og:description" content="프로젝트를 진행하면서 저번에 올렸던 &#x27;JWT 인증 과정&#x27; 포스팅에 별로인 코드가 있는 것을 알았다 로그인 과정에서 불필요하게 디비 접속을 한번 더 하더라..! 그래서 문제점과 해결 방법에 대해 적어본다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-jwt-authentication-flow-2/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-jwt-authentication-flow-2/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-11-13" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "스프링부트 JWT 인증 과정 (더 좋은 코드)", "description": "프로젝트를 진행하면서 저번에 올렸던 'JWT 인증 과정' 포스팅에 별로인 코드가 있는 것을 알았다 로그인 과정에서 불필요하게 디비 접속을 한번 더 하더라..! 그래서 문제점과 해결 방법에 대해 적어본다.", "datePublished": "2021-11-13", "dateModified": "2021-11-13", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-jwt-authentication-flow-2/", "image": "https://minjipi.github.io/posts/spring-boot-jwt-authentication-flow-2/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-jwt-authentication-flow-2">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-11-13">2021.11.13</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222567270983" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">스프링부트 JWT 인증 과정 (더 좋은 코드)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-boot-jwt-authentication-flow-2/images/image_1.jpg" alt="스프링부트 JWT 인증 과정 (더 좋은 코드)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222567270983 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">프로젝트를 진행하면서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">저번에 올렸던 'JWT 인증 과정' 포스팅에 별로인 코드가 있는 것을 알았다</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">로그인 과정에서 불필요하게 디비 접속을 한번 더 하더라..!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래서 문제점과 해결 방법에 대해 적어본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222522109122" target="_blank">https://blog.naver.com/ghdalswl77/222522109122</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222522109122" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">JWT 인증 과정 (스프링부트 JWT 인증)</strong>
+<p class="se-oglink-summary">스프링부트 프로그램과 직접 그린 그림으로 JWT 인증 과정에 대해 알아본다. JWT의 개념과 특징 등의...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">&lt;컨트롤러 코드&gt;</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+ @PostMapping(value = "/login")
+public ResponseEntity&lt;?&gt; createAuthenticationToken(@RequestBody UserLoginReq userLoginReq) throws Exception {
+authenticate(userLoginReq.getEmail(), userLoginReq.getPassword());
+
+        System.out.println("controller before loadUserByUsername");
+        final UserLoginRes userDetails = (UserLoginRes) userService
+                .loadUserByUsername(userLoginReq.getEmail());
+        System.out.println("controller after loadUserByUsername");
+        final String token = jwtTokenUtil.generateToken(userDetails);
+return ResponseEntity.ok(new JwtResponse(token));
+}
+private void authenticate(String username, String password) throws Exception {
+try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+} catch (DisabledException e) {
+throw new Exception("USER_DISABLED", e);
+} catch (BadCredentialsException e) {
+throw new Exception("INVALID_CREDENTIALS", e);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위 코드에 대한 간략한 설명:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+createAuthenticationToken(
+authentication() -&gt; authenticate() -&gt; loadUserByUsername() -&gt; DB 접속!
+         내가 만든거     authenticationManager       서비스
+      출력 before
+      loadUserByUsername() -&gt; DB 접속!!
+      출력 after
+   )
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">디비 접속!이 두번이나 있는데.. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 코드를 그림으로 표현하자면 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-boot-jwt-authentication-flow-2/images/nv_0.png"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 문제는 loadUserByUsername 이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-authentication-flow-2/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">loadUserByUsername이 두번 호출되고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">문제는 loadUserByUsername가 DB select 쿼리를 실행하는 것인데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이렇게 되면 두번이나 디비에 접속하게 되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">첫번째 접속은 아이디 패스워드 확인이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+private void authenticate(String username, String password) throws Exception {
+try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+} catch (DisabledException e) {
+throw new Exception("USER_DISABLED", e);
+} catch (BadCredentialsException e) {
+throw new Exception("INVALID_CREDENTIALS", e);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">authenticate 함수는 void 타입으로 username, password를 확인만 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 두번째 접속으로 email을 통해 해당 사용자 정보를 조회해는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">username, password를 확인하면서 사용자 정보까지 가지고 올 수는 없나</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">있었다 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">호출하려는 authenticate 메소드가 Authentication을 반환하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 Authentication 객체는 아래와 같이</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-authentication-flow-2/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">사용자의 정보를 담고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래서 굳이 사용자 정보를 가지고 오는 두번째 loadUserByUsername 호출은 할 필요가 없는 것이었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

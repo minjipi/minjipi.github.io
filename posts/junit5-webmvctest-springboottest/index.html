@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JUnit 5 SpringBoot 테스트 분류 (@WebMvcTest, @SpringBootTest) | minj.devlog</title>
+  <meta name="description" content="매번 advanced rest client 툴로 테스트 했던 사람 나야나 ㅠㅠ 이제는 꽤 습관이 되어가는 테스트 코드에 대해 정리한다. SpringBoot 테스트 분류 공식 사이트에서 추천하는 테스트 방법을 보면 Web Layer(Controller)만을 테스트하는" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/junit5-webmvctest-springboottest/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JUnit 5 SpringBoot 테스트 분류 (@WebMvcTest, @SpringBootTest)" />
+  <meta property="og:description" content="매번 advanced rest client 툴로 테스트 했던 사람 나야나 ㅠㅠ 이제는 꽤 습관이 되어가는 테스트 코드에 대해 정리한다. SpringBoot 테스트 분류 공식 사이트에서 추천하는 테스트 방법을 보면 Web Layer(Controller)만을 테스트하는" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/junit5-webmvctest-springboottest/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/junit5-webmvctest-springboottest/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-10-10" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JUnit 5 SpringBoot 테스트 분류 (@WebMvcTest, @SpringBootTest)", "description": "매번 advanced rest client 툴로 테스트 했던 사람 나야나 ㅠㅠ 이제는 꽤 습관이 되어가는 테스트 코드에 대해 정리한다. SpringBoot 테스트 분류 공식 사이트에서 추천하는 테스트 방법을 보면 Web Layer(Controller)만을 테스트하는", "datePublished": "2022-10-10", "dateModified": "2022-10-10", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/junit5-webmvctest-springboottest/", "image": "https://minjipi.github.io/posts/junit5-webmvctest-springboottest/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="junit5-webmvctest-springboottest">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-10-10">2022.10.10</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222896219248" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JUnit 5 SpringBoot 테스트 분류 (@WebMvcTest, @SpringBootTest)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/junit5-webmvctest-springboottest/images/image_1.jpg" alt="JUnit 5 SpringBoot 테스트 분류 (@WebMvcTest, @SpringBootTest)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222896219248 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-">매번 advanced rest client 툴로 테스트 했던 사람 나야나 ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-">이제는 꽤 습관이 되어가는 테스트 코드에 대해 정리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">SpringBoot 테스트 분류</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">공식 사이트에서 추천하는 테스트 방법을 보면 Web Layer(Controller)만을 테스트하는 @WebMvcTest와 어플리케이션 전체를 로드해 진행하는 @SpringBootTest를 볼 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>@WebMvcTest</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">WebMvcTest는 컨트롤러(API) 레이어만을 테스트하기 적합한 테스트 어노테이션이다. 전체 어플리케이션을 로드하는 것이 아님. Service, Repository dependency가 필요한 경우엔 @MockBean으로 주입받아 테스트를 진행 한다. 단점으로는 Mock을 기반으로 하기 때문에 실제 환경에서 예상 밖의 오류가 생길 수 있음.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>MockMvc </b></span><span class="se-fs- se-ff- se-weight-unset">이란?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">애플리케이션을 배포하지 않고도, 서버의 MVC 동작을 테스트 할 수 있는 라이브러리이다. 주로 Controller 레이어 단위테스트에 많이 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[GET 메소드 테스트 예제]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+//when &amp; then
+mockMvc.perform(get("/contents"))
+.andExpect(status().isOk())
+.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+.andExpect(jsonPath("$.data").isArray())
+.andExpect(jsonPath("$.data[0].name").value("user1"))
+.andExpect(jsonPath("$.data[0].title").value("title1"))
+.andExpect(jsonPath("$.code").value(ErrorCode.OK.getCode()))
+.andExpect(jsonPath("$.message").value(ErrorCode.OK.getMessage()));
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>@MockBean</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">가짜 객체. 해당 단위 테스트에만 집중할 수 있도록 도와준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[사용 예시]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@MockBean
+private PostService postService;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서는 서비스를 MockBean으로 선언하였고, 서비스 내 의존성 연결고리를 신경 안써도 되며 서비스의 호출, 결과를 임의로 조작하여 테스트를 지원한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>@SpringBootTest</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">SpringBootTest는  스프링 애플리케이션의 통합 테스트를 제공하는 기본적인 Spring boot 어노테이션으로 애플리케이션 자체의 설정을 바꿔가거나 Properties를 임의로 만드는 등 애플리케이션의 전역 설정을 진행하면서 여러 단위 테스트를 하나로 묶어 놓은 애플리케이션 전체 테스트 방법. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">즉.. 실제 어플리케이션을 자신의 로컬 환경에 띄워서 포트 주소가 Listening 되고 실제 데이터베이스와 커넥션이 붙는 상태로 진행된다. Bean이 다 로드되기 때문에 테스트 구동 시간이 비교적 오래 걸린다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

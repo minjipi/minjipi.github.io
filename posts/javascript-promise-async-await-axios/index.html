@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>promise, await, async, axios 정리 | minj.devlog</title>
+  <meta name="description" content="REST API + 리액트에 비동기 통신 라이브러리 axios를 사용. 동기, 비동기? 자바스크립트에서 동기, 비동기 작업의 대표적인 예시는 다음과 같다. 동기 작업 은 일반적으로 우리가 작성하는 코드. 이 코드들은 순차적으로 실행된다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/javascript-promise-async-await-axios/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="promise, await, async, axios 정리" />
+  <meta property="og:description" content="REST API + 리액트에 비동기 통신 라이브러리 axios를 사용. 동기, 비동기? 자바스크립트에서 동기, 비동기 작업의 대표적인 예시는 다음과 같다. 동기 작업 은 일반적으로 우리가 작성하는 코드. 이 코드들은 순차적으로 실행된다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/javascript-promise-async-await-axios/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/javascript-promise-async-await-axios/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-02-10" />
+  <meta property="article:section" content="Frontend/React" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "promise, await, async, axios 정리", "description": "REST API + 리액트에 비동기 통신 라이브러리 axios를 사용. 동기, 비동기? 자바스크립트에서 동기, 비동기 작업의 대표적인 예시는 다음과 같다. 동기 작업 은 일반적으로 우리가 작성하는 코드. 이 코드들은 순차적으로 실행된다.", "datePublished": "2022-02-10", "dateModified": "2022-02-10", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/javascript-promise-async-await-axios/", "image": "https://minjipi.github.io/posts/javascript-promise-async-await-axios/images/image_1.jpg", "articleSection": "Frontend/React"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="javascript-promise-async-await-axios">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FReact">Frontend/React</a>
+              <time class="post-date" datetime="2022-02-10">2022.02.10</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222644064881" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">promise, await, async, axios 정리</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/javascript-promise-async-await-axios/images/image_1.jpg" alt="promise, await, async, axios 정리" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222644064881 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222505553044" target="_blank">REST API</a></span><span class="se-fs- se-ff-"> + 리액트에 비동기 통신 라이브러리 axios를 사용.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-weight-unset">동기, 비동기?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자바스크립트에서 </span><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222438273191" target="_blank">동기, 비동기</a></span><span class="se-fs- se-ff-"> 작업의 대표적인 예시는 다음과 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>동기 작업</b></span><span class="se-fs- se-ff-">은 일반적으로 우리가 작성하는 코드. 이 코드들은 순차적으로 실행된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+서버에 요청
+완료 후 실행 할 함수
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">동기 작업은 이전 실행의 결과가 나올 때 까지 기다렸다가, 결과가 나오면, 그 다음 실행을 하는 차근차근 구조이기 때문에 작업의 순서를 정하고 싶다면 순차적으로 코드를 적기만 하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그런데 이 동기 방식으로 네이버 메인 페이지를 만든다고 가정해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이전 실행의 결과가 나올 때 까지 기다리기 때문에,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">뭐 하나 기능이 끝나기 전엔 다른 기능이 안되는거다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예를들어 하나하나 넘어가는 실시간 검색어 기능이 동작하는 동안 로그인도 못하고 검색도 못한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그냥 실시간 검색어만 볼 수 있는 페이지가 되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이러면 안되기 때문에 ==</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">서버에 요청을 하는 동안 프로그램이 멈추지 않고 다른 작업이 수행되어야 하기 때문에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">서버에 요청을 비동기 방식으로 호출해야한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:477px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/javascript-promise-async-await-axios/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">비동기 작업의 결과를 그 다음 작업에 쓰고 싶다면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">비동기 작업과 그 이후 작업을 마치 동기 작업'처럼' 만들어주면 될 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>콜백방식 (비동기방식)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">비동기 통신 방식인 콜백함수.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+콜백함수(=완료후 실행 할 함수)
+서버에 요청
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">두번째 줄에서 서버에 요청이 가면, 요청 완료 후 실행할 함수가 동작하는..</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">살짝 거꾸로 된(?) 느낌의 방식이다. 이런 코드 진행 방식은 가독성이 떨어지고 문법도 복잡해진다.(*</span><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222438273191" target="_blank">콜백지옥</a></span><span class="se-fs- se-ff-">)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 문제를 해결하고자 Promise 객체가 나왔다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>✅ Promise (비동기 방식)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Promise 는 객체는 </span><span class="se-fs- se-ff-"><b>비동기 작업이 끝난 후 결과를 알려주는 용도</b></span><span class="se-fs- se-ff-">로 사용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+서버에요청(Promise)
+then 완료 후 실행 할 함수
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">말 그대로 '비동기 작업 끝나면 알려주겠다고 약속할게' 라는 의미다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Promise를 사용하면 비동기 작업이 끝난 시점을 알 수 있어서 동기작업’</span><span class="se-fs- se-ff-"><b>처럼</b></span><span class="se-fs- se-ff-">’ 구성할 수 있게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">동기작업 처럼 이란 아까의 콜백방식처럼 코드의 동작 방식이 거꾸로 된 것이 아니라 순차적으로, 서버에 요청을 하고 -&gt; 완료 후 실행할 함수 순서가 된다는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이 Promise 객체는 대기, 이행, 거부 이 세 가지 상태를 가진다. 각각 작업 완료 전, 작업 완료 후, 에러 발생하여 실패. 사용 방법은 비동기 작업이 작업 종료 후 Promise 객체를 반환하도록 하고, Promise 객체가 제공하는 then, catch 를 이용하면 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+const promise = //Promise를 반환하는 비동기 작업
+
+promise.then((result) =&gt; console.log('성공!').catch((error) =&gt; console.log('실패')
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">promise 객체에 .then() 을 붙이면 이행 상태의 처리를 할 수 있고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">.catch 를 붙이면 실패 상태를 처리할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>✅ Axios (비동기 방식)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Axios는 브라우저, Node.js를 위해서 만들어진 Promise를 활용하는(기반으로 만들어진) HTTP 비동기 통신 라이브러리다. (백엔드와 프론드엔드간에 통신을 위해서 만들어진 AJAX도 더불어 사용하기도 함.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">특징으로는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. Axios는 운영환경에 따라서 브라우저간 XMLHttpRequest 객체 또는 Node.js의 HTTP API를 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. Promise(ES6) 를 사용. (promise가 상태를 관리하여 다른 코드가 비동기적으로 실행될 수 있도록 만드는 객체.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. 요청(Request) 응답 (reply)을 JSON 형태로 자동 변경</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>✅ async, await (비동기 방식)</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+await 서버에요청
+완료후 실행 할 함수
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">그런데 뒤에 뭔가를 안 붙이고, 더 간단하게! 비동기 작업을 동기적인것 처럼 만들어주는 것이 await 이다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">사용법이 더 간단하다. 비동기 작업 앞에 await 키워드만 붙이면 된다. 그러면 비동기 작업이 결과를 낼 때까지 기다린다. (모든 작업이 종료X 내가 사용할 결과값이 나올 때까지 기다린다는 의미) 메인 작업들은 멈추지 않고 await을 포함하고 있는 함수만 일시정지된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 이 await 는 혼자만 쓸 수 없는데, await 와 세트로 쓰는 것이 바로 async 다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">async는 선언된 함수 내에 비동기적으로 실행될 내용이 있다는걸 알리는거다. 그리고 그 비동기적으로 실행될 내용 앞에 await을 붙여서 표시한다. async 를 붙인 함수는 Promise 객체를 반환한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">즉, 동기적 순서로 처리할 일이 있는 비동기 작업에 await를 붙이고 해당 작업을 포함하고 있는 함수에 async 를 붙이면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>리액트 async, await 사용 예제</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222648058850" target="_blank">https://blog.naver.com/ghdalswl77/222648058850</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222648058850" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">axios API 호출해서 데이터 받아오기 (리액트 axios cors 대충 처리)</strong>
+<p class="se-oglink-summary">1. 프로젝트 폴더에서 axios 설치 2. API 데이터 받아오기 API를 호출해서 데이터를 받아와보자. rea...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">정리</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-"><b>Promise</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-"><b>async</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-"><b>await</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-"><b>Axios</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">비동기 처리에서 사용되는 객체로, promise가 상태를 관리하여 다른 코드가 비동기적으로 실행될 수 있도록 만드는 객체</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">함수에서 비동기 처리를 위한 promise 동작을 한다는 것을 명시</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">호출되는 함수가 적절한 결과를 반환할 때까지 기다리도록 동작</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">Promise API를 활용하는 HTTP 비동기 통신 라이브러리</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">참고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://axios-http.com/kr/docs/intro" target="_blank">https://axios-http.com/kr/docs/intro</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://velog.io/@bleach7/promise%ED%94%84%EB%A1%9C%EB%AF%B8%EC%8A%A4%EC%9D%98-%EA%B0%9C%EB%85%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%84%A4%EB%AA%85%ED%95%98%EA%B3%A0-%EC%BD%9C%EB%B0%B1-%ED%95%A8%EC%88%98-%EB%B0%A9%EC%8B%9D%EA%B3%BC-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%84-%EC%84%A4%EB%AA%85%ED%95%B4%EC%A3%BC%EC%84%B8%EC%9A%94" target="_blank">https://velog.io/@bleach7/promise</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

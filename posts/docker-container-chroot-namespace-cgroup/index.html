@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker 도커 &#x27;컨테이너&#x27; chroot, namespace, cgroup | minj.devlog</title>
+  <meta name="description" content="도커, 컨테이너란? 도커(Docker) 컨테이너는 사실 새로운 기술이 아닙니다. 그 뿌리는 리눅스 커널이 제공하는 프로세스 격리 기능 에 있습니다. 컨테이너를 이해하기 위해 꼭 알아야 할 세 가지 키워드가 있습니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/docker-container-chroot-namespace-cgroup/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Docker 도커 &#x27;컨테이너&#x27; chroot, namespace, cgroup" />
+  <meta property="og:description" content="도커, 컨테이너란? 도커(Docker) 컨테이너는 사실 새로운 기술이 아닙니다. 그 뿌리는 리눅스 커널이 제공하는 프로세스 격리 기능 에 있습니다. 컨테이너를 이해하기 위해 꼭 알아야 할 세 가지 키워드가 있습니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/docker-container-chroot-namespace-cgroup/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/docker-container-chroot-namespace-cgroup/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-02-18" />
+  <meta property="article:section" content="Cloud/Docker" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Docker 도커 '컨테이너' chroot, namespace, cgroup", "description": "도커, 컨테이너란? 도커(Docker) 컨테이너는 사실 새로운 기술이 아닙니다. 그 뿌리는 리눅스 커널이 제공하는 프로세스 격리 기능 에 있습니다. 컨테이너를 이해하기 위해 꼭 알아야 할 세 가지 키워드가 있습니다.", "datePublished": "2021-02-18", "dateModified": "2021-02-18", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/docker-container-chroot-namespace-cgroup/", "image": "https://minjipi.github.io/posts/docker-container-chroot-namespace-cgroup/images/image_1.jpg", "articleSection": "Cloud/Docker"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="docker-container-chroot-namespace-cgroup">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FDocker">Cloud/Docker</a>
+              <time class="post-date" datetime="2021-02-18">2021.02.18</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222247646154" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Docker 도커 &#x27;컨테이너&#x27; chroot, namespace, cgroup</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/docker-container-chroot-namespace-cgroup/images/image_1.jpg" alt="Docker 도커 &#x27;컨테이너&#x27; chroot, namespace, cgroup" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222247646154 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_corner">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_corner">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>도커, 컨테이너란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">도커(Docker) 컨테이너는 사실 새로운 기술이 아닙니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">그 뿌리는 리눅스 커널이 제공하는 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>프로세스 격리 기능</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">에 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">컨테이너를 이해하기 위해 꼭 알아야 할 세 가지 키워드가 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">바로 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>chroot, Namespace, cgroups</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">이 세 가지 기능이 합쳐져서 오늘날 우리가 쓰는 컨테이너 기술의 기반이 되었습니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/docker-container-chroot-namespace-cgroup/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumbarungothic se-style-unset"><b>1. chroot – 루트 디렉터리 변경 기술</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">chroot는 이름 그대로 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>change root</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">를 의미합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">리눅스에서 프로세스가 보는 “루트(/)” 디렉토리를 다른 디렉토리로 바꿔치기하는 기능입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">예를 들어, /tmp/chroot를 루트 디렉터리로 지정해 어떤 프로세스를 실행하면, 그 프로세스는 /tmp/chroot를 자기 루트로 인식합니다. 따라서 이 경로 바깥에는 접근할 수 없습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">즉, 파일 시스템을 기준으로 한 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>격리</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">가 이루어지는 것이죠.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumbarungothic se-style-unset"><b>2. Namespace – 리소스 단위 격리</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">리눅스 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>Namespace</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">는 커널이 제공하는 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>프로세스 격리 기능</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">시스템 자원을 묶어 특정 프로세스에 전용으로 할당하는 방식입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">대표적인 Namespace 유형은 다음과 같습니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>Mount</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">: 파일 시스템 마운트 포인트 격리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>UTS</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">: 호스트명, 도메인명 격리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>IPC</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">: 프로세스 간 통신 자원 격리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>PID</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">: 프로세스 ID 공간 격리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>Network</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">: 네트워크 인터페이스 격리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>User</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">: 사용자/그룹 ID 격리</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">예를 들어, PID 네임스페이스를 사용하면 같은 시스템 안에서도 서로 다른 PID 트리를 가질 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">UTS 네임스페이스에서는 독립적으로 호스트네임을 바꿀 수 있죠.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+$ hostname
+testcom
+$ sudo unshare -u /bin/bash   # UTS namespace 분리
+# hostname new-hostname
+# hostname
+new-hostname
+# exit
+$ hostname
+testcom
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">네임스페이스를 빠져나오면 다시 원래 호스트 이름으로 돌아옵니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">즉, 네임스페이스는 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>호스트에 영향을 주지 않는 독립된 실행 환경</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">을 만들어줍니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumbarungothic se-style-unset"><b>3. cgroups – 자원(Resource) 제어</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">cgroups (control groups)는 프로세스 그룹이 사용하는 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>시스템 자원을 제한·격리·모니터링</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">할 수 있는 커널 기능입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">제어할 수 있는 자원은 다음과 같습니다. </span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">CPU</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">메모리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">네트워크 대역폭</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">디바이스 접근</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">I/O</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">예를 들어, 과학 연산 애플리케이션처럼 CPU와 메모리를 과도하게 사용하는 프로세스를 cgroup에 넣으면, CPU 사용률과 메모리 사용량을 제한할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">간단한 확인:</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+# cpu 전용 cgroup 생성
+$ sudo cgcreate -a hwi -g cpu:mycgroup
+
+# 생성 확인
+$ ls -al /sys/fs/cgroup/cpu/ | grep mycgroup
+drwxr-xr-x 2 hwi root 0 2월 19 20:08 mycgroup
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">이제 mycgroup 안에 프로세스를 넣으면 CPU 사용량을 제한할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">기존 nice나 cpulimit처럼 단일 프로세스만 제어하는 게 아니라, </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>프로세스 그룹 전체를 정밀하게 관리</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">할 수 있다는 게 큰 장점입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumbarungothic se-style-unset"><b>결론. 세 가지가 만나 컨테이너가 된다!</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">정리하면:</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>chroot</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"> → 파일 시스템 기준 격리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>Namespace</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"> → 프로세스 단위 리소스 격리</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>cgroups</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"> → 자원 사용량 제한 및 관리</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">이 세 가지가 결합하면서 리눅스 컨테이너(LXC, 이후 Docker)가 탄생했습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">즉, 컨테이너란 "리눅스 커널 기능을 조합해 만든 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>격리된 실행 환경</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">"입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">도커는 이러한 기능들을 추상화해서, 개발자가 docker run 한 줄로 쉽게 쓸 수 있도록 도와주는 도구일 뿐입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-">여기서 잠깐!</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs24 se-ff-"><b>Kernel, 커널이란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">컨테이너를 이해하려면 커널을 꼭 짚어야 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">커널은 운영체제의 핵심 프로그램.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">사용자 프로그램이 하드웨어 자원(CPU, 메모리, 디스크, 네트워크)을 사용할 수 있게 관리해줍니다.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">일반 프로그램과 달리 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>항상 메모리에 상주</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">합니다.</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">컨테이너 기술은 결국 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><b>이 커널이 제공하는 기능을 활용한 것</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset">이라는 점을 기억하면 됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.48;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">도커 컨테이너는</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"> 굉장한 신기술이 아니라, </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.48;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">리눅스 커널이 이전부터 제공해온 기능들의 조합입니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-default">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"><b>chroot, Namespace, cgroups</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">이 세 가지를 이해하면 도커와 컨테이너를 </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset">더 깊이 있게 볼 수 있습니다 :)</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.75;"><span class="se-fs-fs11 se-ff-system se-style-unset" style="color:#c2c2c2;"><a class="se-link __se_link" href="https://sudo-minz.tistory.com/230" target="_blank">https://sudo-minz.tistory.com/230</a></span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

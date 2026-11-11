@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elasticsearch 7버전 클러스터 업그레이드 | minj.devlog</title>
+  <meta name="description" content="실제 운영 환경에서 Elasticsearch 7.17.11 업그레이드를 진행하며 겪었던 경험을 기반으로 정리한 글이다. 운영 중인 Elasticsearch 클러스터를 업그레이드하는 작업은 언제나 긴장된다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/elasticsearch-7-cluster-upgrade/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Elasticsearch 7버전 클러스터 업그레이드" />
+  <meta property="og:description" content="실제 운영 환경에서 Elasticsearch 7.17.11 업그레이드를 진행하며 겪었던 경험을 기반으로 정리한 글이다. 운영 중인 Elasticsearch 클러스터를 업그레이드하는 작업은 언제나 긴장된다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/elasticsearch-7-cluster-upgrade/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/elasticsearch-7-cluster-upgrade/images/image_1.jpg" />
+  <meta property="article:published_time" content="2025-12-23" />
+  <meta property="article:section" content="Search/Elasticsearch" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Elasticsearch 7버전 클러스터 업그레이드", "description": "실제 운영 환경에서 Elasticsearch 7.17.11 업그레이드를 진행하며 겪었던 경험을 기반으로 정리한 글이다. 운영 중인 Elasticsearch 클러스터를 업그레이드하는 작업은 언제나 긴장된다.", "datePublished": "2025-12-23", "dateModified": "2025-12-23", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/elasticsearch-7-cluster-upgrade/", "image": "https://minjipi.github.io/posts/elasticsearch-7-cluster-upgrade/images/image_1.jpg", "articleSection": "Search/Elasticsearch"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="elasticsearch-7-cluster-upgrade">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Search%2FElasticsearch">Search/Elasticsearch</a>
+              <time class="post-date" datetime="2025-12-23">2025.12.23</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/224120451721" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Elasticsearch 7버전 클러스터 업그레이드</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/elasticsearch-7-cluster-upgrade/images/image_1.jpg" alt="Elasticsearch 7버전 클러스터 업그레이드" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/224120451721 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">실제 운영 환경에서 Elasticsearch 7.17.11 업그레이드를 진행하며 겪었던 경험을 기반으로 정리한 글이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">운영 중인 Elasticsearch 클러스터를 업그레이드하는 작업은 언제나 긴장된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">특히 샤드 수가 많은 대규모 클러스터라면 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">단순 버전 업데이트를 넘어 클러스터 안정성, 보안 설정, 플러그인 호환성, 운영 중단 최소화까지 함께 고려해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line2">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line2 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">1. 업그레이드 전 사전 점검</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">가장 먼저 확인한 것은 Kibana Upgrade Assistant였다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info __se_link" href="https://www.elastic.co/guide/en/kibana/7.0/upgrade-assistant.html" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Upgrade Assistant | Kibana Guide [7.0] | Elastic</strong>
+<p class="se-oglink-summary">The Upgrade Assistant helps you prepare for your upgrade to the next major Elasticsearch version. For example, if you are using 6.8, the Upgrade Assistant helps you to upgrade to 7.0. To access the assistant, open the menu, then go to Stack Management &gt; Elasticsearch &gt; Upgrade Assistant . The assist...</p>
+<p class="se-oglink-url">www.elastic.co</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">Upgrade Assistant를 통해 확인한 포인트는 다음과 같다.</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">deprecated setting 여부</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">인덱스 호환성 문제</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">reindex 필요 대상</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">플러그인 호환성</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">이 단계에서 문제를 놓치면 업그레이드 이후 클러스터가 기동되지 않는 상황이 발생할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">2. 샤드 재배치 중지</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">업그레이드 중 노드가 내려가면 Elasticsearch는 자동으로 샤드 재배치를 시도한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">대규모 클러스터에서는 이 과정 자체가 부하가 될 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">그래서 업그레이드 전 반드시 샤드 재배치를 중단한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+PUT _cluster/settings
+{
+"persistent": {
+"cluster.routing.allocation.enable": "none"
+}
+}
+PUT _cluster/settings
+{
+"transient": {
+"cluster.routing.allocation.enable": "none"
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+POST _flush/synced
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">그리고 flush를 수행하는데, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">이 작업은 트랜잭션 로그를 최소화하고 재기동 시 복구 부담을 줄여준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">3. Elasticsearch, Kibana 서비스 중단</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl stop elasticsearch
+systemctl status elasticsearch
+
+systemctl stop kibana
+systemctl status kibana
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">추가로 사용하는 플러그인 등이 있다면 마찬가지로 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset" style="color:#ff0010;">백업 후</span><span class="se-fs- se-ff-system se-weight-unset"> 제거 등을 수행하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">4. Elasticsearch 7.17.11 설치</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[elasticsearch-7.x]
+name=Elasticsearch repository for 7.x packages
+baseurl=https://artifacts.elastic.co/packages/7.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=0
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">설치할 7.x 버전 저장소 확인 후 설치한다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apt install elasticsearch=7.17.11 -y
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">5. 설정 파일 백업</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mkdir /etc/elasticsearch/bak
+
+cp -p /etc/elasticsearch/ES_V6.5.4/elasticsearch.yml \
+      /etc/elasticsearch/ES_V6.5.4/bak/elasticsearch.yml.bak
+
+cp -p /etc/elasticsearch/jvm.options \
+      /etc/elasticsearch/bak/jvm.options.bak
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">systemd / init 설정도 함께 백업했다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">6. systemd, init 스크립트 환경 변수 점검</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">특히 중요했던 부분은 ES_PATH_CONF, PID_DIR, ES_ENV_FILE 이었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">여기서 클러스터 이름이 경로에 반영되지 않으면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">노드가 엉뚱한 설정을 읽고 기동 실패하는 경우가 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">7. Elasticsearch 7.x 설정 파일 적용 (elasticsearch.yml)</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+############################
+# Cluster
+############################
+cluster.name: my-es-cluster
+
+############################
+# Node
+############################
+node.name: ${HOSTNAME}
+node.roles: [ master, data, ingest ]
+
+############################
+# Path
+############################
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+############################
+# Network
+############################
+network.host: _site_
+http.port: 9200
+transport.port: 9300
+
+############################
+# Discovery (7.x)
+############################
+discovery.seed_hosts:
+- es-node-01
+- es-node-02
+- es-node-03
+
+cluster.initial_master_nodes:
+- es-node-01
+- es-node-02
+- es-node-03
+
+############################
+# Bootstrap
+############################
+bootstrap.memory_lock: true
+
+############################
+# Security (X-Pack 기본 활성화)
+############################
+xpack.security.enabled: true
+
+############################
+# Transport Layer Security (노드 간 통신)
+############################
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate
+xpack.security.transport.ssl.client_authentication: required
+xpack.security.transport.ssl.keystore.path: elastic-certificates.p12
+xpack.security.transport.ssl.truststore.path: elastic-certificates.p12
+
+############################
+# HTTP Layer Security (REST API)
+############################
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.keystore.path: elastic-http.p12
+xpack.security.http.ssl.truststore.path: elastic-http.p12
+
+############################
+# License / Feature Control
+############################
+xpack.monitoring.collection.enabled: true
+xpack.watcher.enabled: false
+xpack.ml.enabled: false
+xpack.graph.enabled: false
+
+############################
+# Index / Cluster Safety
+############################
+action.auto_create_index: true
+cluster.max_shards_per_node: 1000
+
+############################
+# Logging
+############################
+logger.org.elasticsearch.discovery: INFO
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">위 설정 파일은 기본적인 elasticsearch.yml 파일 예시이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">Elasticsearch 7.x부터는 보안 기능이 기본 활성화되어 있으며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">노드 간 통신(Transport)과 REST API(HTTP) 모두 SSL을 적용한 상태에서 업그레이드를 진행했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">8. Keystore 재생성</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore list
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">기존 keystore 삭제 후 재생성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo rm -f /etc/elasticsearch/elasticsearch.keystore
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore create
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">참고로 해당 작업은 전체 클러스터를 중단한 상태에서 수행했으며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">운영 중 keystore 삭제는 절대 수행하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">패스워드 재등록</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add \
+xpack.security.transport.ssl.keystore.secure_password
+
+sudo /usr/share/elasticsearch/bin/elasticsearch-keystore add \
+xpack.security.transport.ssl.truststore.secure_password
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">이 과정이 빠지면 노드 간 통신 자체가 실패한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">9. Kibana 설치</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apt install kibana=7.17.11 -y
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset">10. 샤드 재배치 풀기</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+curl -u &lt;USER&gt;:&lt;PASSWORD&gt; -XPUT \
+"http://localhost:9200/_cluster/settings" \
+-H 'Content-Type: application/json' -d '{
+"persistent": {
+"cluster.routing.allocation.enable": null
+}
+}'
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">끝!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">추가로, 버전 업그레이 작업에서는 백업과 롤백 계획이 꼭 준비되어 있어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">이 글이 Elasticsearch 클러스터를 운영하거나</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">7.x 업그레이드를 앞둔 분들에게 도움되는 체크리스트가 되었으면 한다.</span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

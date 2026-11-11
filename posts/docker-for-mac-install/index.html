@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker for Mac 맥북에 도커 설치, 컨테이너 생성하고 실행하기 | minj.devlog</title>
+  <meta name="description" content="목차 1. 도커 다운로드 - 도커 툴박스 vs 데스크탑 2. 도커 데스크탑 버전 설치 3. 버전 확인 4. 컨테이너 생성 및 실행 - 우분투 이미지 설치 - 이미지 목록 확인 - 컨테이너 생성 및 bash 실행 5." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/docker-for-mac-install/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Docker for Mac 맥북에 도커 설치, 컨테이너 생성하고 실행하기" />
+  <meta property="og:description" content="목차 1. 도커 다운로드 - 도커 툴박스 vs 데스크탑 2. 도커 데스크탑 버전 설치 3. 버전 확인 4. 컨테이너 생성 및 실행 - 우분투 이미지 설치 - 이미지 목록 확인 - 컨테이너 생성 및 bash 실행 5." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/docker-for-mac-install/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/docker-for-mac-install/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-02-15" />
+  <meta property="article:section" content="Cloud/Docker" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Docker for Mac 맥북에 도커 설치, 컨테이너 생성하고 실행하기", "description": "목차 1. 도커 다운로드 - 도커 툴박스 vs 데스크탑 2. 도커 데스크탑 버전 설치 3. 버전 확인 4. 컨테이너 생성 및 실행 - 우분투 이미지 설치 - 이미지 목록 확인 - 컨테이너 생성 및 bash 실행 5.", "datePublished": "2021-02-15", "dateModified": "2021-02-15", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/docker-for-mac-install/", "image": "https://minjipi.github.io/posts/docker-for-mac-install/images/image_1.jpg", "articleSection": "Cloud/Docker"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="docker-for-mac-install">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FDocker">Cloud/Docker</a>
+              <time class="post-date" datetime="2021-02-15">2021.02.15</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222244137273" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Docker for Mac 맥북에 도커 설치, 컨테이너 생성하고 실행하기</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/docker-for-mac-install/images/image_1.jpg" alt="Docker for Mac 맥북에 도커 설치, 컨테이너 생성하고 실행하기" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222244137273 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"> </span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-wrappingParagraph se-l-inner-big-left __se-component">
+<div class="se-component-content">
+<div class="se-component-slot se-component-slot-float">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="https://subicura.com/assets/article_images/2017-01-19-docker-guide-for-beginners-1/docker-logo.png"/>
+</a>
+</div>
+</div>
+</div>
+<div class="se-component-slot">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system" style="color:#000000;"><b>목차</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system" style="color:#000000;"><b>1. </b></span><span class="se-fs-fs15 se-ff-system se-weight-unset" style="color:#000000;">도커</span><span class="se-fs-fs15 se-ff-system" style="color:#000000;"><b> 다운로드</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset" style="color:#000000;"> - </span><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">도커 툴박스 vs 데스크탑</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">2. 도커 데스크탑 버전</span><span class="se-fs- se-ff-system" style="color:#000000;"><b> 설치</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">3. </span><span class="se-fs- se-ff-system" style="color:#000000;"><b>버전 확인</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">4. </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 생성 및 실행</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b> - </b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">우분투</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b> 이미지 설치</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"> - 이미지 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>목록 확인</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"> - 컨테이너 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>생성  및 bash 실행</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">5. 컨테이너 삭제</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">6. 컨테이너 목록 출력</span></p>
+</div>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">1. 다운로드</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">도커 사이트에서 맥용 설치파일을 다운로드 받습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-center">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info __se_link" href="https://hub.docker.com/editions/community/docker-ce-desktop-mac" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Docker Desktop for Mac - Docker Hub</strong>
+<p class="se-oglink-summary">Docker Desktop for Mac Docker Desktop for Mac is an easy-to-install desktop app for building, debugging, and testing Dockerized apps on a Mac. Docker Desktop for Mac is a complete development environment deeply integrated with the Mac OS Hypervisor framework, networking, and filesystem. Docker Deskt...</p>
+<p class="se-oglink-url">hub.docker.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"><a class="se-link __se_link" href="https://hub.docker.com/editions/community/docker-ce-desktop-mac" target="_blank">https://hub.docker.com/editions/community/docker-ce-desktop-mac</a></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;">[ 도커 툴박스 vs 데스크탑 ]</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-center" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #eefdff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset" style="color:#000000;"> </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">도커 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>툴박스</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fffdf3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;">도커 </span><span class="se-fs- se-ff-system" style="color:#000000;"><b>데스크탑</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;">운영체제에서 자체 가상화를 제공하지 않는 경우,</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;">버추얼박스같은 가상화 프로그램으로 가상화를 시켜줌.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"><a class="se-link __se_link" href="https://github.com/docker/toolbox/releases" target="_blank">https://github.com/docker/toolbox/releases</a></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.4736842105263157;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> </span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.4736842105263157;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">윈도우 홈 버전은 Hyper-V를 지원하지 않아서</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.4736842105263157;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">도커 툴박스를 사용해야 합니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;">운영체제 자체 가상화 기능을 사용함.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.4736842105263157;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">도커 데스크탑 애플리케이션은</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.4736842105263157;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">윈도우 professional, enterprise, education</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">버전에서 사용이 가능.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">2. 도커 데스크탑 버전 </span><span class="se-fs- se-ff-" style="color:#000000;"><b>설치</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">Docker.dmg가 설치되고 자동으로 팝업 창이 실행되면 Docker.app을 클릭 후 Applications으로 끌어다 놓아주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>OK</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">를 클릭해서 Docker에게 접근 권한을 설정해주도록 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">자신의 macOS에 설정한 암호를 입력해주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> </span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이상으로 macOS에서 도커 데스크탑 설치가 끝났습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">3. 버전 확인</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">Mac의 터미널을 열어서 버전을 확인을 합니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker version
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">Server 정보가 안나오고 </span><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;">Error response from daemon: Bad response from Docker engine</span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">이라는 메시지가 출력되는 경우는 보통 docker daemon이 정상적으로 실행되지 않았거나 </span><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;">sudo</span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">를 입력하지 않은 경우.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">버전정보가 클라이언트와 서버로 나뉘어져 있습니다. 도커는 하나의 실행파일이지만 실제로 클라이언트와 서버역할을 각각 할 수 있습니다. 도커 커맨드를 입력하면 도커 클라이언트가 도커 서버로 명령을 전송하고 결과를 받아 터미널에 출력해 줍니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="https://subicura.com/assets/article_images/2017-01-19-docker-guide-for-beginners-2/docker-host.png"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">기본값이 도커 서버의 소켓을 바라보고 있기 때문에 사용자는 의식하지 않고 마치 바로 명령을 내리는 것 같은 느낌을 받습니다. 이러한 설계가 mac이나 windows의 터미널에서 명령어를 입력했을때 가상 서버에 설치된 도커가 동작하는 이유인데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">간단히 말해서 </span><span class="se-fs- se-ff-system" style="color:#000000;">우리가 웹브라우져로 네이버 같은 곳을 접속하면 기본값으로 80번 포트나 443번 포트를 가리키고 있는 것과 같습니다. 도커 명령어도 프로그램이고, 명령어를 실행하면 기본적으로 도커 서버의 포트로(소켓)으로 접속하는.. </span><span class="se-fs- se-ff-system" style="color:#000000;"><b>프로그램에 서버랑 클라이언트 기능이 둘 다 있다는 말이라고 이해하면 됩니다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">4. </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>컨테이너 생성 및 실행</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">docker run hello-world</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">도커를 구동하는 로직은 이렇습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">0) Docker Hub로 부터 이미지 검색과 이미지 다운로드 받기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">우선 필요한 이미지를 검색합니다. (검색은 생략 가능)</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker search sentos
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">1) 이미지 다운받기</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+docker pull centos
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">2) 받은 이미지 목록 확인</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+docker images
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">컨테이너는 정상적으로 실행됐지만, 뭘 하라고 명령어를 전달하지 않았기 때문에 컨테이너는 생성되자마자 종료됩니다. (컨테이너는 프로세스이기 때문에 실행중인 프로세스가 없으면 컨테이너는 종료됩니다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">* 다음은 자주 사용하는 옵션들입니다</span><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;">.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-center" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;border-collapse:collapse;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"><b>옵션</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"><b>설명</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">-d</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">detached mode 흔히 말하는 백그라운드 모드</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">-p</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">호스트와 컨테이너의 포트를 연결 (포워딩)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">-v</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">호스트와 컨테이너의 디렉토리를 연결 (마운트)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">-e</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">컨테이너 내에서 사용할 환경변수 설정</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">–name</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">컨테이너 이름 설정</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">–rm</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">프로세스 종료시 컨테이너 자동 제거</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">-it</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">-i와 -t를 동시에 사용한 것으로 터미널 입력을 위한 옵션</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">–link</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px; border:1px solid rgb(204, 204, 204); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.4;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">컨테이너 연결 [컨테이너명:별칭]</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">위의 방식대로 해도 되고, 아래와 같이 두 단계로 됩니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-center" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(221, 221, 221); background-color: #fefefe;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.723076923076923;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker run hello-world
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>3) 우분투 이미지 설치 및 bash 실행</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이번에는 /bin/bash 명령어를 입력해서 ubuntu 컨테이너를 실행해 보겠습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">ubuntu 컨테이너를 생성하고 컨테이너 내부에 들어가 봅시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">3-1) 이미지를 가지고 컨테이너 생성 :</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker create -it centos
+(컨테이너 이름을 따로 지정하고 싶으면)
+docker create --name minz_centos_0 -it centos
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">3-2) 컨테이너 동작</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker start minz_centos_0
+minz_centos_0
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"># 생성한 컨테이너 목록, 상태 확인:</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+docker ps -a 
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 17.75%; height: 43.0px;  background-color: #f8fff0;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">CONTAINER ID</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 10.83%; height: 43.0px;  background-color: #f8fff0;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;"> IMAGE</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 14.29%; height: 43.0px;  background-color: #f8fff0;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">COMMAND</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 18.62%; height: 43.0px;  background-color: #f8fff0;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">CREATED</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 9.96%; height: 43.0px;  background-color: #f8fff0;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">STATUS </span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 10.83%; height: 43.0px;  background-color: #f8fff0;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">PORTS</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 17.74%; height: 43.0px;  background-color: #f8fff0;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">NAMES</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 17.75%; height: 87.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">minz_centos_0</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 10.83%; height: 87.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">centos </span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 14.29%; height: 87.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">/bin.bash</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 18.62%; height: 87.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">About an hour</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 9.96%; height: 87.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">23s</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 10.83%; height: 87.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 17.74%; height: 87.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;">minz_centos_0</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;">3-3) 컨테이너 접속</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker attach minz_centos_0
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;">프롬프트 변경.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;">3-4) 컨테이너 종료, 접속 종료</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+(접속 종료)
+exit
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker run -i -t ubuntu /bin/bash
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">컨테이너 내부에 들어가기 위해 bash 쉘을 실행하고, 키보드 입력을 위해 -it 옵션.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>run : 컨테이너 실행</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>-i : 컨테이너와 상호 입출력 가능 옵션</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>-t : 셀을 사용할 수 있는 tty 활성화</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">그리고 cat /etc/issue와 ls를 실행해보면 ubuntu 인걸 알 수 있습니다. </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> </span><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;">exit</span><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;">로 bash 쉘을 종료하면 컨테이너도 같이 종료됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6875;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;">이렇게 도커를 이용하여 가장 기본적인 컨테이너를 만들어 보았습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.6875;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6875;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;">방금 만든 컨테이너들을 삭제하는 명령어 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6875;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker rm [이름] or [ID]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">docker </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">rm : 컨테이너 삭제 (중지된 컨테이너만 삭제)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">docker </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">rm -f : 실행중인 컨테이너 삭제</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">docker container prune : 중지된 모든 컨테이너 삭제</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">docker stop $(docker ps -a -q),</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">docker rm -f $(docker ps -a -q) 모든 컨테이너 정지 및 삭제</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">중지된 모든 컨테이너를 모두 삭제했습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">그리고 컨테이너 목록을 확인 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">6. 컨테이너 목록 확인</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker ps -a -q
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">-a 상태 관계없이 모든 컨테이너 출력.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">-q : 컨테이너 ID만 출력.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line5">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"># </span><span class="se-fs- se-ff-" style="color:#000000;"><b>도커 명령어</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-center" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:1px solid #000000;border-collapse:collapse;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>버전 확인</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker -v</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>이미지 다운로드</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker pull [이미지 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>다운로드된 이미지 목록</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker images</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 생성</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker create [옵션] [이미지 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 생성 및 실행</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker run [옵션] [이미지 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 실행</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker start [컨테이너 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 재실행</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker restart [컨테이너 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 접속</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker attach [컨테이너 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 정지</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker stop [컨테이너 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>실행중인 컨테이너 목록</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker ps</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>정지된 컨테이너 목록</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker ps -a</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 명 변경</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker rename [기존 컨테이너 명] [새로운 컨테이너 명]</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.49%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><b>컨테이너 삭제</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.51%; height: 19.0px; border:1px solid #000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> $ docker rm [컨테이너 명]</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.6875;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.6875;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.6875;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"> </span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:220px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/docker-for-mac-install/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

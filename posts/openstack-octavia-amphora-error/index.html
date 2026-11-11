@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[OpenStack] 오픈스택 Octavia 수동설치시 Amphora 로드밸런스 서비스 에러 | minj.devlog</title>
+  <meta name="description" content="[OpenStack - Octavia ] 오픈스택 로드밸런스 - Amphora 로드밸런서 기존 Neutron 로드밸런서는 Neutron 자체의 프로세스로 존재하였지만 Octavia에서는 Amphora라고 불리는 로드밸런서를 인스턴스 형태로 배포." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/openstack-octavia-amphora-error/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[OpenStack] 오픈스택 Octavia 수동설치시 Amphora 로드밸런스 서비스 에러" />
+  <meta property="og:description" content="[OpenStack - Octavia ] 오픈스택 로드밸런스 - Amphora 로드밸런서 기존 Neutron 로드밸런서는 Neutron 자체의 프로세스로 존재하였지만 Octavia에서는 Amphora라고 불리는 로드밸런서를 인스턴스 형태로 배포." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/openstack-octavia-amphora-error/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/openstack-octavia-amphora-error/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-05-26" />
+  <meta property="article:section" content="Cloud/OpenStack" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[OpenStack] 오픈스택 Octavia 수동설치시 Amphora 로드밸런스 서비스 에러", "description": "[OpenStack - Octavia ] 오픈스택 로드밸런스 - Amphora 로드밸런서 기존 Neutron 로드밸런서는 Neutron 자체의 프로세스로 존재하였지만 Octavia에서는 Amphora라고 불리는 로드밸런서를 인스턴스 형태로 배포.", "datePublished": "2021-05-26", "dateModified": "2021-05-26", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/openstack-octavia-amphora-error/", "image": "https://minjipi.github.io/posts/openstack-octavia-amphora-error/images/image_1.jpg", "articleSection": "Cloud/OpenStack"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="openstack-octavia-amphora-error">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FOpenStack">Cloud/OpenStack</a>
+              <time class="post-date" datetime="2021-05-26">2021.05.26</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222368186619" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[OpenStack] 오픈스택 Octavia 수동설치시 Amphora 로드밸런스 서비스 에러</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/openstack-octavia-amphora-error/images/image_1.jpg" alt="[OpenStack] 오픈스택 Octavia 수동설치시 Amphora 로드밸런스 서비스 에러" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222368186619 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"><b>[OpenStack - </b></span><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>Octavia</b></span><span class="se-fs-fs16 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"><b>]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">오픈스택 로드밸런스</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">-</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" style="color:#700001;"><b>Amphora 로드밸런서</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">기존 Neutron 로드밸런서는 Neutron 자체의 프로세스로 존재하였지만</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">Octavia에서는 Amphora라고 불리는 로드밸런서를 인스턴스 형태로 배포.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(1) DB 생성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[1] controller</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mysql -u root -p
+create database octavia;
+grant all privileges on octavia.* to octavia@'localhost' identified by '비밀번호'; 
+grant all privileges on octavia.* to octavia@'%' identified by '비밀번호'; 
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(2) 사용자 및 엔드포인트 생성</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[1] controller</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+penstack user create --domain default --project service --password 비민번호 octavia
+
+openstack role add --project service --user octavia admin
+
+openstack service create --name octavia --description "OpenStack LBaaS" load-balancer
+
+export octavia_api=[네트워크 노드 IP]
+
+openstack endpoint create --region RegionOne load-balancer public http://$octavia_api:9876
+	
+openstack endpoint create --region RegionOne load-balancer internal http://$octavia_api:9876
+
+openstack endpoint create --region RegionOne load-balancer admin http://$octavia_api:9876
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(3) 옥타비아 설치</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[3] network</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dnf -y install epel-release
+dnf --enablerepo=centos-openstack-victoria,powertools -y install openstack-octavia-api openstack-octavia-health-manager openstack-octavia-housekeeping openstack-octavia-worker
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">ssl 인증서 다운 !</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(4) 인증서 설정</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[3] network</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mkdir -p /etc/octavia/certs/private
+mkdir ~/work
+cd ~/work
+git clone https://opendev.org/openstack/octavia.git
+cd octavia/bin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+./create_dual_intermediate_CA.sh
+cp -p ./dual_ca/etc/octavia/certs/server_ca.cert.pem /etc/octavia/certs
+cp -p ./dual_ca/etc/octavia/certs/server_ca-chain.cert.pem /etc/octavia/certs
+cp -p ./dual_ca/etc/octavia/certs/server_ca.key.pem /etc/octavia/certs/private
+cp -p ./dual_ca/etc/octavia/certs/client_ca.cert.pem /etc/octavia/certs
+cp -p ./dual_ca/etc/octavia/certs/client.cert-and-key.pem /etc/octavia/certs/private
+chown -R octavia /etc/octavia/certs
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(5) 옥타비아 설정</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[3] network</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mv /etc/octavia/octavia.conf /etc/octavia/octavia.conf.org
+
+vi /etc/octavia/octavia.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[DEFAULT]
+transport_url = rabbit://openstack:비번@컨트롤러IP
+[api_settings]
+bind_host = 네트워크노드IP
+bind_port = 9876
+auth_strategy = keystone
+api_base_uri = http://네트워크노드I:9876
+[database]
+connection = mysql+pymysql://octavia:qwer1234@컨트롤러IP/octavia
+
+[health_manager]
+bind_ip = 0.0.0.0
+bind_port = 5555
+[keystone_authtoken]
+www_authenticate_uri = http://컨트롤러IP:5000
+auth_url = http://컨트롤러IP:5000
+memcached_servers = 컨트롤러IP:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = octavia
+password = qwer1234
+
+[certificates]
+ca_private_key = /etc/octavia/certs/private/server_ca.key.pem
+ca_certificate = /etc/octavia/certs/server_ca.cert.pem
+server_certs_key_passphrase = insecure-key-do-not-use-this-key
+ca_private_key_passphrase = not-secure-passphrase
+
+
+[haproxy_amphora]
+server_ca = /etc/octavia/certs/server_ca-chain.cert.pem
+client_cert = /etc/octavia/certs/private/client.cert-and-key.pem
+
+
+[controller_worker]
+client_ca = /etc/octavia/certs/client_ca.cert.pem
+
+[oslo_messaging]
+topic = octavia_prov
+
+[service_auth]
+auth_url = http://컨트롤러IP:5000
+memcached_servers = 컨트롤러IP:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = octavia
+password = 옥타비아 비번
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+chmod 640 /etc/octavia/octavia.conf
+chgrp octavia /etc/octavia/octavia.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+su -s /bin/bash octavia -c "octavia-db-manage --config-file /etc/octavia/octavia.conf upgrade head"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl enable octavia-api octavia-health-manager octavia-housekeeping octavia-worker
+systemctl restart octavia-api octavia-health-manager octavia-housekeeping octavia-worker
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(6) 로드밸런스 이미지 생성</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">어디서 하든 상관 없지만,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">여기서는 이미지 서비스가 컨트롤러에 설치 되어 있기 때문에 컨트롤러에서 이미지를 만들고 등록하는게 빠름.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[1] controller</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dnf --enablerepo=centos-openstack-victoria,powertools,epel -y install openstack-octavia-diskimage-create debootstrap python3-octaviaclient
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mkdir ~/image
+cd ~/image
+octavia-diskimage-create.sh -r 비번 -g stable/victoria
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(7) 이미지 등록</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/openstack-octavia-amphora-error/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+source ~/keystone_admin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack image create "Amphora" --tag "Amphora" --file amphora-x64-haproxy.qcow2 --disk-format qcow2 --container-format bare --private --project service
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(8) flavor 등록</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack flavor create --id 100 --vcpus 1 --ram 1024 --disk 5 m1.octavia --private --project service
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(9) 보안 그룹 생성</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+stack security group create lb-mgmt-sec-group --project service
+openstack security group rule create --protocol icmp --ingress lb-mgmt-sec-group
+openstack security group rule create --protocol tcp --dst-port 22:22 lb-mgmt-sec-group
+openstack security group rule create --protocol tcp --dst-port 80:80 lb-mgmt-sec-group
+openstack security group rule create --protocol tcp --dst-port 443:443 lb-mgmt-sec-group
+openstack security group rule create --protocol tcp --dst-port 9443:9443 lb-mgmt-sec-group
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>(10) 네트워크 생성</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack network create --project service --share --provider-network-type flat --external --provider-physical-network extnet external
+openstack subnet create external-subnet --network external --project service --subnet-range 192.168.1.0/24 --allocation-pool start=192.168.1.104,end=192.168.1.109 --gateway 192.168.1.1 --dns-nameserver 8.8.8.8
+
+openstack network create --project service --share --provider-network-type vxlan internal
+openstack subnet create internal-subnet --network internal --project service --subnet-range 100.100.100.0/24 --allocation-pool start=100.100.100.10,end=100.100.100.250 --gateway 100.100.100.1 --dns-nameserver 8.8.8.8
+openstack router create router --project service
+
+openstack router add subnet router internal-subnet		
+openstack router set router --external-gateway external
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">방금 만든 네트워크는 바로 대시보드에서 확인되지 않는다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-octavia-amphora-error/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">아래 데시보드 설정을 해서, 네트워크를 보이게 하자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">(11) 데시보드 설정</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">1.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">인증 -&gt; 역할 -&gt; 역할 생성 -&gt; _member_ 입력 후 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">인증 -&gt; 프로젝트 -&gt; service 프로젝트의 멤버 관리 -&gt; admin을 service 프로젝트에 추가 -&gt; admin 계정에 admin 열할 추가 -&gt; 저장.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">2. 왼쪽 위에 admin 프로젝트를 service 프로젝트로 변경</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-octavia-amphora-error/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-octavia-amphora-error/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">프로젝트 -&gt; 네트워크 -&gt; 네트워크 토폴로지에서 확인</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-octavia-amphora-error/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">(12) 옥타비아 설정</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">(생성한 네트워크 밑 보안 그룹 등 적용)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[3] network</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/octavia/octavia.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[controller_worker]
+client_ca = /etc/octavia/certs/client_ca.cert.pem
+
+# 아래의 내용 추가
+amp_image_tag = Amphora
+amp_flavor_id = 100
+amp_secgroup_list = [시큐리티 그룹의 ID]   👉🏻방금 생성한 그룹
+amp_boot_network_list = [internal 네트워크의 ID]
+network_driver = allowed_address_pairs_driver
+compute_driver = compute_nova_driver
+amphora_driver = amphora_haproxy_rest_driver 
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl restart octavia-api octavia-health-manager octavia-housekeeping octavia-worker
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b>(13) 인스턴스 생성 대기 시간 변경</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">오픈스택에서 인스턴스 생성 시간이 길어지면 에러처리를 하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">인스턴스 생성이 좀 오래 걸려서 인스턴스 생성 대기 시간을 변경해 준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>controller, compute</b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"> 에서 진행한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/nova/nova.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">[DEFAULT] 섹션에 다음을 추가.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+instance_build_timeout = 3600
+block_device_allocate_retries=1200
+block_device_allocate_retries_interval=3
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[ controller ]</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl restart openstack-nova-api.service openstack-nova-novncproxy.service openstack-nova-scheduler.service openstack-nova-conductor.service
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">[</span><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b> compute ]</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl restart openstack-nova-compute.service
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">(14) 환경변수 설정 파일 변경</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi ~/keystone_admin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">위 파일에서 export OS_PROJECT_NAME=admin 을 다음과 같이 변경.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+export OS_PROJECT_NAME=service
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">변경 후 저장하고 나가서</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+source ~/keystone_admin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">(15) 로드밸런스 생성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">방금 만든 이미지로 (볼륨과) 인스턴스 생성.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-octavia-amphora-error/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack loadbalancer create --name lb01 --vip-subnet-id internal-subnet --project service
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">(16) 확인</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack loadbalancer list
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">상태가 active 인 것 체크.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"># PENDING_CREATE 상태로 꽤 오래 기다려야 한다. . .</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-octavia-amphora-error/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#ba0000;">에러 :: </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>오픈스택 Octavia 수동설치시, Amphora 로드밸런스 서비스 에러</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">에러 메시지는 다음과 같다,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">2021-05-26 15:26:58.430 2904 ERROR</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">octavia.controller.worker.v1.tasks.amphora_driver_tasks [-]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">octavia.amphorae.driver_exceptions.exceptions.TimeOutException: contacting the amphora timed out.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">Amphora compute instance failed to become reachable. This either means the compute driver failed to fully boot the instance inside the timeout interval or the instance is not reachable via the lb-mgmt-net.: octavia.amphorae.driver_exceptions.exceptions.TimeOutException: contacting the amphora timed out.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#999999;"><i>Amphora 컴퓨팅 인스턴스에 연결할 수 없습니다. 이는 컴퓨팅 드라이버가 시간 초과 간격 내에 인스턴스를 완전히 부팅하지 못했거나 lb-mgmt-net을 통해 인스턴스에 연결할 수 없음을 의미합니다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#999999;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">고칠 수 없는 듯 한 버그같다. . .</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">그래서 Rocky 버전 수동 설치하여 다시 시도해 봤지만 여전히 뭔가 이상함.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">수동 설치 시 여러가지 프로그램들의 버전이 달라 뭔가 꼬이는 것으로 추정.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">결국 Rocky 버전 팩스택 설치하여 로드밸런스 서비스 정상 작동.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">그래서 Rocky 버전 팩스택 설치부터 다시 포스팅 하였습니다..😢</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

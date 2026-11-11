@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP / Burp suite, Falcon Proxy 사용법 | minj.devlog</title>
+  <meta name="description" content="이런 글을 가입 없이 볼 수 있을까? 0. 프록시(Proxy)란? 사전적인 의미로는 대리인(agent)라는 의미. 서버와 클라이언트 사이에서 중계기로서 대리로 통신을 수행하는 기능을 가리켜 프록시, 해당 컴퓨터나 응용 프로그램을 프록시 서버라고 부른다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/burp-suite-falcon-proxy/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="HTTP / Burp suite, Falcon Proxy 사용법" />
+  <meta property="og:description" content="이런 글을 가입 없이 볼 수 있을까? 0. 프록시(Proxy)란? 사전적인 의미로는 대리인(agent)라는 의미. 서버와 클라이언트 사이에서 중계기로서 대리로 통신을 수행하는 기능을 가리켜 프록시, 해당 컴퓨터나 응용 프로그램을 프록시 서버라고 부른다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/burp-suite-falcon-proxy/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/burp-suite-falcon-proxy/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-04-25" />
+  <meta property="article:section" content="Security" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "HTTP / Burp suite, Falcon Proxy 사용법", "description": "이런 글을 가입 없이 볼 수 있을까? 0. 프록시(Proxy)란? 사전적인 의미로는 대리인(agent)라는 의미. 서버와 클라이언트 사이에서 중계기로서 대리로 통신을 수행하는 기능을 가리켜 프록시, 해당 컴퓨터나 응용 프로그램을 프록시 서버라고 부른다.", "datePublished": "2021-04-25", "dateModified": "2021-04-25", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/burp-suite-falcon-proxy/", "image": "https://minjipi.github.io/posts/burp-suite-falcon-proxy/images/image_1.jpg", "articleSection": "Security"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="burp-suite-falcon-proxy">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Security">Security</a>
+              <time class="post-date" datetime="2021-04-25">2021.04.25</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222322681453" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">HTTP / Burp suite, Falcon Proxy 사용법</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/burp-suite-falcon-proxy/images/image_1.jpg" alt="HTTP / Burp suite, Falcon Proxy 사용법" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222322681453 -->
+<div class="se-main-container">
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/burp-suite-falcon-proxy/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">이런 글을 가입 없이 볼 수 있을까?</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#141414;">0. 프록시(Proxy)란?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.6;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;"> 사전적인 의미로는 대리인(agent)라는 의미. 서버와 클라이언트 사이에서 중계기로서 대리로 통신을 수행하는 기능을 가리켜 프록시, 해당 컴퓨터나 응용 프로그램을 프록시 서버라고 부른다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;">일반적으로 프록시는 클라이언트에 위치하면서, 클라이언트와 서버 사이에서 요청과 응답을 처리한다.(Request,Response) </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><b>프록시를 이용한 통신 과정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">1. 브라우저에서 프록시로 데이터 전송</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">2. 프록시에서 웹 서버로 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><b>Request</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">3. 웹 서버에서 프록시로 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><b>Response</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">4. 프록시에서 브라우저로 데이터 전송</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#141414;">1. </span><span class="se-fs- se-ff-" style="color:#141414;"><b>burp suite</b></span><span class="se-fs- se-ff-" style="color:#141414;"> 다운로드(mac)</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">웹 프록시 서버를 사용하여 클라이언트, 서버의 응답 및 요청 패킷을 확인하고 조작이 가능한 툴.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;">Burp Suite(버프 스위트)란,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;"><b>프록시 서버를 사용하여 클라이언트와 서버가 주고받는 패킷을 가로채 위변조가 가능하게 해주는 프로그램</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;">으로, 웹해킹에서 주로 쓰인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;">아! Burp Suite는 자바로 개발된 언어라서, 실행하기 위해서 JDK(Java Development Kit)를 요구할 수 있다. </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;">설치가 안되신 분은 J</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;"><b>DK를 설치</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;">해주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">그리고 아래 공식 사이트에서 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><b>burp suite</b></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"> </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><b>다운로드.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><a class="se-link" href="https://portswigger.net/burp/releases" target="_blank">https://portswigger.net/burp/releases</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:594px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">정상적인 클라이언트와 서버간의 통신</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:599px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">중간에 해커가 개입된 클라이언트와 서버간의 통신</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#141414;">2. </span><span class="se-fs- se-ff-" style="color:#141414;"><b>Falcon Proxy</b></span><span class="se-fs- se-ff-" style="color:#141414;"> 다운로드, 설정</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">중간에 패킷을 변조하고 HTML 클라이언트 소스 코드를 변경하는 등의 작업을 수월하게 하기 위해서 프록시 툴을 설치할 수 있는 툴이다. </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><b>Falcon Proxy</b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#141414;">를 다운받아 주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">[추가]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:656px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">압정? 아이콘 클릭ㅎㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">위와 같이 설정해주고 [Create]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">토클 ON 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#141414;">3. 사이트 접속</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">웹사이트에서 내가 접속할 수 있는 페이지의 글을 하나 클릭해 들어간다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">모두에게 잘 보여지는 글..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">보통 이런 게시글을 끝까지 읽으면 제일 아래에 위치한 '전체글 카테고리'에 궁금하고 흥미로운 제목의 다른 게시글들이 있는데?!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">현재 포스팅에서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">그 궁금한 포스팅을 보려고 클릭하면..?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">카페 가입을 해야 볼 수 있는 글이라는 페이지라는 창이 뜬다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">여기서부터 시작!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">잘 보이는 게시글을 들어갈 수 있는 사이트로 다시 돌아간다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">돌아가서 Falcon Proxy 체크 하고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">잘 보이는 글인 [90년대 어린이들의 창작활동] 글 클릭!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">그리고 Burp suite를 함께 보면 이런 화면이 뜬다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">웹사이트에서 [고급] 클릭.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">[이동]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_17.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">그리고 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"><b>burp suite</b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#141414;">를 확인해보면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#141414;">맨 첫 줄에 게시글 번호가 보이는데</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_18.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">보여진 게시글의 번호 자리에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">보고싶은 컨텐츠인 [인도 거품 해변]의 게시글 번호를 바꿔 넣어준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_19.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">바꿈.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_20.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">그리고 나서 [foward] 클릭클릭!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_21.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">그럼 아까는 보이지 않았던 게시글이 보인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">엑박 뜨는 것은 어떻게 해결하나면</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_22.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;">저기서 바로 Falcon 꺼주고 새로고침.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/burp-suite-falcon-proxy/images/image_23.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">게시글이 보인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">막상 보니 내가 생각했던 예쁜 사진들이 없었다🥺</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">다시 한번 환경오염에 대해 생각해보게 되는....</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>물론 본 포스팅의 의도는 카페 가입 안하고 게시글 보기가 아닙니다.</b></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python 머신러닝 예제 :: Python boto3 + AWS S3 연동해서 이미지 분석 | minj.devlog</title>
+  <meta name="description" content="Python boto3 + AWS S3 연동, 이미지 분석 AWS S3란, 이미지, 동영상 등 다양한 파일을 저장하기 위한 목적으로 사용할 수 있는 아마존 서비스 입니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/python-boto3-s3-image-analysis/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Python 머신러닝 예제 :: Python boto3 + AWS S3 연동해서 이미지 분석" />
+  <meta property="og:description" content="Python boto3 + AWS S3 연동, 이미지 분석 AWS S3란, 이미지, 동영상 등 다양한 파일을 저장하기 위한 목적으로 사용할 수 있는 아마존 서비스 입니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/python-boto3-s3-image-analysis/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/python-boto3-s3-image-analysis/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-09-10" />
+  <meta property="article:section" content="Backend/Python" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Python 머신러닝 예제 :: Python boto3 + AWS S3 연동해서 이미지 분석", "description": "Python boto3 + AWS S3 연동, 이미지 분석 AWS S3란, 이미지, 동영상 등 다양한 파일을 저장하기 위한 목적으로 사용할 수 있는 아마존 서비스 입니다.", "datePublished": "2020-09-10", "dateModified": "2020-09-10", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/python-boto3-s3-image-analysis/", "image": "https://minjipi.github.io/posts/python-boto3-s3-image-analysis/images/image_1.jpg", "articleSection": "Backend/Python"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="python-boto3-s3-image-analysis">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FPython">Backend/Python</a>
+              <time class="post-date" datetime="2020-09-10">2020.09.10</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222085759303" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Python 머신러닝 예제 :: Python boto3 + AWS S3 연동해서 이미지 분석</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222085759303 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">Python boto3 + AWS S3 연동, 이미지 분석</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">AWS S3란, 이미지, 동영상 등 다양한 파일을 저장하기 위한 목적으로 사용할 수 있는 아마존 서비스 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">Python에서 AWS S3에 다양한 파일을 업로드하기 위해서는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset se-decoration-unset" style="color:#141414;"><b>boto3</b></span><span class="se-fs- se-ff-system se-style-unset se-decoration-unset" style="color:#141414;">라는 이름의 라이브러리를 사용해 연동</span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">최종적으로 업로드한 이미지를 분석하는 프로그램 실습을 위해,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">우선 AWS S3 서비스의 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"><b>[버킷 만들기]</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">를 먼저 진행합니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line5">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>0. Amazon S3 : 버킷 만들기</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">aws 사이트에서 S3 서비스를 검색합니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/python-boto3-s3-image-analysis/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">그리고 아래와 같이 버킷을 생성해주세요.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>[ 버킷 만들기 ] 를 클릭.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">이름을 쓰고 [다음]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">[ 다음 ]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">[ 모든 퍼블릭 액세스 차단 ] 체크 </span><span class="se-fs- se-ff-" style="color:#141414;"><b>'해제' </b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">해주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">생성된 버킷 확인 후, 들어가 주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">여기에 이미지를 업로드 할 것입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">여기서</span><span class="se-fs- se-ff-" style="color:#141414;"><b> [ 업로드 ] </b></span><span class="se-fs- se-ff-" style="color:#141414;">클릭 후,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">그냥 파일 추가 누르셔서 업로드 하시면 됩니다!!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">참고로 이미지 업로드 하시기 전, 미리 아래의 링크로 들어가서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">업로드할 이미지가 잘 분석되는지 확인해 주세요ㅠ.ㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;background-color:#e5eaef;"><a class="se-link" href="https://ap-northeast-2.console.aws.amazon.com/rekognition/home?ad=c&amp;cp=bn&amp;p=rkn&amp;region=ap-northeast-2#/label-detection" target="_blank"><b>Amazon Rekognition</b></a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">아마존 서비스 중 하나로,</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:473px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">이렇게 이미지를 분석해서 '강아지' 임을 알려주는 서비스 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">저의 경우...</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:200px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">타코 안에서 생각에 잠긴 아저씨 그림을 업로드 했더니 야구모자 라는 결과가 나왔습니다.ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">이렇게 인식을 잘 못한다면 다른 이미지로 바꾸어 주세요..!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>1. boto3 설치</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+pip install boto3
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">본격적으로 연동을 해 봅시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">라이브러리를 설치해 주세요.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>2. aws 액세스키 생성</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">aws 가입 필수 !!</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>[ 내보안자격증명 ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">이 키가 있는 컴퓨터에서만 사용할 수 있게 해줌.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">액세스 키 -&gt; </span><span class="se-fs- se-ff-" style="color:#141414;"><b>[ 액세스 키 만들기 ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>[ 키 파일 다운로드 ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>rootkey.csv </b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">라는 키파일을 열어보면 아래와 같이</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>AccessKeyId </b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">와,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>SecretKey </b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">가 있는데-</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:624px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">요 값을 사용할 예정.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>3. 내 문서 -&gt; 'credentials' 파일 생성</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">aws 가입 필수 !!</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;">내 문서 (혹은 로컬디스크\사용자 위치) 에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>.aws 라는 이름의 폴더</b></span><span class="se-fs- se-ff-" style="color:#141414;">를 만들고,</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"><b>credentials 라는 이름의 '확장자가 없는' 파일을 만들어주세요.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">* 저의 경우 git bash 를 사용해 vi 편집기로 만들었는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">메모장으로 만든 후 .txt 확장자를 지워주셔도 좋습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">폴더를 만들었다면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">폴더 안에 아래의 내용을 입력해 주세요!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[default]
+aws_access_key_id = ﻿아까 키파일의 AccessKeyId 입력
+aws_secret_access_key = ﻿아까 키파일의 SecretKey 입력
+region = ap-northeast-2
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">참고로 여기서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanummyeongjo" style="color:#141414;"><b>Traceback: </b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanummyeongjo" style="color:#141414;"><b>cp.read([path]) </b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">--- 어쩌고 에러가 난다면?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">맨 첫 줄의 </span><span class="se-fs- se-ff-" style="color:#141414;"><b>[default] </b></span><span class="se-fs- se-ff- se-weight-unset" style="color:#141414;">를 확인해 주세요!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>4. Ptyhon 코드 입력</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import boto3
+
+bucket='[S3버킷이름]'
+photo='[그림파일 이름.확장자]'
+
+
+client=boto3.client('rekognition')
+
+
+response = client.detect_labels(Image={'S3Object':{'Bucket':bucket,'Name':photo}},
+    MaxLabels=10)
+print('Detected labels for ' + photo)
+print()
+for label in response['Labels']:
+print ("Label: " + label['Name'])
+print ("Confidence: " + str(label['Confidence']))
+print ("Instances:")
+for instance in label['Instances']:
+print ("  Bounding box")
+print ("    Top: " + str(instance['BoundingBox']['Top']))
+print ("    Left: " + str(instance['BoundingBox']['Left']))
+print ("    Width: " + str(instance['BoundingBox']['Width']))
+print ("    Height: " + str(instance['BoundingBox']['Height']))
+print ("  Confidence: " + str(instance['Confidence']))
+print()
+print ("Parents:")
+for parent in label['Parents']:
+print ("   " + parent['Name'])
+print ("----------")
+print ()
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">bucket=</span><span class="se-fs- se-ff-"><b>'[S3버킷이름]'</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">photo=</span><span class="se-fs- se-ff-"><b>'[그림파일 이름.확장자]'</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">만 유념해서 입력해 주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">참고로 파이썬 파일 위치는 상관이 없습니다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>5. 결과 확인</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Parents:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Scarf</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Clothing</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">----------</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">정확하게 나왔습니다!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-boto3-s3-image-analysis/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

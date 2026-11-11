@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리액트 아주 기본적인 todoList 만들기 (useState, spread, map 함수) | minj.devlog</title>
+  <meta name="description" content="리액트로 아주 기본적인 todoList 를 만들어본다. useState는 저번 글 에서 설명했으니 넘어가고, {...} spread 연산자와 .map 함수에 대해 설명한다. 1. spread 연산자 Btn을 누를 때 일어나는 함수를 보자." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/react-todo-list-basic/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="리액트 아주 기본적인 todoList 만들기 (useState, spread, map 함수)" />
+  <meta property="og:description" content="리액트로 아주 기본적인 todoList 를 만들어본다. useState는 저번 글 에서 설명했으니 넘어가고, {...} spread 연산자와 .map 함수에 대해 설명한다. 1. spread 연산자 Btn을 누를 때 일어나는 함수를 보자." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/react-todo-list-basic/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/react-todo-list-basic/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-02-17" />
+  <meta property="article:section" content="Frontend/React" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "리액트 아주 기본적인 todoList 만들기 (useState, spread, map 함수)", "description": "리액트로 아주 기본적인 todoList 를 만들어본다. useState는 저번 글 에서 설명했으니 넘어가고, {...} spread 연산자와 .map 함수에 대해 설명한다. 1. spread 연산자 Btn을 누를 때 일어나는 함수를 보자.", "datePublished": "2022-02-17", "dateModified": "2022-02-17", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/react-todo-list-basic/", "image": "https://minjipi.github.io/posts/react-todo-list-basic/images/image_1.jpg", "articleSection": "Frontend/React"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="react-todo-list-basic">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FReact">Frontend/React</a>
+              <time class="post-date" datetime="2022-02-17">2022.02.17</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222650297802" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">리액트 아주 기본적인 todoList 만들기 (useState, spread, map 함수)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/react-todo-list-basic/images/image_1.jpg" alt="리액트 아주 기본적인 todoList 만들기 (useState, spread, map 함수)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222650297802 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">리액트로 아주 기본적인 todoList 를 만들어본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">useState는 </span><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222649744453" target="_blank">저번 글</a></span><span class="se-fs- se-ff-"> 에서 설명했으니 넘어가고,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">{...} spread 연산자와 .map 함수에 대해 설명한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/react-todo-list-basic/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff-"><b>1. spread 연산자</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Btn을 누를 때 일어나는 함수를 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+onClick={(e) =&gt; {
+setTodoList([...todoList, word]);
+setWord("");
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 spread 연산자가 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">배열 추가 같은 건데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">todoList 의 값에 + word를 추가 세팅해 주는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">세팅 후 다시 word는 비워준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">* 그리고 type="button" 안하면 버튼 누를 때마다 페이지 리로드 되기 때문에 이것도 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>2. map 함수</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">자바스크립트 반복문을 통해 DOM에 JSX</span><span class="se-fs- se-ff- se-weight-unset"><sup>*</sup></span><span class="se-fs- se-ff- se-weight-unset">을 렌더링하고 싶을 때, return 안에서 for을 쓸 수 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff- se-weight-unset"> * JSX(JavaScript XML)는 Javascript에 XML을 추가한 확장한 문법.</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff- se-weight-unset">JSX는 리액트로 프로젝트를 개발할 때 사용되므로, 공식적인 자바스크립트 문법은 아니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">대체 방법은 두가지가 있는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">1) return문에서 JSX를 반환하는 함수 호출 하는 것.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function App() {
+const num = ["1", "2", "3", "4"];
+const rendering = () =&gt; {
+const result = [];
+for (let i = 0; i &lt; num.length; i++) {
+      result.push(&lt;span key={i}&gt;{num[i] + " / "}&lt;/span&gt;);
+}
+return result;
+};
+return &lt;div&gt;{rendering()}&lt;/div&gt;;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">장점은 재사용이 용이하며 return문이 깔끔하다는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">2. return문 안에서 </span><span class="se-fs- se-ff-"><b>map</b></span><span class="se-fs- se-ff- se-weight-unset"> 함수 사용.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function App() {
+const num = ["1", "2", "3", "4"];
+return (
+&lt;div&gt;
+{num.map((number, index) =&gt; (
+&lt;span key={number}&gt;
+{number}
+{" / "}
+&lt;/span&gt;
+))}
+&lt;/div&gt;
+);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">장점은 가독성이 좋고 직관적이라는 점.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">forEach는 값을 반환하지 않는 단순연산이기 때문에 JSX를 반환할 수 있는 map함수를 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">나는 map함수를 사용했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+todoList &amp;&amp; todoList.map((todo) =&gt;
+&lt;p&gt;{todo}&lt;/p&gt;)
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">todoList가 있을 때,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">todoList의 값을 한 씩 꺼내서 todo 라는 이름으로 =&gt; {} 이 실행문에서 수행한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">3. key</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/react-todo-list-basic/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Warning: Each child in a list should have a unique "key" prop.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">"key"란 리액트에서 key는 컴포넌트 배열을 렌더링 했을 때, 어떤 원소에 변동이 있었는지 식별하는 것을 돕는데 사용되는 속성이다. key가 없을 때는 Virtual DOM을 비교하면서 리스트를 순차적으로 비교하면서 변화를 감지하기 때문에 리스트의 맨 앞이나 중간에 엘리먼트가 삽입될 때 성능 저하가 발생한다. 따라서 이 문제를 극복하기 위해 key를 사용한다고 한다. 해결법은 간단하지만..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">근데 일단 warning 이라 .. 해결하지 않고 넘어가본당..~</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리눅스 :: Syslog 이론 | minj.devlog</title>
+  <meta name="description" content="로그 ? 출처 입력 운영체제나 소프트웨어가 실행 중 발생하는 이벤트 나 각기 다른 사용자의 통신 소프트웨어 간의 메시지를 기록한 파일. 로그를 기록하는 행위를 로깅(logging) 이라고 한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/linux-syslog-basics/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="리눅스 :: Syslog 이론" />
+  <meta property="og:description" content="로그 ? 출처 입력 운영체제나 소프트웨어가 실행 중 발생하는 이벤트 나 각기 다른 사용자의 통신 소프트웨어 간의 메시지를 기록한 파일. 로그를 기록하는 행위를 로깅(logging) 이라고 한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/linux-syslog-basics/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2020-08-31" />
+  <meta property="article:section" content="Linux/Administration" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "리눅스 :: Syslog 이론", "description": "로그 ? 출처 입력 운영체제나 소프트웨어가 실행 중 발생하는 이벤트 나 각기 다른 사용자의 통신 소프트웨어 간의 메시지를 기록한 파일. 로그를 기록하는 행위를 로깅(logging) 이라고 한다.", "datePublished": "2020-08-31", "dateModified": "2020-08-31", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/linux-syslog-basics/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Linux/Administration"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="linux-syslog-basics">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Linux%2FAdministration">Linux/Administration</a>
+              <time class="post-date" datetime="2020-08-31">2020.08.31</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222076556286" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">리눅스 :: Syslog 이론</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222076556286 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>로그 ?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">출처 입력</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">운영체제나 소프트웨어가 실행 중 </span><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;background-color:#b0f1ff;">발생하는 이벤트</span><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">나</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">각기 다른 사용자의 통신 소프트웨어 간의 메시지를 기록한 파일.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">로그를 기록하는 행위를 </span><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;background-color:#b0f1ff;"><b>로깅(logging)</b></span><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>로그의 종류</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #a2e392;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>시스템 로그</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #a2e392;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>/var/log/messages</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #a2e392;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>시스템 전반적인 로그:</b></span><span class="se-fs- se-ff- se-weight-unset"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">대부분의 내용이 기록되어서,</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">에러 났을 때 확인하면 왠만한 에러는 잡을 수 있다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">보안 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/secure</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">inetd에 의한 로그</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">메일 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/maillog</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">메일 로그</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">크론 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/cron</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">작업 스케쥴링 로그</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Dmesg 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/dmesg</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">시스템 부팅 시 기록되는 로그</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Utmp 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/utmp</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">현재 시스템에 로그인한 각 사용자의 상태를 출력</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Wtmp 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/wtmp</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">로그인 로그아웃 시스템의 재부팅에 대한 정보</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Last 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/lastlog</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">계정 사용자들이 마지막으로 로그인한 정보</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">아나콘다 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/anaconda</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">리눅스 설치 시 installer과정에 대한 로그</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Su 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/sulog</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">su 명령어를 통한 로그인 시 정보 기록</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Pacct 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/pacct</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">로그인한 모든 사용자의 실행한 프로그램 정보 기록</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Btmp 로그</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/var/log/btmp</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">실패한 로그인 시도 기록</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>Syslog</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">앞서 살펴본 여러 로그들은 Syslog 라는 데몬 프로세스에 의해 관리되고 있는데!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>/etc/rsyslog.conf</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">위 경로의 파일이 syslog가 관리하는 설정 파일이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">rsyslog.conf 파일을 살펴보면 다음과 같은 형식으로 뭔가 주르륵 있을 것이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+### RULES ###
+
+#kern.* /dev/consle
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border-style:solid;border-width:1px 0px 0px 1px;border-color:#000000;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="2" rowspan="1" style="width: 63.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; background-color: #a2e392;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>[Facility].[Level]</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 36.87%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; background-color: #a2e392;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>[Action]</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="2" rowspan="1" style="width: 63.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">Selector 필드</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 36.87%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">Action 필드(파일, 서버)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">######</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">이 부분에 ip 주소 등이 있다면</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">원격지에 로그를 저장 할 수도 있는 것이다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">여러대의 컴퓨터 각각의 로그를 따로 저장하는 것이 아니라, 전부 모아서 중앙 서버에 저장시켜 </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>통합으로 관리</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">할 수도 있는 것!</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">Facility</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">Level</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 36.87%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>kern</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 커널이 발생한 메시지</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>emerge</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 일반적으로 모든 사용자에게 전달되는 패닉 상황 (블루스크린, 커널 패닉)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="9" style="width: 36.87%; height: 387.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>user</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 사용자 프로세스</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>alert</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 시스템 DB에 손상 등 즉시 수정해야되는 상황.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>mail</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : mail 시스템 관련 서비스</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>crit</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 하드 장치 오류 등 중대한 상황에 대한 경고 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">daemon : telnetd, ftpd, httpd과 관련된 서비스</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>err</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 하등 장치 이외의 오류</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">auth : 로그인과 같은 인증 관련 서비스</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>warning</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 경고 메시지. '어 이건 쫌..?'</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">그치만 일단 무시해도 됨 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">syslog : syslog 관련 서비스</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>notice</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 특별한 처리가 필요할 수 있는 비오류 상황.. 쪼금 애매한?</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">cron : 예약작업 관련 서비스, crond, atd</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>info</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 정보 메시지 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">* : 모든 서비스</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>debug</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 프로그램 개발 또는 테스트 할 때 사용되는 메시지</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 38.13%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#000000; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>none</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> : 로그로 기록 X</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>결론 :</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">에러 상황 시 Syslog 파일을 확인 하자....!!!!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222076554668" target="_blank"><b>Syslog 활용편 </b></a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222076554668" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">리눅스 :: Syslog 활용, 로그 파일 설정하기</strong>
+<p class="se-oglink-summary">Syslog 를 설정해서원하는 곳에 로그 데이터 저장하기var 안에 -&gt; log안에 -&gt; minji.log 에 저장!​...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

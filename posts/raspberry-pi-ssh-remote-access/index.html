@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>라즈베리 파이 원격으로 접속하기.(PC에서 SSH 원격 접속) Windows, Linux, PuTTY | minj.devlog</title>
+  <meta name="description" content="라즈베리 파이 원격으로 접속하기 PC에서 SSH 원격 접속 ( Windows, Linux, PuTTY) (이전글: 라즈베리 파이 b+ 라즈비안 설치하기) 라즈베리 파이 B+ 설치하기, 라즈비안 RASPBIAN 설치, 한글 깨짐 현상 해결 0." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/raspberry-pi-ssh-remote-access/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="라즈베리 파이 원격으로 접속하기.(PC에서 SSH 원격 접속) Windows, Linux, PuTTY" />
+  <meta property="og:description" content="라즈베리 파이 원격으로 접속하기 PC에서 SSH 원격 접속 ( Windows, Linux, PuTTY) (이전글: 라즈베리 파이 b+ 라즈비안 설치하기) 라즈베리 파이 B+ 설치하기, 라즈비안 RASPBIAN 설치, 한글 깨짐 현상 해결 0." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/raspberry-pi-ssh-remote-access/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/raspberry-pi-ssh-remote-access/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-04-07" />
+  <meta property="article:section" content="IoT/RaspberryPi" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "라즈베리 파이 원격으로 접속하기.(PC에서 SSH 원격 접속) Windows, Linux, PuTTY", "description": "라즈베리 파이 원격으로 접속하기 PC에서 SSH 원격 접속 ( Windows, Linux, PuTTY) (이전글: 라즈베리 파이 b+ 라즈비안 설치하기) 라즈베리 파이 B+ 설치하기, 라즈비안 RASPBIAN 설치, 한글 깨짐 현상 해결 0.", "datePublished": "2020-04-07", "dateModified": "2020-04-07", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/raspberry-pi-ssh-remote-access/", "image": "https://minjipi.github.io/posts/raspberry-pi-ssh-remote-access/images/image_1.jpg", "articleSection": "IoT/RaspberryPi"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="raspberry-pi-ssh-remote-access">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=IoT%2FRaspberryPi">IoT/RaspberryPi</a>
+              <time class="post-date" datetime="2020-04-07">2020.04.07</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/221895500041" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">라즈베리 파이 원격으로 접속하기.(PC에서 SSH 원격 접속) Windows, Linux, PuTTY</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/221895500041 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>라즈베리 파이 원격으로 접속하기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs13 se-ff-">PC에서 SSH 원격 접속</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs13 se-ff-">(</span><span class="se-fs-fs13 se-ff-"><b>Windows, Linux, PuTTY)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs13 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs13 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"><b>(이전글: 라즈베리 파이 b+ 라즈비안 설치하기)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs13 se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://m.blog.naver.com/ghdalswl77/221891254440" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">라즈베리 파이 B+ 설치하기, 라즈비안 RASPBIAN 설치, 한글 깨짐 현상 해결</strong>
+<p class="se-oglink-summary">0. 준비할 것- 라즈베리파이 OS 설치 작업을 할 노트북 💻 혹은 데스크탑 🖥- microSD 메모리카드 ...</p>
+<p class="se-oglink-url">m.blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></h2><h2 class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"><b>0. 암호 변경</b></span><span class="se-fs- se-ff-">하기</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">SD카드에 라즈비안을 담고 부팅을 한 직후라면!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">즉 암호를 변경한 적이 없는 라즈베리 파이, 라즈비안 SD 계정이라면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>ID : </b></span><span class="se-fs- se-ff-" style="color:#0076c8;"><b>pi</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>Password :  </b></span><span class="se-fs- se-ff-" style="color:#0076c8;"><b>raspberry</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">라고 설정되어 있다. 따라서 원격으로 사용하려면 이 암호부터 바꾸는 것이 좋기 때문에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">바꾸는 것을 추천한다. 바꾸는 방법은</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 홈 화면 좌측 상단의 라즈베리 파이 모양 아이콘 클릭</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">-기본 설정</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">-Raspberry Pi Configuration 클릭</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">-(창이 하나 뜨는데 거기서) Change Password .</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. </span><span class="se-fs- se-ff-"><b>라즈베리 파이 ip 주소 확인</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/raspberry-pi-ssh-remote-access/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">PC나 노트북에선 해당 기기의 ip를 확인할 때 </span><span class="se-fs- se-ff-"><b>ipconfig</b></span><span class="se-fs- se-ff-"> 라는 명령어를 사용하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">리눅스(라즈베리 파이)에서는 위 사진과 같이 </span><span class="se-fs- se-ff-" style="color:#0076c8;"><b>ifconfig</b></span><span class="se-fs- se-ff-"> 라는 명령어를 사용해 해당 ip를 확인한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/raspberry-pi-ssh-remote-access/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">확인된 ip 주소!</span></p></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">eth에 표시된 내용은 유선 랜에 대한 네트워크 정보고, wlan에 표시된 내용은 무선 랜 정보인데,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">여기서 가장 첫번째 줄의 HWaddr은 MAC 주소(랜 카드 고유번호)이고,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">두번째 줄 inet addr의 값이(하얀색 마크업 된 부분)지금 우리가 쓸 IP주소가 되겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>2</b></span><span class="se-fs-fs19 se-ff-"><b>-1</b></span><span class="se-fs- se-ff-"><b>. </b></span><span class="se-fs- se-ff-">PC에서 SSH 원격 접속</span><span class="se-fs- se-ff-"><b>(Linux)</b></span><span class="se-fs- se-ff-"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">커맨드에 다음의 명령어를 입력해 ssh로 라즈베리 파이에 접속한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">pi@ 뒤의 숫자는 ip번호!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+ssh pi@000.000.00,,
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/raspberry-pi-ssh-remote-access/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">끝, 아래는 잘 됐는지 확인해 본 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-">(코드 설명)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-">*pwd : print working directory : 경로 확인. 지금 내 위치가 어딘지 알려줘!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-">*ls: 여기 뭐가 있나요? </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-">*cd: 들어갑니다 여기로</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2-2. PC에서</span><span class="se-fs- se-ff-"><b> </b></span><span class="se-fs- se-ff-">SSH 원격 접속</span><span class="se-fs- se-ff-"><b>(Windows):</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Windows 에서 제공하는 원격 데스크톱 을 사용해서 라즈베리 파이에 접속하려면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">라즈베리 파이에 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>realvnc-vnc-server</b></span><span class="se-fs- se-ff-">를 제거 후 </span><span class="se-fs- se-ff-"><b>xrdp</b></span><span class="se-fs- se-ff-">라는 패키지와 </span><span class="se-fs- se-ff-"><b>tightvnserver</b></span><span class="se-fs- se-ff-"> 패키지를 설치해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">sudo apt-get purge realvnc-vnc-server</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위 명령어로 'realvnc-vnc-server'패키지를 제거 후,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">sudo apt-get install tightvncserver</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위 명령어로 tightvnserver 패키지를 설치한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">sudo apt-get install xrdp</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">xrdp 패키지 또한 설치!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/raspberry-pi-ssh-remote-access/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기에</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/raspberry-pi-ssh-remote-access/images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기에 ip 주소 입력. </span><span class="se-fs- se-ff-"><b>127.0.0.1 은 아닙니다!!!</b></span></p></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ip주소를 입력후 뜨는 알림창에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">user name - pi</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">password - 설정한 비밀번호를 입력.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">그럼 끝.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">2-3. </span><span class="se-fs- se-ff-"><b>PuTTY</b></span><span class="se-fs- se-ff-"> 사용</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이건 찾아 보기만 했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://thekoguryo.github.io/oci/chapter03/5/2/" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">3.5.2 Windows에서 PuTTY로 접속하기 - TheKoguryo's 기술 블로그</strong>
+<p class="se-oglink-summary">TheKoguryo's 기술 블로그 Version 2019.06.03 Home Tag OCI Training OCI Hands-On Labs Feedback 3.5.2 Windows에서 PuTTY로 접속하기 ssh-keygen로 생성한 PEM(Privacy Enhanced Mail) 파일 형식의 키는 PuTTY에서는 바로 사용할 수 없습니다. PuTTY Key Generator를 통해 .ppk 형식으로 변환하여 사용합니다. PuTTY 설치 PuTTY가 설치되어 있지 않다면, http://www.putty.org/ 에서 putty를 ...</p>
+<p class="se-oglink-url">thekoguryo.github.io</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-left">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><span class="__se-hash-tag">#리눅스명령어</span></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://fishpoint.tistory.com/2374?category=739400" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">자주 가끔 많이 항상 사용하는 리눅스 명령어 모음</strong>
+<p class="se-oglink-summary">자주 사용하는 리눅스 명령어 모음 생활코딩에서 모두에게 제공하는 리눅스 수업은 다음 링크로 배울 수 있다. 꼭 배워두시길 부탁드린다. ㅎㅎ https://opentutorials.org/course/2598 1. 리눅스 시스템 종료 방..</p>
+<p class="se-oglink-url">fishpoint.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">*파일 삭제는 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">rm 파일명.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">근데 rm 해도 지워지지 않는 것은</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">rm -r 파일명. 비어있지 않은 디렉토리는 -r 없이 삭제할 수 없다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">일반적으로도 -r을 자주 쓴다고 함.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Builder Pattern 빌더 패턴의 특징, 장점 (@Builder 사용이유, @Builder 예제) | minj.devlog</title>
+  <meta name="description" content="스프링 시큐리티 쓰면서 왜 빌더를 쓸까 궁금했었는데, 이제야 공부하고 정리해본다..^^ entity나 Dto객체에 값을 넣어줄때, 롬복의 빌더 애노테이션(@Builder)을 사용하는 예제들이 많다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/builder-pattern-lombok-builder/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Builder Pattern 빌더 패턴의 특징, 장점 (@Builder 사용이유, @Builder 예제)" />
+  <meta property="og:description" content="스프링 시큐리티 쓰면서 왜 빌더를 쓸까 궁금했었는데, 이제야 공부하고 정리해본다..^^ entity나 Dto객체에 값을 넣어줄때, 롬복의 빌더 애노테이션(@Builder)을 사용하는 예제들이 많다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/builder-pattern-lombok-builder/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/builder-pattern-lombok-builder/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-08-09" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Builder Pattern 빌더 패턴의 특징, 장점 (@Builder 사용이유, @Builder 예제)", "description": "스프링 시큐리티 쓰면서 왜 빌더를 쓸까 궁금했었는데, 이제야 공부하고 정리해본다..^^ entity나 Dto객체에 값을 넣어줄때, 롬복의 빌더 애노테이션(@Builder)을 사용하는 예제들이 많다.", "datePublished": "2022-08-09", "dateModified": "2022-08-09", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/builder-pattern-lombok-builder/", "image": "https://minjipi.github.io/posts/builder-pattern-lombok-builder/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="builder-pattern-lombok-builder">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2022-08-09">2022.08.09</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222844087492" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Builder Pattern 빌더 패턴의 특징, 장점 (@Builder 사용이유, @Builder 예제)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/builder-pattern-lombok-builder/images/image_1.jpg" alt="Builder Pattern 빌더 패턴의 특징, 장점 (@Builder 사용이유, @Builder 예제)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222844087492 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#555555;">스프링 시큐리티 쓰면서 왜 빌더를 쓸까 궁금했었는데, 이제야 공부하고 정리해본다..^^</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#555555;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">entity나 Dto객체에 값을 넣어줄때, 롬복의 빌더 애노테이션(@Builder)을 사용하는 예제들이 많다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">객체를 생성하기 위해서는 생성자 패턴, 자바빈 패턴, 빌더 패턴 등을 사용할 수 있는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이 빌더 패턴을 쓰는 이유가 무엇일까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">우선 빌더 패턴이란 디자인패턴중 하나로, 생성과 표현의 분리다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">클래스를 설계하다보면 필수로 받야할 인자들이 있고 선택적으로 받야할 인자들이 있는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">쉽게 말해 </span><span class="se-fs- se-ff-system"><b>생성자에서 인자가 많을때</b></span><span class="se-fs- se-ff-system"> 고려해 볼수있는것이 바로 이 빌더패턴이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">왜 그런 것인지 다른 패턴들과 함께 비교해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Telescoping Constructor Pattern</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">점층적 생성자 패턴</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">각 생성자를 오버라이딩 해서 만드는 기초적인 방식이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">필수적으로 값이 있어야할 멤버변수를 위해 생성자에 매개변수를 넣는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">또한 선택적 인자를 받기위해 추가적인 생성자를 만든다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">쉽게 짤수 있다는 장점이 있지만,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">인자들이 많아질수록 생성자가 많아지고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">매개변수의 정보를 설명할 수 없으므로 어떤 객체에 어떤 인자가 들어갔는지 알기어렵다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.25;"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">그래서 코드 수정(필드 추가 등)이 필요한 경우 수정이 복잡하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.25;"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Member {
+private String nickname; //필수
+private String password; //필수
+private Gender gender; //선택
+public Member(String nickname) {
+this.nickname = nickname;
+}
+public Member(String nickname, String password) {
+this.nickname = nickname;
+this.password = password;
+}
+public Member(String nickname, String password, Gender gender) {
+this.nickname = nickname;
+this.password = password;
+this.gender = gender;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Member member = new Member("minji", "123", F);
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">매개변수의 어떤 위치에 어떤타입과 값을 넣어줘야하는지 개발자가 알고있어야하고, 가독성도 떨어진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Java Beans Pattern</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>자바 빈 패턴</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">가장 익숙한 getter/setter를 이용하여 객체를 생성할때 필드를 주입하는 방식이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Member {
+private String nickname;
+private String password;
+private Gender gender;
+public Member() {
+}
+public void setNickname(String nickname) {
+this.nickname = nickname;
+}
+public void setPassword(String password) {
+this.password = password;
+}
+public void setGender(Gender gender) {
+this.gender = gender;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">자바 빈즈패턴을 사용하면 가독성이 어느정도 해결된다. 하지만 코드량이 늘어나는 단점이 존재하고, 가장 문제가 되는점은 setter 메소드를 통해 값이 계속 변할 수 있기 때문에, 객체일관성이 깨진다는 것이다. 객체일관성이 깨진다는것은 한번 객체를 생성할때 그 객체가 변할 여지가 있다는 것이다. (이는 쓰레드간의 공유 가능한 상태가 존재한다는 것이기 때문에 immutable 객체를 생성할 수 없다.)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Member member = new Member();
+member.setName("minji");
+member.setPassword("123");
+member.setGender("F");
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#555555;">이렇게 객체 생성을 하고나서, 값을 부여하고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Builder Pattern</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>빌더 패턴</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">위 둘의 단점을 모두 보완해서 나타난것이 바로 빌더패턴이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">정보들은 자바빈즈패턴처럼 받되, 데이터 일관성을 위해 정보들을 다 받은 후에 객체를 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">i) 빌더패턴을 적용하면 다음과 같은 장점이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 불필요한 생성자의 제거</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 데이터의 순서에 상관없이 객체생성 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 명시적 선언으로 이해하기가 쉽고 각 인자가 어떤 의미인지 알기 쉽다.(</span><span class="se-fs- se-ff-system"><b>가독성</b></span><span class="se-fs- se-ff-system">)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- setter 메서드가 없으므로 변경 불가능한 객체를 만들수있다.(</span><span class="se-fs- se-ff-system"><b>객체불변성</b></span><span class="se-fs- se-ff-system">)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 한번에 객체를 생성하므로 </span><span class="se-fs- se-ff-system"><b>객체 일관성이 깨지지 않는다</b></span><span class="se-fs- se-ff-system">.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- build() 함수가 null인지 체크해주므로 검증이 가능한다. (안그러면 set하지않은 객체에대해 get을 하게되는경우 nullPointerExcetpion발생 등등의 문제가 생김)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ii) 빌더패턴은 다음과 같이 만들어진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- Member 클래스 내부에 빌더클래스 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 각 멤버 변수별 메서드를 작성, 각 메소드는 변수에 값을 set하고 빌더객체를 리턴한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- build() 메서드는 필수 멤버변수의 null체크를 하고 지금까지 set된 builder를 바탕으로 Member 클래스의 생성자를 호출하고 인스턴스를 리턴.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Member {
+private String nickname; //필수
+private String password; //필수
+private Gender gender; //선택
+public static class Builder {
+private final String nickname;
+private final String password;
+private Gender gender;
+// 필수변수는 생성자로 값을 넣는다.
+public Builder(String nickname, String password) {
+this.nickname = nickname;
+this.password = password;
+}
+// 멤버변수별 메소드: 빌더클래스의 필드값을 set하고 빌더객체를 리턴한다.
+public Builder gender(Gender gender) {
+this.gender = gender;
+return this;
+}
+// 빌더메소드
+public Member build() {
+return new Member(this);
+}
+}
+public Member(Builder builder) {
+this.nickname = builder.nickname;
+this.password = builder.password;
+this.gender = builder.gender;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Member memberEntity = new Builder("minji", "1234")
+.gender(Gender.F)
+.build();
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">하지만 빌더 패턴도 역시 단점이 존재한다. 객체를 생성하려면 우선 빌더객체를 생성해야 하고, 보다시피 다른 패턴들보다 많은 코드를 요구하기 때문에 인자가 충분히 많은 상황에서 이용할 필요가 있다..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Lombok @Builder</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>@Builder</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">..는! 이제 위에서 만든 빌더클래스를 직접 만들지 않아도 롬복이 지원해주는 어노테이션 하나로 클래스를 생성할 수 있다. 클래스 또는 생성자 위에 @Builder 어노테이션을 붙여주면 빌더패턴 코드가 빌드된다. 생성자 상단에 선언시 생성자에 포함된 필드만 빌더에 포함된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import lombok.Builder;
+
+@Builder
+public class Member {
+private String nickname;
+private String password;
+private Gender gender;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public static void main(String[] args) {
+        Member memberEntity = Member.builder()
+.nickname("minji")
+.password("123")
+.gender(Gender.F)
+.build();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">정말 간단하고 좋은 빌더패턴!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">하지만 변수의 개수가 2개 이하이거나, 변경 가능성이 없을 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">경우에는 필더 패턴의 장점을 누릴 수 없을테니 사용하지 않아도 될 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#777777;">(이럴 경우는 별로 없겠지만..//)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system">참고: </span><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://devlog-wjdrbs96.tistory.com/207" target="_blank">https://devlog-wjdrbs96.tistory.com/207</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://johngrib.github.io/wiki/builder-pattern/" target="_blank">https://johngrib.github.io/wiki/builder-pattern/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

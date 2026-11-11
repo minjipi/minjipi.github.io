@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpringBoot와 @PostMapping, @RequestBody | minj.devlog</title>
+  <meta name="description" content="SpringBoot와 @PostMapping, @RequestBody 해당 내용에 앞서, get과 post 방식의 차이를 먼저 짚고 넘어가자. GetMapping은 @GetMapping(value = &quot;/getMappingTest&quot;) URL에 변수(데이터)를 포함시켜 요청," />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-postmapping-requestbody/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="SpringBoot와 @PostMapping, @RequestBody" />
+  <meta property="og:description" content="SpringBoot와 @PostMapping, @RequestBody 해당 내용에 앞서, get과 post 방식의 차이를 먼저 짚고 넘어가자. GetMapping은 @GetMapping(value = &quot;/getMappingTest&quot;) URL에 변수(데이터)를 포함시켜 요청," />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-postmapping-requestbody/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-postmapping-requestbody/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-02-07" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "SpringBoot와 @PostMapping, @RequestBody", "description": "SpringBoot와 @PostMapping, @RequestBody 해당 내용에 앞서, get과 post 방식의 차이를 먼저 짚고 넘어가자. GetMapping은 @GetMapping(value = \"/getMappingTest\") URL에 변수(데이터)를 포함시켜 요청,", "datePublished": "2022-02-07", "dateModified": "2022-02-07", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-postmapping-requestbody/", "image": "https://minjipi.github.io/posts/spring-boot-postmapping-requestbody/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-postmapping-requestbody">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-02-07">2022.02.07</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222640742413" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">SpringBoot와 @PostMapping, @RequestBody</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222640742413 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><i><b>SpringBoot와 @PostMapping, @RequestBody</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">해당 내용에 앞서, get과 post 방식의 차이를 먼저 짚고 넘어가자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">GetMapping은 @GetMapping(value = "/getMappingTest")</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">URL에 변수(데이터)를 포함시켜 요청, 데이터를 Header(헤더)에 포함하여 전송, URL에 데이터가 노출되어 보안에 취약함 등의 특징들이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">PostMapping은 URL에 변수(데이터)를 노출하지 않고 요청, 데이터를 Body(바디)에 포함, URL에 데이터가 노출되지 않아 GET 방식보다 보안이 높다. 해당 포스팅에서 다룬다. </span><span class="se-fs- se-ff-"><b><span class="__se-hash-tag">#GetMapping과PostMapping</span></b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>BaseResponseStatus.java</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Getter
+public enum BaseResponseStatus {
+SUCCESS(true,1000,"요청 성공."),
+FAIL(false,2000,"실패.");
+private final boolean isSuccess;
+private final int code;
+private final String message;
+private BaseResponseStatus(boolean isSuccess, int code, String message) {
+this.isSuccess = isSuccess;
+this.code = code;
+this.message = message;
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b><span class="__se-hash-tag">#enum타입</span></b></span><span class="se-fs- se-ff-"> 의 클래스 BaseResponseStatus.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">enum 타입의 클래스는 클래스처럼 보이게 하는 상수이며</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">서로 관련있는 상수들끼리 모아 상수들을 정의한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">enum 클래스 형을 기반으로 한 클래스형을 선언하는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">enum 열거형으로 지정된 상수들은 모두 대문자로 선언해야하고 상수와 특정 값을 연결시킬경우 마지막에 세미콜론(;)을 붙여줘야한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">SUCCESS(true,1000,"요청 성공.") 과 FAIL(false,2000,"실패.") 상수를 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">final boolean 타입의 isSuccess, final int 타입의 code, final 문자열 타입 message 상수를 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(</span><span class="se-fs- se-ff-"><b><span class="__se-hash-tag">#final</span> </b></span><span class="se-fs- se-ff-">은 엔티티를 한 번만 할당한다. 두 번 이상 할당하려 할 때 컴파일 오류가 발생하여 확인할 수 있다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>BaseResponse.java</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Getter
+@AllArgsConstructor
+@JsonPropertyOrder({"isSuccess", "code", "message", "result"})
+public class BaseResponse&lt;T&gt; {
+    @JsonProperty("isSuccess")
+private final boolean isSuccess;
+private final String message;
+private final int code;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+private T result;
+public BaseResponse(T result) {
+this.isSuccess = SUCCESS.isSuccess();
+this.message = SUCCESS.getMessage();
+this.code = SUCCESS.getCode();
+this.result = result;
+}
+public BaseResponse(BaseResponseStatus status) {
+this.isSuccess = status.isSuccess();
+this.message = status.getMessage();
+this.code = status.getCode();
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">JsonPropertyOrder 어노테이션은 Json 순서를 정렬한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1) BaseResponse 클래스 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">BaseResponse&lt;T&gt; 타입의 클래스를 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">String에 대한 클래스, Integer에 대한 클래스 등 타입에 따라 전부 만드는 건 비효율적이라 이러한 문제를 해결하기 위해 </span><span class="se-fs- se-ff-"><b><span class="__se-hash-tag">#제네릭</span> </b></span><span class="se-fs- se-ff-">이라는 것을 사용한다. 리스트를 생각해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">List&lt;&gt; list = new ArrayList&lt;&gt;();</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">&lt;&gt;안에 어떤 타입을 선언해주어 해당 List가 사용할 객체의 타입을 지정해준다는 뜻이다. 다룰 객체의 타입을 미리 명시하여 객체의 형변환을 사용할 필요없게 하고, 내가 사용하고 싶은 데이터 타입만 사용할 수 있게 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">정확히는 private T result &lt;- 여기에 올 타입을 유동적으로 설정하는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2) T 타입의 result를 전달 받는 BaseResponse </span><span class="se-fs- se-ff-"><b><span class="__se-hash-tag">#생성자</span></b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">BaseResponseStatus 열거형 클래스의 SUCCESS 상수의 'true,1000,요청 성공'을 BaseResponse에 세팅한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3) BaseResponseStatus 타입의 status를 전달받는 BaseResponse 생성자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">BaseResponseStatus 클래스의 SUCCESS 변수의 status 여기 isSuccess에 세팅한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>ProductController.java</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.web.bind.annotation.*;
+import static .config.BaseResponseStatus.FAIL;
+
+@RestController
+@RequestMapping("/product")
+public class ProductController {
+    @ResponseBody
+    @PostMapping("/create")
+public BaseResponse&lt;String&gt; createProduct(@RequestBody String str) {
+if(str.equals("abc")){
+return new BaseResponse&lt;&gt;("성공");
+} else {
+return new BaseResponse&lt;&gt;(FAIL);
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ProductController 클래스.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">@RequestBody를 이용하여 HTTP Body에 담긴 데이터를 매핑하여 가지고 온다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">* GET에서는 @RequestParam을 사용하지만, POST에서는 @RequestBody를 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">BaseResponse&lt;String&gt; 타입의 createProduct 라는 이름의 메소드 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">RequestBody로 String 타입의 str 을 전달 받는다. 전달받은 str이 abc일 경우, 응답 메시지로 BaseResponse&lt;&gt; 타입의 "성공"을 반환. 그게 아니면 BaseResponse&lt;&gt; 타입의 FAIL을 반환 받는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Advanced REST client 프로그램으로 요청 보내보기.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">결과:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:49.780380673499266%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-boot-postmapping-requestbody/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:50.219619326500734%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-postmapping-requestbody/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">각각의 생성자를 호출해서 결과가 나왔다. </span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

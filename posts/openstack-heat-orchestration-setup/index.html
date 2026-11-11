@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[OpenStack] 오픈스택 오케스트레이션 &#x27;오픈스택 히트 설정, 설치, 사용&#x27; | minj.devlog</title>
+  <meta name="description" content="[OpenStack] 오픈스택 오케스트레이션 설정, 설치, 사용하기 1) 오픈스택 히트(오케스트레이션 서비스) ::설정 및 설치 (1) 설치 [ controller ] dnf --enablerepo=centos-openstack-victoria,powertools -y" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/openstack-heat-orchestration-setup/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[OpenStack] 오픈스택 오케스트레이션 &#x27;오픈스택 히트 설정, 설치, 사용&#x27;" />
+  <meta property="og:description" content="[OpenStack] 오픈스택 오케스트레이션 설정, 설치, 사용하기 1) 오픈스택 히트(오케스트레이션 서비스) ::설정 및 설치 (1) 설치 [ controller ] dnf --enablerepo=centos-openstack-victoria,powertools -y" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/openstack-heat-orchestration-setup/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/openstack-heat-orchestration-setup/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-05-24" />
+  <meta property="article:section" content="Cloud/OpenStack" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[OpenStack] 오픈스택 오케스트레이션 '오픈스택 히트 설정, 설치, 사용'", "description": "[OpenStack] 오픈스택 오케스트레이션 설정, 설치, 사용하기 1) 오픈스택 히트(오케스트레이션 서비스) ::설정 및 설치 (1) 설치 [ controller ] dnf --enablerepo=centos-openstack-victoria,powertools -y", "datePublished": "2021-05-24", "dateModified": "2021-05-24", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/openstack-heat-orchestration-setup/", "image": "https://minjipi.github.io/posts/openstack-heat-orchestration-setup/images/image_1.jpg", "articleSection": "Cloud/OpenStack"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="openstack-heat-orchestration-setup">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FOpenStack">Cloud/OpenStack</a>
+              <time class="post-date" datetime="2021-05-24">2021.05.24</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222364058310" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[OpenStack] 오픈스택 오케스트레이션 &#x27;오픈스택 히트 설정, 설치, 사용&#x27;</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/openstack-heat-orchestration-setup/images/image_1.jpg" alt="[OpenStack] 오픈스택 오케스트레이션 &#x27;오픈스택 히트 설정, 설치, 사용&#x27;" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222364058310 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[OpenStack]</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">오픈스택 오케스트레이션</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>설정, 설치, 사용하기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">1) </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>오픈스택 히트(오케스트레이션 서비스) </b></span><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;">::설정 및 설치</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">(1) 설치</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">[ controller ]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dnf --enablerepo=centos-openstack-victoria,powertools -y install openstack-heat-common python3-heatclient
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">(2) 사용자 및 엔드포인트 추가</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">[ controller ]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack user create --domain default --password-prompt heat 패스워드 설정 후
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack role add --project service --user heat admin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack role create heat_stack_owner
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack role create heat_stack_user
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/openstack-heat-orchestration-setup/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예시 화면</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack role add --project admin --user admin heat_stack_owner
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack service create --name heat --description "Openstack Orchestration" orchestration
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack service create --name heat-cfn --description "Openstack Orchestration" cloudformation
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+heat_api=[네트워크 노드 IP]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack endpoint create --region RegionOne orchestration public http://$heat_api:8004/v1/%\(tenant_id\)s
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack endpoint create --region RegionOne orchestration internal http://$heat_api:8004/v1/%\(tenant_id\)s
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack endpoint create --region RegionOne orchestration admin http://$heat_api:8004/v1/%\(tenant_id\)s
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack endpoint create --region RegionOne cloudformation public http://$heat_api:8000/v1
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack endpoint create --region RegionOne cloudformation internal http://$heat_api:8000/v1
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack endpoint create --region RegionOne cloudformation admin http://$heat_api:8000/v1
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack domain create --description "Stack projects and users" heat
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack user create --domain heat --password servicepassword heat_domain_admin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack role add --domain heat --user heat_domain_admin admin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(3) DB 설정</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">[ controller ]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mysql -u root -p
+
+create database heat; 
+grant all privileges on heat.* to heat@'localhost' identified by '비밀번호 입력'; 
+grant all privileges on heat.* to heat@'%' identified by '비밀번호 입력'; 
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(4) 히트 API 설치</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">[ network ]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dnf --enablerepo=centos-openstack-victoria,powertools -y install openstack-heat-api openstack-heat-api-cfn openstack-heat-engine python3-heatclient
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(5) 히트 설정</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">[ network ]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mv /etc/heat/heat.conf /etc/heat/heat.conf.org
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/heat/heat.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[DEFAULT]
+			deferred_auth_method = trusts
+			trusts_delegated_roles = heat_stack_owner
+			heat_metadata_server_url = http://네트워크 노드 IP:8000
+			heat_waitcondition_server_url = http://네트워크 노드 IP:8000/v1/waitcondition
+			heat_watch_server_url = http://네트워크 노드 IP:8003
+			heat_stack_user_role = heat_stack_user
+			stack_user_domain_name = heat
+			stack_domain_admin = heat_domain_admin
+			stack_domain_admin_password = 설정할 비번
+			transport_url = rabbit://openstack:rabbitmq비번@ 컨트롤러 노드 IP
+[database]
+			connection = mysql+pymysql://heat:설정할 비번@ 컨트롤러 노드 IP/heat
+
+[clients_keystone]
+			auth_uri = http://컨트롤러 노드 IP:5000
+[ec2authtoken]
+			auth_uri = http://컨트롤러 노드 IP:5000
+[heat_api]
+			bind_host = 0.0.0.0
+			bind_port = 8004
+[heat_api_cfn]
+			bind_host = 0.0.0.0
+			bind_port = 8000
+[keystone_authtoken]
+			www_authenticate_uri = http://컨트롤러 노드 IP:5000
+			auth_url = http://컨트롤러 노드 IP:5000
+			memcached_servers = 컨트롤러 노드 IP:11211
+			auth_type = password
+			project_domain_name = default
+			user_domain_name = default
+			project_name = service
+			username = heat
+			password = 설정할 비번
+
+[trustee]
+			auth_plugin = password
+			auth_url = http://컨트롤러 노드 IP:5000
+			username = heat
+			password = 설정할 비번
+			user_domain_name = default
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+chgrp heat /etc/heat/heat.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+chmod 640 /etc/heat/heat.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+su -s /bin/bash heat -c "heat-manage db_sync"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl enable openstack-heat-api openstack-heat-api-cfn openstack-heat-engine
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl restart openstack-heat-api openstack-heat-api-cfn openstack-heat-engine
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>2) 오픈스택 히트 사용해보기</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(1) yml,yaml 파일</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">: xml, json처럼 데이터를 전달하기 위한 일종의 양식, 사람이 쉽게 읽을 수 있는 데이터 직렬화 양식.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(2) 샘플 파일 실행해보기</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi sample.yml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+heat_template_version: 2018-08-31
+description: Heat Sample Template
+
+parameters:
+ImageID:
+type: string
+    description: Image used to boot a server
+  NetID:
+type: string
+    description: Network ID for the server
+
+resources:
+server1:
+type: OS::Nova::Server
+    properties:
+name: "Heat_Deployed_Server"
+image: { get_param: ImageID }
+flavor: "m1.small"
+networks:
+- network: { get_param: NetID }
+outputs:
+server1_private_ip:
+description: IP address of the server in the private network
+    value: { get_attr: [ server1, first_address ] }
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이렇게 작성하고 저장 후 나가서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">아래 두 명령어를 사용해서</span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b> ID, 이름</b></i></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"> 확인 후</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-heat-orchestration-setup/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">해당 ID 를 사용하여 아래 명령어로 stack 생성.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openstack stack create -t sample.yml --parameter "ImageID=[이미지 ID];NetID=[internal 네트워크의 ID]" Sample-Stack
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-heat-orchestration-setup/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">생성된 것 확인은 다음 명령어로 :</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+openstack stack list
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-heat-orchestration-setup/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">그리고 조금 뒤 대시보드를 확인하면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이렇게 인스턴스가 생성되어있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-heat-orchestration-setup/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">이번 포스팅인</span><span class="se-fs-fs24 se-ff-nanumbarungothic se-weight-unset se-style-unset"> </span><span class="se-fs-fs24 se-ff-nanumbarungothic se-style-unset"><b>Heat</b></span><span class="se-fs-fs24 se-ff-nanumbarungothic se-weight-unset se-style-unset"> </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">를 이용해서 로드밸런스를 생성하고 자동으로 인스턴스가 생성되며, 자동으로 생성된 인스턴스가</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222364153298" target="_blank"><b>로드밸런스</b></a></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"> 멤버풀에 추가되며, 그렇게 추가되어 동작하는 인스턴스에 cpu 사용률을 측정해서 높아지면 자동</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">으로 추가 인스턴스가 생성되는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222374703410" target="_blank"><b>&lt;오픈스택 록키버전 설정, 설치</b></a></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222374703410" target="_blank">&gt;</a></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"> 는 원래 없어야할 부분이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">수동으로 하나하나 설치해서 모든 서비스를 이용해 보려고 했는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">(히트, 로드밸러스, 히트로 로드밸런스도 자동으로 생성)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">로드밸런스가 안되서 문제가 생긴 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">그래서 굳이 다시 록키버전으로 재 설치를 하면서 록키버전 내용을 정리했다.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

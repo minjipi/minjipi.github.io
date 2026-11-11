@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[OpenStack] 클라우드용 &#x27;리눅스 이미지 생성&#x27; | minj.devlog</title>
+  <meta name="description" content="클라우드용 리눅스 이미지 만들기 CentOS7 minimal ISO 파일을 이용하여, 클라우드용 이미지 생성하기 &lt; ISO 파일로 클라우드용 이미지 만들기 요약 &gt; 1." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/openstack-linux-cloud-image/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[OpenStack] 클라우드용 &#x27;리눅스 이미지 생성&#x27;" />
+  <meta property="og:description" content="클라우드용 리눅스 이미지 만들기 CentOS7 minimal ISO 파일을 이용하여, 클라우드용 이미지 생성하기 &lt; ISO 파일로 클라우드용 이미지 만들기 요약 &gt; 1." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/openstack-linux-cloud-image/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/openstack-linux-cloud-image/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-05-14" />
+  <meta property="article:section" content="Cloud/OpenStack" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[OpenStack] 클라우드용 '리눅스 이미지 생성'", "description": "클라우드용 리눅스 이미지 만들기 CentOS7 minimal ISO 파일을 이용하여, 클라우드용 이미지 생성하기 < ISO 파일로 클라우드용 이미지 만들기 요약 > 1.", "datePublished": "2021-05-14", "dateModified": "2021-05-14", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/openstack-linux-cloud-image/", "image": "https://minjipi.github.io/posts/openstack-linux-cloud-image/images/image_1.jpg", "articleSection": "Cloud/OpenStack"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="openstack-linux-cloud-image">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FOpenStack">Cloud/OpenStack</a>
+              <time class="post-date" datetime="2021-05-14">2021.05.14</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222350444814" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[OpenStack] 클라우드용 &#x27;리눅스 이미지 생성&#x27;</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222350444814 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>클라우드용 리눅스 이미지 만들기</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;">CentOS7 minimal ISO 파일을 이용하여, 클라우드용 이미지 생성하기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="3" rowspan="1" style="width: 100.0%; height: 129.0px;  background-color: #f3fdff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"><b>&lt; ISO 파일로 클라우드용 이미지 만들기 </b></span><span class="se-fs-fs19 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"><b>요약 &gt;</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;">1. QEMU + KVM 에뮬레이터를 실행할 수 있는 환경에서 QEMU + KVM을 이용해 가상머신(qcow2타입의 디스크 이미지를 가진)을 생성</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;">2. 가상머신에 운영체제 설치</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;">3. 부팅시 DHCP로 네트워크 설정이 되도록 설정</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;">4. acpid, cloud-init, cloud-utils-growpart</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;">5. 추가적인 설정하기 (zeroconf 설정, 부팅 환경설정)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanummyeongjo se-style-unset" style="color:#000000;">6. 확인 (오픈스택에서 이미지 등록하고 가상머신 생성, QEMU + KVM로 수동으로 가상머신 생성)</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">실습 환경(이미지 생성) 준비</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">vmware같은 하이퍼바이저 종류인</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>QEMU &amp; KVM 설치.</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dnf module install virt
+dnf install virt-manager virt-install virt-viewer libguestfs-tools qemu-img
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumgothic se-style-unset" style="color:#000000;">CentOS7 ISO 파일 다운로드.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+wget https://mirror.umd.edu/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(0) qcow2 이미지(디스크) 파일 생성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">가상의 하드디스크(비어있는 하드디스크)를 생성하는 것.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+qemu-img create -f qcow2 [이미지 파일 위치] [이미지 파일 크기]
+qemu-img create -f qcow2 /virt/centos7.qcow2 20G
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이것으로 가상 머신을(centOS7를 설치할 가상머신을) 생성!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" style="color:#000000;"><i>** VMware 에서는 이 작업 시 splite file로 vmdk 파일이 나누어 저장되는데,</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" style="color:#000000;"><i>(손상 시, 피해 최소화를 위해) 여기서는 centos7.qcow 파일이 하나인 듯 single file로 저장된다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" style="color:#000000;"><i> 그리고 VMware에서도 single file 만들 수 있음!</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-nanumbarungothic se-weight-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(1) 가상 네트워크 생성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+virsh net-start default
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">default 라는 이름의 가상 네트워크 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+virsh net-list
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">생성한 가상 네트워크 확인.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(2) 가상 머신 생성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+virt-install --name centos7 --ram 1024 \
+                    [생성할 가상머신 이름] [생성할 가상머신 메모리]
+--disk /virt/centos7.qcow2,format=qcow2 \
+         [가상머신 하드디스크의 경로]
+--network network=default \
+           [가상머신이 쓸 네트워크]
+--graphics vnc,listen=0.0.0.0 --noautoconsole \
+           [vnc설정. 가상머신 화면 받아오는..]
+--os-type=linux --os-variant=centos7.0 \
+            [운영체제 타입과 종류]
+** 생성 가능한 가상머신 목록 확인은 'osinfo-query os'로 확인.
+--location=/virt/CentOS-7-x86_64-Minimal-2009.iso
+             [운영체제 설치 ISO 이미지 경로]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+virt-install --name centos7 --ram 1024 \
+  --disk /virt/centos7.qcow2,format=qcow2 \
+  --network network=default \
+  --graphics vnc,listen=0.0.0.0 --noautoconsole \
+  --os-type=linux --os-variant=centos7.0 \
+  --location=/virt/CentOS-7-x86_64-Minimal-2009.iso
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(3) 운영체제 설치 진행</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/openstack-linux-cloud-image/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Reboot</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:651px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-linux-cloud-image/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(4) 클라우드용 이미지로 만들기 작업</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[0] 네트워크 설정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">먼저 네트워크 설정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dhclient  
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">자동으로 아이피 할당받고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:444px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-linux-cloud-image/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:681px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-linux-cloud-image/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[1] acpid 설치 및 자동 실행 설정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>acpid</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"> 설치.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">하이퍼바이저가 가상머신을 재부팅 또는 종료할 수 있게 해주는 프로그램!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+yum install acpid
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">자동 실행 설정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+systemctl enable acpid
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[2] cloud-init 설치 및 설정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">cloud-init : 가상머신이 생성될 때 초기화 되어야 하는 호스트 이름, 네트워크 인터페이스, 그리고 인증키를 설정하는 것과 같은 가상 머신 초기 설정을 자동화하는 도구.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">(여기서는 ssh 공개키를 가상머신에 넣도록 해줄 것임)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">cloud-init 설치)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+yum install cloud-init
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">설정파일 위치 : /etc/cloud/cloud.cfg</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[3] cloud-utils-growpart</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">하이퍼바이저가 가상머신의 하드디스크 용량을 늘렸다- 줄였다 할 수 있게 해주는 프로그램.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+yum install cloud-utils-growpart
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">* lvm resize2fs 명령어 처럼,  하드디스크 용량을 자동으로 관리 해주는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[4] zeroconf 설정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">가상머신이 메타데이터 베이스에 접근할 수 있도록 하는 설정.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">* 메타데이터 베이스 : 오픈스택이 가상머신에 대한 정보(아이피, 에러 등..)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+echo "NOZEROCONF=yes" &gt;&gt; /etc/sysconfig/network
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[5] nova에게 로그를 보여줄 수 있도록 설정</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/default/grub
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">들어가서 rhgb quiet 부분을 console=tty0 console=ttyS0,115200n8 로 변경.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">[6] 전원 종료</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">poweroff</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">[7] 호스트PC에서 다음을 설정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+virt-sysprep -d [가상머신이름]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">위 명령어로 하드디스크에 기록된 고유값(맥주소 등..)을 삭제한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">왜냐면 우리는 이 것으로 여러대의 컴퓨터를 생성할 것이라 이것을 지워주고 사용!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b># 🐾</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">위에서 만든 이미지 파일을 오픈스택에 이미지 추가!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/openstack-linux-cloud-image/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>su 명령어 사용 제한 | minj.devlog</title>
+  <meta name="description" content="1. su 명령 파일 수정 :: pam.d/su 의 주석 제거 vi / etc / pam . d / su 들어가보면 5번째 줄의 auth required pam_wheel.so.use_uid 부분이 주석이 되어있다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/linux-restrict-su/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="su 명령어 사용 제한" />
+  <meta property="og:description" content="1. su 명령 파일 수정 :: pam.d/su 의 주석 제거 vi / etc / pam . d / su 들어가보면 5번째 줄의 auth required pam_wheel.so.use_uid 부분이 주석이 되어있다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/linux-restrict-su/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/linux-restrict-su/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-02-23" />
+  <meta property="article:section" content="Linux/Administration" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "su 명령어 사용 제한", "description": "1. su 명령 파일 수정 :: pam.d/su 의 주석 제거 vi / etc / pam . d / su 들어가보면 5번째 줄의 auth required pam_wheel.so.use_uid 부분이 주석이 되어있다.", "datePublished": "2021-02-23", "dateModified": "2021-02-23", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/linux-restrict-su/", "image": "https://minjipi.github.io/posts/linux-restrict-su/images/image_1.jpg", "articleSection": "Linux/Administration"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="linux-restrict-su">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Linux%2FAdministration">Linux/Administration</a>
+              <time class="post-date" datetime="2021-02-23">2021.02.23</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222253424370" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">su 명령어 사용 제한</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222253424370 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">1. su 명령 파일 수정 :: pam.d/su 의 주석 제거</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/pam.d/su
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">들어가보면</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">5번째 줄의 auth required pam_wheel.so.use_uid 부분이 주석이 되어있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/linux-restrict-su/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">앞에 <span class="__se-hash-tag">#을</span> 지워 주석을 해제한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/linux-restrict-su/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">저장 후 나가기.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2.</span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>wheel </b></span><span class="se-fs- se-ff-"><b> </b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>group</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"> 수정</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">특별한 시스템 권한이 부가되는, wheel 비트를 가진 사용자 계정.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(wheel group_ su 명령어를 사용해 다른 사용자 계정에 접근할 수 있는 계정 그룹.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/group
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">/etc/group 파일을 수정한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/linux-restrict-su/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">등록된 계정 중 wheel 계정이 존재하는지 확인하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">만약 존재하지 않는 경우 useradd wheel을 입력해 wheel 계정을 추가한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">여기서 wheel 부분 맨뒤에 있는 부분이 su 명령어 사용을 허용하는 계정을 입력하는 곳이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(root 는 su 명령어 소유자 이기 때문에 없어도 있어도 무관.)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">3. wheel 그룹에 허용 계정을 추가하는 방법은</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(1) </span><span class="se-fs- se-ff-">/etc/group 파일에서 편집기로</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">wheel 계정 뒤에 직접 추가</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(2) </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>usermod -G wheel [허용할 계정명] 을 입력한다.</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/linux-restrict-su/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">usermod -G wheel </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">test01 입력 후 다시 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">/etc/group 에서 확인해보면</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/linux-restrict-su/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">test01 계정이 추가되어 있는 것이 보인다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/linux-restrict-su/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">init 6로 재부팅 후,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8666666666666667;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">다른 계정으로 로그인 해서 su </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/linux-restrict-su/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">지정한 사용자 이외의 사용자는 su 명령을 사용할 수 없게 되었다.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

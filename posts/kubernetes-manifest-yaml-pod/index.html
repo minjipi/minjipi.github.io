@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Kubernetes] 쿠버네티스 - 매니페스트, YAML파일, 파드(manifest, YAML 파일, pod) | minj.devlog</title>
+  <meta name="description" content="[Kubernetes] 매니페스트, YAML, 파드 (manifest, YAML, pod) 1) manifest 매니페스트란, 쿠버네티스의 오브젝트를 생성하기 위한 메타 정보를 YAML이나 JSON으로 기술한 파일 . 2) YAML 파일 키: 값 형태로 작성하는 파일." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/kubernetes-manifest-yaml-pod/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Kubernetes] 쿠버네티스 - 매니페스트, YAML파일, 파드(manifest, YAML 파일, pod)" />
+  <meta property="og:description" content="[Kubernetes] 매니페스트, YAML, 파드 (manifest, YAML, pod) 1) manifest 매니페스트란, 쿠버네티스의 오브젝트를 생성하기 위한 메타 정보를 YAML이나 JSON으로 기술한 파일 . 2) YAML 파일 키: 값 형태로 작성하는 파일." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/kubernetes-manifest-yaml-pod/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/kubernetes-manifest-yaml-pod/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-07" />
+  <meta property="article:section" content="Cloud/Kubernetes" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Kubernetes] 쿠버네티스 - 매니페스트, YAML파일, 파드(manifest, YAML 파일, pod)", "description": "[Kubernetes] 매니페스트, YAML, 파드 (manifest, YAML, pod) 1) manifest 매니페스트란, 쿠버네티스의 오브젝트를 생성하기 위한 메타 정보를 YAML이나 JSON으로 기술한 파일 . 2) YAML 파일 키: 값 형태로 작성하는 파일.", "datePublished": "2021-06-07", "dateModified": "2021-06-07", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/kubernetes-manifest-yaml-pod/", "image": "https://minjipi.github.io/posts/kubernetes-manifest-yaml-pod/images/image_1.jpg", "articleSection": "Cloud/Kubernetes"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="kubernetes-manifest-yaml-pod">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FKubernetes">Cloud/Kubernetes</a>
+              <time class="post-date" datetime="2021-06-07">2021.06.07</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222388293445" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Kubernetes] 쿠버네티스 - 매니페스트, YAML파일, 파드(manifest, YAML 파일, pod)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/kubernetes-manifest-yaml-pod/images/image_1.jpg" alt="[Kubernetes] 쿠버네티스 - 매니페스트, YAML파일, 파드(manifest, YAML 파일, pod)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222388293445 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummyeongjo" style="color:#000000;"><b>[Kubernetes]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs30 se-ff-" style="color:#000000;"><b>매니페스트, YAML, 파드</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummyeongjo se-weight-unset" style="color:#000000;"><i>(manifest, YAML, pod)</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">1) </span><span class="se-fs- se-ff-" style="color:#000000;">manifest</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">매니페스트란, 쿠버네티스의 오브젝트를 생성하기 위한 메타 정보를 YAML이나 JSON으로 기술한 파일 .</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">2) YAML 파일</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">키: 값 형태로 작성하는 파일.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: v1
+kind: Pod
+metadata:
+name: nginx
+spec:
+containers:
+- name: nginx
+    image: nginx:latest
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">우리가 일반적으로 이렇게 쓰는 yaml, yml 파일에 대해 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: apps/v1	  키가 apiVersion 이고 값이 apps/v1
+
+metadata:			  키가 metadata 이고 값이 name: nginx-deployment
+ name: nginx	      값은 또 다른 키와 값이 될  수 있다.
+spec:			      키가 spec이고 값이 containers:
+containers: - name: nginx
+  - name: nginx				  image: nginx:latest
+   image: nginx:latest	값은 여러개를 가질 수 있다.
+containers: -은 키의 값이 배열임을 의미
+- dog
+- cat			      containers[0] 은 dog containers[1] 은 cat containers[2] 는 rabbit
+- rabbit
+
+
+containers: -이 없으면 이전 요소에 포함된다.
+- dog
+   cat			      containers[0] 은 dog cat containers[1] 은 rabbit
+- rabbit
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">💡 Yaml 파일의 '-'(데쉬) 의 의미:</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;">nodeName : 가장 간단한 형태의 노드 선택 제약 조건이지만, 한계로 인해 일반적으로 사용하지 않음</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;">nodeSelector : 가장 간단하고 권장되는 노드 선택 제약 조건</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;">따라서, node를 지정할 때는 nodeSelector를 사용하자</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">3) Pod API</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+apiVersion : v1 설정
+kind : 오브젝트를 지정
+metadata : 오브젝트의 정보를 입력, name은 필수,
+spec :
+initContainers : 초기화 전용 컨테이너의 명세를 기술
+	nodeSelector : Pod가 배포될 노드의 이름을 지정
+	volumes : Pod 내 컨테이너 간에 공유할 수 있는 볼륨을 지정
+    containers : 컨테이너의 명세를 배열(대쉬'-')로 기술
+
+			image : 컨테이너 생성시 사용할 이미지
+			name : 컨테이너 이름
+			livenessProbe : 컨테이너 내의 프로그램이 정상적으로 동작 중인지 검사하는 프로브
+			readinessProbe : 컨테이너 내의 프로그램이 사용자의 요청을 받을 준비가 되었는지 검사하는 프로브
+			ports : 외부 요청을 전달하기 위한 포트 목록
+			resources : CPU와 메모리 제한
+			volumeMounts : 파드에 정의한 볼륨을 컨테이너의 마운트할 경로
+			command : 컨테이너 생성 시 마지막에 실행할 명령어
+			args : command의 매개변수
+			env : 환경변수 설정
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">💡</span><span class="se-fs-fs19 se-ff-nanummyeongjo" style="color:#000000;"><b>nodeName</b></span><span class="se-fs-fs19 se-ff-nanummyeongjo" style="color:#000000;"> vs </span><span class="se-fs-fs19 se-ff-nanummyeongjo" style="color:#000000;"><b>nodeSelector ?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#000000;">- </span><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;"><b>nodeName :</b></span><span class="se-fs-fs15 se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#000000;"> 가장 간단한 형태의 노드 선택 제약 조건이지만, 한계로 인해 일반적으로 사용하지 않는다.​</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#000000;">- </span><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;"><b>nodeSelector</b></span><span class="se-fs-fs15 se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#000000;"> : 가장 간단하고 권장되는 노드 선택 제약 조건​.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#000000;">따라서 node를 지정할 때는 </span><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#000000;"><b>nodeSelector</b></span><span class="se-fs-fs15 se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#000000;">를 사용하는 것이 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">3)</span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b> 파드 동작 확인, yml 예제</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이제 파드 동작 확인 명령어를 사용해 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이름이 minji(본인 이니셜🎀)인 파드를 생성하는 yaml 예제 파일을 만들어 살펴보도록 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">파드의 스펙은 이름이 minji-tomcat-pod-test,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이미지는 tomcat:latest, 포트는 8080, 노드는 worker1에서 동작하도록 설정한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[minji-tomcat-pod.yaml]</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: v1
+kind: Pod
+metadata:
+name: minji
+spec:
+containers:
+- name: minji-tomcat-pod-test
+      image: tomcat:latest
+      ports:
+- containerPort: 8080
+nodeSelector:
+      kubernetes.io/hostname: worker1
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>📍Pod 생성</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+kubectl apply -f [yaml 파일 이름]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ kubectl apply -f minji-tomcat-pod.yaml 
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">결과 확인:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">마스터노드:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:441px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/kubernetes-manifest-yaml-pod/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">worker1 에서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">docker ps -a 결과:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-manifest-yaml-pod/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">여기에 접속할 수 있을까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">wide는 IP까지 보기위한 옵션이다. 이 옵션을 붙여 접속해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>📍Pod 목록 : IP 정보 까지</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl get pods -o wide
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">접속할 수 없다!!</span></p>
+</div>
+</div>
+</div>
+</div>  <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">접속되지 않는 이유는 다음과 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">위 명령어를 통해 나오는 아이피 주소는 가상의 아이피 주소다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">외부에서는 접속할 수 없고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>'쿠버가 설치된 컴퓨터에서</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">'만 알 수 있다. 쿠버가 깔려있지 않은 본체 컴퓨터에서는 접속이 불가하다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">그래서 쿠버네티스가 설치된 worker1 에서는 접속이 가능하다. (curl 명령어로)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">worker1이든, worker2든 쿠버 설치만 되어있다면 접속 가능!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>Pod는 외부와 연결되어 있지 않다.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>Pod는 외부랑 통신이 안된다.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>Pod는 Pod끼리는 통신이 된다.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>📍Pod 삭제 명령어</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+kubectl delete -f [yaml 파일 이름]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>📍Pod 목록 자세히 보기 명령어</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+kubectl describe [파드 이름]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>파이썬 가상 환경 venv :: 가상 환경 만들기, 가상 환경 끄기 | minj.devlog</title>
+  <meta name="description" content="0. 파이썬 가상 환경이란? 파이썬에서 가상 환경(virtual environment)은 하나의 PC에서 프로젝트 별로 독룁된 파이썬 실행 환경(runtime/interpreter)을 사용할 수 있도록 해줍니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/python-venv/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="파이썬 가상 환경 venv :: 가상 환경 만들기, 가상 환경 끄기" />
+  <meta property="og:description" content="0. 파이썬 가상 환경이란? 파이썬에서 가상 환경(virtual environment)은 하나의 PC에서 프로젝트 별로 독룁된 파이썬 실행 환경(runtime/interpreter)을 사용할 수 있도록 해줍니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/python-venv/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/python-venv/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-08-17" />
+  <meta property="article:section" content="Backend/Python" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "파이썬 가상 환경 venv :: 가상 환경 만들기, 가상 환경 끄기", "description": "0. 파이썬 가상 환경이란? 파이썬에서 가상 환경(virtual environment)은 하나의 PC에서 프로젝트 별로 독룁된 파이썬 실행 환경(runtime/interpreter)을 사용할 수 있도록 해줍니다.", "datePublished": "2020-08-17", "dateModified": "2020-08-17", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/python-venv/", "image": "https://minjipi.github.io/posts/python-venv/images/image_1.jpg", "articleSection": "Backend/Python"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="python-venv">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FPython">Backend/Python</a>
+              <time class="post-date" datetime="2020-08-17">2020.08.17</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222062782256" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">파이썬 가상 환경 venv :: 가상 환경 만들기, 가상 환경 끄기</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222062782256 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>0. 파이썬 가상 환경이란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">파이썬에서 가상 환경(virtual environment)은 하나의 PC에서 프로젝트 별로 독룁된 파이썬 실행 환경(runtime/interpreter)을 사용할 수 있도록 해줍니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">독립된 공간이 왜 필요할까요?</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">우리는 django 이 외에도 여러가지를 공부해왔고, 공부하고 있고, 공부할 것입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">그러다 보면 나도 모르는 사이에 여러 패키지를 설치하고 사용하게 될 것이고</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"><b>패키지 간의 버전차이, 혹은 여러 가지 이유로 이들이 충돌</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">이를 막기 위해서 최소한의 기능만을 가지고 있는 깨끗한 공간을 만들어</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">작업을 진행하기 위해서 가상환경이 필요한 것입니다. 그러니까 한 마디로,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#292929;background-color:#ffffff;"><b>자신이 원하는 Python 환경을 구축하기 위해 필요한 모듈만 담아 놓는 바구니라고 생각하면 됩니다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#292929;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>1. 파이썬 가상 환경 생성</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">파이썬에서 외부 패키지를 설치할 때는 일반적으로 pip이라는 패키지 매니저를 사용하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">기본적으로 운영체제에 파이썬이 설치된 위치의 site-packages 디렉터리에 안에 설치됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">노드의 npm이나 자바의 maven과 같은 패키지 매니저가 프로젝트 별 패키지 설치를 지원하는 반면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">아직 파이썬의 pip는 시스템 전역으로만 패키지를 설치할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">파이썬의 가상 환경을 이용하면 프로젝트 별로 따로 패키지를 설치하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">다른 프로젝트로 부터 격리시킬 수 있기 때문에 시스템 전역 패키지 설치로 인한 불필요한 이슈를 방지할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system se-style-unset" style="color:#000000;"><b>가상 환경 생성 :</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">파이썬 2에서는 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><a class="se-link" href="https://virtualenv.pypa.io/en/latest/" target="_blank"><b>virtualenv </b></a></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">라는 외부 패키지를 사용해서 가상 환경을 구성했었는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">파이썬 3.3 부터는 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><a class="se-link" href="https://docs.python.org/3/library/venv.html" target="_blank"><b>venv</b></a></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 모듈이 내장되기 때문에 별도 패키지 설치없이 파이썬만 설치되어 있으면 바로 가상 환경 구성이 가능하게 되었습니다!</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">가상 환경을 만들기 위해서 Django 라는 디렉토리를 하나 만들고</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">그 안에 venvproject 라는 디렉토리를 하나 더 만들어 주겠습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">리눅스라면 터미널에서, 저의 경우 윈도우라 git bash 에서 진행합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"><a class="se-link" href="https://git-scm.com/downloads" target="_blank"><b>git bash download</b></a></span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"><b> </b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#141414;">&lt;- git bash 다운로드 사이트 입니다!</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">우선 venvproject를 vs code로 실행시키겠습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">vs code 가 실행이 되었으면 vs code에서 터미널을 실행해주시면 됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">terminal-&gt; new terminal 을 통해 터미널을 열면 다음과 같은 화면입니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/python-venv/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">이제 가상환경을 만들어주겠습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">명령어는 다음과 같습니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+python -m venv {가상환경 이름}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">{가상환경 이름} 에 원하는 이름을 쓰시면 됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">그 결과 좌측 디렉토리 목록에 myvenv 라는 새로운 디렉토리가 생긴걸 볼 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>2. 파이썬 가상 환경 활성화</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">가상 환경을 활성화 하기 위해서 bin/activate를 실행하면</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">쉘 프롬프트 앞에 (.venv)라고 붙으면서 가상 환경이 활성화 될 것입니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+window : {가상환경 이름}/Scripts/activate.bat
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;">그럼 terminal 좌측에 (myvenv) 라고 표시가 됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;">이를 통해 가상환경이 켜져있는지 아닌지 확인할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">그리고 가상 환경에서 제공하는 파이썬의 버전은 다음과 같이 확인할 수 있습니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+python -V
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-venv/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>3. 가상 환경에 패키지 설치</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">가상 환경이 활성화된 상태에서 패키지를 설치하면, </span><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;"><b>.venv </b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">디렉터리 내부에 해당 패키지가 설치됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">즉, 운영체제에 설치되어 있는 파이썬이나 동일 PC내의 다른 파이썬 프로젝트에 아무 영향을 주지 않습니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+pip install requests
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"><b>pip show </b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">커맨드로 설치된 패키지의 세부사항을 살펴보면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"><b> .venv/lib/python3.7/site-packages</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">에 해당 패키지가 설치되었다는 것을 확인할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+$ pip show requests
+Name: requests
+Version: 3.8.4
+Summary: Python HTTP for Humans.
+Home-page: http://python-requests.org
+Author: Kenneth Reitz
+Author-email:
+License:
+Location: (...)
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;">여기까지 가상 환경 설치는 끝났습니다!</span></p>
+</div>
+</div>
+</div>
+</div>  <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>4. 파이썬 가상 환경 비활성화</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">가상 환경을 빠져나올 떄는 터미널에</span><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"><b> deactivate</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">만 입력해주면 됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.6;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">가상 환경이 비활성화 되면 다시 원래대로 운영체제의 기본 파이썬 인터프리터를 사용하게 됩니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+deactivate
+which python
+/usr/local/bin/python3
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;">가상 환경을 삭제하는 명령어는 다음과 같습니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+rm -rf {가상환경 이름}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system" style="color:#141414;">그리고 저는 여기에 이어서 django 를 설치 하려고 합니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-venv/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">설치 완료!</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">그럼 django로 홈페이지를 만드는 포스팅으로 다시 찾아뵙겠습니다~~</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">참고 자료 :</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://emfls.tistory.com/entry/Python%EC%9D%84-%EC%9C%84%ED%95%9C-%EA%B0%80%EC%83%81%ED%99%98%EA%B2%BD-%EC%84%A4%EC%B9%98-%ED%98%B8%EC%B6%9C-%EC%A2%85%EB%A3%8C-for-Mac" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Python을 위한 가상환경 (설치, 호출, 종료) for Mac</strong>
+<p class="se-oglink-summary">가상환경 virtualenv 설치를 위한 pip 설치 명령어(pip이 설치되어 있는 분들은 생략!) $ sudo easy_install pip ※sudo는 관리자 권한으로 설치하는 것이기에 붙이셔도 안붙이셔도 상관없습니다. pip 버전 확인 $..</p>
+<p class="se-oglink-url">emfls.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

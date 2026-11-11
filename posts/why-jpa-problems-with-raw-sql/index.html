@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQL을 직접 다룰 때의 문제점과 JPA를 사용하는 이유 정리 | minj.devlog</title>
+  <meta name="description" content="SQL을 직접 다룰 때의 문제점 1. 반복적인 코드의 작성 테이블이 100개 존재한다면, 100개의 CRUD를 작성해야 한다. SQL 작성, JDBC API로 SQL 실행, 결과를 객체로 매핑 등.. 2." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/why-jpa-problems-with-raw-sql/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="SQL을 직접 다룰 때의 문제점과 JPA를 사용하는 이유 정리" />
+  <meta property="og:description" content="SQL을 직접 다룰 때의 문제점 1. 반복적인 코드의 작성 테이블이 100개 존재한다면, 100개의 CRUD를 작성해야 한다. SQL 작성, JDBC API로 SQL 실행, 결과를 객체로 매핑 등.. 2." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/why-jpa-problems-with-raw-sql/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/why-jpa-problems-with-raw-sql/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-08-29" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "SQL을 직접 다룰 때의 문제점과 JPA를 사용하는 이유 정리", "description": "SQL을 직접 다룰 때의 문제점 1. 반복적인 코드의 작성 테이블이 100개 존재한다면, 100개의 CRUD를 작성해야 한다. SQL 작성, JDBC API로 SQL 실행, 결과를 객체로 매핑 등.. 2.", "datePublished": "2022-08-29", "dateModified": "2022-08-29", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/why-jpa-problems-with-raw-sql/", "image": "https://minjipi.github.io/posts/why-jpa-problems-with-raw-sql/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="why-jpa-problems-with-raw-sql">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-08-29">2022.08.29</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222861119624" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">SQL을 직접 다룰 때의 문제점과 JPA를 사용하는 이유 정리</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/why-jpa-problems-with-raw-sql/images/image_1.jpg" alt="SQL을 직접 다룰 때의 문제점과 JPA를 사용하는 이유 정리" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222861119624 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">SQL을 직접 다룰 때의 문제점</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 반복적인 코드의 작성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">테이블이 100개 존재한다면, 100개의 CRUD를 작성해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">SQL 작성, JDBC API로 SQL 실행, 결과를 객체로 매핑 등..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. SQL 의존적 개발</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">만약 테이블에 하나의 Column을 추가해야 한다면 모든 SQL의 변경이 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">INSERT, UPDATE, SELECT 등 관련된 모든 쿼리와 메소드가 변경되어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">또 만약 제대로 동작하지 않다면 직접 DAO를 열어 SQL을 확인해야 하고.. 논리적인 계층 분할이 어려워진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. </span><span class="se-fs- se-ff-"><b>패러다임의 불일치</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자바는 객체지향 언어지만, 관계형 데이터베이스는 객체지향이 다루는 개념이 존재하지 않는다. 서로 지향하는 목적이 다르기 때문에, 이로 인한 패러다임의 불일치가 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">객체 지향 프로그래밍은 추상화, 캡슐화, 정보은닉, 상속, 다형성 등 시스템의 복잡성을 제어할 수 있는 다양한 장치들을 제공한다. 객체로 모델링을 하게 되면 이러한 많은 장점을 얻을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">하지만 객체를 저장하려고 할 때, 상속을 받았거나 다른 객체를 참조하고 있어 문제가 발생한다. 회원을 저장할 때 팀을 함께 저장하지 않았다면 팀이 사라져버릴 수 있다. 서로 다른 목적 때문에 개발자가 중간에서 문제를 해결하기 위해 코드를 작성해 매핑해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 상속</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">객체는 상속이 있지만 테이블은 상속이 없다. 그나마 유사한 슈퍼타입-서브타입이 존재하지만 JDBC에서 상속 객체를 저장하기 위해서는 부모 객체용 INSERT와 자식 객체용 INSERT를 따로 작성해야 하고, 조회도 JOIN을 통해 결과를 얻어 객체를 생성하는 모든 코드를 작성해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 연관관계</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">객체는 참조를 통해 연관관계를 가지고 참조에 접근해 연관된 객체를 조회 참조가 있는 방향으로만의 참조가 가능(단방향) 테이블은 외래키를 사용해 다른 테이블과 연관관계를 가지고 조인을 통해 테이블을 조회 양방향 모두의 참조가 가능하다. 이를 맞추기 위해 객체에 외래키로 모델링을 하게 되면 저장은 편리하지만 객체는 연관된 객체를 참조할 수 없다는 문제가 발생한다. 반대로 연관된 객체를 저장하면 테이블에 저장하거나 조회할 때 개발자가 모든 변환 역할을 해줘야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">JPA 사용하는 이유</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>1. 생산성</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">JPA를 사용하면 자바 컬렉션에 저장하듯 JPA에게 저장할 객체를 전달하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">지루하고 반복적인 코드를 개발자가 직접 작성하지 않아도 되며, DDL문도 자동으로 생성해주기 때문에 데이터베이스 설계 중심을 객체 설계 중심으로 변경할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>2. 유지보수</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">필드를 하나만 추가해도 관련된 SQL과 JDBC 코드를 전부 수행해야 했지만, JPA는 이를 대신 처리해주기 때문에 개발자가 유지보수해야하는 코드가 줄어든다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>3. 패러다임의 불일치 해결</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">JPA는 연관된 객체를 사용하는 시점에 SQL을 전달할 수 있고, 같은 트랜잭션 내에서 조회할 때 동일성도 보장하기 때문에 다양한 패러다임의 불일치를 해결한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>4. 성능</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">애플리케이션과 데이터베이스 사이에서 성능 최적화 기회를 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">같은 트랜잭션안에서는 같은 엔티티를 반환하기 때문에 데이터 베이스와의 통신 횟수를 줄일 수 있다. 또한, 트랜잭션을 commit하기 전까지 메모리에 쌓고 한번에 SQL을 전송한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>5. 데이터 접근 추상화와 벤더 독립성</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">RDB는 같은 기능이라도 벤더마다 사용법이 다르기 때문에 처음 선택한 데이터베이스에 종속되고 변경이 어렵다. JPA는 애플리케이션과 데이터베이스 사이에서 추상화된 데이터 접근을 제공하기 때문에 종속이 되지 않도록한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">만약 DB가 변경되더라도 JPA에게 알려주면 간단하게 변경이 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-right" style="max-width:150px;">
+<div class="se-module se-module-image"><div class="se-state-error se-state-error-small">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">ORM 표준 JPA 프로그래밍 강의 기본편</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

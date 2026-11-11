@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Docker] Docker mount volume | minj.devlog</title>
+  <meta name="description" content="[Docker] 도커 mount volume 일단 볼륨을 쓰는 이유는 컨테이너에서 생성되는 데이터가 컨테이너가 사라져도 남아있게하기 위해서. 방법 1) volume타입 -&gt; 도커 볼륨 이용 방법 2) bind타입 -&gt; 호스트 PC의 저장소를 공유하는 방식." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/docker-mount-volume/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Docker] Docker mount volume" />
+  <meta property="og:description" content="[Docker] 도커 mount volume 일단 볼륨을 쓰는 이유는 컨테이너에서 생성되는 데이터가 컨테이너가 사라져도 남아있게하기 위해서. 방법 1) volume타입 -&gt; 도커 볼륨 이용 방법 2) bind타입 -&gt; 호스트 PC의 저장소를 공유하는 방식." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/docker-mount-volume/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/docker-mount-volume/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-04" />
+  <meta property="article:section" content="Cloud/Docker" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Docker] Docker mount volume", "description": "[Docker] 도커 mount volume 일단 볼륨을 쓰는 이유는 컨테이너에서 생성되는 데이터가 컨테이너가 사라져도 남아있게하기 위해서. 방법 1) volume타입 -> 도커 볼륨 이용 방법 2) bind타입 -> 호스트 PC의 저장소를 공유하는 방식.", "datePublished": "2021-06-04", "dateModified": "2021-06-04", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/docker-mount-volume/", "image": "https://minjipi.github.io/posts/docker-mount-volume/images/image_1.jpg", "articleSection": "Cloud/Docker"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="docker-mount-volume">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FDocker">Cloud/Docker</a>
+              <time class="post-date" datetime="2021-06-04">2021.06.04</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222384181698" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Docker] Docker mount volume</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/docker-mount-volume/images/image_1.jpg" alt="[Docker] Docker mount volume" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222384181698 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-nanummyeongjo se-style-unset" style="color:#000000;"><b>[Docker]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>도커 mount volume</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">일단 볼륨을 쓰는 이유는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">컨테이너에서 생성되는 데이터가 컨테이너가 사라져도 남아있게하기 위해서.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><b>방법 1)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><i><b>volume타입 -&gt; 도커 볼륨 이용</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><b>방법 2)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><i><b>bind타입 -&gt; 호스트 PC의 저장소를 공유하는 방식.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">여기까지는 도커 볼륨과 다를게 없어 보이지만,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">스웜 볼륨에서는 '여러 컴퓨터에 컨테이너가 따로 생긴다는 점'에 주목하자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><b>방법 1) </b></span><span class="se-fs- se-ff-nanumbarungothic">첫번째, 도커 볼륨을 이용하는 방식을 보면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">docker volume ls 로 볼륨을 확인하고(3가지 노드 전부 볼륨을 다 지우고)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">아래 명령어로 서비스를 만들고, 스케일을 늘려서, 각 노드에 컨테이너가 생성되게 하면</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker service create --name web \
+--mount type=volume,source=my_vol,target=/usr/local/tomcat/webapps/minji \
+-p 8080:8080 tomcat:latest
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">docker volume ls 했을 때, my_vol 이라는게 각 노드에 생성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그래서 컨테이너가 사라져도 my_vol이라는 볼륨이 남아있기 때문에, 컨테이너에서 생성되는 파일들은 영구적으로 남아있는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그런데 각 컴퓨터에 각자 my_vol 이라는 도커 볼륨이 생기는 것이기 때문에 각 노드의 컨테이너들이 파일을 공유하는게 아니라 각자 </span><span class="se-fs- se-ff-nanumbarungothic"><b>각각의 my_vol 이라는 볼륨에 파일</b></span><span class="se-fs- se-ff-nanumbarungothic">이 저장되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그래서 각자 따로 관리해야 되는 파일이 있을 때는 도커 볼륨으로 서비스를 만들어서 쓰는 것이 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><b>방법 2) </b></span><span class="se-fs- se-ff-nanumbarungothic">두번째 방식, 호스트 PC의 폴더를 공유해서 쓰는방식.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+docker service create --name web \
+--mount type=bind,source=/vol,target=/usr/local/tomcat/webapps/minji \
+-p 8080:8080 tomcat:latest
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">위 명령어를 이용해 호스트PC의 폴더를 공유해서 쓰면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">각 노드에 /vol이라는 폴더가 각각 있어야 하고 그냥 사용하면 위에 도커 볼륨과 마찬가지로 각각 서로 다른 데이터를 저장하겠지만, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">nfs와 같은 폴더 공유를 이용해서 하나의 노드가 폴더를 공유하고 다른 노드들은 nfs로 마운트해서 쓰면 하나의 폴더를 각 컨테이너들이 공유해서 쓰기 때문에 파일을 한번만 변경해도 각 노드의 모든 컨테이너들에 적용이 될 수 있다는 것.  jsp 파일 같은 경우는 bind 타입의 볼륨이 편하겠지 !</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

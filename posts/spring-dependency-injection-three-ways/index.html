@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입, @RequiredArgsConstructor과 @Autowired 차이점) | minj.devlog</title>
+  <meta name="description" content="순환 참조 에러 덕분에 자주쓰는 @Autowired 어노테이션과 @RequiredArgsConstructor에 대해 찾아보고 정리한 글. 이 글에서 일반 메서드 주입 방법은 의존성 주입 방법에서 제외한다. 1." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-dependency-injection-three-ways/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입, @RequiredArgsConstructor과 @Autowired 차이점)" />
+  <meta property="og:description" content="순환 참조 에러 덕분에 자주쓰는 @Autowired 어노테이션과 @RequiredArgsConstructor에 대해 찾아보고 정리한 글. 이 글에서 일반 메서드 주입 방법은 의존성 주입 방법에서 제외한다. 1." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-dependency-injection-three-ways/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-dependency-injection-three-ways/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-04-25" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입, @RequiredArgsConstructor과 @Autowired 차이점)", "description": "순환 참조 에러 덕분에 자주쓰는 @Autowired 어노테이션과 @RequiredArgsConstructor에 대해 찾아보고 정리한 글. 이 글에서 일반 메서드 주입 방법은 의존성 주입 방법에서 제외한다. 1.", "datePublished": "2022-04-25", "dateModified": "2022-04-25", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-dependency-injection-three-ways/", "image": "https://minjipi.github.io/posts/spring-dependency-injection-three-ways/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-dependency-injection-three-ways">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-04-25">2022.04.25</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222711099525" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입, @RequiredArgsConstructor과 @Autowired 차이점)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-dependency-injection-three-ways/images/image_1.jpg" alt="의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입, @RequiredArgsConstructor과 @Autowired 차이점)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222711099525 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#000000;"><i>순환 참조 에러 덕분에 자주쓰는 @Autowired 어노테이션과 @RequiredArgsConstructor에 대해 찾아보고 정리한 글.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#000000;"><i>이 글에서 일반 메서드 주입 방법은 의존성 주입 방법에서 제외한다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>1. 의존성이란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+class HiWorld {
+private SayHi sayHi;
+public HelloWorld() {
+this.sayHi = new SayHi();
+}
+public startHelloWorld() {
+this.sayHi.hello();
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">HiWorld 클래스에서 hello함수가 호출되기 위해서는 SayHi 클래스가 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이 때 HiWorld 클래스는 SayHi 클래스의 의존성을 가진다고 말한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">의존성 주입에는 크게 3가지 방법이 존재한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">1) </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>필드 주입</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">2) </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>setter 주입</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">3) </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>생성자 주입</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>2) 필드주입, @Autowired 예시</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+@Controller
+public class BoardController {
+    @Autowired private IBoardItemService boardItemService;
+[ 생략 ]
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">@Autowired를 활용한 의존성 주입을 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>필드 주입</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이 @Autowired 필드 주입은 사용법이 간단해서 대부분 의존성 주입을 필드 주입으로 접하지만, intelliJ에서는 이 방식을 추천하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"><i><b>intelliJ</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Field injection is not recommended
+Inspection info: Spring Team recommends: "Always use constructor based dependency injection in your beans. Always use assertions for mandatory dependencies".
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">Always 생성자 주입을 권장한다. 생성자 주입에 대해서는 아래에서 자세히 설명한다. 필드 주입을 권장하지 않는 이유는 순환 참조 방지 때문이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">순환 참조 에러 예시:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+CodeInputFileService.class
+
+@Service
+public class codeInputFileService {
+    @Autowired
+    private BoardService boardService;
+...
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+CodeInputFileService.class
+
+@Service
+public class BoardService {
+    @Autowired
+    private CodeInputFileService  codeInputFileService;
+...
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">위와 같이 서로 순환 참조하는 구조가 되었을 때, 필드 주입으로 구현했다면, 해당 참조가 실행돼 StackOverflowError가 발생하기 전까지는 알 수 없다. 하지만 생성자 주입으로 구현되어있다면 어플리케이션이 구동조차 되지 않고, 다음과 같이 에러가 나오는 것을 볼 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+***************************
+APPLICATION FAILED TO START
+***************************
+Description:
+
+The dependencies of some of the beans in the application context form a cycle:
+mainController (field private com.wcp.board.BoardService com.wcp.board.main.MainController.boardService)
+┌─────┐
+|  boardService defined in file [C:\git\2021\WebCompile\Toy-Project\core\out\production\classes\com\wcp\board\BoardService.class]
+↑     ↓
+|  codeInputFileService defined in file [C:\git\2021\WebCompile\Toy-Project\core\out\production\classes\com\wcp\coding\inputFile\CodeInputFileService.class]
+└─────┘
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">발생할 수 있는 오류를 사전에 알 수 있는 것이다. 그럼 다른 방법들을 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"><b>Setter 주입</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+@Service
+public class CodeInputFileService {
+private CodeInputFileManager codeInputFileManager;
+
+    @Autowired
+    public void setCodeInputFileManager(CodeInputFileManager codeInputFileManager) {
+this.codeInputFileManager = codeInputFileManager;
+}
+...
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">Setter 주입은 생성자 주입과 다르게 주입받는 객체가 변경될 가능성이 있는 경우에 사용한다. 주로 사용하지는 않는 방법이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>🤔 그럼 뭘 써야 할까?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">스프링에서 공식적으로 추천하는 방법은 생성자 주입이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+@Controller
+public class BoardController {
+private final IBoardItemService boardItemService;
+public BoardController(IBoardItemService boardItemService) {
+this.boardItemService = boardItemService;
+}
+[ 생략 ]
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">근데 그럼 매번 생성자 주입으로 작성하게 되면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">객체가 추가될 때마다 선언을 하고 생성자를 수정해줘야 하는데..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">너무 번거롭기 때문에 @RequiredArgsConstructor 가 탄생했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>3)  생성자 주입, @RequiredArgsConstructor 권장</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">final 필드에 대해 생성자를 만들어주는 lombok의 annotation.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Spring Framework의 DI(의존성주입) 중 Constructor Injection(생성자 주입)을 임의의 코드 없이 자동으로 설정.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">위 코드를에 @RequiredArgsConstructor를 활용해서 수정하면 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+@Controller
+@RequiredArgsConstructor
+public class BoardController {
+private final IBoardItemService boardItemService;
+/* 이하 생략 */
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">Lombok에서 지원하는 @RequiredArgsConstructor 어노테이션을 사용하여 의존성을 주입 하는 것을 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>생성자 주입</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이렇게 RequiredArgsConstructor만 선언하면 알아서 final 키워드가 붙은 필드에 대해 생성자를 만들어준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">또 생성자가 하나만 선언 되어있어도 @Autowired 어노테이션을 생략할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">스프링 팀이 생성자 주입을 사용할 것을 권장하는 이유는 한번 의존성을 주입받은 객체는 프로그램이 끝날때 까지 변하지 않는 특징을 가지므로 불변성을 표시해주는 것이 좋기 때문이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">그래서 의존성을 주입할 객체에 final 키워드를 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><a class="se-link" href="https://mangkyu.tistory.com/131" target="_blank">왜 불변객체(immutable object)를 사용하는 것이 좋을까?</a></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">)</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">생성자 주입을 사용할 경우 장점</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">① 순환 참조 방지</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">② 테스트 코드 작성 용이</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">③ 객체 변이 방지 (final 가능)</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#000000;">참고:</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#000000;"><a class="se-link" href="https://upcake.tistory.com/417" target="_blank">https://upcake.tistory.com/417</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#000000;"><a class="se-link" href="https://velog.io/@cham/Spring-Field%EC%99%80-Constructor-Injection" target="_blank">https://velog.io/@cham/Spring-Field%EC%99%80-Constructor-Injection</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;"><a class="se-link" href="https://madplay.github.io/post/why-constructor-injection-is-better-than-field-injection" target="_blank">https://madplay.github.io/post/why-constructor-injection-is-better-than-field-injection</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;">생성자 주입을 @Autowired를 사용하는 필드 주입보다 권장하는 하는 이유</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

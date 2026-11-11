@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raspberry Pi :: 라즈베리파이 &#x27;토양 수분센서&#x27; | minj.devlog</title>
+  <meta name="description" content="토양 수분센서 는 토양의 수분이 얼만큼 있는지 특정하는 소자. 그런데 라즈베리파이는 DAC(Digital-Analog Converter) 뿐 아니라 ADC(Analog-Digital Converter) 장치도 내장하고 있지 않다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/raspberry-pi-soil-moisture-sensor/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Raspberry Pi :: 라즈베리파이 &#x27;토양 수분센서&#x27;" />
+  <meta property="og:description" content="토양 수분센서 는 토양의 수분이 얼만큼 있는지 특정하는 소자. 그런데 라즈베리파이는 DAC(Digital-Analog Converter) 뿐 아니라 ADC(Analog-Digital Converter) 장치도 내장하고 있지 않다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/raspberry-pi-soil-moisture-sensor/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/raspberry-pi-soil-moisture-sensor/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-03-30" />
+  <meta property="article:section" content="IoT/RaspberryPi" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Raspberry Pi :: 라즈베리파이 '토양 수분센서'", "description": "토양 수분센서 는 토양의 수분이 얼만큼 있는지 특정하는 소자. 그런데 라즈베리파이는 DAC(Digital-Analog Converter) 뿐 아니라 ADC(Analog-Digital Converter) 장치도 내장하고 있지 않다.", "datePublished": "2021-03-30", "dateModified": "2021-03-30", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/raspberry-pi-soil-moisture-sensor/", "image": "https://minjipi.github.io/posts/raspberry-pi-soil-moisture-sensor/images/image_1.jpg", "articleSection": "IoT/RaspberryPi"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="raspberry-pi-soil-moisture-sensor">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=IoT%2FRaspberryPi">IoT/RaspberryPi</a>
+              <time class="post-date" datetime="2021-03-30">2021.03.30</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222292782826" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Raspberry Pi :: 라즈베리파이 &#x27;토양 수분센서&#x27;</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222292782826 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>토양 수분센서</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">는 토양의 수분이 얼만큼 있는지 특정하는 소자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">그런데 라즈베리파이는 DAC(Digital-Analog Converter) 뿐 아니라</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">ADC(Analog-Digital Converter) 장치도 내장하고 있지 않다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">그래서 아날로그 전압을 입력받으려면,</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">아날로그 신호를 디지털로 변환해 주는 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>ADC</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">를 통해 변환된 디지털 신호를 받고,</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">받은 신호를 라즈베리파이에서 읽기 위해</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">라즈베리파이에서</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b> SPI 프로토콜</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">을 사용할 수 있게 해주어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">[</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222092727836" target="_blank">라즈베리파이에서 SPI 통신 설정</a></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222092727836" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Raspberry Pi :: 라즈베리 파이 SPI 통신, MCP3008 IC</strong>
+<p class="se-oglink-summary">라즈베리 파이 SPI 통신 :: 아날로그 신호와 SPI 통신조도센서는 빛의 세기에 따라 저항값이 변하는 ...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">설정은 위의 링크를 참고해도 좋고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">나는 2020년 12월에 업데이트된 라즈베리파이 OS를 다운 받아서-</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/raspberry-pi-soil-moisture-sensor/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit" target="_blank">https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit</a></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">1. </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>라즈베리파이 기본설정 &gt; 라즈베리파이 Configuration</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:477px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/raspberry-pi-soil-moisture-sensor/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">2. </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>SPI : Disable 에서 Enable 체크</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:50.098447360975584%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/raspberry-pi-soil-moisture-sensor/images/image_3.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:49.901552639024416%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/raspberry-pi-soil-moisture-sensor/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">라즈베리파이에서</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b> SPI 프로토콜</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">을 사용할 수 있게 되었다면</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이제 ADC 기능을 가진 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>MCP3008 IC</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">를 이용해</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">아날로그에서 변환된 디지털 값을 SPI 통신을 통해 받아오자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import spidev, time
+
+spi = spidev.SpiDev()
+spi.open(0,0)
+spi.max_speed_hz = 100000
+
+def analog_read(channel):
+	r = spi.xfer2([1, (8 + channel) &lt;&lt; 4, 0])
+	adc_out = ((r[1]&amp;3) &lt;&lt; 8) + r[2]
+return adc_out
+
+
+
+while True:
+	reading = analog_read(0)
+	voltage = reading * 3.3 / 1024
+print("Reading=%d\tVoltage=%f" % (reading, voltage))
+	time.sleep(1)
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:282px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/raspberry-pi-soil-moisture-sensor/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:375px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/raspberry-pi-soil-moisture-sensor/images/nv_1.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic">[성공 영상]</span></p>
+</div>
+</div>
+</div>
+</div> <p class="naver-video-note"><a href="https://blog.naver.com/ghdalswl77/222292782826" rel="noopener" target="_blank">🎬 동영상은 네이버 블로그 원문에서 볼 수 있어요.</a></p> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

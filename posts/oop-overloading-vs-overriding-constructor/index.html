@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>객체지향, 오버로딩과 오버라이딩의 차이, 생성자 | minj.devlog</title>
+  <meta name="description" content="1. 객체지향 에서 중요하다고 여겨지는 두 가지 - 상속 - 다형성 .. 그리고 그 기반에 추상화 라는 원리가 숨겨져 있다 2. 오버로딩과 오버라이딩의 차이 오버로딩 은 중복선언 . = 여러번 정의 하는 것. 인수의 형태와 수가 기존에 선언된 메소드와 달라야 한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/oop-overloading-vs-overriding-constructor/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="객체지향, 오버로딩과 오버라이딩의 차이, 생성자" />
+  <meta property="og:description" content="1. 객체지향 에서 중요하다고 여겨지는 두 가지 - 상속 - 다형성 .. 그리고 그 기반에 추상화 라는 원리가 숨겨져 있다 2. 오버로딩과 오버라이딩의 차이 오버로딩 은 중복선언 . = 여러번 정의 하는 것. 인수의 형태와 수가 기존에 선언된 메소드와 달라야 한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/oop-overloading-vs-overriding-constructor/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/oop-overloading-vs-overriding-constructor/images/image_1.jpg" />
+  <meta property="article:published_time" content="2019-09-15" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "객체지향, 오버로딩과 오버라이딩의 차이, 생성자", "description": "1. 객체지향 에서 중요하다고 여겨지는 두 가지 - 상속 - 다형성 .. 그리고 그 기반에 추상화 라는 원리가 숨겨져 있다 2. 오버로딩과 오버라이딩의 차이 오버로딩 은 중복선언 . = 여러번 정의 하는 것. 인수의 형태와 수가 기존에 선언된 메소드와 달라야 한다.", "datePublished": "2019-09-15", "dateModified": "2019-09-15", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/oop-overloading-vs-overriding-constructor/", "image": "https://minjipi.github.io/posts/oop-overloading-vs-overriding-constructor/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="oop-overloading-vs-overriding-constructor">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2019-09-15">2019.09.15</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/221648884759" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">객체지향, 오버로딩과 오버라이딩의 차이, 생성자</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/221648884759 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-">1. 객체지향 에서 중요하다고 여겨지는 두 가지 </span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>- 상속</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>- 다형성</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-">.. </span><span class="se-fs- se-ff-">그리고 그 기반에 </span><span class="se-fs- se-ff-"><b>추상화</b></span><span class="se-fs- se-ff-"> </span><span class="se-fs-fs11 se-ff-">라는 원리가 숨겨져 있다</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-">2. 오버로딩과 오버라이딩의 차이</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">오버로딩 은 </span><span class="se-fs- se-ff-"><b>중복선언</b></span><span class="se-fs- se-ff-">. =</span><span class="se-fs-fs11 se-ff-">여러번 정의 하는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">인수의 형태와 수가 기존에 선언된 메소드와 달라야 한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-">오버로딩은 중복선언. </span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-">오버로딩의 조건은 매개변수의 data type과 개수.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-">리턴값은 관계가 없다.(같아도 되고 달라도 괜찮음)</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>오버라이딩</b></span><span class="se-fs- se-ff-"> 은 부모 클래스에 정의된 같은 이름.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">같은 파라미터 목록을 가진 메서드를 자식 클래스에서 재정의하는 경우를 가리킨다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">오버로딩과 달리 </span><span class="se-fs- se-ff-"><u><b>상속</b></u></span><span class="se-fs- se-ff-"><u>과 관련이 있다.</u></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">부모 클래스로부터 물려 받으며 자신에 맞게 수정한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>메서드의 이름이 같아야 하고,</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>매개변수가 같아야 하고,</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>리턴 타입이 같아야 한다! (Java 5부터는 부모 메서드 리턴 타입의 하위 타입으로 바꾸는 것까지는 허용된다.)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">이런 것을 </span><span class="se-fs- se-ff-"><b>다형성</b></span><span class="se-fs- se-ff-"> 이라고 부른다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"><strike>또 이것을 동물에 자주 비유한다.. 강아지</strike></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>3. 생성자</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">도대체 생성자가 하는 일 :</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff- se-decoration-unset"><b>객체의 멤버에 자동으로 초기값을 설정.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>‘ 프로그램 부품의 초기 설정을 자동으로 하기 위한 장치’</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>해당 클래스의 객체가 생성될 때, 생성자 안의 코드가 자동으로 실행.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"><b>- </b></span><span class="se-fs- se-ff-">그치만 메소드의 경우와는 달리 자유롭게 호출할 수는 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">또 생성자 이름은 반드시 클래스 이름과 같아야 함</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">리턴값도 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">예시로 car 클래스의 생성자라면</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">차량번호와 연료 양의 초기 값으로 0을 대입. 하는 처리를 맡길 수 있음.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">++ 생성자오버로딩</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">It학과에서 학기초 마다 가르쳐 주는 것 3가지...</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-">그리고 매번 학생들은 답하지 못하지.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-justify">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/oop-overloading-vs-overriding-constructor/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

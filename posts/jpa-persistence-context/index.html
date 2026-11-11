@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[JPA] JPA의 구동방식, 영속성 컨텍스트 (영속성 컨텍스트의 장점) | minj.devlog</title>
+  <meta name="description" content="1. JPA의 구동방식 JPA의 구동방식을 살펴보면 아래와 같이 META-INF라는 곳 아래에 persistence.xml을 설정정보로 참고한 뒤 EntityManagerFactory를 생성하고 거기서 EntityManager를 생성해서 요청을 실행한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/jpa-persistence-context/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[JPA] JPA의 구동방식, 영속성 컨텍스트 (영속성 컨텍스트의 장점)" />
+  <meta property="og:description" content="1. JPA의 구동방식 JPA의 구동방식을 살펴보면 아래와 같이 META-INF라는 곳 아래에 persistence.xml을 설정정보로 참고한 뒤 EntityManagerFactory를 생성하고 거기서 EntityManager를 생성해서 요청을 실행한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/jpa-persistence-context/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/jpa-persistence-context/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-10-01" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[JPA] JPA의 구동방식, 영속성 컨텍스트 (영속성 컨텍스트의 장점)", "description": "1. JPA의 구동방식 JPA의 구동방식을 살펴보면 아래와 같이 META-INF라는 곳 아래에 persistence.xml을 설정정보로 참고한 뒤 EntityManagerFactory를 생성하고 거기서 EntityManager를 생성해서 요청을 실행한다.", "datePublished": "2022-10-01", "dateModified": "2022-10-01", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jpa-persistence-context/", "image": "https://minjipi.github.io/posts/jpa-persistence-context/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="jpa-persistence-context">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-10-01">2022.10.01</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222889111394" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[JPA] JPA의 구동방식, 영속성 컨텍스트 (영속성 컨텍스트의 장점)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/jpa-persistence-context/images/image_1.jpg" alt="[JPA] JPA의 구동방식, 영속성 컨텍스트 (영속성 컨텍스트의 장점)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222889111394 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b>1. JPA의 구동방식</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">JPA의 구동방식을 살펴보면 아래와 같이 META-INF라는 곳 아래에 persistence.xml을 설정정보로 참고한 뒤 EntityManagerFactory를 생성하고 거기서 EntityManager를 생성해서 요청을 실행한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b>EntityManagerFactory와 EntityManager?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">어플리케이션은 단 하나의 EntityManagerFactory를 가지는데, 어플리케이션이 실행하면 생성하고 종료하면 소멸한다. 실제 DB 사용을 담당하는 EntityManager는 하나의 Thread(Transaction)가 생성될 때마다 EntityManagerFactory가 생성해 준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">이를 코드로 구현하면 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class JpaMain {
+public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Hi1");
+
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        
+        tx.begin();
+try {
+//code
+...
+             tx.commit();
+}catch (Exception e){
+             tx.rollback();
+} finally {
+            em.close();
+}
+
+        emf.close();
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">모든 데이터의 변경(수정,삭제,추가 등)은 transaction안에서 실행되어야하기 때문에 tx.begin 이후 DB에 대한 코드를 작성한다. code 부분에 DB에 대한 코드를 작성한 뒤, tx.commit 부분에서 실제로 쿼리가 DB에 적용되기 때문에 try 문에서 에러가 나면 tx.rollback으로 DB에 반영하지 않을 수 있다. 그리고 항상 요청이 끝나면 em.close로 entityManager를 버려준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"><b>회원 CRUD추가</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+try{
+// 회원객체 생성 
+ 	   Member member = new Member();
+           member.setId(2L);
+           member.setName("HI2");
+          
+           em.persist(member);
+           tx.commit();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">tx.commit 에서 insert 쿼리가 나가고, 이 때 쿼리는 persistence.xml에서 설정한 dialect의 종류에 맞게 실행된다.(데이터베이스의 종류(H2, Oracle, Mysql 등)에 맞게 쿼리가 변환되어 나감)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">나머지 조회, 삭제, 수정은 아래와 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+try{
+//	    조회
+            Member findMember = em.find(Member.class, 2L); //(클래스, pk)
+//      삭제
+            em.remove(findMember);
+//      수정
+            findMember.setName("HelloJPA");
+            
+            tx.commit();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">JPA를 사용하면 객체를 다루듯 DB를 다룰 수 있다는 장점이 있는데, 그 특징이 가장 잘 드러나는 곳이 수정 부분이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">findMember 객체의 이름만 바꿔줬을 뿐인데 변경사항을 알아서 체크하고 DB에 수정쿼리를 날려준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"><b>전체조회</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">전체조회는 JPQL을 사용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+try{
+// 	      전체조회
+              List&lt;Member&gt; result = em.createQuery("select m from Member as m", Member.class)
+.getResultList();
+for (Member member : result){
+                  System.out.println("member.name = " + member.getName());
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">SQL이 테이블을 대상으로 날리는 쿼리라면, JPQL은 객체를 대상으로 날린다고 생각하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">그렇기 때문에 select m.name, m.id 가 아닌 select m 만으로도 조회가 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"><b>영속성 컨텍스트</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">영속성 컨텍스트는 엔티티를 영구적으로 저장하는 환경이며 논리적인 개념이다. 접근은 Entitymanager를 통해 가능하고 DB로 가기전에 있는 가상공간이라고 생각하면 된다. 이 영속성 컨텍스트를 사용하는 이유에 대해서는 아래에서 설명한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"><b>엔티티의 생명주기</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">엔티티의 생명주기</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">우선 member객체를 생성한 것은 </span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"><b>비영속 상태</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">다. (=영속성 컨텍스트와 관련없는 상태.) 그 후 EntityManager를 통해 persist로 영속상태로 만들어주는데. 이 때 member은 영속성 컨텍스트 안으로 들어간다. 후에 detach통해 영속성 컨텍스트에서 분리할수 있다. 이외에도 clear은 영속성 컨텍스트를 아예 비우는 것이기 때문에, 들어있던 모든 엔티티들이 분리된다. close는 EntityManager를 닫는 것으로 영속성 컨텍스트가 사라진다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+//          &gt; 비영속
+            Member member = new Member();
+            member.setId(2L);
+            member.setName("HelloB");
+//          &gt; 영속
+            em.persist(member);
+//          &gt; 영속해지
+            em.detach(member);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">remove는 commit시에 </span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"><b>flush </b></span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">되며, 변경사항(삭제)가 DB에 반영된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">* flush란 영속성 컨텍스트의 변경내용을 DB에 반영하는 것이다. 크게 3가지 방법으로 flush를 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#141414;"><b>(1) em,flush()</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#141414;"><b>(2) tx.commit()</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#141414;"><b>(3) JPQL 쿼리 실행</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">JPQL쿼리 실행 시 자동으로 flush가 이뤄지는데, 그 이유는 다음과 같은 경우 때문이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;">em.persist(memberA); em.persist(memberB); em.persist(memberC); </span><span class="se-fs- se-ff-" style="color:#141414;"><i>//중간에 JPQL 실행</i></span><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"> query = em.createQuery("select m from Member m", Member.class); List&lt;Member&gt; members= query.getResultList();</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">아직 commit 되기 전이라 persist시킨 member A, B, C는 DB에 들어가지 않았고, 이때 JPQL로 결과를 조회를 하면 당연히 없다고 나온다. JPQL은 1차 캐시를 거치지 않고 바로 sql로 변환되어 DB에 쿼리를 날리기 때문에 이런 경우를 위해서 JPQL이 실행되면 그전에 flush를 자동으로 호출한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b> </b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b>2. 영속성 컨텍스트의 장점</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" style="color:#141414;">영속성 컨텍스트 사용하는 이유👍🏻</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b>2-1. 1차 캐시</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">persist로 영속상태가 되면 key(pk): value(entity) 형태로 캐시에 저장된다. 따라서 같은 transaction안에서는 캐시가 유지된다. 이후에 find를 할 경우, 먼저 1차 캐시에서 있는지 살펴본 뒤에 없다면 select 쿼리를 날려서 찾아오기 때문에 쿼리 날리는 횟수를 조금 줄일 수 있다. (하지만 한 transaction안에서만 적용되어 큰 성능개선은 없다.)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">1차 캐시에 없다면 DB에서 조회해 오고 이를 바로 또 1차 캐시에 저장한다.</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b>2-2. 객체의 동일성 보장</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Member a = em.find(Member.class, "member1");
+Member b = em.find(Member.class, "member1");
+System.out.println(a == b);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">위 코드의 결과는 참이다. 당연해 보이긴 하지만 사실 데이터베이스 차원에서 위와 같이 sql을 날려 비교하면 a와 b가 다르다. (물론 id값은 같지만,) 영속성 컨텍스트가 있어서 객체 간 비교를 편하게 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b>2-3. 트랜잭션 쓰기 지연</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">영속성 컨텍스트는 DB전에 있는 단계로 buffer와 같은 역할을 한다. 따라서 변경사항을 모아 놨다가 commit()시에 flush가 되면서 DB에 반영된다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+// 엔티티 매니저는 데이터 변경 시 트랜잭션 시작
+
+transaction.begin(); // [트랜잭션] 시작
+
+em.persist(memberA);
+em.persist(memberB);
+// 여기까지 INSERT SQL을 데이터베이스에 보내지 않는다.
+// 커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
+transaction.commit();
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#141414;"><b>2-4. 변경감지 (dirty check)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">이 기능으로 이전에 회원수정이 간단하게 객체의 속성을 바꾸는 것만으로 끝났다! 영속성 컨텍스트는 commit으로 flush가 실행되면 변경사항들을 체크해 update를 해준다. 체크하는 방식은 영속성 컨텍스트에 들왔을 최초의 모습을 스냅샷으로 떠놓고, 그 후 flush 할 때 실제 entity와 스냅샷을 비교해서 달라진 것을 감지한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"><b>2-5. 지연 로딩 (LAZY Loading)</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public void process(){
+   Member member = entityManager.find(Member.class,100L);
+ member.getJPA(); // 필드로 JPA 클래스를 가짐
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">지연로딩은 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;">연관된 엔티티를 프록시로 조회하는 개념인데, 프록시를 '</span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"><b>실제 사용할 때</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#141414;"> 초기화하면서 데이타베이스를 조회'한다. (이 부분은 다음에 정리할 예정으로 여기서는 간단하게만 적어둔다.) </span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;">위와 같이 Member 클래스가 필드로 Jpa를 가지는 경우- find(member) 시점에는 MEMBER SELECT만 발생하고, getJpa()를 호출하는 순간 Jpa 를 SELECT한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#141414;"> </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-right" style="max-width:150px;">
+<div class="se-module se-module-image"><div class="se-state-error se-state-error-small">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">출처</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system se-style-unset" style="color:#141414;">김영한님의 JPA 책을 공부하며 정리했습니다.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

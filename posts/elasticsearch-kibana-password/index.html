@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elasticsearch, kibana 아이디 비밀번호 설정 | minj.devlog</title>
+  <meta name="description" content="Elasticsearch 비밀번호 설정 방법 7.x 버전 부터 비밀번호 설정 할 수 있도록 xpack 에 추가 되었다. 1) vi /etc/elasticsearch/elasticsearch elasticsearch.yml 아래 추가 xpack.security.enabled:" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/elasticsearch-kibana-password/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Elasticsearch, kibana 아이디 비밀번호 설정" />
+  <meta property="og:description" content="Elasticsearch 비밀번호 설정 방법 7.x 버전 부터 비밀번호 설정 할 수 있도록 xpack 에 추가 되었다. 1) vi /etc/elasticsearch/elasticsearch elasticsearch.yml 아래 추가 xpack.security.enabled:" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/elasticsearch-kibana-password/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/elasticsearch-kibana-password/images/image_1.jpg" />
+  <meta property="article:published_time" content="2023-02-20" />
+  <meta property="article:section" content="Search/Elasticsearch" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Elasticsearch, kibana 아이디 비밀번호 설정", "description": "Elasticsearch 비밀번호 설정 방법 7.x 버전 부터 비밀번호 설정 할 수 있도록 xpack 에 추가 되었다. 1) vi /etc/elasticsearch/elasticsearch elasticsearch.yml 아래 추가 xpack.security.enabled:", "datePublished": "2023-02-20", "dateModified": "2023-02-20", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/elasticsearch-kibana-password/", "image": "https://minjipi.github.io/posts/elasticsearch-kibana-password/images/image_1.jpg", "articleSection": "Search/Elasticsearch"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="elasticsearch-kibana-password">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Search%2FElasticsearch">Search/Elasticsearch</a>
+              <time class="post-date" datetime="2023-02-20">2023.02.20</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223021262468" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Elasticsearch, kibana 아이디 비밀번호 설정</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/elasticsearch-kibana-password/images/image_1.jpg" alt="Elasticsearch, kibana 아이디 비밀번호 설정" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223021262468 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Elasticsearch 비밀번호</b></span><span class="se-fs- se-ff- se-style-unset"><b> 설정 방법</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">7.x 버전 부터 비밀번호 설정 할 수 있도록 xpack 에 추가 되었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">1)</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">vi /etc/elasticsearch/elasticsearch</span><span class="se-fs- se-ff-system se-style-unset se-decoration-unset">elasticsearch.yml</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">아래  추가</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">2) 비밀번호 변경</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"><b>/usr/share/elasticsearch/bin/elasticsearch-setup-passwords  interactive </b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Y 선택 후 패스워드 설정</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Enternter password for [elastic]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Reenter password for [elastic]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Enter password for [apm_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Reenter password for [apm_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Enter password for [kibana_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Reenter password for [kibana_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Enter password for [logstash_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Reenter password for [logstash_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Enter password for [beats_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Reenter password for [beats_system]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Enter password for [remote_monitoring_user]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">Reenter password for [remote_monitoring_user]:</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">위 순서로 패스워드가 설정됨</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">3) 설정후 elasticsearch 재시작</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">elasicsearch {ip}:9200 접속하면 로그인 하라고 하는데</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">elastic / 설정한 비밀번호 입력</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-system"><i>* ES_PATH_CONF 어쩌고는 환경변수 설정하면 된다.</i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"><b>키바나 비밀번호 설정</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">vi /etc/kibana/kibana.yml</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+elasticsearch.username: "elastic"
+elasticsearch.password: "password"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">kibana 재시작 후 접속</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">{IP}:5601</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset">접속하면 로그인 아이디 비밀번호 입력폼이 나오고, elasticsearch와 동일하게 elastic/비밀번호 입력</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS :: CloudFormation | minj.devlog</title>
+  <meta name="description" content="[ Amazon Web Services ] AWS CloudFormation -1- AWS CloudFormation 서비스에 대해 알아보자. 🧞‍♂️ CloudFormation 이란? CloudFormation은 AWS 리소스를 자동으로 생성해 주는 서비스 이다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/aws-cloudformation/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="AWS :: CloudFormation" />
+  <meta property="og:description" content="[ Amazon Web Services ] AWS CloudFormation -1- AWS CloudFormation 서비스에 대해 알아보자. 🧞‍♂️ CloudFormation 이란? CloudFormation은 AWS 리소스를 자동으로 생성해 주는 서비스 이다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/aws-cloudformation/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/aws-cloudformation/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-15" />
+  <meta property="article:section" content="Cloud/AWS" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "AWS :: CloudFormation", "description": "[ Amazon Web Services ] AWS CloudFormation -1- AWS CloudFormation 서비스에 대해 알아보자. 🧞‍♂️ CloudFormation 이란? CloudFormation은 AWS 리소스를 자동으로 생성해 주는 서비스 이다.", "datePublished": "2021-06-15", "dateModified": "2021-06-15", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/aws-cloudformation/", "image": "https://minjipi.github.io/posts/aws-cloudformation/images/image_1.jpg", "articleSection": "Cloud/AWS"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="aws-cloudformation">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FAWS">Cloud/AWS</a>
+              <time class="post-date" datetime="2021-06-15">2021.06.15</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222399310987" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">AWS :: CloudFormation</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/aws-cloudformation/images/image_1.jpg" alt="AWS :: CloudFormation" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222399310987 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[ Amazon Web Services ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs28 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">AWS</span><span class="se-fs-fs28 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b> </b></span><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>CloudFormation</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">-1-</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic">AWS CloudFormation 서비스에 대해 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">🧞‍♂️</span><span class="se-fs- se-ff-"><b>CloudFormation </b></span><span class="se-fs-fs16 se-ff-">이란?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">CloudFormation은 AWS 리소스를 </span><span class="se-fs- se-ff-nanumbarungothic"><b>자동으로 생성해 주는 서비스</b></span><span class="se-fs- se-ff-nanumbarungothic">이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">사용하려는 AWS 리소스를 템플릿 파일로 작성하면, CloudFormation이 이를 분석해서 AWS 리소스를 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">이렇게 생성된 리소스를 </span><span class="se-fs- se-ff-nanumbarungothic"><b>스택</b></span><span class="se-fs- se-ff-nanumbarungothic">이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">🕹 </span><span class="se-fs- se-ff-"><b>CloudFormation</b></span><span class="se-fs-fs16 se-ff-">,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-">    어떻게 작동할까?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">CloudFormation은 아래 그림과 같이 작동한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/aws-cloudformation/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">템플릿 작성, 템플릿 업로드, 스택 생성, 스택 설정 및 리소스 생성의 4단계이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">자세한 작동방식은 </span><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/cfn-whatis-howdoesitwork.html" target="_blank">AWS 공식사이트</a></span><span class="se-fs- se-ff-nanumbarungothic"> 를 참고하자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>❇️CloudFormation</b></span><span class="se-fs-fs16 se-ff-">, 어떻게 만들지?🧐</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">템플릿은 JSON이나 YAML 형식으로 만들 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">해당 포스팅에서는 </span><span class="se-fs- se-ff-nanumbarungothic"><b>YAML 형식</b></span><span class="se-fs- se-ff-nanumbarungothic">으로 진행할 예정이다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">템플릿의 형식은 CloudFormation 디자이너에서 JSON에서 YAML로 또는 그 반대로 자유롭게 변경할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">템플릿에 선언된 리소스를 그래픽으로 표시하고 편집할 수 있는 기능도 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">시작해보자!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">서비스에서 </span><span class="se-fs- se-ff-nanumbarungothic"><b>CloudFormation</b></span><span class="se-fs-fs16 se-ff-nanumbarungothic"> </span><span class="se-fs- se-ff-nanumbarungothic">을 검색한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"><b>[ 스택 생성 ] </b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset">을 클릭해 들어간다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">아까 말했듯, 하단의</span><span class="se-fs- se-ff-nanumbarungothic"><b> [디자이너에서 보기]</b></span><span class="se-fs- se-ff-nanumbarungothic"> 클릭해</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">리소스를 그래픽으로 표시하고 편집할 수 있는 기능도 살짝 보고 넘어가자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">이런 식으로 그래픽 UI도 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그치만 이 포스팅에서는 그래픽 툴을 사용하지 않으니, 살짝 보고 넘어가도록 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">위와 같이</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">템플릿 준비 - 템플릿 파일 업로드 체크 하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">yml 템플릿 파일 업로드를 하는데, 가장 먼저</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>yml 파일로 인스턴스 생성하기</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">부터 해보자!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">예제 파일은 아래 [템플릿사용] [템플릿형식]에서 확인한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그럼 해당 페이지 아래에 예제 형식이 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Resources:
+MyEC2Instance: #An inline comment #이름
+    Type: "AWS::EC2::Instance"
+Properties:
+ImageId: "ami-0ff8a91507f77f867" #Another comment -- This is a Linux AMI
+InstanceType: t2.micro
+      KeyName: testkey
+      BlockDeviceMappings:
+-
+DeviceName: /dev/sdm
+Ebs:
+VolumeType: io1
+            Iops: 200
+DeleteOnTermination: false
+VolumeSize: 20
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">예제를 참고해서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">내가 평소 생성하던 식으로 파일을 수정했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Resources:
+MyEC2Instance:
+Type: "AWS::EC2::Instance"
+Properties:
+ImageId: "ami-00f90da52b0b4dd7e"
+                    #내 이미지 아이디
+      InstanceType: t2.micro
+      KeyName: key #내 키페어 아이디
+      BlockDeviceMappings:
+-
+DeviceName: /dev/sdm
+Ebs:
+VolumeType: gp2
+            DeleteOnTermination: false
+VolumeSize: 8
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">해당 파일로 아까와 같이 스택을 생성하면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">인스턴스가 자동으로 생성된다 ~.~</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"># 파라미터 생성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">이 파일에 적힌대로만 딱! 만들어지게 하는것이 아니라,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">만들 때 </span><span class="se-fs- se-ff-nanumbarungothic"><b>보기를 제공</b></span><span class="se-fs- se-ff-nanumbarungothic">하는 기능이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">형식은 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+~~Type:!Ref ~~Parameter
+
+Parameters:
+~~Parameter:
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">형식을 참고해 한번 생성 해보고, 결과를 확인해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Resources:
+MyEC2Instance:
+Type: "AWS::EC2::Instance"
+Properties:
+ImageId: "ami-00f90da52b0b4dd7e" #내 이미지 아이디
+      InstanceType: !Ref InstanceTypeParameter
+      KeyName: !Ref KeyNameParameter
+      BlockDeviceMappings:
+-
+DeviceName: /dev/sdm
+Ebs:
+VolumeType: gp2
+            DeleteOnTermination: false
+VolumeSize: 8
+Parameters:
+InstanceTypeParameter:
+Type: String
+    Default: t2.micro
+    AllowedValues:
+- t2.micro
+    - m1.small
+    - m1.large
+
+  KeyNameParameter:
+Type: String
+    Default: key #내 키페어 중, 이 인스턴스에 기본 설정할 키페어
+    AllowedValues:
+- key   #내 키페어 이름1
+- test  #내 키페어 이름2
+VolumeSizeParameter:
+Type: Number
+    Default: 8
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">이렇게 키는 뭘 사용할 것인지, 볼륨 크기는 어떻게 할 것인지 선택할 수 있는 파라미터가 만들어진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>[ 로드밸런싱 인스턴스 생성 ]</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">아래는 </span><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html" target="_blank">AWS 공식 사이트</a></span><span class="se-fs- se-ff-nanumbarungothic">의 로드밸런스 기본 형식이다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+Properties:
+IpAddressType: String
+  LoadBalancerAttributes:
+- LoadBalancerAttribute
+  Name: String
+  Scheme: String
+  SecurityGroups:
+- String
+  SubnetMappings:
+- SubnetMapping
+  Subnets:
+- String
+  Tags:
+- Tag
+  Type: String
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">내 환경에 맞게 수정한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Resources:
+StackELB:
+Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+IpAddressType: ipv4
+      Name: Stack-elb
+      SecurityGroups:
+- 가용 영역 확인!! 같은 대역인지 확인.
+Subnets:
+- subnet-01fef705083787939
+        - subnet-017d8466dfb65b1f9
+      Type: application
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>[ 리스너 추가 ]</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Resources:
+StackELB:
+Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+DefaultActions:
+- Type: "forward"
+ForwardConfig:
+TargetGroups:
+- TargetGroupArn: "arn:aws:elasticloadbalancing:ap-northeast-2:515646566224:targetgroup/a/6e0889e09ac21ea0"
+LoadBalancerArn: "arn:aws:elasticloadbalancing:ap-northeast-2:515646566224:loadbalancer/app/Stack-elb/c58d329a4e0806da"
+Port: 80
+Protocol: "HTTP"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">로드밸러서는 거기 만든거 찾아서 복사,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">TargetGroupArn을 따로 생성.(로드밸러서는 거기 만든거 찾아서 복사. 각각 들어가보면 arn이라는 값이 있는데 그것 복사)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumbarungothic se-style-unset"><b>🍀 </b></span><span class="se-fs-fs16 se-ff-nanumbarungothic"><i><b>확인</b></i></span><span class="se-fs- se-ff-nanumbarungothic"> : Ec2 서비스에 로드밸런서에, 아까 arn으로 지정한 로드밸런서에 리스너가 추가되어 있어야 함.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>[ 타겟그룹 추가 ]</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>Type: AWS::ElasticLoadBalancingV2::TargetGroup</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">링크는 </span><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html" target="_blank">AWS 공식 사이트의 </a></span><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html" target="_blank"><b>타겟그룹 추가</b></a></span><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html" target="_blank"> </a></span><span class="se-fs- se-ff-nanumbarungothic">기본 형식.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Resources:
+StackELB:
+Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+HealthCheckEnabled: True
+      HealthCheckIntervalSeconds: 30
+HealthCheckPath: /
+HealthCheckPort: 80
+HealthCheckProtocol: HTTP
+HealthCheckTimeoutSeconds: 5
+HealthyThresholdCount: 5
+Matcher:
+HttpCode: 200
+Name: myTargetG
+      Port: 80
+Protocol: HTTP
+TargetType: instance
+      UnhealthyThresholdCount: 2
+VpcId: vpc-257ad64e
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>💡 yml 파일 작성 팁 :</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">구글에 Type을 검색해서 AWS 공식 사이트의 형식을 찾는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그럼 이렇게 예제가 나온다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">여기 각각에 뭘 써줘야 하는거지?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">우리가 지금 생성하려고 하는 게 로드밸런싱 타겟그룹.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이걸 yml 파일로 생성하려고 하는거니까,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그냥 ui로는 어떻게 만드는지 살펴보면 많은 도움이 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">예를들어 여기의 'Matcher'를 구성해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">우선 Matcher가 뭘까. 일단 클릭하면 자세히 나온다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">HttpCode에 대한 것인 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그럼 다시 생성 페이지에서 HttpCode에 대한 부분을 찾아본다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">HttpCode 에 대한 내용이니까 이건가 싶다..!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그럼 양식에 맞게 써주자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Matcher:
+HttpCode: 200
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">다른 것들도 이렇게 맞춰간다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">작성 완료 후 스택을 생성해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">뭔가 이상한 부분이 있다면 아예 만들어지지 않거나 이벤트에 로그가 뜬다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">로그에 별 일 없으니 잘 만들어지는 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_17.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Resources:
+StackELB:
+Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+DefaultActions:
+- Type: "forward"
+ForwardConfig:
+TargetGroups:
+- TargetGroupArn: !Ref 
+      Protocol: "HTTP"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>[ TargetGroup, LoadBalancer, Listener </b></span><span class="se-fs- se-ff-"><b>전체 생성 ]</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+
+Resources:
+MyTargetGroup:
+Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+HealthCheckEnabled: True
+      HealthCheckIntervalSeconds: 30
+HealthCheckPath: /
+HealthCheckPort: 80
+HealthCheckProtocol: HTTP
+HealthCheckTimeoutSeconds: 5
+HealthyThresholdCount: 5
+Matcher:
+HttpCode: 200
+Name: myTargetG
+      Port: 80
+Protocol: HTTP
+TargetType: instance
+      UnhealthyThresholdCount: 2
+VpcId: vpc아이디
+
+  StackELB:
+Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+IpAddressType: ipv4
+      Name: Stack-elb
+      SecurityGroups:
+- 보안그룹 아이디
+      Subnets:
+- 서브넷 아이디
+        - 서브넷 아이디(두개가 달라야함)
+Type: application
+
+
+  HTTPlistener:
+Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+- MyTargetGroup
+     - StackELB
+    Properties:
+DefaultActions:
+- Type: "forward"
+ForwardConfig:
+TargetGroups:
+- TargetGroupArn: !Ref MyTargetGroup
+      LoadBalancerArn: !Ref StackELB
+      Port: 80
+Protocol: "HTTP"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:635px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_18.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">MyTargetGroup은 인스턴스가 먼저 생성된 다음 작성되어야 하는 부분이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그래서 (위에 초록색 박스에 표시해둔 부분)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">MyTargetGroup에 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>DependsOn: MyEC2Instance </b></i></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"> 를 추가했고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>Targets: - Id: !Ref MyEC2Instance </b></i></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"> 추가해줬다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>[ TargetGroup, LoadBalancer, Listener</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>+ EC2 전체 생성 ]</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Description: A sample template
+Resources:
+MyEC2Instance:
+Type: "AWS::EC2::Instance"
+Properties:
+ImageId: "이미지ID"
+InstanceType: t2.micro
+      KeyName: 키페어 이름
+      BlockDeviceMappings:
+-
+DeviceName: /dev/sdm
+Ebs:
+VolumeType: gp2
+            DeleteOnTermination: false
+VolumeSize: 8
+MyTargetGroup:
+Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn: MyEC2Instance
+    Properties:
+HealthCheckEnabled: True
+      HealthCheckIntervalSeconds: 30
+HealthCheckPath: /
+HealthCheckPort: 80
+HealthCheckProtocol: HTTP
+HealthCheckTimeoutSeconds: 5
+HealthyThresholdCount: 5
+Matcher:
+HttpCode: 200
+Name: myTargetG
+      Port: 80
+Protocol: HTTP
+TargetType: instance
+      Targets:
+- Id: !Ref MyEC2Instance
+      UnhealthyThresholdCount: 2
+VpcId: vpc-257ad64e
+
+  StackELB:
+Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+IpAddressType: ipv4
+      Name: Stack-elb
+      SecurityGroups:
+- 보안그룹ID
+Subnets:
+- 서브넷ID
+- 서브넷ID
+Type: application
+
+
+  HTTPlistener:
+Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+- MyTargetGroup
+     - StackELB
+    Properties:
+DefaultActions:
+- Type: "forward"
+ForwardConfig:
+TargetGroups:
+- TargetGroupArn: !Ref MyTargetGroup
+      LoadBalancerArn: !Ref StackELB
+      Port: 80
+Protocol: "HTTP"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">난 내 커스텀 이미지로 작성했지만</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">우분투나 다른 기본 이미지로 해도 무관하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">내 커스텀 이미지는 80번 포트로 내가 구축한 스프링부트 웹프로젝트가 실행되게 한 이미지라, 보안그룹에 80번 포트를 허용해 줘서 헬스체크 yes가 떴으면 했는데ㅜㅜ</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-cloudformation/images/image_19.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이 이미지에 RDS 연동해 뒀던터라, (RDS 삭제함ㅠㅠ)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">RDS가 없어서 Unhealthy가 뜨는 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

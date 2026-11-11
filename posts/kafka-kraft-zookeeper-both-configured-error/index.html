@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>카프카 에러 Both KRaft mode and Zookeeper modes are configured | minj.devlog</title>
+  <meta name="description" content="다음과 같은 에러가 나면서 카프카가 자꾸 죽는 현상이 있었다. kafka ERROR ==&gt; Both KRaft mode and Zookeeper modes are configured, but KAFKA_CFG_ZOOKEEPER_METADATA_MIGRATION_ENABLE" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/kafka-kraft-zookeeper-both-configured-error/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="카프카 에러 Both KRaft mode and Zookeeper modes are configured" />
+  <meta property="og:description" content="다음과 같은 에러가 나면서 카프카가 자꾸 죽는 현상이 있었다. kafka ERROR ==&gt; Both KRaft mode and Zookeeper modes are configured, but KAFKA_CFG_ZOOKEEPER_METADATA_MIGRATION_ENABLE" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/kafka-kraft-zookeeper-both-configured-error/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2023-09-08" />
+  <meta property="article:section" content="Search/Kafka" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "카프카 에러 Both KRaft mode and Zookeeper modes are configured", "description": "다음과 같은 에러가 나면서 카프카가 자꾸 죽는 현상이 있었다. kafka ERROR ==> Both KRaft mode and Zookeeper modes are configured, but KAFKA_CFG_ZOOKEEPER_METADATA_MIGRATION_ENABLE", "datePublished": "2023-09-08", "dateModified": "2023-09-08", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/kafka-kraft-zookeeper-both-configured-error/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Search/Kafka"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="kafka-kraft-zookeeper-both-configured-error">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Search%2FKafka">Search/Kafka</a>
+              <time class="post-date" datetime="2023-09-08">2023.09.08</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223205710489" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">카프카 에러 Both KRaft mode and Zookeeper modes are configured</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223205710489 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">다음과 같은 에러가 나면서 카프카가 자꾸 죽는 현상이 있었다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kafka ERROR ==&gt; Both KRaft mode and Zookeeper modes are configured,
+but KAFKA_CFG_ZOOKEEPER_METADATA_MIGRATION_ENABLE is not enabled
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">위 에러는 Kafka가 KRaft 모드와 ZooKeeper 모드를 모두 사용하려고 하는데, 그게 안된다는 의미이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">Kafka 2.8.0부터 ZooKeeper를 대체하는 새로운 메타데이터 관리 방식인 KRaft 모드가 추가되었는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">Kafka는 KRaft 모드와 ZooKeeper 모드를 동시에 같이 사용하려면 메타데이터 마이그레이션을 활성화해야 한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">Kafka 구성 파일 (일반적으로 server.properties)에서 KAFKA_CFG_ZOOKEEPER_METADATA_MIGRATION_ENABLE 옵션 true 설정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+KAFKA_CFG_ZOOKEEPER_METADATA_MIGRATION_ENABLE=true
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">이후 Kafka 서버를 다시 시작하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

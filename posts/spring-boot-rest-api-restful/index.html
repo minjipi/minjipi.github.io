@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpringBoot REST API, &#x27;RESTful API란?&#x27; | minj.devlog</title>
+  <meta name="description" content="[SpringBoot] REST API로 변경하기 &#x27;REST API란?&#x27; 어제 진행중이었던 개인 프로젝트의 구조를 전체적으로 수정했다. 일반적인 어플리케이션이 그렇듯, 내 프로젝트 또한 백엔드 서버와 클라이언트로 나뉜다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-rest-api-restful/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="SpringBoot REST API, &#x27;RESTful API란?&#x27;" />
+  <meta property="og:description" content="[SpringBoot] REST API로 변경하기 &#x27;REST API란?&#x27; 어제 진행중이었던 개인 프로젝트의 구조를 전체적으로 수정했다. 일반적인 어플리케이션이 그렇듯, 내 프로젝트 또한 백엔드 서버와 클라이언트로 나뉜다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-rest-api-restful/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-rest-api-restful/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-09-14" />
+  <meta property="article:section" content="Backend/Architecture" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "SpringBoot REST API, 'RESTful API란?'", "description": "[SpringBoot] REST API로 변경하기 'REST API란?' 어제 진행중이었던 개인 프로젝트의 구조를 전체적으로 수정했다. 일반적인 어플리케이션이 그렇듯, 내 프로젝트 또한 백엔드 서버와 클라이언트로 나뉜다.", "datePublished": "2021-09-14", "dateModified": "2021-09-14", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-rest-api-restful/", "image": "https://minjipi.github.io/posts/spring-boot-rest-api-restful/images/image_1.jpg", "articleSection": "Backend/Architecture"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-rest-api-restful">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FArchitecture">Backend/Architecture</a>
+              <time class="post-date" datetime="2021-09-14">2021.09.14</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222505553044" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">SpringBoot REST API, &#x27;RESTful API란?&#x27;</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-boot-rest-api-restful/images/image_1.jpg" alt="SpringBoot REST API, &#x27;RESTful API란?&#x27;" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222505553044 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>[SpringBoot]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>REST API로 변경하기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>'REST API란?'</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#b7b7b7;">어제 진행중이었던 개인 프로젝트의 구조를 전체적으로 수정했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:676px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-boot-rest-api-restful/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">일반적인 어플리케이션이 그렇듯, </span><span class="se-fs- se-ff-">내 프로젝트 또한 백엔드 서버와 클라이언트로 나뉜다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">여기서 클라이언트는 웹 페이지가 될 수도 있고, 안드로이드나 iOS 앱이 될 수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">백엔드 서버는 이 클라이언트의 요청을 수행하는 API를 만든다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">지금까지는 하나의 어플리케이션에서 Thymeleaf를 이용해 화면을 개발했었다. 그리고 이를 실행하기 위한 로직도 함께 포함된 구조였다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이번에는 프론트엔드로 리액트를 공부해가며 구현할 생각이었지만, 일단은 크게 다를게 없을거라 생각하고 차근차근 일을 진행하던 중 리액트로 프론트를 구현하려면 여태까지의 방향이 잘못됐던 것임을 알게 됐다🥲 나는.. </span><span class="se-fs-fs15 se-ff-"><b>REST API를 사용해야 했다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">REST API란, REST를 기반으로 만들어진 API를 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>1. REST 란?</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Representational State Transfer의 약자</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Rest란, 자원을 표현으로 구분하여 해당 자원의 정보를 주고받는 모든것을 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">즉, </span><span class="se-fs- se-ff-"><b>자원</b></span><span class="se-fs- se-ff-"><sup><b>(resource)</b></sup></span><span class="se-fs- se-ff-"><b>의 표현</b></span><span class="se-fs- se-ff-"><sup><b>(representation)</b></sup></span><span class="se-fs- se-ff-"><b>에 의한 정보전달 </b></span><span class="se-fs- se-ff-">을 뜻한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>📍 자원 : 해당 소프트웨어가 관리하는 모든 것</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">ex) 문서, 그림, 데이터, 해당 소프트웨어 자체 등..</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>📍 자원의 표현: 자원을 표현하는 지정 방식, 또는 이름</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">ex) 예를 들어 DB의 학생정보가 자원일 경우, 'students'를 자원의 표현으로 지정한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>📍 정보전달</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">데이터가 요청되는 시점에 자원의 정보를 전달한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">JSON 또는 XML을 통해 데이터를 주고받는 것이 일반적이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">WWW( world wide web) 과 같은 분산 하이퍼미디어 시스템을 위한 SW개발 아키텍처의 한 형식이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">REST는 기본적으로 웹의 기존기술과 </span><span class="se-fs- se-ff-"><b>HTTP프로토콜</b></span><span class="se-fs- se-ff-">을 그대로 활용하기 때문에 웹의 장점을 최대화 한 아키텍쳐 스타일이다. REST는 네트워크 상에서 클라이언트와 서버 간 통신 방식 중 하나이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff-"><b>|  HTTP 란?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">- HyperText Transfer Protocol의 준말로 링크 기반으로 데이터를 요청하고 받겠다는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">- 클라이언트와 서버가 요청을 하고 응답을 하기 위해 따르는 프로토콜.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">- HTML 문서를 주고 받을 수 있음, 뿐만 아니라 이미지, 동영상, 오디오, 텍스트 문서 등을 주고 받을 수 있음.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff-"><b>|  HTTP 동작 방식</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-rest-api-restful/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 클라이언트 : 웹어플리케이션의 경우 브라우저를 통해서 서버에 요청 ( 프로토콜 + 도메인 + URI )</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 서버 : 클라이언트로부터 받은 요청을 내부적으로 처리하여 그에 대한 결과를 응답</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>(1) REST의 구체적인 개념</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP URI (uniform resource identifier )를 통해 자원을 명시하고, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP 메소드( POST / GET / PUT /DELETE) 를 통해 해당 자원에 대한 CRUD operation 을 적용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>💡 CRUD Operation</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">CRUD는 대부분의 컴퓨터 소프트웨어가 가지는 기본적인 데이터 처리 기능인 Create(생성), Read(읽기), Update(갱신), Delete(삭제)를 묶어서 일컫는 말로 REST에서의 CRUD Operation 동작 예시는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Create : 데이터 생성(POST)
+Read : 데이터 조회(GET)
+Update : 데이터 수정(PUT)
+Delete : 데이터 삭제(DELETE)
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">(2)</span><span class="se-fs- se-ff-"><b> REST 구성 요소</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>1. 자원 (Resource) : URI</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">모든자원에 고유 ID가 존재하고, 이 자원은 서버에 존재한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자원을 구별하는 ID 는 ~/users/:user_id 와 같은 http URI 이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">클라이언트는 URI를 이용해서 자원을 지정하고, 해당 자원의 정보에 대한 조작을 서버에서 요청한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">💡</span><span class="se-fs- se-ff-"><i><b> URI 과 URL의 차이점?</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">URL은 Uniform Resource Locator로 인터넷 상 자원의 위치를 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자원의 위치라는 것은 결국 어떤 파일의 위치를 의미하는데, 반면 URI는 Uniform Resource Identifier로 인터넷 상의 자원을 식별하기 위한 문자열의 구성으로, URI는 URL을 포함하게 된다. 그러므로 URI가 보다 포괄적인 범위라고 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>2. 행위(Verb) : HTTP 메소드</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP 프로토콜의 메소드를 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP 프로토콜은 GET / POST / PUT / DELETE 와 같은 메소드를 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>3. 표현 (Representation of Resource)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">클라이언트가 자원의 정보에 대한 조작을 요청하면 서버는 응답(Representation )을 보낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">REST에서 하나의 자원은 JSON, XML, TEXT, RSS 등 여러 형태의 Representation 으로 나타내어질 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">일반적으로 JSON , XML 을 통해 데이터를 주고받는다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>2. </b></span><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>RESTful API</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">API: Application Programming Interface</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">REST </span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">RESTful API는</span><span class="se-fs- se-ff-"> REST 특징을 지키면서 API를 제공하는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">즉, HTTP 통신에서 어떤 자원에 대한 CRUD 요청을 Resource와 Method로 표현하여 특정한 형태로 전달하는 방식으로</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">Get, Post 등의 방식(Method)을 사용하여 요청을 보내며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">요청을 위한 자원은 특정한 형태(Representation of Resource)으로 표현한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">풀어 설명하자면, 어떤 자원에 대해 CRUD(Create, Read, Update, Delete) 연산을 수행하기 위해 URI(Resource)로 요청을 보내는 것. 자원을 이름으로 구분해 해당 자원의 상태를 주고받는 모든 것을 의미한다고도 할 수 있겠다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-rest-api-restful/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예를 들어, 우리는 게시글을 작성하기 위해 </span><span class="se-fs- se-ff-"><a class="se-link" href="http://localhost:8080/board" target="_blank">http://localhost:8080/board</a></span><span class="se-fs- se-ff-"> 라는 URI에 POST방식을 사용하여 JSON형태의 데이터를 전달할 수 있다. 위와 같이 CRUD 연산에 대한 요청을 할 때, 요청을 위한 Resource(자원, URI)와 이에 대한 Method(행위, POST) 그리고 Representation of Resource(자원의 형태, JSON)을 사용하면 표현이 명확해지므로 이를 REST라 하며, 이러한 규칙을 지켜서 설계된 API를 Rest API 또는 Restful한 API라고 한다. 그리고 위에서 살짝 언급하였듯이, 이러한 Rest API는 Resource(자원), Method(행위), Representation of Resource(자원의 형태)로 구성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이러한 REST 기반의 API를 웹으로 구현한 것이 REST API, RESTful API다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">RESTful API를 사용하는 이유는 뭘까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>3. RESTful API를 사용하는 이유</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">큰 특징으로는 '애플리케이션 분리 및 통합', '다양한 클라이언트의 등장'이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">애플리케이션의 복잡도가 증가하면서 애플리케이션을 어떻게 분리하고 통합하느냐가 주요 이슈가 되었고, 이에 자바 진영에서는 과거 EJB(Enterprise Java Beans), SOA(Service Oriented Architecture)에 이어 최근에는 MSA(Micro Service Architecture)와 함께 REST가 떠오르고 있는 것이다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 모바일과 같은 다양한 클라이언트의 등장하면서 최근의 서버 프로그램은 다양한 브라우저와 안드로이폰, 아이폰과 같은 모바일 디바이스에서도 통신을 할 수 있어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이러한 멀티 플랫폼에 대한 지원을 위해  Backend 하나로 다양한 Device를 대응할 수 있는 REST의 필요성이 증대되었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그럼 다음 포스팅에서</span><span class="se-fs- se-ff- se-weight-unset">는 본격적으로 RESTful API를 변경하는 것에 대해 알아보도록 하겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset">오늘은 이만 끝 ~~ </span><span class="se-fs-fs19 se-ff- se-weight-unset">🤓</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div>  <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs11 se-ff-">참고 :</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-"><a class="se-link" href="https://earth-95.tistory.com/50" target="_blank">https://earth-95.tistory.com/50</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-"><a class="se-link" href="https://mangkyu.tistory.com/46" target="_blank">https://mangkyu.tistory.com/46</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-"><a class="se-link" href="https://cheershennah.tistory.com/127" target="_blank">https://cheershennah.tistory.com/127</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-"><a class="se-link" href="https://ijbgo.tistory.com/20" target="_blank">https://ijbgo.tistory.com/20</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

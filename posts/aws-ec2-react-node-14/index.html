@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS EC2서버에 React 앱 실행하기 (ubuntu에 node 14.18.0 설치) | minj.devlog</title>
+  <meta name="description" content="AWS EC2서버에 리액트 배포를 하고 싶었는데, 자꾸 에러나서 일단 그냥 실행으로 띄워봤다. 큰 차이 없을거라 생각했지만 파일 용량이 예상보다 커서 수정할 예정이다. 이렇게 하는 사람 별로 없겠지만 혹시 나처럼 그냥 함 돌려보실 분들을 위해 정리한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/aws-ec2-react-node-14/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="AWS EC2서버에 React 앱 실행하기 (ubuntu에 node 14.18.0 설치)" />
+  <meta property="og:description" content="AWS EC2서버에 리액트 배포를 하고 싶었는데, 자꾸 에러나서 일단 그냥 실행으로 띄워봤다. 큰 차이 없을거라 생각했지만 파일 용량이 예상보다 커서 수정할 예정이다. 이렇게 하는 사람 별로 없겠지만 혹시 나처럼 그냥 함 돌려보실 분들을 위해 정리한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/aws-ec2-react-node-14/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/aws-ec2-react-node-14/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-06-06" />
+  <meta property="article:section" content="Cloud/AWS" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "AWS EC2서버에 React 앱 실행하기 (ubuntu에 node 14.18.0 설치)", "description": "AWS EC2서버에 리액트 배포를 하고 싶었는데, 자꾸 에러나서 일단 그냥 실행으로 띄워봤다. 큰 차이 없을거라 생각했지만 파일 용량이 예상보다 커서 수정할 예정이다. 이렇게 하는 사람 별로 없겠지만 혹시 나처럼 그냥 함 돌려보실 분들을 위해 정리한다.", "datePublished": "2022-06-06", "dateModified": "2022-06-06", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/aws-ec2-react-node-14/", "image": "https://minjipi.github.io/posts/aws-ec2-react-node-14/images/image_1.jpg", "articleSection": "Cloud/AWS"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="aws-ec2-react-node-14">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FAWS">Cloud/AWS</a>
+              <time class="post-date" datetime="2022-06-06">2022.06.06</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222761052659" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">AWS EC2서버에 React 앱 실행하기 (ubuntu에 node 14.18.0 설치)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/aws-ec2-react-node-14/images/image_1.jpg" alt="AWS EC2서버에 React 앱 실행하기 (ubuntu에 node 14.18.0 설치)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222761052659 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#333333;">AWS EC2서버에 리액트 배포를 하고 싶었는데, 자꾸 에러나서 일단 그냥 실행으로 띄워봤다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#333333;">큰 차이 없을거라 생각했지만 파일 용량이 예상보다 커서 수정할 예정이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#333333;">이렇게 하는 사람 별로 없겠지만 혹시 나처럼 그냥 함 돌려보실 분들을 위해 정리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>AWS EC2서버에 React 앱 실행하기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">프로젝트 경로에서 압축</span></p></li></ol>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+tar cvf web.tar vanilla-front
+(프로젝트 이름)
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. aws ec2서버로 파일 옮기기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+scp -i /Users/key.pem web.tar ubuntu@12.345.456.78:/home/ubuntu/web.tar
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">3. aws ec2서버 접속</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ssh -i /Users/key.pem ubuntu@12.345.456.78
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo su - root
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">4. Node 14.x 버전 install</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo apt-get install -y nodejs
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">설치확인</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+node -v
+npm version
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">버전이 14.x로 잘 표기된다면 설치 성공~</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">5. aws ec2서버에서 파일 압축 풀기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+cd /저장된 경로
+tar xvf web.tar
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">6. ls 명령어로 압축 풀린 것 확인하고, </span><span class="se-fs- se-ff-system"><b>압축 풀린 폴더로 들어가서</b></span><span class="se-fs- se-ff-system"> 다음과 같이 port 80 으로 변경 후 실행.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">(변경 안하면 유저가 주소창에 도메인:3000 이렇게 포트번호까지 입력하고 접속해야함)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+PORT=80 npm run start &amp;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">&amp;은 백그라운드로 실행 옵션!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">* 혹시 이미 사용 중인 포트라거나.. 에러 났을 땐 아래 명령어로 확인.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ ps -ef | grep [PID 혹은 프로그램 이름]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이미 사용중인 포트 있으면 kill로 꺼주기(중요하지 않은 프로그램일 경우)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:598px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/aws-ec2-react-node-14/images/nv_0.png"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">+ AWS EC2의 보안그룹 인바운드 규칙에 HTTP(80) 혹은 필요한 포트 허용해주기.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">인바운드 규칙은 외부에서 서버로 네트워크 접근할 때 허용할 포트를 설정하는 규칙으로 웹 서버 구축 시 필수적으로 필요하다.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

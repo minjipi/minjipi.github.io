@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리액트로 간단한 todo list (useState와 props으로만) 좋은 예와 나쁜 예 | minj.devlog</title>
+  <meta name="description" content="리액트로 todo list를 만드는데 안좋은 예와 괜찮은 예가 만들어져서.. 정리할 겸 올린다. 리액트로 구현하는 TodoList 중 좋은 예제는 아니며, useState와 props 으로만 최대한 간단하게 구현해보는 것이 목표였다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/react-todo-list-props-good-bad/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="리액트로 간단한 todo list (useState와 props으로만) 좋은 예와 나쁜 예" />
+  <meta property="og:description" content="리액트로 todo list를 만드는데 안좋은 예와 괜찮은 예가 만들어져서.. 정리할 겸 올린다. 리액트로 구현하는 TodoList 중 좋은 예제는 아니며, useState와 props 으로만 최대한 간단하게 구현해보는 것이 목표였다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/react-todo-list-props-good-bad/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2022-02-21" />
+  <meta property="article:section" content="Frontend/React" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "리액트로 간단한 todo list (useState와 props으로만) 좋은 예와 나쁜 예", "description": "리액트로 todo list를 만드는데 안좋은 예와 괜찮은 예가 만들어져서.. 정리할 겸 올린다. 리액트로 구현하는 TodoList 중 좋은 예제는 아니며, useState와 props 으로만 최대한 간단하게 구현해보는 것이 목표였다.", "datePublished": "2022-02-21", "dateModified": "2022-02-21", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/react-todo-list-props-good-bad/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Frontend/React"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="react-todo-list-props-good-bad">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FReact">Frontend/React</a>
+              <time class="post-date" datetime="2022-02-21">2022.02.21</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222653619146" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">리액트로 간단한 todo list (useState와 props으로만) 좋은 예와 나쁜 예</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222653619146 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">리액트로 todo list를 만드는데</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">안좋은 예와 괜찮은 예가 만들어져서..</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">정리할 겸 올린다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">리액트로 구현하는 TodoList 중 좋은 예제는 아니며, </span><span class="se-fs- se-ff-">useState와 props 으로만 최대한 간단하게 구현해보는 것이 목표였다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/react-todo-list-props-good-bad/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/react-todo-list-props-good-bad/images/nv_1.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>[안좋은 예]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset">우선 이 코드가 안좋은 예라고 생각한 이유는 리액트의 기능을 잘 활용하지 못한 듯 해서다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function Todo() {
+const [word, setWord] = useState("");
+const [todoList, setTodoList] = useState([]);
+const [cnt, setCnt] = useState(1);
+const todoCheck = (id) =&gt; {
+setTodoList(
+      todoList.map((todo) =&gt;
+        todo.id === id
+          ? { id: todo.id, contents: todo.contents, check: true }
+: todo
+      )
+);
+};
+return (
+&lt;&gt;
+&lt;Input
+        type="text"
+        value={word}
+        onChange={(e) =&gt; {
+setWord(e.target.value);
+}}
+&gt;&lt;/Input&gt;
+&lt;Btn
+        type="button"
+        onClick={(e) =&gt; {
+const todo = { id: cnt, contents: word, check: false };
+setCnt(cnt + 1);
+setTodoList([...todoList, todo]);
+setWord("");
+}}
+&gt;
+        추가
+      &lt;/Btn&gt;
+{todoList &amp;&amp;
+        todoList.map((todo, index) =&gt; (
+&lt;&gt;
+&lt;p
+              className={todo.check ? "true" : ""}
+              isChecked
+              key={todo.id}
+              onClick={(e) =&gt; {
+todoCheck(todo.id);
+}}
+&gt;
+{index + 1}: {todo.contents}
+{todo.check ? (
+""
+) : (
+&lt;DeleteBtn
+                  type="button"
+                  onClick={(e) =&gt; {
+setTodoList(todoList.filter((item) =&gt; todo.id !== item.id));
+}}
+&gt;
+                  🗑
+                &lt;/DeleteBtn&gt;
+)}
+&lt;/p&gt;
+&lt;/&gt;
+))}
+&lt;/&gt;
+);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1.</span><span class="se-fs- se-ff-"><b> todoCheck 기능</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">리스트에 해결 한 항목을 체크하는 기능이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Ptag 태그를 누르면,</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+const todoCheck = (id) =&gt; {
+setTodoList(
+      todoList.map((todo) =&gt;
+        todo.id === id
+          ? { id: todo.id, contents: todo.contents, check: true }
+: todo)
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">setTodoList 로 다시 리스트를 만드는데 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">클릭 이벤트가 발생한 Ptag 의 id 는 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">{ id: todo.id, contents: todo.contents, check: true } 이렇게 세팅한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 check: true 가 되면 css에 설정해둔 체크된 목록 디자인이 적용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">완료한 항목은 삭제하지 못한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2.</span><span class="se-fs- se-ff-"><b> [리스트 추가] 버튼</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+&lt;Btn
+        type="button"
+        onClick={(e) =&gt; {
+const todo = { id: cnt, contents: word, check: false };
+setCnt(cnt + 1);
+setTodoList([...todoList, todo]);
+setWord("");
+}}
+&gt;추가&lt;/Btn&gt;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">input에 내용을 입력하고 추가 버튼을 누르면 { id: cnt, contents: word, check: false }를 담고 있는 todo를 새로 만든다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">그리고 id 값이라 할 수 있는 cnt를 하나 증가 시키고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">기존의 todoList을 불러온 것에(...todoList) 새로 만든 todo를 추가해 setTodoList에 저장하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">다시 input을 ""로 비운다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">3. </span><span class="se-fs- se-ff-"><b>항목 삭제</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">우선 todoList 는 이렇게 보여진다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+{todoList &amp;&amp;
+        todoList.map((todo, index) =&gt; (
+&lt;&gt;
+&lt;p
+              className={todo.check ? "true" : ""}
+              isChecked
+              key={todo.id}
+              onClick={(e) =&gt; {
+todoCheck(todo.id);
+}}
+&gt;
+{index + 1}: {todo.contents}
+{todo.check ?
+( "" ) :
+(
+&lt;DeleteBtn
+                  type="button"
+                  onClick={(e) =&gt; {
+setTodoList(todoList.filter((item) =&gt; todo.id !== item.id));
+}}
+&gt; 🗑 &lt;/DeleteBtn&gt;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">완료 처리한 항목은 삭제가 안되게 하기 위해 todo.check가 되어있지 않은 항목을 확인해 거기에만 DeleteBtn을 보이게 했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">삭제는 특정 원소를 배열에서 제거하기 위해 리액트 내장 함수인 filter를 사용했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">이 함수는 배열에서 특정 조건이 만족하는 원소들만 추출하여 새로운 배열을 만들어준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>[좋은 예]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">TodoMain.js, TodoItem.js 두 개의 파일로 분리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[TodoMain.js]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function TodoMain() {
+const [word, setWord] = useState("");
+const [todoList, setTodoList] = useState([]);
+const [cnt, setCnt] = useState(1);
+return (
+&lt;&gt;
+&lt;Input
+        type="text"
+        value={word}
+        onChange={(e) =&gt; {
+setWord(e.target.value);
+}}
+&gt;&lt;/Input&gt;
+&lt;Btn
+        type="button"
+        onClick={(e) =&gt; {
+const todo = { id: cnt, contents: word };
+setCnt(cnt + 1);
+setTodoList([...todoList, todo]);
+setWord("");
+}}
+&gt;
+        추가
+      &lt;/Btn&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+{todoList &amp;&amp;
+        todoList.map((todo, index) =&gt; &lt;TodoItem todo={todo} index={index} /&gt;)}
+&lt;/&gt;
+);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">해당 컴포넌트에서 다른 컴포넌트(TodoItem)로 todo라는 값을 전달했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">todo는 추가 버튼을 누를 시 생기는 변수인데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">const todo = { id: cnt, contents: word }</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">리스트의 번째인지를 담은 cnt 값과 input에 입력한 리스트 내용인 word를 담고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">input에 내용을 입력하고 버튼을 누르면 변수 todo를 만들고, cnt 값을 하나 증가시키고, todoList에 todo를 추가한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 아래에서 todoList가 있으면 &amp;&amp; todoList 안에 있는 값을 하나씩 꺼내어 TodoItem을 세팅하는데, TodoItem 컴포넌트에 todo 값을 todo라는 이름으로 넘겨준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">TodoItem 컴포넌트를 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[TodoIte</span><span class="se-fs- se-ff-"><a class="se-link" href="http://m.js]" target="_blank">m.js]</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function Test({ todo, index }) {
+const [check, setCheck] = useState(false);
+return (
+&lt;&gt;
+&lt;Ptag
+        className={check ? "true" : ""}
+        isChecked
+        key={todo.id}
+        onClick={(e) =&gt; {
+setCheck(true);
+}}
+&gt;
+{index + 1}: {todo.contents}
+{check ? (
+""
+) : (
+&lt;DeleteBtn type="button" onClick={(e) =&gt; {}}&gt;
+            🗑
+          &lt;/DeleteBtn&gt;
+)}
+&lt;/Ptag&gt;
+&lt;/&gt;
+);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Check </b></span><span class="se-fs- se-ff- se-weight-unset">는 </span><span class="se-fs- se-ff-">마찬가지로 리스트에서 해결 한 항목을 체크하는 기능이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">className={check ? "true" : ""} 로 체크된 리스트면 className이 true가 되어</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">font-style: italic 와 같이 체크된 디자인을 적용 시켰다.(기능 위주의 정리라 디자인 코드는 생략했다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Ptag 태그를 누르면 setCheck(true)가 동작해 체크된 항목이 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Ptag는 {index + 1}: {todo.contents} 를 나타낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">각각 리스트의 번호와 내용인데 내용은 넘겨받은 todo의 contents가 세팅되어있다. 만약 위에서 Ptag 태그를 눌러 체크한 항목이라면  {index + 1}: {todo.contents} 만 나타내고, 체크되지 않은 항목이라면 삭제 버튼도 보이게 구현했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

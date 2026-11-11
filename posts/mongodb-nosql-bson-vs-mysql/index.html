@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[MongoDB] MongoDB에 대하여 (NoSQL, BSON, MongoDB vs MySQL, MongoDB 사용법) | minj.devlog</title>
+  <meta name="description" content="1. NoSQL이란? Not Only SQL, SQL 뿐만 아니다라는 의미다. SQL을 사용하는 관계형 데이터베이스가 아닌 데이터베이스를 의미한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/mongodb-nosql-bson-vs-mysql/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[MongoDB] MongoDB에 대하여 (NoSQL, BSON, MongoDB vs MySQL, MongoDB 사용법)" />
+  <meta property="og:description" content="1. NoSQL이란? Not Only SQL, SQL 뿐만 아니다라는 의미다. SQL을 사용하는 관계형 데이터베이스가 아닌 데이터베이스를 의미한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/mongodb-nosql-bson-vs-mysql/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/mongodb-nosql-bson-vs-mysql/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-11-04" />
+  <meta property="article:section" content="Database" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[MongoDB] MongoDB에 대하여 (NoSQL, BSON, MongoDB vs MySQL, MongoDB 사용법)", "description": "1. NoSQL이란? Not Only SQL, SQL 뿐만 아니다라는 의미다. SQL을 사용하는 관계형 데이터베이스가 아닌 데이터베이스를 의미한다.", "datePublished": "2022-11-04", "dateModified": "2022-11-04", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/mongodb-nosql-bson-vs-mysql/", "image": "https://minjipi.github.io/posts/mongodb-nosql-bson-vs-mysql/images/image_1.jpg", "articleSection": "Database"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="mongodb-nosql-bson-vs-mysql">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Database">Database</a>
+              <time class="post-date" datetime="2022-11-04">2022.11.04</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222919570771" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[MongoDB] MongoDB에 대하여 (NoSQL, BSON, MongoDB vs MySQL, MongoDB 사용법)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/mongodb-nosql-bson-vs-mysql/images/image_1.jpg" alt="[MongoDB] MongoDB에 대하여 (NoSQL, BSON, MongoDB vs MySQL, MongoDB 사용법)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222919570771 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumsquare se-weight-unset se-style-unset">1. NoSQL이란?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:150px;">
+<div class="se-module se-module-image"><div class="se-state-error se-state-error-small">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">Not Only SQL, SQL 뿐만 아니다라는 의미다. SQL을 사용하는 관계형 데이터베이스가 아닌 데이터베이스를 의미한다. 대표적인 관계형 데이터베이스로는 MySQL, Oracle, PostgreSQL이 있고 NoSQL 진영에는 MongoDB와 </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222784918460" target="_blank">Redis</a></span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> 등이 있다. 포스팅의 주제인 MongoDB는, 다음 세 가지 특징을 가지고있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_postit">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_postit">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset">1. Document 기반 데이터베이스</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff- se-style-unset">2. BASE</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs-fs13 se-ff- se-style-unset">(ACID 대신 BASE를 택하여 성능과 가용성을 우선시한다)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs-fs13 se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset">3. Open Source (무료)</span><span class="se-fs-fs16 se-ff- se-style-unset"></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.55;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">1-1. Document</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">MongoDB는 정렬된 키와 연결된 값의 집합으로 이루어진 문서 지향 데이터 모델(Document DB)을 사용하는 데이터베이스 이다. 이러한 유형의 모델을 사용하면 정형 및 비정형 데이터를 보다 쉽고 빠르게 통합할 수 있다는 장점이 있다. Database &gt; Collection &gt; Document &gt; Field 계층으로 이루어져 있으며, Document는 RDBMS의 Row에 해당한다. 계층은 RDBMS와 유사하다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">이 Document 기반 데이터베이스는 RDBMS와 다르게 자유롭게 데이터 구조를 잡을 수 있다. Redis와의 차이점 중 하나가 MongoDB가 document 형식으로 데이터를 저장하는데 반해, Redis는 Key-value 형식으로 데이터를 저장한다는 것이기도 하다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">한 쌍 이상의 Key 와 value가 pair 로 이루어진 Document 들이 모여 Collection 을 이루고, Collection 들은 Database 안에 포함 되어 있다. 그리고 Database 는 Server 안에 위치한다. MongoDB는 내부적으로 * BSON을 사용하기 때문에(사람에게 보여질 때에는 JSON 형식을 보여주고, 네트워크로 전송할 때 BSON 형태로 만들어서 저장 또는 전송) Array 데이터나 Nested한 데이터를 쉽게 넣을 수 있다. 또 데이터형과 대소문자를 구별하고 중복된 키를 넣을 수 없다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(235, 235, 235); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">{</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"name"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"apple"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"name"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"banana"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">} -&gt; error!</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>📍 BSON(Binary JSON)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">BSON은 JSON과 동일한 구조지만 Binary 형태로 변경된 구조를 말한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">JSON Document를 Binary로 인코딩한 포맷. JSON의 단점을 해결하기 위한 방안이다. JSON은 텍스트 기반으로 구문 분석이 느리고, 공간 효율성과 거리가 먼 문제점이 있어서 이를 보완한 개념이다. 또 JSON에서 표현할 수 있는 타입은 boolean, 숫자, 배열인데 BSON 에서는 숫자의 경우 Integer, float, long, decimal 등으로 조금 더 디테일하게 표현할 수 있다. 컴퓨터의 언어에 가까운 2진법에 기반을 둔 표현법이며, JSON과 비교해 BSON은 스토리지 공간과 스캔 속도 모두 효율적으로 설계되어 있다. 즉, JSON구조의 좋은 점은 그대로 가져가면서 기계가 빠르게 읽을 수 있는 binary 형태로 변경하여 저장을 한 것이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">ObjectId</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">위 그림처럼 mongoDB에 데이터를 하나 넣어보면, 데이터 구조에서 ObjectId라는 생소한 타입을 볼 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset"><b>📍 _id와 ObjectId</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">몽고DB에 저장된 모든 도큐먼트는 _id 키를 가진다. _id 키 값은 어떤 데이터형이어도 상관 없지만 ObjectId 가 기본이다. 하나의 컬렉션에서 모든 도큐먼트는 고유한 _id 값을 가지며, 이 값은 컬렉션 내 모든 도큐먼트가 고유하게 식별되게 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">ObjectId는 RDBMS의 Primary Key와 같이 고유한 키를 의미하는데-</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:550px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">https://developer.mongodb.com/quickstart/bson-data-types-objectid/</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">PK와의 차이점은 Primary Key는 DBMS가 직접 부여한다면 ObjectId는 클라이언트에서 생성한다는 점이다. (이는 MongoDB 클러스터에서 샤딩된 데이터를 빠르게 가져오기 위함인데, Router(mongos)는 ObjectId를 보고 데이터가 존재하는 Shard에서 데이터를 요청할 수 있다.) 참고로 ObjectId를 넣지않고 저장한다면 데이터가 그대로 저장된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset"><b>MongoDB 데이터 조작</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:400px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">Insert Query</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">데이터를 삽입하는 쿼리를 보면 SQL과는 모습이 많이 다른 것을 알 수 있다. 마치 클래스에서 메서드를 통해 실행하는 모습인데, 이처럼 MongoDB는 객체 조작을 통해 데이터를 관리할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset"><b>📍 MongoDB 데이터 모델링</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare"><b>Database</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset"> : Collection의 물리적 컨테이너</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare"><b>Collection</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset"> : RDBMS에서의 table이라고 생각하면 된다. Document의 그룹, Document의 내부에 위치해 있음. RDBMS와 달리 스키마를 따로 갖고 있지 않음 (동적 스키마로 생성)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare"><b>Document</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset"> : nosql을 다른말로 Document Oriented Database라 함. 한개 이상의 key-value 쌍으로 이루어진 구조 일반 rdbms에서는 row or tuple과 유사하다 생각하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare"><b>Key/Field </b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset">: 일반 RDBMS에서 Column이라 생각하면 된다. 컬럼 명과 저장 값으로 생각하면 쉽다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.55;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">1-2. 신뢰성</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">서버 장애에도 서버가 유동적으로 분담하여 서비스는 계속 동작 유지.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">Primary 와 Secondry로 구성된 ReplicaSet 구조로 고가용성을 지원.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">몽고디비는 기본적으로 하나의 primary와 두개의 secondary로 ReplicaSet을 구성한다. primary는 데이터 쓰기 요청을 처리하고,secondary는 primary부터 변경된 데이터를 복제한다. 이렇게 데이터를 복제하고 유지함으로서, 하나의 서버에서 장애가 발생하더라도 데이터를 유지할 수 있다. 만일 primary서버에 문제가 생기면, secondary가 primary로 전환되어 서버를 계속 유지시킨다. 그리고 다시 빈 secondary서버를 몽고디비가 복구 시켜줌으로서 서버를 유지할수 있게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-nanumsquare se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.55;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">1-3. 확장성</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 데이터와 트래픽 증가에 따라 수평확장(scale-out) 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 데이터를 샤딩하여 수평확장(scale-out) 할 수 있음</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">몽고DB에 데이터가 증가하여 더이상 하나의 Replica Set에 담을 수 없게 되면, 몽고DB는 데이터를 샤딩하여 분산시켜 줄 수 있음. 이러한 샤딩과정은 서비스 중단없이 온라인으로 진행된다. 만약 특정 샤드에 데이터가 몰리면 다른 샤드로 데이터를 이동시켜, 전반적으로 모든 샤드가 균등하게 데이터를 저장할 수 있도록 해준다. 이러한 동작을 밸런싱이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.55;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">1-4. 유연성</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">여러가지 형태의 데이터를 쉽게 저장할 수 있음.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">서비스 요구사항에 맞춰 다양한 종류의 데이터가 추가되어도 스키마 변경 과정 없이 필요한 데이터를 바로 저장하고 읽을 수 있다. 예를들어 날짜를 저장하고 싶은데 테이블에 날짜 관련 컬럼이 없다면 따로 필드를 추가해야 하는 테이블이 조작이 필요 하지만, 몽고디비는 그냥 써주면 알아서 인식된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">만약 핸드폰에 OS종류를 구분해야한다면, RDBMS에서 컬럼을 새로 추가해야 할 것이다. 그런데 RYAN이라는 사람이 또 휴대폰을 구매하면 어떻게 해야할까? 또 컬럼을 추가해야 할까?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">RDBMS는 이러한 상황을 테이블을 분리하고 관계를 맺음으로서 해결한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">하지만 몽고DB는 Schema 가 없으므로 데이터 변경에 유연하게 대처할 수 있다. 몽고DB는 JSON 기반에 Document 모델을 사용하는데, Document 는 다양한 형태의 데이터를 한번에 담을 수 있으므로 여러가지 정보를 한눈에 볼 수 있게 표현해준다. 또한 Application에서 다루는 오브젝트와 1:1로 매칭되기때문에 개발자는 데이터를 쉽게 이해하고 빠르게 개발할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">RDBMS는 복잡하게 테이블이 얽혀있는 것에 반해, NOSQL은 한눈에 보기 쉽도록 가독성이 높아진것을 확인 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-nanumsquare se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.55;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">1-5. Index</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 다양한 조건으로 빠른 데이터 검색 (대부분 NoSQL들과 다른 몽고디비 만의 큰 차이점)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 필요한 필드에 필요한 만큼 생성 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 대용량 데이터에서 다양한 조건으로 조회 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:400px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 다양한 형태의 Index 를 제공</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">Hashed Index (샤드 클러스터에서 데이터를 균등하게 분배하고자 할때 사용), Multikey Index, Partial Index, TTL Index (제한시간을 설정하여 오래된 데이터를 자동으로 지워주는 인덱스), Geospatial Index (공간인덱스) 공간내에 거리나 범위를 계산 카카오 택시, 카카오 대리, 카카오 모빌리티</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumsquare se-weight-unset se-style-unset">2. MongoDB 비교</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:550px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">MongoDB는 분산 시스템이 핵심이다</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">빅데이터 처리에 특화된 MongoDB</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- Memory Mapped(데이터 쓰기 시에 OS의 가상 메모리에 데이터를 넣은 후 비동기로 디스크에 기록하는 방식)를 사용.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 방대한 데이터를 빠르게 처리 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 그러나 OS의 메모리를 활용하기 때문에 메모리가 차면 하드디스크로 데이터 처리하여 속도가 급격히 느려짐)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumsquare se-weight-unset se-style-unset">3. MongoDB vs MySQL</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#333333;"><b>3-1. MongoDB와 MySQL 비교</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- MongoDB와 MySQL에서 동일한 데이터를 가지고 CRUD를 수행할 때, 대부분의 결과가 MongoDB가 빠르게 나옴</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- MongoDB의 경우, Single Node와 Multi Node 간에 성능 차이는 거의 없음 (Delete 연산을 제외하고 대부분 Multi Node가 근소하게 빠름)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- MongoDB Multi Node의 Insert 연산 중에 연산 실패가 일어나는 경우 발생</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">- 분산을 목적으로 한 DBMS 선택할 경우, RDBMS에 비해 낮은 비용과 빠른 성능을 제공하는 MongoDB가 유리함</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">* MongoDB와 MySQL 용어 비교</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs19 se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs-fs19 se-ff-nanumsquare se-style-unset"><b>3-2. Redis와 MongoDB의 차이점</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">(1) MongoDB: document 형식으로 데이터를 저장</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">Redis는 Key-value 형식으로 데이터를 저장</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">(2) Redis는 인메모리DB로 데이터를 메모리에 저장하고 관리하기 때문에 성능이 좋지만, 데이터를 유한하게 저장하기 때문에, 캐시등과 같이 데이터의 저장기한이 있고, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"><u>빠른 성능</u></span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">이 필요한 기능에 사용.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">MongoDB는 mysql처럼 서버-클라이언트 방식으로 설치해서 사용.(물리디스크) 메인 저장소나 로그 목적의 용도로 가변적 데이터 구조를 다루는데 유용함.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumsquare se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.48;"><span class="se-fs-fs24 se-ff-nanumsquare se-weight-unset se-style-unset">4. 간단한 mongoDB 사용</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-1. mongoDB 접속</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">본인 로컬 환경에 기본 설정으로 설치한 경우 아래 명령어로 접속한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(235, 235, 235); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">mongosh</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">아래 명령어로 접속할수도 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(235, 235, 235); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">mongosh</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"mongodb://</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">$host</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">:</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">$port</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">[접속 화면]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">[접속 확인]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-2. mongosh로 DB 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">use 명령어로 이미 존재하는 DB에 접속하거나, 새 DB를 생성할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-3. Collection 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">원하는 Collection 이름에 데이터 하나를 입력하면 생성된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-4. 모든 DB 리스트 가져오기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(235, 235, 235); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">show dbs</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">use로 사용할 DB 선택, Collections 확인하기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-5. document 확인하기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:650px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-6. document 삽입 (데이터 업데이트)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">정보 1개 수정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(235, 235, 235); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">db.[collection_name].updateOne({조건},{수정사항})</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">오직 하나의 필드만 변경하고 나머지 값을 모두 유지할 경우 $set을 사용하면 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-7. 데이터 여러개 수정</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">여러개의 데이터를 한 번에 수정하기 전에 샘플 데이터를 만들어 둔다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(235, 235, 235); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">db.fruit.insertOne({ </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"name"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"banana"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"color"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"y"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"likepoint"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">5</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> }) db.fruit.insertOne({ </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"name"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"orange"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"color"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"o"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"likepoint"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">5</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> }) db.fruit.insertOne({ </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"name"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"grape"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"color"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"p"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">, </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">"likepoint"</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> : </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">1</span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"> })</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">우선 찾으려고 하는 데이터 수를 카운트해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:none;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 40.0px; border:1px solid rgb(235, 235, 235); background-color: #f8f8f8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.71;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">db.[collection_name].countDocuments({조건})</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">2개의 테이터를 수정해 보기</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">배열 형태의 값을 변경해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">추가된 것 확인</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">4-8. 데이터 삭제</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumsquare se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.71;"><span class="se-fs-fs13 se-ff-nanumsquare se-weight-unset se-style-unset">참고</span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.71;"><span class="se-fs-fs13 se-ff-nanumsquare se-weight-unset se-style-unset"><a class="se-link" href="https://www.mongodb.com/docs/manual/reference/method/db.collection.countDocuments/" target="_blank">https://www.mongodb.com/docs/manual/reference/method/db.collection.countDocuments/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.71;"><span class="se-fs-fs13 se-ff-nanumsquare se-weight-unset se-style-unset"><a class="se-link" href="https://tychejin.tistory.com/349" target="_blank">https://tychejin.tistory.com/349</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.71;"><span class="se-fs-fs13 se-ff-nanumsquare se-weight-unset se-style-unset"><a class="se-link" href="https://inpa.tistory.com/entry/MONGO-%F0%9F%93%9A-%EB%AA%BD%EA%B3%A0%EB%94%94%EB%B9%84-%ED%8A%B9%EC%A7%95-%EB%B9%84%EA%B5%90-%EA%B5%AC%EC%A1%B0-NoSQL" target="_blank">https://inpa.tistory.com/entry/MONGO-%F0%9F%93%9A-%EB%AA%BD%EA%B3%A0%EB%94%94%EB%B9%84-%ED%8A%B9%EC%A7%95-%EB%B9%84%EA%B5%90-%EA%B5%AC%EC%A1%B0-NoSQL</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.71;"><span class="se-fs-fs13 se-ff-nanumsquare se-weight-unset se-style-unset"><a class="se-link" href="https://sudo-minz.tistory.com/165" target="_blank">https://sudo-minz.tistory.com/165</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

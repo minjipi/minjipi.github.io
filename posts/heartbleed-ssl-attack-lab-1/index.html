@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>(1) SSL 취약점을 이용한 공격, Heartbleed(하트블리드) 실습 | minj.devlog</title>
+  <meta name="description" content="Open SSL 이란? Open SSL을 다루기 전에 먼저 SSL을 알아보자. SSl 이란, Secure Socket Layer로 월드 와이드 웹 브라우저와 웹 서버 간에 데이터를 안전하게 주고받기 위한 전송(4)계층 업계 표준 보안 프로토콜을 의미한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/heartbleed-ssl-attack-lab-1/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="(1) SSL 취약점을 이용한 공격, Heartbleed(하트블리드) 실습" />
+  <meta property="og:description" content="Open SSL 이란? Open SSL을 다루기 전에 먼저 SSL을 알아보자. SSl 이란, Secure Socket Layer로 월드 와이드 웹 브라우저와 웹 서버 간에 데이터를 안전하게 주고받기 위한 전송(4)계층 업계 표준 보안 프로토콜을 의미한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/heartbleed-ssl-attack-lab-1/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/heartbleed-ssl-attack-lab-1/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-04-25" />
+  <meta property="article:section" content="Security" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "(1) SSL 취약점을 이용한 공격, Heartbleed(하트블리드) 실습", "description": "Open SSL 이란? Open SSL을 다루기 전에 먼저 SSL을 알아보자. SSl 이란, Secure Socket Layer로 월드 와이드 웹 브라우저와 웹 서버 간에 데이터를 안전하게 주고받기 위한 전송(4)계층 업계 표준 보안 프로토콜을 의미한다.", "datePublished": "2021-04-25", "dateModified": "2021-04-25", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/heartbleed-ssl-attack-lab-1/", "image": "https://minjipi.github.io/posts/heartbleed-ssl-attack-lab-1/images/image_1.jpg", "articleSection": "Security"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="heartbleed-ssl-attack-lab-1">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Security">Security</a>
+              <time class="post-date" datetime="2021-04-25">2021.04.25</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222322674773" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">(1) SSL 취약점을 이용한 공격, Heartbleed(하트블리드) 실습</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/heartbleed-ssl-attack-lab-1/images/image_1.jpg" alt="(1) SSL 취약점을 이용한 공격, Heartbleed(하트블리드) 실습" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222322674773 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-" style="color:#000000;"><b>Open SSL 이란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Open SSL을 다루기 전에 먼저 SSL을 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:220px;">
+<div class="se-module se-module-image"><div class="se-state-error se-state-error-small">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>SSl</b></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이란, Secure Socket Layer로</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">월드 와이드 웹 브라우저와 웹 서버 간에 데이터를 안전하게 주고받기 위한 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">전송(4)계층</span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"> 업계 표준 보안 프로토콜을 의미한다. </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"> TLS(과거 명칭, Transprot Layer Security) HTTP 통신을 암호화하는데 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>Open SSL</b></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">은 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">웹브라우저와 서버 간의 통신을 암호화하는 오픈소스 라이브러리라고 보면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">한 마디로 Openssl을 웹서버(Apache,Nginx)에서 자유롭게 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이 Openssl은 2014년, Heart bleed 버그로 이슈화가 되었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-" style="color:#000000;"><b>Heart bleeds</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이 버그를 발견한 핀란드 보안 업체 ‘코데노미콘’은 이를 대중에게 설명하기 위하여 Heartbleed.com이라는 홈페이지를 개설하고 피를 흘리는 심장과 함께 이 취약점의 이름을 하트블리드(Heartbleed)라고 명명하였다. 이 취약점이 이런 이름으로 칭해지게 된 계기와 취약점 분석, 그리고 방어 방법에 대한 설명을 담았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>😈 Heart bleeds </b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">공격원리</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">OpenSSL 1.0.1 버전부터 하트비트(Heartbeat)라는 이름의 확장 모듈이 추가되었는데, 이는 TLS(Transport Layer Security) / DTLS(Datagram Transport Layer Security) 프로토콜에서 매번 연결을 재협상하지 않아도 통신연결을 유지하게 해주는 확장 규격이다. 클라이언트가 하트비트를 요청하며 Payload와 해당 Payload의 길이를 보내면 서버 측에서는 하트비트 응답에 내용을 그대로 복사해 되돌려주며 연결을 확인한다. 다음 그림과 같다!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/heartbleed-ssl-attack-lab-1/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그림-1 </span><span class="se-fs- se-ff-"><a class="se-link" href="http://forumsys.com/" target="_blank">http://forumsys.com/</a></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">위 그림과 같은 상황을 예시로 정리해보면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">먼저 클라이언트가 하트비트 요청으로 ‘HELLO’라는 문자의 Payload와 해당 Payload의 길이 5를 전송한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">서버는 하트비트 요청 사항을 확인하고 하트비트에 클라이언트에서 온 ‘HELLO’라는 Payload와 Payload의 길이 5를 그대로 담아 응답한다. 이러한 일련의 과정을 주기적으로 반복하며 클라이언트와 서버 사이의 연결을 수립한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">참고로 이 그림에서 하트비트 교환 중 Payload의 예시로 사용된 메시지 ‘HELLO’는, 단순히 이해하기 쉽도록 설명하기 위하여 표현된 임의의 메시지다. ‘HELLO’를 '당근'이라고 해도 똑같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">아래는 실제 패킷. 6글자로 carrot 이라는 문자를 요청하고, 대답을 받는다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">요청.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">그리고 "carrot"이라는 응답이 왔다. 정상적이다. 자, 그럼 다음 그림을 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">아래 그림은 Payload 길이가 조작된 하트비트 메시지 교환이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">근데... 다음 그림은 Payload 길이가 조작된 하트비트 메시지 교환이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_6.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그림-2</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">하트블리드는 여기서,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">하트비트 요청 메시지에 포함된 Payload와 Payload의 길이 부분 사이의 일치성을 확인하지 않는다는 점에서 발생하는 보안이슈이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">서버에서 하트비트에 대한 응답을 할 때, 메모리에서 요청으로 들어온 Payload를, 마찬가지로 요청으로 들어온 Payload의 길이 만큼 빼내어 되돌려준다. 여기서 Payload의 길이의 값을 실제 Payload보다 훨씬 크게 잡으면 메모리에서 Payload의 뒤에 적혀 있는 값을 길이 만큼 모두 응답 패킷에 담아 보내버리는 버그가 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">아래 그림은 이해를 돕기 위한 간단한 그림이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">다시 그림-2의 예시를 참고로 다시 한 번 정리를 해보면,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">클라이언트가 Payload를 ‘HELLO’, Payload의 길이를 25로 지정한 하트비트 메시지를 서버로 전송하였다. 서버는 이 하트비트 메시지를 메모리에 올려 확인한 다음 이에 대한 응답으로 길이가 25인 ‘HELLO’라는 메시지 응답을 한다. 하지만 ‘HELLO’는 5글자밖에 되지 않으므로 메모리의 ‘HELLO’를 초과하여 뒤이어지는 값까지 모두 포함한 25글자 길이의 메시지를 전송해버린다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">다음 이미지는 아까의  carrot을 255글자로 대답하라는 요청을 보내고 돌아온 대답이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">carrot 뒤에 추가적인 메모리 내용도 돌아왔다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7066666666666668;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이러한 문제로 이 버그를 악용할 경우 메모리에 할당될 수 있는 아이디, 비밀번호, 사용자 개인 자료 등의 각종 정보가 외부로 노출될 수 있는 치명적인 취약점이 될 수 있다. 이 사태를 하트비트에서 발생한 보안 이슈를 이용하기 때문에 ‘하트블리드(Heartbleed, 심장출혈)’라는 명칭으로 불리게 되었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-" style="color:#000000;"><b>실습 환경</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-table se-l-table_layout2 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout2 se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.06%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 26.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">운영 체제</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 32.94%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">사용 프로그램</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">IP</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.06%; height: 43.0px;  background-color: #fff6f3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">🖥 웹 서버</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 26.0%; height: 43.0px;  background-color: #fff6f3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">CentOS 6.5</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 32.94%; height: 43.0px;  background-color: #fff6f3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">httpd-2.2.15</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">httpd-tools-2.2.15</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">mod_ssl-2.2.15</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>openssl-1.0.1e-15</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #fff6f3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">192.168.208.137</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.06%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">🏴‍☠️ 해커</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 26.0%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Kali</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 32.94%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Python 2.7.14</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">192.168.208.141</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>CentOS 6.5 취약 환경 세팅</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">1. 네크워크 설정</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dfclient
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">2. 다음을 터미널 창에 붙여넣기 후, 엔터 !</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+cat &lt;&lt;-'EOF' &gt; /etc/yum.repos.d/CentOS-Base.repo
+[C6.10-base]
+name=CentOS-6.10 - Base
+baseurl=http://vault.centos.org/6.10/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=1
+metadata_expire=never
+
+[C6.10-updates]
+name=CentOS-6.10 - Updates
+baseurl=http://vault.centos.org/6.10/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=1
+metadata_expire=never
+
+[C6.10-extras]
+name=CentOS-6.10 - Extras
+baseurl=http://vault.centos.org/6.10/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=1
+metadata_expire=never
+
+[C6.10-contrib]
+name=CentOS-6.10 - Contrib
+baseurl=http://vault.centos.org/6.10/contrib/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+metadata_expire=never
+
+[C6.10-centosplus]
+name=CentOS-6.10 - CentOSPlus
+baseurl=http://vault.centos.org/6.10/centosplus/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+enabled=0
+metadata_expire=never
+EOF
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">더 이상 CentOs6에 yum repository가 지원하지 않아서,  다른 레포지터리로 변경하는 작업.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">해당 작업을 완료하면, 이제 yum을 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+yum install -y httpd httpd-tools mod_ssl
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">위 3가지를 설치하면, 자동으로 취약한 버전의 openssl이 설치된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>설정:</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">우선 최상위 루트(어디든 상관 없음.)에 ssl 이라는 폴더를 생성하고, 다음 명령어를 입력한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">다음은 https의 인증서 생성 명령어이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /ssl/webserver.key -out /ssl/webserver.crt
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">* -x509: 공개키 인증서와 인증 알고리즘 표준.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">* -newkey rsa:2048 : 키 길이를 2048로, 암호 알고리즘 방식은 rsa로 된 키 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그리고 다음과 같이 인증서 설정을 해준다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">여기서 작성한 정보는 이렇게 인증서로 만들어진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이제 이 인증서를 우리 웹서버가 사용할 수 있게 설정해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">우선 방화벽이 우리가 생성한 인증서 파일을 차단해 버리기 때문에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">방화벽을 끈다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+setenforce 0 //로컬 방화벽. 파일 검사하는 애.
+service iptables stop //네트워크 방화벽. 포트 차단.
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그리고 다음과 같은 경로에 위치한 ssl.conf 파일을 수정한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi /etc/httpd/conf.d/ssl.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">105번, 112번 라인을 위와 같이 수정한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">웹서버 설정이 완료되면, 웹서버를 재시작 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+service httpd restart
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">여기까지 세팅이 끝났고, 잘 되었는지 확인해본다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+netstat -anlp | grep :443
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이제 kali 로 공격할 차례.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래 사이트로 가서, 파이썬 파일을 다운로드 받는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="https://www.exploit-db.com/exploits/32745" target="_blank">https://www.exploit-db.com/exploits/32745</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://www.exploit-db.com/exploits/32745" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">OpenSSL TLS Heartbeat Extension - 'Heartbleed' Memory Disclosure</strong>
+<p class="se-oglink-summary">OpenSSL TLS Heartbeat Extension - 'Heartbleed' Memory Disclosure EDB-ID: 32745 CVE: 2014-0346 2014-0160 EDB Verified: Author: Jared Stafford Type: remote Exploit:   /   Platform: Multiple Date: 2014-04-08 Vulnerable App:</p>
+<p class="se-oglink-url">www.exploit-db.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">혹은 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">wget </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://www.exploit-db.com/download/32745.py" target="_blank">https://www.exploit-db.com/download/32745.py</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_13.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다운로드</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+python heartbleed.py 192.168.100.138 5000
+[   타깃 IP ]  몇 바이트의 메모리를 훔쳐볼 것인지?
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/heartbleed-ssl-attack-lab-1/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이렇게 타깃의 메모리를 훔쳐볼 수 있는 것을 확인했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그럼 이것을 이용해 어떤 것을 할 수 있는지 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222322853190" target="_blank"><i><b>[ 다음 글 ]</b></i></a></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i> 에서 실습이 이어집니다.</i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222322853190" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">(2) SSL 취약점을 이용한 공격, Heart bleed(하트블리드) 실습 / 웹 세션 하이재킹</strong>
+<p class="se-oglink-summary">SSL 취약점을 이용한 공격, Heart bleed(하트블리드) 실습웹 세션 하이재킹​​[ 이전 글 ]과 이어지는...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>  <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

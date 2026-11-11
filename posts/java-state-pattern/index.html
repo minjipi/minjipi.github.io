@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAVA 디자인패턴 | 스테이트 패턴 | minj.devlog</title>
+  <meta name="description" content="JAVA 디자인패턴 [ 스테이트 패턴 ] [ Point ] 1. UML 상태 머신 이란? 2. 상태를 캡슐화 로 처리하는 방법 3. 스테이트 패턴을 통한 상태 변화 의 처리 방법 4. 새로운 상태를 추가 할 수 있는 처리 방법 이해 0." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-state-pattern/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JAVA 디자인패턴 | 스테이트 패턴" />
+  <meta property="og:description" content="JAVA 디자인패턴 [ 스테이트 패턴 ] [ Point ] 1. UML 상태 머신 이란? 2. 상태를 캡슐화 로 처리하는 방법 3. 스테이트 패턴을 통한 상태 변화 의 처리 방법 4. 새로운 상태를 추가 할 수 있는 처리 방법 이해 0." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-state-pattern/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-state-pattern/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-05-14" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JAVA 디자인패턴 | 스테이트 패턴", "description": "JAVA 디자인패턴 [ 스테이트 패턴 ] [ Point ] 1. UML 상태 머신 이란? 2. 상태를 캡슐화 로 처리하는 방법 3. 스테이트 패턴을 통한 상태 변화 의 처리 방법 4. 새로운 상태를 추가 할 수 있는 처리 방법 이해 0.", "datePublished": "2020-05-14", "dateModified": "2020-05-14", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-state-pattern/", "image": "https://minjipi.github.io/posts/java-state-pattern/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-state-pattern">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2020-05-14">2020.05.14</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/221962494488" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JAVA 디자인패턴 | 스테이트 패턴</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/221962494488 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-nanummyeongjo">JAVA 디자인패턴</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-nanummyeongjo"><b>[ 스테이트 패턴 ]</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanummyeongjo"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanummyeongjo"><b>[ Point ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-">1. UML 상태 머신 이란?</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-">2. 상태를 </span><span class="se-fs-fs13 se-ff-"><b>캡슐화</b></span><span class="se-fs-fs13 se-ff-">로 처리하는 방법</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-">3. 스테이트 패턴을 통한 </span><span class="se-fs-fs13 se-ff-"><b>상태 변화</b></span><span class="se-fs-fs13 se-ff-">의 처리 방법</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-">4. 새로운 </span><span class="se-fs-fs13 se-ff-"><b>상태를 추가</b></span><span class="se-fs-fs13 se-ff-">할 수 있는 처리 방법 이해</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>0. UML 상태 머신</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/java-state-pattern/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">클래스나 전체 시스템을 대상으로</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">이벤트에 따른 객체의 상태 변화를 표현한 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">객체의 라이프사이클 표현에 적합하다</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs28 se-ff-"><b>[스테이트 패턴 예제]</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-">스테이트 패턴은 상태 변화에 대한 코드에 유용하게 사용되므로, 형광등 혹은 신호등 등의 코드로 실습하는 것이 적합하다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">나는 형광등 상태머신 다이어그램!</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+public class LightClient {
+public static void main(String[] args) {
+new Field();
+}
+}
+class Light {
+private static int ON = 0;
+private static int OFF = 1;
+private int state;
+public Light() {
+		state = OFF;
+}
+public String on_button_pushed() {
+if (state == ON) {
+			System.out.println("반응 없음");
+} else {
+			System.out.println("Light On");
+			state = ON;
+}
+return ImageService.lightImageName[0];
+}
+public String off_button_pushed() {
+if (state == OFF)
+			System.out.println("반응 없음");
+else {
+			System.out.println("light off!");
+			state = OFF;
+}
+return ImageService.lightImageName[1];
+}
+//	public String getCurrentState() {
+//		if (state == OFF) {
+//			return ImageService.lightImageName[1];
+//		} else {
+//			return ImageService.lightImageName[0];
+//		}
+//	}
+}
+class ImageService {
+public static final String[] lightImageName = { "on.png", "off.png", "sleeping.png" };
+}
+class Field extends JFrame {
+private static final long serialVersionUID = 1L;
+private Controller controller;
+	JLabel lbl;
+
+	Light light;
+public Field() {
+super("Field");
+setDefaultCloseOperation(EXIT_ON_CLOSE);
+setLayout(new BorderLayout());
+
+		light = new Light();
+
+		lbl = new JLabel();
+		lbl.setIcon(new ImageIcon("./src/img/" + ImageService.lightImageName[1]));
+
+		JPanel jp = new JPanel();
+		jp.add(lbl, BorderLayout.CENTER);
+add(jp, BorderLayout.CENTER);
+		controller = new Controller();
+add(controller, BorderLayout.SOUTH);
+setSize(400, 300);
+setVisible(true);
+}
+class Controller extends JPanel implements ActionListener {
+private static final long serialVersionUID = 1L;
+private JButton btnOn, btnOff;
+public Controller() {
+setLayout(new FlowLayout());
+			btnOn = new JButton("On");
+			btnOff = new JButton("Off");
+			btnOn.addActionListener(this);
+			btnOff.addActionListener(this);
+add(btnOn);
+add(btnOff);
+}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+// TODO Auto-generated method stub
+			JButton btn = (JButton) e.getSource();
+if (btn == btnOn) {
+				lbl.setIcon(new ImageIcon("./src/img/" + light.on_button_pushed()));
+} else if (btn == btnOff) {
+				lbl.setIcon(new ImageIcon("./src/img/" + light.off_button_pushed()));
+}
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">기본예제에서 무드등 '상태를 추가'해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">어떻게 해야할까?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:496px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+ public Light() {
+		state = OFF;
+}
+public String on_button_pushed() {
+if (state == ON) {
+			System.out.println("쿨쿨");
+			state = SLEEPING;
+return ImageService.lightImageName[2];
+} else if (state == SLEEPING) {
+			System.out.println("불 켜요");
+			state = ON;
+return ImageService.lightImageName[0];
+}
+else {
+			System.out.println("Light On");
+			state = ON;
+}
+return ImageService.lightImageName[0];
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">일단은 가장 쉽게</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">On 버튼 상태에 추가했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">상태가 On도 아니고 Sleeping 도 아닌 상태에서 On push 가 발생하면</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">On상태로.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>[결과 확인]</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">off 상태에서 시작</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:353px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">* 한번 On을 눌렀을 경우</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:571px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">* on 한번 더 눌렀을 경우</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:570px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">On 눌렀을 경우</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:563px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Off.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:58.82888890020004%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_8.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:41.17111109979996%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">여기까지 코드는 잘 돌아가지만...</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">문제가 하나 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 또 다른 상태들을 추가하려면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>많은 if문과 메서드 들을 생성/추가</b></span><span class="se-fs- se-ff-"> 해야하는데..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>캡슐화로 이를 해결해 보자.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>스테이트 패턴으로 구현한 상태 머신 다이어그램</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">일단 </span><span class="se-fs- se-ff-"><b>스테이트 패턴을 이용하게 되면</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>스테이트 클래스에 위임해서</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>조건문을 사용할 필요가 없어진다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-"><b>* </b></span><span class="se-fs-fs13 se-ff-">언뜻 보기에는 스테이트와 스트레티지 패턴이 동일한 구조같다. 하지만 분명한 차이점이 존재한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-">이 부분은 이따 또 나오기 때문에 그 때 설명하도록 하겠습니다</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-"><b>[스테이트 패턴으로 코드 수정 1]</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+interface State {
+public String on_button_pushed(Light light);
+public String off_button_pushed(Light light);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>interface State</b></span><span class="se-fs- se-ff-"> 에서</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">State On과 Off 버튼에 대한 동작을 정의 하는 코드를 정의한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">public String  on_button_pushed (Light light);</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">라이트의 바뀐 상태를 설정해 줘야 하니까</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">매개 변수로 light 객체를 받는다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+class ON implements State {
+
+	@Override
+	public String on_button_pushed(Light light) {
+		System.out.println("반응없음");
+return ImageService.lightImageName[0];
+}
+
+	@Override
+	public String off_button_pushed(Light light) {
+		light.setState(new OFF());
+		System.out.println("불 꺼요");
+return ImageService.lightImageName[1];
+}
+}
+class OFF implements State {
+
+	@Override
+	public String on_button_pushed(Light light) {
+		light.setState(new ON());
+		System.out.println("불 켜요");
+return ImageService.lightImageName[0];
+}
+
+	@Override
+	public String off_button_pushed(Light light) {
+		System.out.println("반응없음");
+return ImageService.lightImageName[1];
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이전에는 if문으로 복잡하게 코드를 구현했었는데, 바뀐 코드를 통해서</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">내 상태가 On일때 on button이 눌리게 되면,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">변경될 것이 없다는 것을 바로 띄워줄 수 있게 되었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">-&gt; 객체 자체가 처리를 하기 때문에 현재내 상태에 대해서는 </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">if문으로 내 상태를 판단할 필요가 없어진다는 것이 확인 가능하다💡</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+class Light {
+private State state;
+public Light() {
+		state = new OFF();
+}
+public String on_button_pushed() {
+return state.on_button_pushed(this);
+}
+public String off_button_pushed() {
+return state.off_button_pushed(this);
+}
+public void setState(State state) {
+this.state = state;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">light 클래스에서는 조건문이 단 하나도 필요하지 않게 된다</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">++</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+return ImageService.lightImageName[0];
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 이 부분.. 이미지만 반환하게 되어 있는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">출력 하는 부분까지 On클래스 안에서 해결해주면 더 좋을 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>무드등 상태(SLEEPING) 추가해주기</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+class ON implements State {
+
+	@Override
+	public String on_button_pushed(Light light) {
+// TODO Auto-generated method stub
+		light.setState(new SLEEPING());
+		System.out.println("쿨쿠울");
+return ImageService.lightImageName[2];
+}
+
+	@Override
+	public String off_button_pushed(Light light) {
+// TODO Auto-generated method stub
+		light.setState(new OFF());
+		System.out.println("불 꺼요");
+return ImageService.lightImageName[1];
+}
+}
+class SLEEPING implements State {
+
+	@Override
+	public String on_button_pushed(Light light) {
+// TODO Auto-generated method stub
+		light.setState(new ON());
+		System.out.println("불켜용");
+return ImageService.lightImageName[0];
+}
+
+	@Override
+	public String off_button_pushed(Light light) {
+// TODO Auto-generated method stub
+		light.setState(new OFF());
+		System.out.println("불 꺼요");
+return ImageService.lightImageName[1];
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">State 쪽은 전혀 손을 댈 필요가 없고..</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">위와 같이 무드등 상태로 진입하는 부분(다음 상태로 변경되는 부분)의 코드만 수정했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">그런데 지금 상태로 변경 할 때마다 new로 객체를 만들어 내고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">메모리를 할당하고 있는 상황..</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이 이부분은 싱글턴 패턴을 사용해 조금 더 수정해 주면 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>싱글턴 패턴 적용</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+class ON implements State {
+private static ON on;
+private ON() {
+}
+public static ON getInstance() {
+if (on == null) {
+			on = new ON();
+}
+return on;
+}
+
+	@Override
+	public String on_button_pushed(Light light) {
+		light.setState(SLEEPING.getInstance());
+		System.out.println("쿨쿠울");
+return ImageService.lightImageName[2];
+}
+
+	@Override
+	public String off_button_pushed(Light light) {
+		light.setState(OFF.getInstance());
+		System.out.println("불 꺼요");
+return ImageService.lightImageName[1];
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>스테이트 패턴, 스트레티지 패턴 차이점</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>스트레티지 패턴은 전략을 수정하기 위해 사용된다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">예를들어 게임 캐릭터 각각의 설정들,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">다른 알고리즘으로 손쉽게 교체하는 동작에 자주 쓰인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이와 조금 다르게</span><span class="se-fs- se-ff-"><b> 스테이트 패턴은,</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>상태에 따라 다양한 행동을 처리</b></span><span class="se-fs- se-ff-">할 때 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">행위 자체도 상태 객체에 위임을 해서 처리하고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:540px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-state-pattern/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

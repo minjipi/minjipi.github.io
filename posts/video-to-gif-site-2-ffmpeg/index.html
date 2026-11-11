@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>동영상 GIF 변환하는 사이트 만들기 2 | FFmpeg | minj.devlog</title>
+  <meta name="description" content="git commit -m &quot;궁극의 GIF 만들기 여정 2&quot; 동영상을 gif로 변환하는 여정이 영화라면, 이번 포스팅에서는 주인공 친구급인 ffmpeg 에 대해 알아보고 ffmpeg를 사용해 GIF 파일을 생성 해봅니다. 1." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/video-to-gif-site-2-ffmpeg/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="동영상 GIF 변환하는 사이트 만들기 2 | FFmpeg" />
+  <meta property="og:description" content="git commit -m &quot;궁극의 GIF 만들기 여정 2&quot; 동영상을 gif로 변환하는 여정이 영화라면, 이번 포스팅에서는 주인공 친구급인 ffmpeg 에 대해 알아보고 ffmpeg를 사용해 GIF 파일을 생성 해봅니다. 1." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/video-to-gif-site-2-ffmpeg/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/video-to-gif-site-2-ffmpeg/images/image_1.jpg" />
+  <meta property="article:published_time" content="2025-08-18" />
+  <meta property="article:section" content="Media" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "동영상 GIF 변환하는 사이트 만들기 2 | FFmpeg", "description": "git commit -m \"궁극의 GIF 만들기 여정 2\" 동영상을 gif로 변환하는 여정이 영화라면, 이번 포스팅에서는 주인공 친구급인 ffmpeg 에 대해 알아보고 ffmpeg를 사용해 GIF 파일을 생성 해봅니다. 1.", "datePublished": "2025-08-18", "dateModified": "2025-08-18", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/video-to-gif-site-2-ffmpeg/", "image": "https://minjipi.github.io/posts/video-to-gif-site-2-ffmpeg/images/image_1.jpg", "articleSection": "Media"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="video-to-gif-site-2-ffmpeg">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Media">Media</a>
+              <time class="post-date" datetime="2025-08-18">2025.08.18</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223974304617" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">동영상 GIF 변환하는 사이트 만들기 2 | FFmpeg</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223974304617 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-nanummaruburi" style="color:#333333;"><i><b>git commit -m "궁극의 GIF 만들기 여정 2"</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi" style="color:#000000;">동영상을 gif로 변환하는 여정이 영화라면, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi" style="color:#000000;">이번 포스팅에서는 주인공 친구급인 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi" style="color:#000000;background-color:#fafff7;"><u>ffmpeg</u></span><span class="se-fs- se-ff-nanummaruburi" style="color:#000000;"><u>에 대해 알아보고 </u></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi se-decoration-unset" style="color:#000000;background-color:#fafff7;">ffmpeg를 사용해 </span><span class="se-fs- se-ff-nanummaruburi" style="color:#000000;background-color:#fafff7;"><u>GIF 파일을 생성</u></span><span class="se-fs- se-ff-nanummaruburi" style="color:#000000;">해봅니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>1. ffmpeg 란?</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Fast Forward MPEG</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>FFmpeg</b></span><span class="se-fs- se-ff-system">는 영상과 음성 데이터를 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">자유자재로 다룰 수 있는 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>오픈소스 멀티미디어 프레임워크</b></span><span class="se-fs- se-ff-system">입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">MP4, MOV, MKV, AVI, WebM, HLS 등 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">거의 모든 포맷을 읽고 쓰며</span><span class="se-fs- se-ff-system">, 변환, 추출, 인코딩, 디코딩, 자르기, 필터, 스트리밍까지 모두 가능한 </span><span class="se-fs- se-ff-system"><b>만능 도구</b></span><span class="se-fs- se-ff-system">예요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">실제로 유튜브, 인스타그램, 넷플릭스 등의 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">글로벌 서비스들도 </span><span class="se-fs- se-ff-system se-weight-unset">내부 시스템에서 FFmpeg 또는 FFmpeg 기반 도구를 적극적으로 활용</span><span class="se-fs- se-ff-system">하고 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">다음은 FFmpeg 가 지원하는 기능입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-table_layout1 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout1 se-section-align-center" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>기능</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>설명</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">인코딩</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">동영상을 다른 형식으로 압축하거나 변환 (예: mp4 → webm)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">디코딩</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">인코딩된 영상을 원래대로 재생할 수 있도록 해석</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">프레임 추출</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">비디오에서 이미지(Frame)를 뽑아냄</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">자르기/합치기</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">영상이나 오디오를 자르거나 붙임</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">필터 적용</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">밝기 조절, 자막 삽입, 회전, 색공간 변환 등</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">스트리밍</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">라이브 영상 스트리밍 서버 구축 가능 (HLS, RTMP 등)</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">일단 FFmpeg를 사용해서</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">MP4 영상을 GIF로 변환해 봅시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>2. ffmpeg 사용해보기</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-oglink se-l-text __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info __se_link" href="https://ffmpeg.org/download.html" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Download FFmpeg</strong>
+<p class="se-oglink-summary"> Download Source Code ffmpeg-7.1.1.tar.xz More releases If you find FFmpeg useful, you are welcome to contribute by donating .  More downloading options  Get packages &amp; executable files FFmpeg only provides source code. Below are some links that provide it already compiled and ready to go...</p>
+<p class="se-oglink-url">ffmpeg.org</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">위의 FFmpeg 공식 홈페이지에서 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">다운로드 받을 수도 있지만,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">저는 맥북에서 homebrew로 받았습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset">맥북 ffmpeg homebrew 설치 방법:</span></p></li></ul>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+brew install ffmpeg
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>3. FFmpeg </b></span><span class="se-fs- se-ff-">로 GIF 생성해보기</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">FFmpeg로 GIF 생성하는 방법은 여러가지가 있습니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">저는 총 4가지 방법을 사용해서 GIF를 만들어봤는데, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">결과가 다 달라서 재밌었어요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system">1) MP4 영상을 GIF로 변환</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ffmpeg -i input.mp4 output.gif
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">위 명령어를 입력해서 기본 gif을 생성합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">가장 노멀한 방법이에요.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">(1) 결과:</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/video-to-gif-site-2-ffmpeg/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">83.6MB</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이런 83.6MB 크기의 gif 가 만들어졌는데, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">용량 초과로 블로그 앱에 첨부할 수 가 없습니다.ㅜㅜ</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">왼쪽 원본 영상 vs 오른쪽 결과물</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">근데 딱 봐도 원본 영상과 색감 차이가 좀 심하죠?</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">오른쪽도 나름 예쁘긴 하지만 ㅋ</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">최대한 영상과 비슷한 색감의 gif를 만드는 것이 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">목표입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">다음은 두 단계로 gif를 생성해 봤습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system">2-1) png 추출 후, gif 생성</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ffmpeg -i input.mp4 -vf "zscale=primaries=bt709:m=bt709:range=full" -pix_fmt rgb24 frame%04d.png
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이 명령어는 FFmpeg를 사용해 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">원본 비디오에서 프레임을 이미지(PNG)로 추출하면서 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">색공간을 변환합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">위 명령어를 간단히 설명하자면, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">1. 색상 정확도를 위해 </span><span class="se-fs- se-ff-system"><b>zscale 필터</b></span><span class="se-fs- se-ff-system"> 사용 및</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"> </span><span class="se-fs- se-ff-system"><b>풀레인지 색상</b></span><span class="se-fs- se-ff-system"> 보존을 하고 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">2. MP4 영상을 </span><span class="se-fs- se-ff-system"><b>RGB 24비트 TrueColor PNG</b></span><span class="se-fs- se-ff-system">로 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">프레임 단위 추출 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">참고로 이 명령어는 따로 test 폴더 생성하고 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">거기서 실행하세요 ^^;</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">이미지 파일이 엄청 생성됩니다.. 주의주의..</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:300px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이런 준수한 색감의 png 이미지들이 막 추출되었어요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이제 그 다음 단계로 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이 PNG 프레임들을 묶어서 GIF를 생성 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system">2-2) PNG 프레임들을 묶어서 GIF 생성</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ffmpeg -framerate 15 -i frame%04d.png -vf "scale=480:-1:flags=lanczos" output.gif
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">위에서 추출한 PNG 시퀀스(프레임 이미지)들을 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">초당 15프레임의 고품질 GIF로 생성하는 명령어 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이렇게 하면, 꽤 괜찮은 GIF 파일이 생성되는데 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">역시 용량 문제로 첨부가 안되네요..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>35.6MB</b></span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">사진으로 비교하자면 이렇습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">가장 오른쪽이 지금 생성한 gif 에요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system">3) 팔레트 생성 후 GIF 생성</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이번에는 '팔레트 이미지'를 먼저 생성 합니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ffmpeg -i input.mp4 -vf "fps=15,scale=480:-1:flags=lanczos,zscale=primaries=bt709:m=bt709:range=full,palettegen" palette.png
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">위 명령어를 입력하면 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">아래와 같은 16px 짜리 이미지가 생기는데요, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:170px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이 팔레트를 사용해서 GIF를 생성 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">gif는 256색만 표현이 가능하다고 했었죠?</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그런데 이게 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>프레임마다 각각 따로 256색을 추출하는 것이라,</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">색감이 불안정합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그래서 이 문제를 보완하기 위해 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">전체 영상 모든 프레임을 기준으로 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">256색 추출해서 </span><span class="se-fs- se-ff-system"><b>팔레트(palettegen)</b></span><span class="se-fs- se-ff-system">를 만드는거죠.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ffmpeg -i input.mp4 -i palette.png -filter_complex "fps=15,scale=480:-1:flags=lanczos,zscale=primaries=bt709:m=bt709:range=full[x];[x][1:v]paletteuse" output.gif
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그럼 이어서 이 팔레트를 적용해 GIF를 생성해 봅니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">결과:</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_7.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">오른쪽이 결과</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">실제 gif를 보면 좀 더 차이가 느껴집니다!ㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">훨씬 색감이 영상에 가까워졌어요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">용량은 </span><span class="se-fs- se-ff-system se-weight-unset">35.6MB -&gt; </span><span class="se-fs- se-ff-system"><b>8.8MB </b></span><span class="se-fs- se-ff-system se-weight-unset">로 </span><span class="se-fs- se-ff-system">더 줄었구요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">4) NaverBlog app</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_8.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">768KB</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">마지막으로 색감 맛집 네이버 블로그 앱에서 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">생성한 gif 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">용량은 가장 작은데, 이건 애초에 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">생성 가능한 영상 길이도 짧아요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">아무튼, 생성한 4개의 gif 를 총정리해보면..</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:50.08393956351427%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_9.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:49.91606043648573%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:50.0%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_11.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:50.0%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1,2,3,4</span></p></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">짜잔~</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">열심히 해봤건만 역시 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">NaverBlog 색감이 가장 좋습니다;</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:160px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">하지만 저 색 경계가 심하죠.ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-system se-weight-unset">자, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-system se-weight-unset">그럼 이건 어떤가요?</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:450px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/video-to-gif-site-2-ffmpeg/images/nv_0.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">4.2MB</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-system se-weight-unset"><i>짱이죠?</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">궁극의 GIF 입니다. ^^</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">용량도 준수 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">그런데 이 결과물의 키 포인트는 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">ffmpeg가 아니었습니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">어떤 천재 러시아형님이 만든 gif 기술이 있더라구요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line6">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line6 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">이 기술에 대해서는 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">다음 포스팅에 이어 적어보겠습니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

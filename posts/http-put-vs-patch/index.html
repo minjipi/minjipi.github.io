@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP 메서드 :: PUT과 PATCH의 차이 (멱등성 보장하는 PUT, 멱등성 보장하지 않는 PATCH) | minj.devlog</title>
+  <meta name="description" content="PUT과 PATCH의 차이가 뭘까? 클라이언트가 기존 리소스를 완전히 교체해야 하는 경우 PUT을 사용. 부분 업데이트를 수행할 때 PATCH를 사용한다. 예를 들어 리소스의 단일 필드를 업데이트할 때 전체 리소스 표현을 보내는 것은 번거롭고 불필요한 비용이 들어간다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/http-put-vs-patch/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="HTTP 메서드 :: PUT과 PATCH의 차이 (멱등성 보장하는 PUT, 멱등성 보장하지 않는 PATCH)" />
+  <meta property="og:description" content="PUT과 PATCH의 차이가 뭘까? 클라이언트가 기존 리소스를 완전히 교체해야 하는 경우 PUT을 사용. 부분 업데이트를 수행할 때 PATCH를 사용한다. 예를 들어 리소스의 단일 필드를 업데이트할 때 전체 리소스 표현을 보내는 것은 번거롭고 불필요한 비용이 들어간다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/http-put-vs-patch/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/http-put-vs-patch/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-05-02" />
+  <meta property="article:section" content="Network" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "HTTP 메서드 :: PUT과 PATCH의 차이 (멱등성 보장하는 PUT, 멱등성 보장하지 않는 PATCH)", "description": "PUT과 PATCH의 차이가 뭘까? 클라이언트가 기존 리소스를 완전히 교체해야 하는 경우 PUT을 사용. 부분 업데이트를 수행할 때 PATCH를 사용한다. 예를 들어 리소스의 단일 필드를 업데이트할 때 전체 리소스 표현을 보내는 것은 번거롭고 불필요한 비용이 들어간다.", "datePublished": "2022-05-02", "dateModified": "2022-05-02", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/http-put-vs-patch/", "image": "https://minjipi.github.io/posts/http-put-vs-patch/images/image_1.jpg", "articleSection": "Network"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="http-put-vs-patch">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Network">Network</a>
+              <time class="post-date" datetime="2022-05-02">2022.05.02</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222718562135" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">HTTP 메서드 :: PUT과 PATCH의 차이 (멱등성 보장하는 PUT, 멱등성 보장하지 않는 PATCH)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/http-put-vs-patch/images/image_1.jpg" alt="HTTP 메서드 :: PUT과 PATCH의 차이 (멱등성 보장하는 PUT, 멱등성 보장하지 않는 PATCH)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222718562135 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>PUT과 PATCH의 차이가 뭘까?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">클라이언트가 기존 리소스를 완전히 교체해야 하는 경우 PUT을 사용.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">부분 업데이트를 수행할 때 PATCH를 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예를 들어 리소스의 단일 필드를 업데이트할 때</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">전체 리소스 표현을 보내는 것은 번거롭고 불필요한 비용이 들어간다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이러한 경우 PATCH를 사용하는 것이 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 고려해야 할 또 다른 중요한 측면은 멱등성이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>멱등성이란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>멱등성</b></span><span class="se-fs- se-ff-">이란 어떤 대상에 같은 연산을 여러번 적용해도 결과가 달라지지 않는 성질이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">소프트웨어에서는 몇 번을 호출하던지 결과가 동일해야 한 경우를 멱등하다고 한다. MS에서는 엘리베이터를 예시로 들고 있다. 엘리베이터 버튼을 몇 번 누르던지, 엘리베이터가 호출한 층으로 온다는 사실은 변하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP 메소드 외에도 데이터베이스나 파일에 자원을 읽고 쓰는 등의 컴퓨터가 수행하는 모든 연산에 해당된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예를 들어 어떠한 수에 1을 곱하는 x =&gt; x * 1과 같은 함수는 어떠한 값에 1번을 적용하던, 1000번을 적용하던 항상 x를 반환한다. 이런 연산은 멱등성이 보장된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그러나 1을 곱하는 함수가 아니라 1을 더하거나 빼는 함수라면 함수가 한번 호출될 때마다 인자로 주어진 값을 계속 증가시키거나 감소시킬 것이므로 항상 같은 값을 반환하지 않는다. 이런 연산은 멱등성을 보장하지 않는 예이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP 메소드 또한 결국 어떤 자원을 쓰고 읽고 수정하고 지우는 CRUD의 의미를 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP 메소드의 멱등성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그렇다면 HTTP의 메소드 중 get, put, delete, post 중 멱등 메소드는 무엇일까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">답은 post를 제외한 전부이다. get의 파라미터, put의 데이터, delete의 파라미터가 동일할 때 각 메소드는 멱등하게 기능한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">get이 멱등하다는 것은 쉽게 알 수 있다. </span><span class="se-fs- se-ff-" style="background-color:#ffe3c8;"><b> GET </b></span><span class="se-fs- se-ff-"> 메소드는 단지 리소스를 읽어 오는 행위를 의미하기에 아무리 여러번 수행해도 결과가 변경되지 않는다.(다만 멱등은 트랜잭션이 lock되지 않아서 데이터가 변경되는 것 같은 외부 요인은 고려하지 않는다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">마찬가지로 요청에 담긴 리소스로 기존 리소스를 그대로 대체해버리는 </span><span class="se-fs- se-ff-" style="background-color:#ffe3c8;"> PUT </span><span class="se-fs- se-ff-"> 메소드도 여러번 수행해도 요청에 담긴 리소스가 변하지 않는 이상 연산 결과가 동일하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>delete </b></span><span class="se-fs- se-ff-">의 경우 코드에 따라 에러를 출력할 수도 있겠지만, 데이터의 관점에서 봤을 때 삭제되었다는 사실이 변하지는 않는다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">즉, 어떤 리소스를 읽어오거나 대체하는 연산은 멱등성을 보장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그렇다면 멱등성이 보장되지 않는 케이스는 뭐가 있을까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="background-color:#bdfbfa;"> POST </span><span class="se-fs- se-ff-"> 메소드의 경우 리소스를 새롭게 생성하는 행위이기 때문에 여러번 수행하게 되면 매번 새로운 리소스가 생성된 것이고, 연산을 수행한 결과가 매번 달라진다. post에서 리소스를 새로 생성하거나, 쿼리를 요청하는 경우 동일한 명령이 n번 발생되면 결과가 달라진다. 예를 들면 결제가 여러번 되거나, 게시글이 여러번 작성되는 것이다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">POST 메소드와 같이 </span><span class="se-fs- se-ff-"><u>멱등성을 보장하지 않는 동작</u></span><span class="se-fs- se-ff-">은 한 번 수행될 때마다 어플리케이션의 상황이 전혀 다르게 변할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="background-color:#bdfbfa;"> PATCH </span><span class="se-fs- se-ff-"> 메소드는 구현 방법에 따라서 PUT 메소드처럼 멱등성이 보장될 수도 있고, 혹은 보장되지 않을 수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">PATCH 메소드는 PUT 메소드처럼 리소스를 대체하는 행위가 아니기 때문에 요청을 어떤 방식으로 사용하는지에 대한 제한이 딱히 없다. PATCH 메소드는 단지 리소스의 일부를 수정한다는 의미만을 가질 뿐이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예를 들어, PATCH 메소드에 수정할 리소스의 일부분만 담아서 보내는 경우에는 당연히 멱등성이 보장된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[기존 리소스]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+{
+id: 1,
+name: 'minji',
+age: 25,
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+PATCH users/1
+{ age: 15 }
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[새로운 리소스]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+{
+id: 1,
+name: 'minji',
+age: 15, // 변경됨
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 PATCH 요청은 명확하게 age라는 필드를 15로 수정하는 행위만을 의미하므로 아무리 여러 번 수행해도 age는 늘 15이라는 값을 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그럼 언제 PATCH 메소드가 멱등성 보장이 안될 수도 있다는 것일까!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">요 조금 억지스러운 예시를 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+PATCH users/1
+{
+$increase: 'age',
+value: 1,
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 요청의 $increase 필드의 값은 증가시키고 싶은 속성을 의미하고, value 필드의 값은 그 속성을 얼마나 증가시킬 것인지를 나타낸다. 이 경우 API가 호출될 때마다 에반의 나이는 1씩 증가하기 때문에 이 API는 멱등성을 보장하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이런식으로 PATCH 메소드를 사용하는 경우를 실제로 보지는 못했지만..,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스펙 상 구현 방법에 대한 제약이 없기 떄문에 이런 식으로 사용한다고 해서 표준을 어기는 것은 아니라고 한다. 따라서 PATCH 메소드는 API를 어떻게 구현하냐에 따라서 멱등성을 보장할 수도 있고 아닐 수도 있는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">결론</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>PUT : 자원의 전체 교체, 자원교체 시 모든 필드 필요</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>만약 전체가 아닌 일부만 전달할 경우, </i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>전달한 필드외 모두 null or 초기값 처리되니 주의</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>PATCH : 자원의 부분 교체, 자원교체시 일부 필드 필요</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#777777;">무심코(?)회원 정보 수정 페이지 구현하다가 아주 중요한 부분을 짚고 넘어간듯!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-">참고</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-"><a class="se-link" href="https://www.baeldung.com/http-put-patch-difference-spring" target="_blank">https://www.baeldung.com/http-put-patch-difference-spring</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-"><a class="se-link" href="https://oen-blog.tistory.com/211" target="_blank">https://oen-blog.tistory.com/211</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-"><a class="se-link" href="https://evan-moon.github.io/2020/04/07/about-restful-api/#rest%EA%B0%80-%EC%9D%98%EB%AF%B8%ED%95%98%EB%8A%94-%EA%B2%83%EC%9D%B4-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94" target="_blank">https://evan-moon.github.io/2020/04/07/about-restful-api/#rest%EA%B0%80-%EC%9D%98%EB%AF%B8%ED%95%98%EB%8A%94-%EA%B2%83%EC%9D%B4-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

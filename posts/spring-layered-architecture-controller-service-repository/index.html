@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스프링 프로젝트 계층 구조 이해 (Controller, Service, Repository, Domain Model, Entity, DTO, DAO) | minj.devlog</title>
+  <meta name="description" content="스프링의 계층 구조에 대해 정리한다. 1. 스프링 웹 계층 아래는 스프링 계층 구조를 크게크게 나누어 본 그림이다. 아래 그림으로 전체적인 흐름을 파악하고, 용어 정리를 해보자. - Web Layer 흔히 사용하는 컨트롤러와 뷰 템플릿 영역." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-layered-architecture-controller-service-repository/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="스프링 프로젝트 계층 구조 이해 (Controller, Service, Repository, Domain Model, Entity, DTO, DAO)" />
+  <meta property="og:description" content="스프링의 계층 구조에 대해 정리한다. 1. 스프링 웹 계층 아래는 스프링 계층 구조를 크게크게 나누어 본 그림이다. 아래 그림으로 전체적인 흐름을 파악하고, 용어 정리를 해보자. - Web Layer 흔히 사용하는 컨트롤러와 뷰 템플릿 영역." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-layered-architecture-controller-service-repository/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-layered-architecture-controller-service-repository/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-08-31" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "스프링 프로젝트 계층 구조 이해 (Controller, Service, Repository, Domain Model, Entity, DTO, DAO)", "description": "스프링의 계층 구조에 대해 정리한다. 1. 스프링 웹 계층 아래는 스프링 계층 구조를 크게크게 나누어 본 그림이다. 아래 그림으로 전체적인 흐름을 파악하고, 용어 정리를 해보자. - Web Layer 흔히 사용하는 컨트롤러와 뷰 템플릿 영역.", "datePublished": "2021-08-31", "dateModified": "2021-08-31", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-layered-architecture-controller-service-repository/", "image": "https://minjipi.github.io/posts/spring-layered-architecture-controller-service-repository/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-layered-architecture-controller-service-repository">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-08-31">2021.08.31</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222489613651" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">스프링 프로젝트 계층 구조 이해 (Controller, Service, Repository, Domain Model, Entity, DTO, DAO)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-layered-architecture-controller-service-repository/images/image_1.jpg" alt="스프링 프로젝트 계층 구조 이해 (Controller, Service, Repository, Domain Model, Entity, DTO, DAO)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222489613651 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-" style="color:#555555;">스프링의 계층 구조에 대해 정리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-" style="color:#555555;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-" style="color:#555555;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#404040;"><b>1. 스프링 웹 계층</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">아래는 스프링 계층 구조를 크게크게 나누어 본 그림이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">아래 그림으로 전체적인 흐름을 파악하고, 용어 정리를 해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-layered-architecture-controller-service-repository/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>- Web Layer</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">흔히 사용하는 컨트롤러와 뷰 템플릿 영역.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이외에도 필터, 인터셉터, 컨트롤러 어드바이스 등 외부 요청과 응답에 대한 전반적인 영역을 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>- DTOs</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">DTO(Data Transfer Object, 데이터 전송 객체)는 계층 간에 데이터 교환을 위한 객체,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">DB를 사용해 데이터를 조회하거나 조작하는 기능을 전담하도록 만든 객체를 의미하며 DTOs는 이들의 영역을 의미한다. 예를 들어, 뷰 템플릿 엔진에서 사용될 객체나 Repository Layer에서 결과로 넘겨준 객체 등이 이들을 말한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>- Service Layer</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">@Service 에 사용되는 서비스 영역이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">일반적으로 Controller와 </span><span class="se-fs- se-ff-"><b>Dao</b></span><span class="se-fs- se-ff-">의 중간 영역에서 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">*</span><span class="se-fs- se-ff- se-style-unset"><b> Dao (Data Access Object): </b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">DTO 객체를 데이터베이스 서버에 저장하는 역할을 수행.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">DB를 사용해 데이터를 조회하거나 조작하는 기능을 전담하도록 만든 오브젝트이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>- Repository Layer</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Database 와 같이 데이터 저장소에 접근하는 영역이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"><b>Dao</b></span><span class="se-fs- se-ff-"><i><b> </b></i></span><span class="se-fs- se-ff-">영역 이라고 생각하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>- Domain Model</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">도메인이라 불리는 개발 대상을 모든 사람들이 동일한 관점에서 이해할 수 있고 공유할 수 있도록 단순화시킨 것을 도메인 모델이라 한다. 비즈니스 로직을 처리하는 영역이다. 택시 앱이라 하면 배차, 탑승, 요금 등이 모두 도메인이 될 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>2. 비즈니스 레이어와 데이터 레이어</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이제 위 이미지를 가로로 다시 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">비즈니스 레이어와 데이터 레이어 계층에 대해 조금 더 살펴보도록 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링을 사용한 웹/앱의 경우 DAO, DTO, Repository, Entity를 사용하여 데이터를 다루는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링부트의 경우 내장 톰캣을 통해 서블릿을 관리하고 이를 컨트롤러에서 각 어노테이션을 통해 매핑한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">도메인(엔티티)의 경우 가장 Persistence Layer에 가까운데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이를 이용하기 위해 사용하는 방법들을 알아본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>📍 Repository</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">MVC 패턴에서 모델에 해당하는 부분.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Persistence Layer와 1:1 매칭.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Java Persistence API 구현체를 이용하여 자바 객체로 접근할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서는 JPA 구현체인 Entity Manger 객체를 사용하여 DB에 접근한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-layered-architecture-controller-service-repository/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>📍 DAO</b></span><span class="se-fs- se-ff-"> (Data Access Object)</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">DB를 사용해, 데이터를 조회하거나 조작하는 기능을 전담하도록 만든 오브젝트.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">원래 DB의 데이터와 프로그래밍 언어는 패러다임의 불일치로 인해 사용할 수 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">따라서 별도의 SQL을 작성하고 SQL을 객체의 필드에 하나씩 매핑하거나 순수한 SQL을 작성하여 사용해야 하는데, 그렇게 </span><span class="se-fs- se-ff- se-style-unset"><b>DB를 사용해 데이터를 조회하거나 조작하는 기능을 전담하도록 만든 오브젝트</b></span><span class="se-fs- se-ff- se-style-unset">이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">SQL을 직접 실행하는 기능을 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">insert, delete, update, select 등 레코드 처리를 주 목적으로 하는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">데이터베이스 서버로부터 레코드를 SELECT한 후, DTO 객체로 변경해 가져온다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>📍 Entity</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">방금 DAO 설명에서 DB의 데이터와 프로그래밍 언어는 패러다임의 불일치로 인해 사용할 수 없다고 했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset">따라서 별도의 SQL을 작성하고 SQL을 객체의 필드에 하나씩 매핑할 때,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">'Entity Class'를 사용하여 그 클래스를 테이블과 1:1 매칭할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이러한 Entity Class를 '도메인'이라고 하며 가장 DB와 가까운 클래스다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Entity
+@Getter
+public class Member {
+    @Id @GeneratedValue
+    @Column(name = "member_id")
+private Long id; // PK
+
+    @NotEmpty
+    private String name;
+
+    @Embedded // 내장 타입 임베딩
+private Address address;
+
+    @JsonIgnore
+    @OneToMany (mappedBy = "member")
+private List&lt;Order&gt; orders = new ArrayList&lt;&gt;();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 엔티티의 각 필드는 DB 테이블과 1:1 매칭되며 따라서 PK를 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 엔티티는 순수한 도메인 로직과 비즈니스 로직만 가지고 있어야한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 엔티티는 DB의 데이터를 전달해주고 Serivce에서 사용할 비즈니스 로직만을 가져야한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff-"><b>📍 DTO(Data Transfer Object)</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-layered-architecture-controller-service-repository/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Entity를 통해 DB에서 데이터를 꺼내왔지만 한가지 문제가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">요청을 받고 데이터를 처리하고 반환해주기 위해선 데이터에 접근해야 하는데, 여기서 Controller, Presentation Layer의 경우 클라이언트와 직접 맞닿는 부분이고 엔티티는 프레젠테이션 계층과 완전히 분리되어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이럴 때 </span><span class="se-fs- se-ff-"><b>DTO</b></span><span class="se-fs- se-ff-">(DB를 사용해 데이터를 조회하거나 조작하는 기능을 전담하도록 만든 객체)를 사용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+    @Data
+    @AllArgsConstructor
+    static class MemberDto {
+private String name;
+private Address address;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>3. 스프링 프로젝트 구조</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">결론적으로, 스프링 프로젝트는 다음과 같은 구조를 가지게 된다</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-layered-architecture-controller-service-repository/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">왜 비즈니스 로직을</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">도메인 계층에 작성하는가?🧐</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">서비스 레이어(Service Layer)는 다양한 Model(Domain)을 읽어 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">복잡한 서비스는 더 많은 Model을 읽어 서비스를 제공하기 때문에 Service 로직의 복잡도가 매우 높아진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이런 로직의 복잡도를 낮추기 위해 최대한 비즈니스 로직을 Model(Domain)쪽으로 이동시킨다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">복잡도를 낮추어 유지보수와 테스트하기 쉬운 코드, 유연한 코드를 만들자!</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

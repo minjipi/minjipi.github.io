@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAVA 스트레티지 패턴 | 인터페이스, 상속, 다중 상속 | minj.devlog</title>
+  <meta name="description" content="아래의 코드를 실제로 젤다가 움직이게 스트래티지 패턴으로 변경 하기! 라는 과제를 하며 인터페이스와 상속, 다중 상속과 인터페이스에 대해 공부해 보았다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-strategy-pattern-interface/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JAVA 스트레티지 패턴 | 인터페이스, 상속, 다중 상속" />
+  <meta property="og:description" content="아래의 코드를 실제로 젤다가 움직이게 스트래티지 패턴으로 변경 하기! 라는 과제를 하며 인터페이스와 상속, 다중 상속과 인터페이스에 대해 공부해 보았다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-strategy-pattern-interface/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2020-05-02" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JAVA 스트레티지 패턴 | 인터페이스, 상속, 다중 상속", "description": "아래의 코드를 실제로 젤다가 움직이게 스트래티지 패턴으로 변경 하기! 라는 과제를 하며 인터페이스와 상속, 다중 상속과 인터페이스에 대해 공부해 보았다.", "datePublished": "2020-05-02", "dateModified": "2020-05-02", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-strategy-pattern-interface/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-strategy-pattern-interface">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2020-05-02">2020.05.02</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/221940591341" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JAVA 스트레티지 패턴 | 인터페이스, 상속, 다중 상속</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/221940591341 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">아래의 코드를 실제로 젤다가 움직이게 스트래티지 패턴으로 변경 하기!</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">라는 과제를 하며 </span><span class="se-fs- se-ff-">인터페이스와 상속, 다중 상속과 인터페이스에 대해 </span><span class="se-fs- se-ff-nanumsquare">공부해 보았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Client {
+public static void main(String[] args) {
+// TODO Auto-generated method stub
+new Zelda();
+}
+}
+class Zelda extends JFrame {
+//JFrame : 실제 윈도우 창에 출력 되게끔 해주는 것 
+private static final long serialVersionUID = 1L;
+private Field field;
+public Zelda() {
+super("Zelda");
+setDefaultCloseOperation(EXIT_ON_CLOSE);
+// 윈도우가 닫혀도 이 줄이 없으면 테스크에 계속 남게 된다. 그래서 이건 제이프레임이랑은 항상 같이!
+setLayout(new BorderLayout());
+
+		field = new Field();
+add(field, BorderLayout.CENTER);
+setSize(400, 400);
+setVisible(true);
+
+		Thread th = new Thread(field);
+		th.start();
+}
+private class Field extends JPanel implements Runnable {
+private static final long serialVersionUID = 1L;
+private JLabel lbl;
+private String[] walkingLeftImageNames = { "l_1.png", "l_2.png", "l_3.png", "l_4.png", "l_5.png", "l_6.png",
+"l_7.png", "l_8.png", "l_9.png", "l_10.png" };
+public Field() {
+setLayout(new BorderLayout());
+			lbl = new JLabel();
+			lbl.setIcon(new ImageIcon("./src/img" + walkingLeftImageNames[0]));
+add(lbl, BorderLayout.CENTER);
+}
+public void run() {
+			int imageIndex = 0;
+while (true) {
+				String[] path = walkingLeftImageNames;
+if (path.length &lt;= imageIndex)
+{
+					imageIndex = 0;
+}
+
+				lbl.setIcon(new ImageIcon("./src/img/" + path[imageIndex]));
+
+				imageIndex++;
+try {
+					Thread.sleep(100);
+} catch (InterruptedException e) {
+					System.out.println(e.getMessage());
+}
+}
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-nanumsquare"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare">여기서 잠시! 짚고 넘어 가야할 것</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>#extends 와 #implements 그리고 #interface</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"><b>[ interface ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">: 일종의 추상 클래스로,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">클래스 처럼 메서드를 가질 수 있지만 기능 구현은 할 수 없다. (Java 8부터는 default 메서드와 static 메서드로 구현을 넣을 수 있다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">멤버 변수도 가질 수 없고, 오직 상수만 가능하다. 명세서 같은 것!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+
+-한 줄 힌트 : 제임스가 빵을 먹고 싶을 때,
+'Call Bread'라고 하면 -&gt; 메서드
+마틸다가 언제든 빵을 사 주어야 한다는 계약 문서.
+그러나 마틸다가 빵을 어떻게 구하는 지는 관여하지 않는다 -&gt; 기능 구현X
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">자바에서 다중 상속은 이 인터페이스만 가능한데,,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">자바는 </span><span class="se-fs- se-ff-nanumsquare"><b>클래스를 두 가지 이상 상속하지 못</b></span><span class="se-fs- se-ff-nanumsquare">한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">그래서 '</span><span class="se-fs- se-ff-nanumsquare"><b>인터페이스'</b></span><span class="se-fs- se-ff-nanumsquare">를 사용해 </span><span class="se-fs- se-ff-nanumsquare"><b><span class="__se-hash-tag">#다중상속</span></b></span><span class="se-fs- se-ff-nanumsquare"> 처럼 쓴다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">우선 이 인터페이스를 차근차근 알아보고, 마지막에 인터페이스를 사용한 다중 상속에 대해 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"><b>[인터페이스_작성방법]</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+interface 인터페이스 이름 
+{
+public static final '타입' '상수이름=' = '값';
+//public static final int chocobread = 3;
+public abstract '메서드 이름'('매개변수 목록');
+//public void eat();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"><b>[클래스 인터페이스 구현]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"><b>자바 클래스는 부모 클래스 '하나'만 상속이 가능하다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">extends를 이용한 클래스 상속은 하나만 되고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">두 개 이상은 인터페이스만 가능.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">인터페이스를 implements 하는 것은 상속이 아니라 구현 한다고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">그리고 이렇게 구현 할 때는 아래와 같이 ,콤,마, 로 구분해서 작성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">*implements= 인터페이스에 정의된 멤버들을 클래스에서 대신 구현 하겠다!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+ private class Controller implements ActionListener, ChangeListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+// TODO Auto-generated method stub
+}
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+// TODO Auto-generated method stub
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">또 상속과 구현을 동시에 할 수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">extend키워드를 통해 클래스 하나와,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">implements로 인터페이스를 하나 이상 추가하는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">또 여기서 콤,마를 사용해 </span><span class="se-fs- se-ff-nanumsquare"><b>여러 인터페이스를 한꺼번에 구현</b></span><span class="se-fs- se-ff-nanumsquare">할 수도 있다. (클래스 다중 상속과 비슷한 효과)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+class Controller extends JPanel implements ActionListener, ChangeListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+// TODO Auto-generated method stub
+}
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+// TODO Auto-generated method stub	
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">다시 본론으로 들어와서,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">위 코드를 실제로 젤다가 좌 우로 움직이게 스트래티지 패턴으로 변경해 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">스트래티지 패턴이란?</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+class ImageService {
+   standingImageName = { "f.png" };
+   walkingLeftImageName = { "l_1.png", ~ "l_10.png" };
+   walkingRightName = { "r_1.png", ~ "r_10.png" };
+}
+// move 추가
+
+abstract class MovingStrategy {  
+   abstract public void move(JLabel lbl);
+}
+//서있어!
+class StandingStrategy extends MovingStrategy {
+
+   @Override
+   public void move(JLabel lbl) {
+      lbl.setIcon(new ImageIcon("./src/img/" + ImageService.standingImageName[0]));
+}
+}
+//왼쪽으루 가!
+class WalkingLeftStrategy extends MovingStrategy {
+private int index = 0;   
+   
+   @Override
+   public void move {
+if (ImageService.walkingLeftImageName.length &lt;= index) {
+      index = 0;
+}
+      lbl.setIcon(new ImageIcon("./src/img/" + ImageService.walkingLeftImageName[index++]));
+}
+}
+//오른쪽으루 가
+class WalkingRightStrategy extends MovingStrategy {
+private int index = 0;
+   
+   @Override
+   public void move(JLabel lbl) {
+if (ImageService.walkingRightName.length &lt;= index) {
+         index = 0;
+}
+      lbl.setIcon(new ImageIcon("./src/img/" + ImageService.walkingRightName[index++]));
+}
+}
+class Zelda extends JFrame {
+//컨트롤 버튼 만들어 주기
+private Controller controller;
+private MovingStrategy strategy = new StandingStrategy();
+public Zelda() {
+setLayout(new BorderLayout());
+      field = new Field();
+//만든 컨트롤러를 추가해준다
+      controller = new Controller();
+add(controller, BorderLayout.SOUTH);
+//
+add(field, BorderLayout.CENTER);
+      Thread th = new Thread(field);
+      th.start();
+}
+private class Field extends JPanel implements Runnable {
+//쓰레드 구현.
+public Field() {
+setLayout(new BorderLayout());
+         lbl = new JLabel();
+//
+add(lbl);
+}
+public void run()
+}
+private class Controller extends JPanel implements ActionListener {
+// 액션 리스너. 액션을 받아 오는 스레드.
+private JButton btnStanding, btnWalkingLeft, btnWalkingRight;
+public Controller() {
+setLayout(new FlowLayout());
+
+         btnStanding = new JButton("Standing");
+         btnWalkingLeft = new JButton("btnWalkingLeft");
+         btnWalkingRight = new JButton("btnWalkingRight");
+
+         btnStanding.addActionListener(this);
+//액션 리스너 했을 때 대신 처리해줄 애 등록. 그게 버튼. 다형성이래요!!
+         btnWalkingLeft.addActionListener(this);
+         btnWalkingRight.addActionListener(this);
+add(btnStanding);
+add(btnWalkingLeft);
+add(btnWalkingRight);
+}
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+// 
+
+         JButton btn = (JButton) e.getSource();
+if (btn == btnStanding) {
+            strategy = new StandingStrategy();
+} else if (btn == btnWalkingLeft) {
+            strategy = new WalkingLeftStrategy();
+} else if (btn == btnWalkingRight) {
+            strategy = new WalkingRightStrategy();
+}
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">흠.. </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">두번째 과제는 정말 더 어려웠다..ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

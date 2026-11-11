@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[springboot] ThreadPoolTaskExecutor, Thread Pool | minj.devlog</title>
+  <meta name="description" content="1. ThreadPoolTaskExecutor 특정 스레드 개수 + 작업 큐 + 스레드 풀 개수를 만들어 놓고 작업을 작업 큐에 올려놓아 적입 끝난 스레드가 큐에서 작업을 꺼내 기능을 수행하는 방식이다. 분업화로 인한 업무효율이 향상되는 장점이 있다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-threadpooltaskexecutor/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[springboot] ThreadPoolTaskExecutor, Thread Pool" />
+  <meta property="og:description" content="1. ThreadPoolTaskExecutor 특정 스레드 개수 + 작업 큐 + 스레드 풀 개수를 만들어 놓고 작업을 작업 큐에 올려놓아 적입 끝난 스레드가 큐에서 작업을 꺼내 기능을 수행하는 방식이다. 분업화로 인한 업무효율이 향상되는 장점이 있다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-threadpooltaskexecutor/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-threadpooltaskexecutor/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-12-27" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[springboot] ThreadPoolTaskExecutor, Thread Pool", "description": "1. ThreadPoolTaskExecutor 특정 스레드 개수 + 작업 큐 + 스레드 풀 개수를 만들어 놓고 작업을 작업 큐에 올려놓아 적입 끝난 스레드가 큐에서 작업을 꺼내 기능을 수행하는 방식이다. 분업화로 인한 업무효율이 향상되는 장점이 있다.", "datePublished": "2022-12-27", "dateModified": "2022-12-27", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-threadpooltaskexecutor/", "image": "https://minjipi.github.io/posts/spring-threadpooltaskexecutor/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-threadpooltaskexecutor">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-12-27">2022.12.27</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222966712180" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[springboot] ThreadPoolTaskExecutor, Thread Pool</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222966712180 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>1. ThreadPoolTaskExecutor</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">특정 스레드 개수 + 작업 큐 + 스레드 풀 개수를 만들어 놓고 작업을 작업 큐에 올려놓아 적입 끝난 스레드가 큐에서 작업을 꺼내 기능을 수행하는 방식이다. 분업화로 인한 업무효율이 향상되는 장점이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">주로 spring에서 비동기처리를 위해 사용하며, 스레드풀을 사용하여 멀티스레드 구현을 쉽게 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;"><b>Thread Pool</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">병렬 작업 처리가 많아지면 Thread의 개수가 증가하고 그에 따른 Thread 생성과 스케줄링으로 인해 CPU가 바빠져서 메모리 사용량이 늘어난다. 따라서 애플리케이션의 성능이 저하된다. 이런 상황을 막기 위해 Thread Pool을 사용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-threadpooltaskexecutor/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">Thread Pool은 작업 처리에 사용되는 Thread를 제한된 개수만큼 정해놓고 작업 큐에 들어오는 작업을 하나씩 Thread가 맡아서 처리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">java.util.concurrent 패키지에 ExecutorService 인터페이스와 ExecutorService 구현 객체를 만들 수 있는 Executors 클래스를 제공해준다. ExecutorService 구현 객체는 newCachedThreadPool()나 newFixedThreadPool(int nThreads)로 생성할 수 있다. 또는 아래와 같은 생성자를 사용해서 ThreadPoolExecutor 객체를 직접 생성해도 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">2. </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>ThreadPoolTaskExecutor 설정</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Bean("tTaskExecutor")
+public TaskExecutor taskExecutor() {
+    ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+    taskExecutor.setCorePoolSize(5); // 기본 스레드 수
+    taskExecutor.setMaxPoolSize(15); // 최대 스레드 수
+    taskExecutor.setQueueCapacity(100); // Queue 사이즈
+    taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+return taskExecutor;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">ThreadPoolExecutor 인스턴스를 초기화할 때 여러 가지 설정값들이 있는데 그중 대표적인 옵션 3가지가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">- corePoolSize</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">thread-pool에 항상 살아있는 thread의 최소 개수</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">- maxPoolSize</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">thread-pool에서 사용할 수 있는 최대 thread의 개수</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">- queueCapacity</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">thread-pool에서 사용할 최대 queue의 크기</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;"><b>ThreadPoolTaskExecutor의 기본 방식</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">1. 현재 점유하고 있는 스레드의 개수가 corePoolSize만큼 있을 때 요청이 오면 지정된 queueCapacity의 개수만큼 요청을 큐에 넣는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">2. 현재 점유하고 있는 스레드의 개수가 corePoolSize만큼 있고 큐에 담긴 요청이 queueCapacity의 개수만큼 있을 때 요청이 오면 maxPoolSize만큼 스레드 풀을 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">3. 만약 현재 점유하고 있는 스레드의 개수가 maxPoolSize만큼 있고 큐에 담긴 요청이 queueCapacity의 개수만큼 있을 때 요청이 오면 java.util.concurrent.RejectedExecutionException 예외가 발생된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">- RejectedExecutionHandler</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">큐 허용치를 초과하거나 Executor가 종료되어서 Thread 또는 큐 슬롯을 사용할 수 없는 경우, RejectedExecutionHandler는 ThreadPoolExecutor에서 task를 더 이상 받을 수 없을 때 이에 대한 예외정책으로 호출된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>Reject Policy :: </b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">Executor는 작업 큐가 꽉 찼을 때 아래 4가지 전략 중에 하나를 선택해서 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">AbortPolicy</span></p></li></ol><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">Default로 설정되어 있는 정책이다. Reject된 task가 RejectedExecutionException을 던진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">2. CallerRunsPolicy</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">호출한 Thread에서 reject된 task를 대신 실행한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">shutdown 상태가 아니라면 ThreadPoolTaskExecutor에 요청한 thread에서 직접 처리 예외와 누락 없이 최대한 처리하려면 CallerRunsPolicy로 설정하는 것이 좋음</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">3. DiscardPolicy</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">Reject된 task는 버려진다. Exception도 발생하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5714;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">4. DiscardOldestPolicy</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">실행자를 종료하지 않는 한, 가장 오래된 처리되지 않은 요청을 삭제하고 execute()를 다시 시도한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">그리고 위와 같이 정의한 스레드 풀에서 열심히 작업이 이루어이고 있을 때 애플리케이션 종료를 요청하면 어떻게 될까? Spring Boot Actuator를 이용해서 종료를 시켜보면 호출 즉시 애플리케이션이 바로 종료 되는 것을 확인할 수 있다. 이렇게 즉시 종료되면 아직 처리되지 못한 task는 유실된다. 유실 없이 마지막까지 다 처리하고 종료되길 원한다면 설정을 추가해야 한다. waitForTasksToCompleteOnShutdown 옵션을 true로 하게 되면 queue에 남아 있는 모든 작업이 완료될 때 까지 기다리게 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Bean("tTaskExecutor")
+public TaskExecutor taskExecutor() {
+  ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+  taskExecutor.setCorePoolSize(5); // 기본 스레드 수
+  taskExecutor.setMaxPoolSize(15); // 최대 스레드 수
+  taskExecutor.setQueueCapacity(100); // Queue 사이즈
+  taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+  taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+return taskExecutor;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>Timeout configuration</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">만약 모든 작업이 처리되길 기다리기 힘든 경우라면 setAwaitTerminationSeconds메서드를 통해 최대 종료 대기 시간을 설정할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Bean("tTaskExecutor")
+public TaskExecutor taskExecutor() {
+  ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+  taskExecutor.setCorePoolSize(5); // 기본 스레드 수
+  taskExecutor.setMaxPoolSize(15); // 최대 스레드 수
+  taskExecutor.setQueueCapacity(100); // Queue 사이즈
+  taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+  taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+  taskExecutor.setAwaitTerminationSeconds(60); // shutdown 최대 60초 대기
+return taskExecutor;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>keepAliveSeconds</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">maxPoolSize가 모두 사용되다가 idle로 돌아갔을 때 종료하기까지 대기하는 걸리는 시간.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">예를들어 core size가 5, max size가 15일때요청이 많아져서 thread pool이 바빠져서 추가적으로 10개의 thread를 생성해서 15개의 thread를 사용하게 될텐데, 바빠진게 해소되었을때 이제 10개의 추가된 thread는 한가한(idle) 상태가 되고 그리고 자원의 절약을 위해 한가한 상태의 thread가 죽는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">thread가 idle 상태에서 die 상태가 되기까지 대기하는 시간을 keepAlivesSeconds 옵션으로 설정할 수 있다. thread를 다시 생성하는 비용과 idle 상태로 유지하는 비용의 trade-off를 잘 생각해서 설정하면 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>setAllowCoreThreadTimeout</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">코어 스레드 타임아웃을 허용했을 경우 사용되는 설정값으로, 설정된 시간이 지날 때까지 코어 스레드 풀의 스레드가 사용되지 않을 경우 해당 스레드는 terminate 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>3. @Async로 ThreadPoolTaskExecutor 사용하기</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.2;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(1) ThreadPoolTaskExecutor bean 설정 클래스에 @EnableAsync도 추가해야 함</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Configuration
+@EnableAsync
+
+public class TaskExecutorConfig {
+    @Bean(name = "executor")
+public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setCorePoolSize(5); // 기본 스레드 수
+        taskExecutor.setMaxPoolSize(10); // 최대 스레드 수
+        taskExecutor.setQueueCapacity(100); // Queue 사이즈
+        taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+        taskExecutor.setAwaitTerminationSeconds(60); // shutdown 최대 60초 대기
+return taskExecutor;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.2;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.2;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(2) 서비스의 메서드에 @Async(“스레드풀네임”)어노테이션 추가</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Service
+public class TestService2 {
+
+    @Async("executor")
+public void executeThreads() {
+        System.out.println("executing threads");
+try {
+            Thread.sleep(3000);
+            System.out.println("[TestService]" + Thread.currentThread().getName());
+} catch (InterruptedException e) {
+            e.printStackTrace();
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:2.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system se-weight-unset se-style-unset" style="color:#000000;"><a class="se-link" href="https://coor.tistory.com/33" target="_blank">https://coor.tistory.com/33</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system se-weight-unset se-style-unset" style="color:#000000;"><a class="se-link" href="https://deep-dive-dev.tistory.com/11" target="_blank">https://deep-dive-dev.tistory.com/11</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system se-weight-unset se-style-unset" style="color:#000000;"><a class="se-link" href="https://jeonyoungho.github.io/posts/ThreadPoolTaskExecutor/" target="_blank">https://jeonyoungho.github.io/posts/ThreadPoolTaskExecutor/</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

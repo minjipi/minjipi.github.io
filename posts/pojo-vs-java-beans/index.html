@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POJO와 Beans의 차이점 | minj.devlog</title>
+  <meta name="description" content="POJO Classes - POJO(Plain Old Java Object) 는 자바 객채의 표준 (ordinay)이며, Java Language Specification 에 의한 어떤 특정한 엄격한(restriction) 경계가 존재하지 않습니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/pojo-vs-java-beans/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="POJO와 Beans의 차이점" />
+  <meta property="og:description" content="POJO Classes - POJO(Plain Old Java Object) 는 자바 객채의 표준 (ordinay)이며, Java Language Specification 에 의한 어떤 특정한 엄격한(restriction) 경계가 존재하지 않습니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/pojo-vs-java-beans/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2022-07-16" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "POJO와 Beans의 차이점", "description": "POJO Classes - POJO(Plain Old Java Object) 는 자바 객채의 표준 (ordinay)이며, Java Language Specification 에 의한 어떤 특정한 엄격한(restriction) 경계가 존재하지 않습니다.", "datePublished": "2022-07-16", "dateModified": "2022-07-16", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/pojo-vs-java-beans/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="pojo-vs-java-beans">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2022-07-16">2022.07.16</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222813408305" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">POJO와 Beans의 차이점</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222813408305 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>POJO Classes</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- POJO(Plain Old Java Object) 는 </span><span class="se-fs- se-ff-"><b>자바 객채의 표준</b></span><span class="se-fs- se-ff-">(ordinay)이며, Java Language Specification 에 의한 어떤 특정한 엄격한(restriction) 경계가 존재하지 않습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- POJO 는 </span><span class="se-fs- se-ff-"><b>가독성</b></span><span class="se-fs- se-ff-">과 </span><span class="se-fs- se-ff-"><b>재사용성</b></span><span class="se-fs- se-ff-">을 중요시하게 사용됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- POJO 는 restriction 이 적은 만큼 쓰기도 쉽고 읽기도 쉽기때문에 많이 사용되어 왔습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- POJO 의 3가지 규칙이 존재합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">   - Exend prespcified classes</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">   - Implement prespecified interfaes</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">   - Contain prespecified annotations</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>Beans Classes</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="https://gmlwjd9405.github.io/images/spring-framework/spring-bean.png"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- Beans 는 POJO 와 달리 </span><span class="se-fs- se-ff-"><b>엄격한</b></span><span class="se-fs- se-ff-">(restriction) 규칙을 가지고 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- </span><span class="se-fs- se-ff-"><b>모든 JavaBeans는 POJOs 이지만 POJOs 는 JavaBeans 가 아닙니다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- Fields 는 접근제어자가 </span><span class="se-fs- se-ff-"><b>private</b></span><span class="se-fs- se-ff-"> 이어야만 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- Fields 는 getter 와 setter 를 가져야 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- constructor 는 argument 를 가져서는 안됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- Fileds 는 getter 와 setter 로만 접근되어야만 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>POJO Classes &gt;</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ public class Animal {
+        String dog;
+public String cat;
+private int legs;
+public Animal(String dog, String cat, int legs) {
+this.dog = dog;
+this.cat = cat;
+this.legs = legs;
+}
+public getDog() {
+return this.dog;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Beans Classes &gt;</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ public class Animal {
+private int legs;
+Animal() {
+}
+public setLegs(int legs) {
+this.legs = legs;
+}
+public getLegs() {
+return legs;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>Spring Bean 등록</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>@Bean &amp; @Configuration</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">개발자가 직접 제어가 불가능한 외부 라이브러리 또는 초기 설정을 위한 클래스를 Bean으로 등록할 때 @Bean을 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">만약 Bean으로 등록해주어야 하는 클래스가 몇 개 안된다면 하나하나 Bean을 등록하면 되겠지만, 많은 양의 클래스를 일일이 Bean으로 등록하면 상당히 번거로운 작업이 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">이에 대한 해결책으로 Spring에서는 Annotiaion을 활용해 Bean을 등록하고 사용하는 방법을 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">Bean 등록을 하려하면 @Bean 어노테이션을 작성하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">어떤 임의의 클래스를 만들어서 @Bean을 붙인다고 되는 것이 아니라, @Bean을 사용하는 클래스에는 반드시 @Configuration어노테이션을 활용하여 해당 클래스에서 Bean을 등록하고자 함을 명시해주어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">즉, @Configuration을 작성함으로 클래스가 하나 이상의 @Bean메소드를 제공하고 스프링 컨테이너가 Bean 정의를 생성하고 런타임시 그 Bean들이 요청들을 처리할 것을 선언하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">@Configuration없이 @Bean만 사용해도 Spring Bean으로 등록 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">대신 메서드 호출을 통해 객체를 생성할 때 싱글톤을 보장하지 못한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">그렇기 때문에 Spring 설정 정보를 위해서는 반드시 @Configuration을 사용해주어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">그리고 빈의 설정을 담당하는 @Configuration 어노테이션도 내부적으로 @Component를 가지고 있어 @Configuration이 붙은 클래스도 Spring의 빈으로 등록이 됨을 알아두어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">위 내용을 요약하자면, @Configuration어노테이션이 붙은 클래스는 스프링의 환경설정을 담당하는 클래스라는 것을 명시하는 것이고, 그 클래스의 내부에서 @Bean이라는 어노테이션이 붙은 메서드는 이 메서드가 생성하는 객체를 Bean객체로 등록하여 스프링이 관리하겠다는 뜻이다. 메서드의 이름은 나중에 Bean객체를 불러올 때 식별자로 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>POJO vs Java Bean</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:1px solid rgb(230, 230, 230);border-collapse:collapse;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.19%; height: 19.0px; border-top:none;border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; background-color: #eefdff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;"><b>POJO</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.81%; height: 19.0px; border-top:none;border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; background-color: #eefdff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;"><b>JAVA BEAN</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.41%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Java laguage 에 의한 특별한 restrictions 이 없습니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.59%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">POJO 보다 restrictions 합니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.41%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Fields 에 대한 통제를 제공하지 않습니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.59%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Fields에 대한 통제를 가집니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.41%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">SErializable 에 대한 interface 를 구현할 수 있습니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.59%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Serializable 에 대한 interface 를 구현해야만 합니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.41%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Fields 는 이름으로 접근할 수 있습니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.59%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Fields 는 getter 와 setter 로만 접근할 수 있습니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.41%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Fields 에 대한 접근제어자 규칙이 자유롭습니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.59%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">Fields 는 접근제어자를 private 로만 가질 수 있습니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.41%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">constructor 에 argument를 가질 수 있습니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.59%; height: 19.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">constructor 에 argument를 가질 수 없습니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 52.41%; height: 38.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">member와 field에 대해 restriction 한 접근 규칙을 정하고 싶지 않을 때 사용됩니다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 47.59%; height: 38.0px; border-top:1px solid rgb(230, 230, 230);border-right:none;border-left:1px solid rgb(230, 230, 230);border-bottom:none; ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#666666;">member와 restriction 한 접근 규칙을 정하고자 할 때 사용됩니다.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-">참고 : </span><span class="se-fs- se-ff-"><a class="se-link" href="https://www.geeksforgeeks.org/pojo-vs-java-beans/" target="_blank">https://www.geeksforgeeks.org/pojo-vs-java-beans/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-"><a class="se-link" href="https://yeo-computerclass.tistory.com/45" target="_blank">https://yeo-computerclass.tistory.com/45</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

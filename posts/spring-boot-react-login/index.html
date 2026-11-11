@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스프링부트 x 리액트 연동해서 로그인 기능 구현하기 | minj.devlog</title>
+  <meta name="description" content="스프링부트 x 리액트 연동 로그인 기능 구현 1. 로그인 기능의 백엔드(백엔드: 스프링부트) 먼저 구현한다. UserController 구현 @RestController @RequestMapping(&quot;/user&quot;) public class UserController {" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-react-login/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="스프링부트 x 리액트 연동해서 로그인 기능 구현하기" />
+  <meta property="og:description" content="스프링부트 x 리액트 연동 로그인 기능 구현 1. 로그인 기능의 백엔드(백엔드: 스프링부트) 먼저 구현한다. UserController 구현 @RestController @RequestMapping(&quot;/user&quot;) public class UserController {" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-react-login/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-react-login/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-11-20" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "스프링부트 x 리액트 연동해서 로그인 기능 구현하기", "description": "스프링부트 x 리액트 연동 로그인 기능 구현 1. 로그인 기능의 백엔드(백엔드: 스프링부트) 먼저 구현한다. UserController 구현 @RestController @RequestMapping(\"/user\") public class UserController {", "datePublished": "2021-11-20", "dateModified": "2021-11-20", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-react-login/", "image": "https://minjipi.github.io/posts/spring-boot-react-login/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-react-login">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-11-20">2021.11.20</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222573474901" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">스프링부트 x 리액트 연동해서 로그인 기능 구현하기</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-boot-react-login/images/image_1.jpg" alt="스프링부트 x 리액트 연동해서 로그인 기능 구현하기" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222573474901 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-nanumsquare">스프링부트 x 리액트 연동</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs24 se-ff-nanumsquare"><b>로그인 기능 구현</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 로그인 기능의 백엔드(백엔드: </span><span class="se-fs- se-ff-"><b>스프링부트)</b></span><span class="se-fs- se-ff-"> 먼저 구현한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>UserController </b></span><span class="se-fs- se-ff- se-weight-unset">구현</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    UserServiceImpl userService;
+
+    @PostMapping(value = "/login")
+public ResponseEntity&lt;?&gt; createAuthenticationToken(@RequestBody UserLoginReq userLoginReq) throws Exception {
+
+        Authentication authentication = authenticate(userLoginReq.getEmail(), userLoginReq.getPassword());
+        UserLoginRes userLoginRes = (UserLoginRes) authentication.getPrincipal();
+
+        final String token = jwtTokenUtil.generateToken(userLoginRes);
+return ResponseEntity.ok(new JwtResponse(token));
+}
+private Authentication authenticate(String username, String password) throws Exception {
+try {
+return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+} catch (DisabledException e) {
+throw new Exception("USER_DISABLED", e);
+} catch (BadCredentialsException e) {
+throw new Exception("INVALID_CREDENTIALS", e);
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. 프론트 부분인 리액트에 새 프로젝트를 생성하고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">우선 axios를 추가한다. 터미널에 다음을 입력.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+yarn add axios
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. 로그인 관련 함수</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">아래 3가지 함수를 생성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(1) executeJwtAuthenticationService 함수</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">: 로그인 요청 보내기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(2) setupAxiosInterceptors 함수</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">: 로그인 성공 후, interceptors(보내는 요청을 잡아서 Authorization 헤더에 토큰을 추가하고,다시 보내는..) 등록. 아래 registerSuccessfulLoginForJwt 함수에서 호출함.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(3) registerSuccessfulLoginForJwt 함수</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위에서 토큰을 정상 발급 받았으면, 쿠키에 토큰과 사용자 이메일 저장.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+const executeJwtAuthenticationService = (email, password) =&gt; {
+return axios.post("http://localhost:8080/user/login", {
+    email,
+    password,
+});
+};
+const setupAxiosInterceptors = () =&gt; {
+  axios.interceptors.request.use(
+(config) =&gt; {
+const token = localStorage.getItem("token");
+if (token) {
+        config.headers["Authorization"] = "Bearer " + token;
+}
+return config;
+},
+(error) =&gt; {
+      Promise.reject(error);
+}
+);
+};
+const registerSuccessfulLoginForJwt = (email, token) =&gt; {
+  console.log("===registerSuccessfulLoginForJwt===");
+  localStorage.setItem("token", token);
+  localStorage.setItem("authenticatedUser", email);
+setupAxiosInterceptors();
+};
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">4. 간단한 페이지 디자인은 대충 아래와 같은 느낌으로..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://v4.mui.com/getting-started/templates/sign-in/" target="_blank">https://v4.mui.com/getting-started/templates/sign-in/</a></span><span class="se-fs- se-ff-"> 링크를 참고했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-boot-react-login/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ &lt;Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}&gt;
+&lt;TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="이메일"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          /&gt;
+&lt;TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="비밀번호"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+/&gt;
+&lt;Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+&gt;
+{" "}
+            로그인{" "}
+&lt;/Button&gt;
+&lt;Grid container&gt;
+&lt;Grid item xs&gt;
+&lt;Link href="#" variant="body2"&gt;
+                비밀번호 재설정
+              &lt;/Link&gt;
+&lt;Link href="/user/signup" variant="body2"&gt;
+                회원가입
+              &lt;/Link&gt;
+&lt;/Grid&gt;
+&lt;/Grid&gt;
+&lt;/Box&gt;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">5. 로그인 버튼을 누르면 입력한 email, password가 handleSubmit 되게.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ const handleSubmit = (event) =&gt; {
+    event.preventDefault();
+const data = new FormData(event.currentTarget);
+const email = data.get("email");
+const password = data.get("password");
+executeJwtAuthenticationService(email, password).then((response) =&gt; {
+      console.log(response);
+registerSuccessfulLoginForJwt(email, response.data.token);
+      history.push(`/`);
+});
+};
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">event.preventDefault();</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">링크 이동, 새로고침 방지. 이걸 안해주면 로그인 버튼을 눌렀을 때 링크가 이동되어서, 함수 동작이 되다가.. 동작이 끊어진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">const data = new FormData(event.currentTarget);</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">const email = data.get("email");</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">const password = data.get("password");</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">data에 저장되어 있는 것들 중에서 입력한 email과 password를 가지고 옴.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">executeJwtAuthenticationService</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">로그인 요청하는 함수 호출,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">.then((response) =&gt; {</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">console.log(response);</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">registerSuccessfulLoginForJwt(email, response.data.token);</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">history.push(`/`);</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 백엔드로부터 요청에 대한 응답이 오면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">콘솔 로그에 response 값 찍어주고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">registerSuccessfulLoginForJwt 함수(토큰을 정상 발급 받았으면, 쿠키에 토큰과 사용자 이메일 저장 ) 호출,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">'/' url로 페이지 이동.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

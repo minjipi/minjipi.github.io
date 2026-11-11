@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Linux] tmux 사용법, 명령어 정리 | minj.devlog</title>
+  <meta name="description" content="1. tmux의 주요 개념 session, window, pane Session: tmux의 가장 큰 실행 단위, 윈도우에서는 데스크톱과 유사 Window: tmux 터미널 화면, 세션 내에서 탭처럼 이동 가능 Pane: 하나의 윈도우 내에서 창을 분할하여 여러 작업 동시에" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/tmux-commands/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Linux] tmux 사용법, 명령어 정리" />
+  <meta property="og:description" content="1. tmux의 주요 개념 session, window, pane Session: tmux의 가장 큰 실행 단위, 윈도우에서는 데스크톱과 유사 Window: tmux 터미널 화면, 세션 내에서 탭처럼 이동 가능 Pane: 하나의 윈도우 내에서 창을 분할하여 여러 작업 동시에" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/tmux-commands/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2024-02-16" />
+  <meta property="article:section" content="Linux/Administration" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Linux] tmux 사용법, 명령어 정리", "description": "1. tmux의 주요 개념 session, window, pane Session: tmux의 가장 큰 실행 단위, 윈도우에서는 데스크톱과 유사 Window: tmux 터미널 화면, 세션 내에서 탭처럼 이동 가능 Pane: 하나의 윈도우 내에서 창을 분할하여 여러 작업 동시에", "datePublished": "2024-02-16", "dateModified": "2024-02-16", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/tmux-commands/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Linux/Administration"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="tmux-commands">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Linux%2FAdministration">Linux/Administration</a>
+              <time class="post-date" datetime="2024-02-16">2024.02.16</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223355581022" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Linux] tmux 사용법, 명령어 정리</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223355581022 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">1. tmux의 주요 개념</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">session, window, pane</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Session: tmux의 가장 큰 실행 단위, 윈도우에서는 데스크톱과 유사</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Window: tmux 터미널 화면, 세션 내에서 탭처럼 이동 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Pane: 하나의 윈도우 내에서 창을 분할하여 여러 작업 동시에 수행 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>2. tmux 설치</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">macOS</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+brew install tmux
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Ubuntu</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo apt-get install tmux
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>tmux 명령어 정리</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>2.1 Session 관련 명령어</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">tmux: 새로운 세션 생성. 0,1,2 순서로 생성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">tmux ls: 세션 목록 확인. tmux 으로 새로운 세션을 만들고 tmux ls 로 확인하면 하단에 0번째 window 임이 표시된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">tmux new -s (session_name): 세션 이름 설정</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, $: 세션 이름 수정</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, d: 세션 닫기(detach)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">tmux attach -t (session_name): Detached 세션 다시 열기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>2.2 Window 관련 명령어</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, c: 새로운 윈도우 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, n: 다음 윈도우로 이동</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, p: 이전 윈도우로 이동</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, w: 모든 세션의 hierarchy를 tree 구조로 보기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>2.3 Pane 관련 명령어</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, %: 화면 세로 분할</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, ": 화면 가로 분할</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, z: 현재 Pane 확대 및 축소</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, :: Pane size 조절</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ctrl + b, (spacebar): Pane layout 변경</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>2.4 tmux configure 수정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">/.zshrc 파일을 수정하여 shell 커스터마이징을 할 수 있듯</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">tmuz 도 ~/.tmux.conf 파일을 수정하여 커스터마이징이 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ex) ctrl + b 단축키를 ctrl + s 로 커스텀</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+set-option -g prefix C-s
+kunbind-key C-b
+bind-key C-s send-prefix
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ex) Mouse mode - 마우스 사용</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+set -g mouse on
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그리고 내가 가장 좋아하는 동시 입력 기능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">tmux에서는 현재 열린 모든 pane에 입력을 전달하는 기능을 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">여러 위치에서 동일한 작업을 수행해야 할 때 특히 유용하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">기능 활성화:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+&lt;Ctrl-B&gt;, :
+setw synchronize-panes on
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">'on'이나 'off'를 지정하지 않으면 현재 설정과 반대로 토글된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">해당 기능도 단축키 커스터마이징이 가능하다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi ~/tmux.conf 
+
+bind-key y set-window-option synchronize-panes
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이렇게 하면 Ctrl-B + y로 간편하게 사용 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><a class="se-link" href="https://github.com/tmux/tmux/wiki" target="_blank">https://github.com/tmux/tmux/wiki</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://github.com/tmux/tmux/wiki" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Home</strong>
+<p class="se-oglink-summary">tmux source code. Contribute to tmux/tmux development by creating an account on GitHub.</p>
+<p class="se-oglink-url">github.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MSA 아키텍처 프로젝트, 시작 (MSA 아키텍처, MSA 적용사례, Netflix OSS, Spring Cloud Netflix) | minj.devlog</title>
+  <meta name="description" content="해당 포스팅은 마이크로서비스 아키텍처(MSA 아키텍처)를 활용하여 커피 주문(가입, 주문, 상태) 시스템을 구축하는 프로젝트의 보고서 를 요약한 것 입니다. 1. IT 업계의 트렌드, MSA 2. MSA, 무엇인가? 3." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/msa-project-start-netflix-oss/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="MSA 아키텍처 프로젝트, 시작 (MSA 아키텍처, MSA 적용사례, Netflix OSS, Spring Cloud Netflix)" />
+  <meta property="og:description" content="해당 포스팅은 마이크로서비스 아키텍처(MSA 아키텍처)를 활용하여 커피 주문(가입, 주문, 상태) 시스템을 구축하는 프로젝트의 보고서 를 요약한 것 입니다. 1. IT 업계의 트렌드, MSA 2. MSA, 무엇인가? 3." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/msa-project-start-netflix-oss/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/msa-project-start-netflix-oss/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-23" />
+  <meta property="article:section" content="Backend/MSA" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "MSA 아키텍처 프로젝트, 시작 (MSA 아키텍처, MSA 적용사례, Netflix OSS, Spring Cloud Netflix)", "description": "해당 포스팅은 마이크로서비스 아키텍처(MSA 아키텍처)를 활용하여 커피 주문(가입, 주문, 상태) 시스템을 구축하는 프로젝트의 보고서 를 요약한 것 입니다. 1. IT 업계의 트렌드, MSA 2. MSA, 무엇인가? 3.", "datePublished": "2021-06-23", "dateModified": "2021-06-23", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/msa-project-start-netflix-oss/", "image": "https://minjipi.github.io/posts/msa-project-start-netflix-oss/images/image_1.jpg", "articleSection": "Backend/MSA"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="msa-project-start-netflix-oss">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FMSA">Backend/MSA</a>
+              <time class="post-date" datetime="2021-06-23">2021.06.23</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222407195800" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">MSA 아키텍처 프로젝트, 시작 (MSA 아키텍처, MSA 적용사례, Netflix OSS, Spring Cloud Netflix)</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222407195800 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">해당 포스팅은 마이크로서비스 아키텍처(MSA 아키텍처)를 활용하여 </span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"><u>커피 주문(가입, 주문, 상태) 시스템을 구축하는 프로젝트의 보고서</u></span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">를 요약한 것 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#040404;">1. </span><span class="se-fs- se-ff- se-style-unset" style="color:#040404;"><b>IT 업계의 트렌드,</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b> MSA</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">2. </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>MSA, 무엇인가?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">3. </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>MSA 적용사례</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">      우버, </span><span class="se-fs-fs15 se-ff-">MSA 아키텍처 VS 모놀로식</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">      넷플릭스, 넷플릭스 OSS</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">4. </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>프로젝트</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;"> </span><span class="se-fs-fs15 se-ff-">Spring Cloud Netflix</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">      프로젝트 전체 구조</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">      카프카 vs 레빗엠큐</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset" style="color:#000000;">      MSA, 정말 필요한가?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#040404;">1. </span><span class="se-fs- se-ff- se-style-unset" style="color:#040404;"><b>IT 업계의 트렌드,</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b> MSA</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">넷플릭스가 서버를 1,000조각으로 쪼갠 이유, 왜 MSA?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/msa-project-start-netflix-oss/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.7;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">암스트롱.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.7;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">해당 프로젝트를 선정한 이유와 관련이 있는 단어이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">우주 탐사 얘기의 암스통이 아니라,</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">‘애플리케이션 현대화(AM)’ 프로젝트를 강하게(strong) 추진하자는 신조어다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">어플리케이션 현대화(Application modernization)는 기존 레거시 시스템을 현대 컴퓨터 프로그래밍 언어, 소프트웨어 라이브러리, 프로토콜 또는 하드웨어 플랫폼으로 변환 또는 이식하는 것을 말한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:33.60355343753642%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:66.39644656246358%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">이 애플리케이션 현대화를 위한 디자인 패턴은 아래의 표와 같이 3가지가 있고,</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">해당 프로젝트에서는 마이크로서비스 아키텍처를 활용했다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-justify">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">이 ‘암스트롱’의 핵심은 기존 IT 시스템을 수천 수백 개로 쪼.개.는. 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">기존 시스템은 간단한 업데이트를 위해 서버 전체를 멈춰야 하는 경우가 적지 않은 상황.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">마치 손가락을 다쳐도 일단 전신 마취를 해야하는 상황과 같은데,</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">애플리케이션 현대화는 이러한 상황에서 부분마취를 할 수 있게 해준다고 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;">복잡한 시스템을 여러 개의 자율적인 조직으로 분화하여, 각종 업데이트 요구에 빠르게 부분마취로 대응할 수 있게 되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-justify">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare">그래서 이 IT 시스템을 수천 수백 개로 쪼개는 기술 바로,</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.79999;"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#040404;"><b>2. 'MSA' 란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumsquare"><b>' Microservices Architecture '</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">​마이크로 서비스 아키텍처는, 아주 작은 단위로 동작하는 서비스가 구동되도록 시스템 및 소프트웨어의 구성과 구성요소 간의 관계를 정의한 아키텍처이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_6.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">‘쪼개야 산다’</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">하나의 애플리케이션을 구성함에 있어 분할된 다수의 서버 또는 컨테이너를 통해 애플리케이션 기능뿐만 아니라 데이터까지 분리하여 격리된 독립된 환경으로 구성되는 점이 특징이라 할 수 있겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">이 좋다는 MSA 아키텍처는 우리가 잘 알고 있는 넷플릭스, 우버 택시가 이를 도입해 아주 대박을 쳤는데</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare">적용 사례를 한번 알아보도록한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">3. MSA 적용사례,</span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b> Uber(우버) 🚖</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;">     MSA 아키텍처 VS 모노리틱 아키텍쳐(Monolithic Architecture)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">'모놀리식' 이라는 아키텍처와 함께,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">첫번째로 우버의 적용 사례에 대해 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">마이크로 서비스 아키텍쳐를 이해하려면 먼저 모노리틱 아키텍쳐 스타일에 대해서 이해해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">모노리틱 아키텍쳐 스타일은, 기존의 전통적인 웹 시스템 개발 스타일로</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">하나의 애플리케이션 내에 모든 로직들이 모두 들어 가 있는 '통짜 구조' 이다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:243px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">한 온라인 쇼핑몰 어플리케이션이 있을 때, 톰캣 서버의 WAR 파일(웹 애플리케이션 패키징 파일)내에 사용자 관리, 상품, 주문 관리 모든 컴포넌트들이 들어 있고, 이를 처리하는 UX 로직까지 하나로 포장돼서 들어가 있는 것이 이 모노리틱 구조.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">모노리틱 아키텍쳐도 처음엔 나쁘지 않다고 생각했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">이 방식은 개발되어 있는 다 환경이 같으니 일단 테스트나, 같은 서버를 하나 더 만드는 등의 작업이 복잡하지 않다는 장점이 있긴하니..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">그래서, 당시 우버도 모노리틱 아키텍처로 만들어 졌었다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/nv_0.png"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"><a class="se-link __se_link" href="https://brunch.co.kr/@yesjun/2" target="_blank">https://brunch.co.kr/@yesjun/2</a></span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">그러나 우버는 곧 글로벌 서비스를 시작했고, 확장성과 지속적인 연동 문제에 직면하게 되었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">다음은 당시 우버가 직면했던 몇 가지 중요한 난제이다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#000000;">우버가 직면한 문제점에서 볼 수 있듯, 모놀리틱 구조의 장,단점은 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare">모노리틱 구조의 </span><span class="se-fs- se-ff-nanumsquare"><b>장점</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">모노리틱 구조의 </span><span class="se-fs- se-ff-nanumsquare"><b>단점</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">1. 어떤 기능(서비스)이든지 개발되어있는 환경이 같아서 복잡하지않음.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">2. 쉽게 고가용성 서버 환경을 만들 수 있다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">( 같은 어플리케이션으로 하나더 만들면 됨)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">3. End-to-End 테스트가 용이함. (MSA의 경우 테스트에 필요한 서비스들을 모두 동작시켜야함)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">1. 한 프로젝트의 덩치가 너무 커져서 어플리케이션 구동시간이 늘어나고 빌드,배포 시간도 길어진다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">2. 조그마한 수정사항이 있어도 전체를 다시 빌드하고 배포를 해야한다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">3. 많은 양의 코드가 몰려있어 개발자가 모두를 이해 할 수 없고 유지보수도 힘들다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">4. 일부분의 오류가 전체에 영향을 미친다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">5. 기능별로 알맞는 기술, 언어, 프레임워크를 선택하기가 까다롭다.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">우버에서도 이 같은 이유로,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">또 직면한 문제를 해결하고자,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">우버는 기존 모노리틱 아키텍처에서 마이크로서비스 아키텍처로 이전하게 되었다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">도입 후, 가장 큰 변화는 운전자와 승객을 연결하는 API 게이트웨이의 등장이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">API 게이트웨이로 부터 각 기능들의 모든 내부 요청이 연결되어 있고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">또 각각의 서비스는 독립적으로 분리되어 배포 가능하고 독립적으로 기능을 수행하게 되었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">이렇게되면 요금청구 서비스에 변화가 있을 때, 딱 요금청구 서비스만 수정하여 배포하고, 다른 서비스는 배포할 필요가 없어진다! 즉, 각각의 기능을 독립적으로 적용 및 확장할 수 있게 된 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">여기서 MSA 구조의 장점을 짚고 넘어가자.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare">MSA 아키텍처의 장점</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare">단점</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">1. 기능별로 마이크로서비스를 개발하고, 작업 할당을 서비스 단위로 하면 개발자가 해당 부분을 온전히 이해할 수 있다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">2. 새로 추가되거나 수정사항이 있는 마이크로서비스만 빠르게 빌드, 배포가 가능하다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">3. 해당 기능에 맞는 기술, 언어 등을 선택하여 사용할 수 있다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">4. 일부분의 오류가 있으면 해당 기능에만 오류가 발생하고 그 부분만 빠르게 고쳐서 정상화가 가능하다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">?</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#555555;">단점은 가장 마지막에 알려드리겠습니다ㅎㅎ🤓</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">그럼 또 다른 사례를 알아보자. (사실 다음 사례가 더 유명하다)</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">3. MSA 적용사례,</span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b> 넷플릭스 🍿</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;">     넷플릭스 OSS</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">MSA 도입 사례 중 가장 유명한 기업은 사실~~</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">넷플릭스다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">Netflix는 기존 Legacy 시스템은 MSA로 모두 전환하여 운영/개발 상의 효율성을 극대화 하였다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_11.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link __se_link" href="https://about.netflix.com/ko/news/completing-the-netflix-cloud-migration" target="_blank">https://about.netflix.com/ko/news/completing-the-netflix-cloud-migration</a></span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumsquare se-style-unset" style="color:#000000;">2007년 심각한 데이터베이스 손상으로 3일간 서비스 장애를 겪은 넷플릭스는, 신뢰성 높고 수평 확장이 가능한 클라우드 시스템으로 이전할 필요성을 느꼈다. </span><span class="se-fs-fs15 se-ff-nanumsquare">단순히 플랫폼 이전만으로는 기존의 문제점과 한계를 탈피할 수 없다고 판단한 넷플릭스는 </span><span class="se-fs-fs15 se-ff-nanumsquare"><b>고가용성, 유연한 스케일링, 빠르고 쉬운 배포를 위해 MSA를 선택 </b></span><span class="se-fs-fs15 se-ff-nanumsquare">했다고 한다. </span><span class="se-fs-fs15 se-ff-nanumsquare se-style-unset" style="color:#000000;">그리고 MSA 전환을 위한 기술들을 도입하여 무려 7년에 걸쳐 클라우드 환경으로 이전했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">🍿</span><span class="se-fs- se-ff-"><b>Netflix OSS</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">    (Open Source Software)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/nv_1.png"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">이 거대한 이전 과정에서 넷플릭스가 경험한 노하우와 문제해결 방법을 공유하기 위해 MSA 전환 기술을 오픈소스로 공개 하였다!👏🏻 </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">이렇게 탄생한 넷플릭스 OSS는 MSA를 도입하려는 많은 사람에게 좋은 선택지가 되고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">4. </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">프로젝트, </span><span class="se-fs- se-ff-">Spring Cloud Netflix</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">프로젝트에 </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">MSA를 도입하려는 나같은 사람에게도 큰 도움이 되었다. ^_^</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">먼저 클라우드 환경에 특화된 프레임워크인 Spring Cloud를 살펴보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">Spring Cloud는, Spring boot를 기반으로 MSA 구축에 특화된 라이브러리들의 집합이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/nv_2.png"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">Spring Cloud에는 Eureka, Hystrix, Ribbon, Zuul 등 많은 넷플릭스 OSS가 통합되어 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">여기서 알아볼 내용은 넷플릭스 오픈소스 중에서도 Spring Cloud에 속해 있는 Spring Cloud Netflix가 되겠다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/nv_3.png"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">진행할 프로젝트에서는 이  Spring Cloud Netflix에 속해 있는 </span><span class="se-fs- se-ff-nanumsquare"><i><b>히스트릭스, 터빈, 유레카, 컨피그 서버, 주울 </b></i></span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset">서비스를 사용할 예정이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">4. 프로젝트 전체 구조</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset">프로젝트의 전체 구조는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/nv_4.png"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/nv_5.png"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">큐잉 시스템은 카프카를 사용했다.</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumsquare se-style-unset"><b>| 설치 소프트웨어</b></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumsquare se-style-unset"><b>| 라이브러리</b></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/msa-project-start-netflix-oss/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><a class="se-link __se_link" href="https://blog.naver.com/ghdalswl77/222406382318" target="_blank"><b>https://blog.naver.com/ghdalswl77/222406382318</b></a></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info __se_link" href="https://blog.naver.com/ghdalswl77/222406382318" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">📦 MSA 아키텍처 프로젝트, Spring Cloud Netflix 구조와 설명 (히스트릭스, 터빈, 유레카, 설정 서버, 주울)</strong>
+<p class="se-oglink-summary">Spring Cloud Netflix Spring Cloud는, Spring boot를 기반으로 MSA 구축에 특화된 라이브러리들...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumsquare se-style-unset" style="color:#000000;"><b>🤔 카프카 vs 레빗엠큐</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">4. 프로젝트,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"> </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">MSA, 정말 필요한가?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#555555;">MSA 아키텍처의 장점</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">SA 아키텍처의  </span><span class="se-fs- se-ff-nanumsquare">단점</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#999999;">1. 기능별로 마이크로서비스를 개발하고, 작업 할당을 서비스 단위로 하면 개발자가 해당 부분을 온전히 이해할 수 있다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#999999;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#999999;">2. 새로 추가되거나 수정사항이 있는 마이크로서비스만 빠르게 빌드, 배포가 가능하다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#999999;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#999999;">3. 해당 기능에 맞는 기술, 언어 등을 선택하여 사용할 수 있다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#999999;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#999999;">4. 일부분의 오류가 있으면 해당 기능에만 오류가 발생하고 그 부분만 빠르게 고쳐서 정상화가 가능하다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">1. 무엇보다 관리가 힘들다. 작은 여러 서비스들이 분산되어있기 때문에 모니터링이 힘들다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">2. 서로를 호출하여 전체 서비스가 이루어지기 때문에 무조건 다른 서비스를 호출하는 코드가 추가되는데</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">이부분이 모놀리식 아키텍쳐의 개발보다 조금 까다롭다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">3. 통신관련 오류가 잦을 수 있다. 마이크로 서비스들 끼리 계속 서로 통신을 하다보니 모놀리식 아키텍쳐에 비해 통신관련 오류가 잦았다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">4. 테스트가 불편하다. 예로 End-to-End 테스트를 위해 UI, Gateway 등등 여러개의 마이크로 서비스를 구동시켜야 했었다. </span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

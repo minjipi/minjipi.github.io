@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[ Kubernetes ] 쿠버네티스 다루기 - 쿠버네티스 용어, 컴포넌트, 오브젝트 | minj.devlog</title>
+  <meta name="description" content="[ Kubernetes ] 쿠버네티스 다루기 0) 쿠버네티스 용어 Namespace 물리 클러스터 내의 복수의 가상 클러스터 개발/운영/테스트 등을 네임스페이스로 나누면 개발은 CPU 100개, 운영은 400개와 같이 네임스페이스별로 포드나 서비스를 나눠서 관리할 수 있다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/kubernetes-terms-components-objects/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[ Kubernetes ] 쿠버네티스 다루기 - 쿠버네티스 용어, 컴포넌트, 오브젝트" />
+  <meta property="og:description" content="[ Kubernetes ] 쿠버네티스 다루기 0) 쿠버네티스 용어 Namespace 물리 클러스터 내의 복수의 가상 클러스터 개발/운영/테스트 등을 네임스페이스로 나누면 개발은 CPU 100개, 운영은 400개와 같이 네임스페이스별로 포드나 서비스를 나눠서 관리할 수 있다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/kubernetes-terms-components-objects/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/kubernetes-terms-components-objects/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-04" />
+  <meta property="article:section" content="Cloud/Kubernetes" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[ Kubernetes ] 쿠버네티스 다루기 - 쿠버네티스 용어, 컴포넌트, 오브젝트", "description": "[ Kubernetes ] 쿠버네티스 다루기 0) 쿠버네티스 용어 Namespace 물리 클러스터 내의 복수의 가상 클러스터 개발/운영/테스트 등을 네임스페이스로 나누면 개발은 CPU 100개, 운영은 400개와 같이 네임스페이스별로 포드나 서비스를 나눠서 관리할 수 있다.", "datePublished": "2021-06-04", "dateModified": "2021-06-04", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/kubernetes-terms-components-objects/", "image": "https://minjipi.github.io/posts/kubernetes-terms-components-objects/images/image_1.jpg", "articleSection": "Cloud/Kubernetes"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="kubernetes-terms-components-objects">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FKubernetes">Cloud/Kubernetes</a>
+              <time class="post-date" datetime="2021-06-04">2021.06.04</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222384216762" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[ Kubernetes ] 쿠버네티스 다루기 - 쿠버네티스 용어, 컴포넌트, 오브젝트</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/kubernetes-terms-components-objects/images/image_1.jpg" alt="[ Kubernetes ] 쿠버네티스 다루기 - 쿠버네티스 용어, 컴포넌트, 오브젝트" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222384216762 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-nanummaruburi se-style-unset" style="color:#000000;"><b>[ Kubernetes ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs28 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>쿠버네티스 다루기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">0) 쿠버네티스 용어</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Namespace</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">물리 클러스터 내의 복수의 가상 클러스터</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">개발/운영/테스트 등을 네임스페이스로 나누면 개발은 CPU 100개, 운영은 400개와 같이</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">네임스페이스별로 포드나 서비스를 나눠서 관리할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:335px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/kubernetes-terms-components-objects/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Master</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">마스터 노드에서 실행되는 세 개의 프로세스 집합(kube-apiserver, kube-controller-manager, kube-scheduler)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Node</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">kubelet, kube-proxy, 동작중인 pod를 유지시키고 런타임 환경 제공</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Control Plane</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">master + kubelet</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Object</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Pod, Service, Volume, Namespace 등으로 시스템의 상태를 나타내는 '추상 개념'.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">쿠버에서 동작하는 것들은 왠만하면 다 쿠버 오브젝트라고 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Controller</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ReplicaSet, Deployment, StatefulSet, DaemonSet, Job 등으로 기초 오브젝트를 기반으로 부가 기능 및 편의 기능을 제공하는 더 높은 수준의 추상 개념</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Pod</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">컨테이너를 실행하기 위한 오브젝트. 파드는 한 개 혹은 여러개의 컨테이너를 담을 수 있다. 이 구조가 완두콩이 콩을 담고 있는 모양과 비슷해서, Pod(꼬투리)라는 이름이 되었다. 즉, 컨테이너의 집합으로 가장 작은 배포 단위.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Pod 내부의 컨테이너들은 네트워크와 볼륨을 공유, 클러스터내의 Running 프로세스이며</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">내부적으로 하나의 IP만을 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다른 기능을 가진 컨테이너들이 포드로 묶이면 하나의 IP를 할당받게 되고, 같은 IP를 가진 두개의 컨테이너의 포트번호가 각각 다르다면 서로의 포트번호를 통해 통신이 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Service</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">논리적인 Pod의 집합과 접근할 수 있는 정책에 대한 추상화</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Cluster IP</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">클러스터 내에서 사용되는 내부 IP</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>External IP</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">외부 IP</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Node port</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">노드에서 서비스가 노출된 포트</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>TargetPort</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Pod 내의 포트</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b>Endpoints</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Pod IP + TargetPort </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">1) 쿠버네티스 컴포넌트</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">https://kubernetes.io/ko/docs/concepts/overview/components/</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>(1) 컨트롤 플레인(마스터 노드)</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-terms-components-objects/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b># etcd</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">쿠버네티스 클러스터에 대한 설정 데이터를 저장 하는 분산 데이터 저장소 (키-값 형태)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">대규모 클러스터의 경우 고가용성을 위해 3개에서 많으면 5개 노드의 etcd 클러스터 구성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b># kube-apiserver</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">각노드에서 보내온 api 요청은 쿠버네트스 api 서버에 전달되고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">etcd 오브젝트 스토어에 업데이트 하기 전에 검증을 수행 후 모든 데이터를 저장</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b># kube-controller-manager</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다양한 매니저를 하나의 바이너리로 통합한 도구</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">노드 컨트롤러: 노드가 다운되었을 때 통지와 대응에 관한 책임을 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">레플리케이션 컨트롤러: 시스템의 모든 레플리케이션 컨트롤러 오브젝트에 대해 알맞은 수의 파드들을 유지시켜 주는 책임을 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">엔드포인트 컨트롤러: 엔드포인트 오브젝트를 채운다(즉, 서비스와 파드를 연결시킨다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">서비스 어카운트 &amp; 토큰 컨트롤러: 새로운 네임스페이스에 대한 기본 계정과 API 접근 토큰을 생성한다</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b># kube-scheduler</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">아직 스케줄링 되지 않은 포드를 현재 사용가능한 노드에 바인딩 하는 역할 수행</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">(2) 노드 서비스 데몬</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b># kube-proxy</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">로드 밸런싱 과 네트워크 프록시 기능을 담당.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">서비스를 지역적으로 반영하고 TCP 및 UDP 포워딩을 수행</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">환경변수나 dns 를 통해 클러스터 IP를 찾는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 작업은 서비스 엔드포인트를 제어하는 방식으로 처리</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanummyeongjo"><b># kubelet</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">노드에 존재하는 포드의 다양한 부분을 관리하며, 마스터에 있는 API 서버와 통신</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">api 서버에서 포트 secret 다운로드</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">볼륨 마운트</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">포드의 컨테이너 실행 (도커 또는 Rkt)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">노드와 각 포트 상태 보고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">컨테이너 활성여부 조사</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_underline">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_underline">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2) 쿠버네티스 오브젝트</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">쿠버네티스 시스템의 상태를 나타내는 오브젝트(Object)라는 영구 엔티티라는 개념</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">오브젝트는 의도를 담은 레코드로, 객체가 존재하도록 지속적으로 작동하게 됨</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">즉, 오브젝트란 다음과 같은 것들</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">어떤 컨테이너화된 애플리케이션이 동작 중인지 (그리고 어느 노드에서 동작 중인지)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그 애플리케이션이 이용할 수 있는 리소스</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그 애플리케이션이 어떻게 재구동 정책, 업그레이드, 그리고 내고장성과 같은 것에 동작해야 하는지에 대한 정책</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(1) 오브젝트 명세와 상태</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">오브젝트들은 모두 오브젝트의 특성 (설정정보)을 기술한 오브젝트 스펙 (Object Spec=명령을 유지시켜 주는 것.)으로 정의가 되고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">커맨드 라인을 통해서 오브젝트 생성시 인자로 전달하여 정의를 하거나 또는 yaml이나 json 파일로 스펙을 정의할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">status 는 쿠버네티스 시스템과 컴포넌트에 의해 제공되고 업데이트된 오브젝트의 현재 상태</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(2) 오브젝트 관리하기</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 명령어로 deployment 생성:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl create deployment nginx --image nginx
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. yml 파일로 deployment 생성:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: nginx-deployment
+spec:
+selector:
+matchLabels:
+app: nginx
+  minReadySeconds: 5
+template:
+metadata:
+labels:
+app: nginx
+    spec:
+containers:
+- name: nginx
+        image: nginx:latest
+        ports:
+- containerPort: 80
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f nginx-deployment.yml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:447px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-terms-components-objects/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">생성 된 것 확인.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스케일도 늘려보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl scale deployment nginx-deployment --replicas=2
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:425px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-terms-components-objects/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://byline.network/2019/07/23-47" target="_blank">https://byline.network/2019/07/23-47</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://byline.network/2019/07/23-47" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">오픈스택과 쿠버네티스의 운명은 엇갈릴까 - Byline Network</strong>
+<p class="se-oglink-summary">위 그래프는 구글 트렌드에서 OpenStack이라는 키워드(파란색)와 Kubernetes라는 키워드(빨간색)를 검색한 것이다. 파란색 그래프는 점차 검색 빈도수가 줄어들고 있는 반면, 빨간색 그래프는 급격하게 우상향을 하고 있다. 오픈스택은 가상머신(VM)을 기반으로 클라우드 환경을 구현하는 기술이고, 쿠버네티스는 컨테이너를 기반으로 클라우드를 만드는 기술</p>
+<p class="se-oglink-url">byline.network</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

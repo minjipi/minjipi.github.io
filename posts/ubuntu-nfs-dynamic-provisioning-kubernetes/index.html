@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ubuntu Dynamic NFS Client Provisioning 구성(Kubernetes Dynamic Storage Provisioning) | minj.devlog</title>
+  <meta name="description" content="Ubuntu에 NFS Server로 운영하면서 Kubernetes의 PVC (Perssistent Volume Claim) - StorageClass - NFS 로 연동되는 PV (Persistent Volume)를 자동 ( Dynamic Storage Provisioning" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/ubuntu-nfs-dynamic-provisioning-kubernetes/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Ubuntu Dynamic NFS Client Provisioning 구성(Kubernetes Dynamic Storage Provisioning)" />
+  <meta property="og:description" content="Ubuntu에 NFS Server로 운영하면서 Kubernetes의 PVC (Perssistent Volume Claim) - StorageClass - NFS 로 연동되는 PV (Persistent Volume)를 자동 ( Dynamic Storage Provisioning" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/ubuntu-nfs-dynamic-provisioning-kubernetes/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/ubuntu-nfs-dynamic-provisioning-kubernetes/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-23" />
+  <meta property="article:section" content="Cloud/Kubernetes" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Ubuntu Dynamic NFS Client Provisioning 구성(Kubernetes Dynamic Storage Provisioning)", "description": "Ubuntu에 NFS Server로 운영하면서 Kubernetes의 PVC (Perssistent Volume Claim) - StorageClass - NFS 로 연동되는 PV (Persistent Volume)를 자동 ( Dynamic Storage Provisioning", "datePublished": "2021-06-23", "dateModified": "2021-06-23", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/ubuntu-nfs-dynamic-provisioning-kubernetes/", "image": "https://minjipi.github.io/posts/ubuntu-nfs-dynamic-provisioning-kubernetes/images/image_1.jpg", "articleSection": "Cloud/Kubernetes"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="ubuntu-nfs-dynamic-provisioning-kubernetes">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FKubernetes">Cloud/Kubernetes</a>
+              <time class="post-date" datetime="2021-06-23">2021.06.23</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222407557527" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Ubuntu Dynamic NFS Client Provisioning 구성(Kubernetes Dynamic Storage Provisioning)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/ubuntu-nfs-dynamic-provisioning-kubernetes/images/image_1.jpg" alt="Ubuntu Dynamic NFS Client Provisioning 구성(Kubernetes Dynamic Storage Provisioning)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222407557527 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i>Ubuntu에 NFS Server로 운영하면서</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i>Kubernetes의 PVC (Perssistent Volume Claim) - StorageClass - NFS 로 연동되는</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i>PV (Persistent Volume)를 </i></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>자동</b></i></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i>(</i></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>Dynamic Storage Provisioning</b></i></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i>)으로 구성하는 방법 정리.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>Dynamic Storage Provisioning ?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Static Provisioning은, pod 하나를 만들때마다 물리적인 볼륨도 만들어야하고(pv) pv에 따른 pvc도 만들어야하니 굉장히 귀찮은 방법. 그래서 누군가(provisioner)가 알아서(dynamic) 볼륨을 만들어서 붙여주는(provisioning) 방법이 바로 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>Dynamic Storage Provisioning.</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/ubuntu-nfs-dynamic-provisioning-kubernetes/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span><span class="se-fs- se-ff-"><a class="se-link" href="https://gruuuuu.github.io/cloud/k8s-volume/" target="_blank"><b>https://gruuuuu.github.io/cloud/k8s-volume/</b></a></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>전체 구성 👾</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#000000;">Ubuntu 20에 설치되는 NFS를 Kubernetes의 Dynamic Storage Provisioning 으로 활용해서 PV (Persistent Volume)를 구성해 본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">NFS 서버는 물리적인 머신으로 네트워크 상에 존재하면 되며, Network을 통해서 Kubernetes Cluster에서 NFS 서버로 접근할 수 있어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">구성한 NFS 서버를 사용할 수 있도록 처리하는 NFS Provisioner Pod가 Kubernetes Cluster에 PV를 배포할 수 있도록 하기 위해서는 필요한 권한 설정이 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">따라서 PV를 배포할 수 있도록 ClusterRole, ClusterRoleBinding, Role, RoleBinding 설정을 가지는 Service Account를 생성해 줘야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># Service Account 생성</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">서비스 계정을 생성한다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+vi serviceaccount.yaml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+name: nfs-provisioner
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래의 명령을 사용해서 Kubernetes에 적용.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f serviceaccount.yaml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># ClusterRole 생성</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Cluster를 위한 역할을 생성한다. (vi clusterrole.yaml)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+name: nfs-provisioner-runner
+rules:
+- apiGroups: [""]
+resources: ["persistentvolumes"]
+verbs: ["get", "list", "watch", "create", "delete"]
+- apiGroups: [""]
+resources: ["persistentvolumeclaims"]
+verbs: ["get", "list", "watch", "update"]
+- apiGroups: ["storage.k8s.io"]
+resources: ["storageclasses"]
+verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+resources: ["events"]
+verbs: ["watch", "create", "update", "patch"]
+- apiGroups: [""]
+resources: ["services", "endpoints"]
+verbs: ["get"]
+- apiGroups: ["extensions"]
+resources: ["podsecuritypolicies"]
+resourceNames: ["nfs-provisioner"]
+verbs: ["use"]
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래의 명령을 사용해서 Kubernetes에 적용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f clusterrole.yaml
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># ClusterRoleBinding</b></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"> 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Cluster를 위한 역할 바인딩을 생성한다. (vi clusterbinding.yaml)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+name: run-nfs-provisioner
+subjects:
+- kind: ServiceAccount
+    name: nfs-provisioner
+    namespace: default
+roleRef:
+kind: ClusterRole
+  name: nfs-provisioner-runner
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+name: nfs-provisioner-otherRoles
+rules:
+- apiGroups: [""]
+resources: ["endpoints"]
+verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+name: nfs-provisioner-otherRoles
+subjects:
+- kind: ServiceAccount
+    name: nfs-provisioner
+    namespace: default    # provisioner가 배포될 네임스페이스
+roleRef:
+kind: Role
+  name: nfs-provisioner-otherRoles
+  apiGroup: rbac.authorization.k8s.io
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래의 명령을 사용해서 Kubernetes에 적용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f clusterbinding.yaml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># NFS Client Provisioner</b></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"> 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Provisioner는 PVC와 StorageClass를 통해서 자동으로 PV를 구성해 주는 역할을 담당한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">NFS 서버를 Dynamic Storage Provisioning으로 사용할 수 있도록 NFS Client Dynmaic Provisioner Pod를 배포하도록 구성한다. (deployment-nfs.yaml)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+name: nfs-client-provisioner
+spec:
+replicas: 1
+strategy:
+type: Recreate
+  selector:
+matchLabels:
+app: nfs-client-provisioner
+  template:
+metadata:
+labels:
+app: nfs-client-provisioner
+    spec:
+serviceAccount: nfs-provisioner
+      containers:
+- name: nfs-client-provisioner
+          image: registry.cn-hangzhou.aliyuncs.com/open-ali/nfs-client-provisioner
+          volumeMounts:
+- name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+- name: PROVISIONER_NAME
+value: fuseim.pri/ifs
+            - name: NFS_SERVER
+value: 10.0.1.20
+- name: NFS_PATH
+value: /data/NFS
+volumes:
+- name: nfs-client-root
+          nfs:
+server: 10.0.1.20
+path: /data/NFS
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래의 명령을 사용해서 Kubernetes에 적용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f deployment-nfs.yaml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># StorageClass </b></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">생성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">NFS 연계를 위한 StorageClass를 생성한다. (storageclass-nfs.yaml)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+name: managed-nfs-storage 
+provisioner: fuseim.pri/ifs
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래의 명령을 사용해서 Kubernetes에 적용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f storageclass-nfs.yaml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">(안해도 무방함) </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>Statefulset 생성 및 PV 검증</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">NFS 연계를 검증하기 위한 Statefulset을 생성하고 PV의 생성여부를 검증한다. (statefulset-nfs.yaml)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+name: web
+spec:
+serviceName: "nginx1"
+replicas: 1
+selector:
+matchLabels:
+app: nginx1
+  volumeClaimTemplates:
+- metadata:
+name: test 
+      annotations:
+        volume.beta.kubernetes.io/storage-class: "managed-nfs-storage"
+spec:
+accessModes: [ "ReadWriteOnce" ]
+resources:
+requests:
+storage: 2Gi 
+  template:
+metadata:
+labels:
+app: nginx1
+    spec:
+serviceAccount: nfs-provisioner
+     containers:
+- name: nginx1
+       image: nginx:1.7.9
+volumeMounts:
+- mountPath: "/mnt"
+name: test
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래의 명령을 사용해서 Kubernetes에 적용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f statefulset-nfs.yaml
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Dynamic Provisioner Pod 실행 상태 확인</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl get all
+======
+NAME READY STATUS RESTARTS AGE
+pod/nfs-pod-provisioner-5f8686f8dd-bfkgz 1/1 Running 0 8m51s
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">* 주의</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">만일 어느 정도의 시간이 지나도 STATUS가 ContainerCreating 또는 Pending 이라고 나오는 경우는 NFS 설정에 따라서 오류가 발생했을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">kubectl describe &lt;pod name&gt;으로 확인해 보면 오류 상황을 알 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">connection timeout: NFS 서버의 IP에 접근이 안되는 경우이므로 실제 접근 가능한 IP인지 확인해야 한다. IP가 맞다면 NFS 서버에서 /etc/exports 설정을 다시 확인해 보고 sudo exportfs -ra를 수행하고 다시 처리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">access denied by server: NFS 서버에는 접근을 했지만 권한이 없는 경우이므로 NFS 서버에서 sudo chmod 666 &lt;nfs directory&gt;를 수행하고 다시 처리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">wrong fs type, bad option...: NFS 관련 패키지가 설치되지 않았을 경우이므로 클러스터의 각 노드에 sudo dnf install -y nfs-utils를 수행하고 다시 처리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그 이외의 오류가 발생했다면 관련된 메시지를 통해서 원인을 파악하고 해결해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># PVC (Persistent Volume Claim)를 통한 PV 생성 검증</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">StorageClass를 이용해서 간단한 테스트를 위한 PVC를 구성한다. (fns-pvc.yaml)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+name: nfs-pvc-test
+spec:
+storageClassName: managed-nfs-storage # StorageClass 명
+  accessModes:
+- ReadWriteMany # 생성될 PV에 적용할 사용 모드
+  resources:
+requests:
+storage: 10Mi  # 생성될 PV 크기
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">* 사용할 수 있는 AccessMode는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+ReadWriteOnce (RWO): 하나의 Pod에만 마운트되고 하나의 Pod에서만 읽고 쓰기 가능
+ReadWriteMany (RWX): 여러 개의 Pod에 마운트 가능하고 여러 개의 Pod에서 읽고 쓰기 가능
+ReadOnlyMany (ROX): 여러 개의 Pod에 마운트 가능하고 여러 개의 Pod에서 읽기는 가능하지만 쓰기는 불가능
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">테스트이므로 작은 크기로 설정하고 Kubernete에 적용하고 확인한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f nfs-pvc.yaml
+
+persistentvolumeclaim/nfs-pvc-test created
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl get pv,pvc
+NAME CAPACITY ACCESS MODES RECLAIM POLICY STATUS CLAIM STORAGECLASS REASON AGE
+persistentvolume/pvc-2dca7757-d8c1-4e80-8a21-f1d661d69b19   10Mi       RWX            Delete           Bound    default/nfs-pvc-test   managed-nfs-storage            7s
+
+NAME STATUS VOLUME CAPACITY ACCESS MODES STORAGECLASS AGE
+persistentvolumeclaim/nfs-pvc-test    Bound     pvc-2dca7757-d8c1-4e80-8a21-f1d661d69b19   10Mi       RWX            managed-nfs-storage   7s
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b>NFS 서버에서 실제 생성된 정보 확인</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">PVC를 통해서 생성된 PV를 확인했으므로 실제 NFS 서버에도 생성이 되었는지 확인해 보면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># NFS 서버에서 공유 디렉터리 확인</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+sudo ls /data/NFS
+default-nfs-pvc-test-pvc-2dca7757-d8c1-4e80-8a21-f1d661d69b19
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">실제 PVC와 PV 관련된 이름으로 유추할 수 있는 디렉터리가 생성된 것을 확인할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Deploy된 Pod의 Volume Mount 확인</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">실제 사용할 애플리케이션 Pod에서도 정상적으로 동작하는지를 확인하기 위해서 간단한 샘플을 구성해 보도록 한다. (nfs-test-app.yaml)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: ccambo-nfs-test
+  labels:
+app: nginxnfs
+spec:
+replicas: 2
+selector:
+matchLabels:
+app: nginxnfs
+  template:
+metadata:
+labels:
+app: nginxnfs
+    spec:
+containers:
+- name: nginxnfs
+        image: nginx:latest
+        ports:
+- containerPort: 80
+volumeMounts:
+- mountPath: /nfs
+            name: nfsvolume          
+      volumes:
+- name: nfsvolume
+        persistentVolumeClaim:
+claimName: nfs-pvc-test
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">위의 YAML을 Kubernetes에 적용하고 확인한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl apply -f nfs-test-app.yaml
+deployment.apps/ccambo-nfs-test created
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"># Deployment 확인</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl get deploy
+
+
+NAME READY UP-TO-DATE AVAILABLE AGE
+ccambo-nfs-test 0/1 1 0 15s
+nfs-client-provisioner 1/1 1 1 75m
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"># Pod 확인</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl get pods
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">생성된 두 개의 Pod 중에 하나의 Pod에 접속해서 마운트된 경로에서 테스트용 파일을 생성한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl exec -it ccambo-nfs-test-9d7fc4c6c-25xr4 -- /bin/bash
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"># 연결된 Pod에서 마운트된 /nfs 디렉터리로 이동해서 테스트용 파일을 하나 생성한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+cd /nfs
+echo "This is NFS test" &gt; /nfs/test.log
+cat /nfs/test.log
+This is NFS test
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">다른 Pod에 연결해서 마운트된 /nfs 디렉터리에 파일이 존재하는지 확인한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+kubectl exec -it ccambo-nfs-test-9d7fc4c6c-js5pl -- /bin/bash
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><b># 연결된 Pod에서 마운트된 /nfs 디렉터리로 이동해서 테스트용 파일을 확인한다.</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+&gt; ls /nfs
+test.log
+
+
+&gt; cat /nfs/test.log
+This is NFS test
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">위의 테스트와 같이 생성된 POD가 동일한 NFS를 PV로 마운트해서 사용하고 있는 것을 확인할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">참고로 이 글은</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">정말정말 안되다가.. 우연히 되는 글을 찾아 다시 정리 한 글!!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">원인은 아마 ClusterRole 부분인 것 같아서 , ClusterRole 에 대해 찾아봤다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222407553894" target="_blank">https://blog.naver.com/ghdalswl77/222407553894</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222407553894" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">쿠버네티스 권한관리(Authorization), ClusterRole</strong>
+<p class="se-oglink-summary">권한관리 기본 쿠버네티스 클러스터의 api에 접근하기 위해서는 우선 유효한 사용자 인지 인증(authenticat...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 3.12%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 42.3%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff- se-style-unset">안됐던 부분</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 54.58%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-">되는 부분</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 3.12%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset"></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 42.3%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">kind: ClusterRole</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">apiVersion: rbac.authorization.k8s.io/v1</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">metadata:</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">name: nfs-provisioner-clusterRole</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">rules:</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: [""] </span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["persistentvolumes"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["get", "list", "watch", "create", "delete"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: [""]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["persistentvolumeclaims"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["get", "list", "watch", "update"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: ["storage.k8s.io"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["storageclasses"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["get", "list", "watch"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: [""]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["events"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["create", "update", "patch"]</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 54.58%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">kind: ClusterRole</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">apiVersion: rbac.authorization.k8s.io/v1</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">metadata:</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">name: nfs-provisioner-runner</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">rules:</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: [""]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["persistentvolumes"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["get", "list", "watch", "create", "delete"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: [""]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["persistentvolumeclaims"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["get", "list", "watch", "update"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: ["storage.k8s.io"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["storageclasses"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["get", "list", "watch"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">- apiGroups: [""]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">resources: ["events"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset">verbs: ["watch", "create", "update", "patch"]</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"><b>- apiGroups: [""]</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"><b>resources: ["services", "endpoints"]</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"><b>verbs: ["get"]</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"><b>- apiGroups: ["extensions"]</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"><b>resources: ["podsecuritypolicies"]</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"><b>resourceNames: ["nfs-provisioner"]</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset"><b>verbs: ["use"]</b></span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">참고:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="https://ccambo.tistory.com/entry/Kubernetes-Storage-CentOS-8%EC%97%90-Dynamic-NFS-Client-Provisioner-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0" target="_blank">https://ccambo.tistory.com/entry/Kubernetes-Storage-CentOS-8%EC%97%90-Dynamic-NFS-Client-Provisioner-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://ccambo.tistory.com/entry/Kubernetes-Storage-CentOS-8%EC%97%90-Dynamic-NFS-Client-Provisioner-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">[Kubernetes-Storage] CentOS 8에 Dynamic NFS Client Provisioner 구성하기</strong>
+<p class="se-oglink-summary">[Kubernetes - Storage] How to configure a dynamic storage provisioner for Kubernetes using a network file system on CentOS 8 참고 이 문서는 Network File System을 CentOS 8에 설치하여 NFS Server로 운..</p>
+<p class="se-oglink-url">ccambo.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="https://kubernetes.io/ko/docs/concepts/storage/storage-classes/" target="_blank">https://kubernetes.io/ko/docs/concepts/storage/storage-classes/</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://kubernetes.io/ko/docs/concepts/storage/storage-classes/" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">스토리지 클래스</strong>
+<p class="se-oglink-summary">이 문서는 쿠버네티스의 스토리지클래스의 개념을 설명한다. 볼륨과 퍼시스턴트 볼륨에 익숙해지는 것을 권장한다. 소개 스토리지클래스는 관리자가 제공하는 스토리지의 "classes"를 설명할 수 있는 방법을 제공한다. 다른 클래스는 서비스의 품질 수준 또는 백업 정책, 클러스터 관리자가 정한 임의의 정책에 매핑될 수 있다. 쿠버네티스 자체는 클래스가 무엇을 나타내는지에 대해 상관하지 않는다. 다른 스토리지 시스템에서는 이 개념을 "프로파일"이라고도 한다. 스토리지클래스 리소스 각 스토리지클래스에는 해당 스토리지클래스에 속하는 퍼시스턴트볼...</p>
+<p class="se-oglink-url">kubernetes.io</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

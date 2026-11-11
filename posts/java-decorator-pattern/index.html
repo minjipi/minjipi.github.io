@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>java | 디자인패턴 데커레이터 패턴 : Decorator Pattern | minj.devlog</title>
+  <meta name="description" content="데커레이터 패턴: 본 기능에 추가할 것이 많을 때 사용하기 좋다! 왜 그런지 알아보기 위해 지금부터 우리가 네이게이션 소프트웨어 를 만드는 사람이라고 생각하고 한 가지 예제를 살펴보자. 우선, 뭐가 필요할까?" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-decorator-pattern/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="java | 디자인패턴 데커레이터 패턴 : Decorator Pattern" />
+  <meta property="og:description" content="데커레이터 패턴: 본 기능에 추가할 것이 많을 때 사용하기 좋다! 왜 그런지 알아보기 위해 지금부터 우리가 네이게이션 소프트웨어 를 만드는 사람이라고 생각하고 한 가지 예제를 살펴보자. 우선, 뭐가 필요할까?" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-decorator-pattern/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-decorator-pattern/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-06-17" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "java | 디자인패턴 데커레이터 패턴 : Decorator Pattern", "description": "데커레이터 패턴: 본 기능에 추가할 것이 많을 때 사용하기 좋다! 왜 그런지 알아보기 위해 지금부터 우리가 네이게이션 소프트웨어 를 만드는 사람이라고 생각하고 한 가지 예제를 살펴보자. 우선, 뭐가 필요할까?", "datePublished": "2020-06-17", "dateModified": "2020-06-17", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-decorator-pattern/", "image": "https://minjipi.github.io/posts/java-decorator-pattern/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-decorator-pattern">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2020-06-17">2020.06.17</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222003740688" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">java | 디자인패턴 데커레이터 패턴 : Decorator Pattern</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222003740688 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-weight-unset">데커레이터 패턴:</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>본 기능에 추가할 것이 많을 때 사용하기 좋다!</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">왜 그런지 알아보기 위해</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">지금부터 우리가 </span><span class="se-fs- se-ff-"><b>내비게이션 소프트웨어</b></span><span class="se-fs- se-ff-">를 만드는 사람이라고 생각하고 </span><span class="se-fs- se-ff-">한 가지 예제를 살펴보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:486px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/java-decorator-pattern/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">우선, 뭐가 필요할까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>1)  도로 표시</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>- RoadDisplay 클래스 </b></span><span class="se-fs- se-ff-">: 기본 도로 표시 기능을 제공하는 클래스.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>- RoadDisplayWithLane</b></span><span class="se-fs- se-ff-"> : 도로가 그려져야 한다. 그리고 기본 도로 표시에 추가 적으로 차선을 표시하는 클래스가 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+a.
+class RoadDisplay {
+public void draw() {
+		System.out.println("기본 도로 표시");
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">a는 그냥 </span><span class="se-fs- se-ff-"><b>도로</b></span><span class="se-fs- se-ff-">를 만들어주는 코드.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">| |  이렇게..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+b.
+class RoadDisplayWithLane extends RoadDisplay {
+public void draw() {
+super.draw();
+drawLane();
+}
+private void drawLane() {
+		System.out.println("차선 표시");
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">RoadDisplayWithLane는 </span><span class="se-fs- se-ff-"><b>차선.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">RoadDisplay를 상속 받아서, 가지고 있는 기능(도로)을 사용할 수 있게 했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">차선을 그릴수도, 도로를 그릴 수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">또 draw 메서드를 재정의를 통해</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">부모가 가지고 있는 기능을 수행하고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">차선을 그리는 자기의 기능을 수행한다.</span><span class="se-fs-fs11 se-ff-"> (물론 편의상 텍스트로만..)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+c.
+public class Client {
+public static void main(String[] args) {
+		RoadDisplay road = new RoadDisplay();
+		road.draw();
+
+		RoadDisplay roadWithLane = new RoadDisplayWithLane();
+		roadWithLane.draw();
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">메인 함수!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>2) 문제점</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다른 추가적인 도로 표시 기능을 구현하고 싶다면 어떻게 해야할까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">또.. 그 여러가지 </span><span class="se-fs- se-ff-"><b>추가 기능</b></span><span class="se-fs- se-ff-">이 들어왔을 때, 그 </span><span class="se-fs- se-ff-"><b>조합</b></span><span class="se-fs- se-ff-">은 어떻게 할까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">코드 중복을 피하면서, 생각해 보자!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="2" rowspan="1" style="width: 100.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>RoadDisplay</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">- draw : void</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>RoadDisplayWithLane</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">- draw : void</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">- drawLane : void</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>RoadDisplayWithTraffic</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">- draw : void</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">- drawTraffic : void</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+d. 추가 기능
+
+class RoadDisplayWithTraffic extends RoadDisplay {
+public void draw() {
+super.draw();
+drawTraffic();
+}
+private void drawTraffic() {
+		System.out.println("교통량 표시");
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">추가 기능 별로 '개별적인' 클래스를 설계하고, 이를 조합하는 방식으로 생각해 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-decorator-pattern/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>3) 해결 코드</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+a.
+abstract class Display {
+public abstract void draw();
+}
+class RoadDisplay extends Display {
+public void draw() {
+		System.out.println("기본 도로 표시");
+}
+}
+class DisplayDecorator extends Display {
+private Display decoratedDisplay;
+public DisplayDecorator(Display decoratedDisplay) {
+this.decoratedDisplay = decoratedDisplay;
+}
+public void draw() {
+		decoratedDisplay.draw();
+}
+}
+
+
+b.
+class LaneDecorator extends DisplayDecorator {
+public LaneDecorator(Display decoratedDisplay) {
+super(decoratedDisplay);
+}
+public void draw() {
+super.draw(); // 도로, 부모 기능
+drawLane(); // 차선, 자기가 가진 기능
+}
+private void drawLane() {
+		System.out.println("\t차선 표시");
+}
+}
+
+
+d.
+class TrafficDecorator extends DisplayDecorator {
+public TrafficDecorator(Display decoratedDisplay) {
+super(decoratedDisplay);
+}
+public void draw() {
+super.draw();
+drawTraffic();
+}
+private void drawTraffic() {
+		System.out.println("\t교통량 표시");
+}
+}
+
+
+c.
+public class Client {
+public static void main(String[] args) {
+		Display road = new RoadDisplay();
+		road.draw();
+
+		Display roadWithLane = new LaneDecorator(new RoadDisplay());
+		roadWithLane.draw();
+
+		Display roadWithTraffic = new TrafficDecorator(new RoadDisplay());
+		roadWithTraffic.draw();
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">새로운 기능들을 만들려면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">상속받는 기능들만 넣어주면 된다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>조합을 위해 새로운 클래스를 만드는 것이 아니라,</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>기본 클래스에 + </i></span><span class="se-fs- se-ff-"><i><b>생성자</b></i></span><span class="se-fs- se-ff-"><i> 에 어떤 것을 넣냐에 따라 기능이 추가된다! 짱짱★</i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Display roadWithLane = new LaneDecorator(new RoadDisplay());
+roadWithLane.draw();
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">아래는 이에 대한 시퀀스 다이어그램이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-decorator-pattern/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">살펴보면,</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+Component c =new ConcreteComponent();
+Component a =new ConcreteComponentA(c);
+Component b =new ConcreteComponentB(a);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이런 구조라는 것을 알 수 있다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">교차로 기능도 넣어보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+e.
+public class Client {
+public static void main(String[] args) {		
+		Display roadWithLaneAndTraffic = new TrafficDecorator (new LaneDecorator(
+new CrossingDecorator(new RoadDisplay())));
+		roadWithLaneAndTraffic.draw();
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>4) 전체 코드</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[ 전체코드 ]
+public class Client {
+//교차로 기능 추가 메인 함수
+public static void main(String[] args) {
+
+		Display roadWithLaneAndTraffic = new TrafficDecorator(
+new LaneDecorator(new CrossingDecorator(new RoadDisplay())));
+		roadWithLaneAndTraffic.draw();
+}
+}
+//		Display road = new RoadDisplay();
+//	road.draw();
+//		Display roadWithLane = new LaneDecorator(new RoadDisplay());
+//		roadWithLane.draw();
+//		Display roadWithTraffic = new TrafficDecorator(new RoadDisplay());
+//		roadWithTraffic.draw();
+//	}
+//}
+
+abstract class Display {
+public abstract void draw();
+}
+class RoadDisplay extends Display {
+public void draw() {
+		System.out.println("기본 도로 표시");
+}
+}
+class DisplayDecorator extends Display {
+private Display decoratedDisplay;
+public DisplayDecorator(Display decoratedDisplay) {
+this.decoratedDisplay = decoratedDisplay;
+}
+public void draw() {
+		decoratedDisplay.draw();
+}
+}
+class LaneDecorator extends DisplayDecorator {
+public LaneDecorator(Display decoratedDisplay) {
+super(decoratedDisplay);
+}
+public void draw() {
+super.draw();
+drawLane();
+}
+private void drawLane() {
+		System.out.println("\t차선 표시");
+}
+}
+class TrafficDecorator extends DisplayDecorator {
+public TrafficDecorator(Display decoratedDisplay) {
+super(decoratedDisplay);
+}
+public void draw() {
+super.draw();
+drawTraffic();
+}
+private void drawTraffic() {
+		System.out.println("\t교통량 표시");
+}
+}
+class CrossingDecorator extends DisplayDecorator {
+public CrossingDecorator(Display decoratedDisplay) {
+super(decoratedDisplay);
+}
+public void draw() {
+super.draw();
+drawCrossing();
+}
+private void drawCrossing() {
+		System.out.println("\t횡단보도 표시");
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">데커레이터 패턴 한 줄 요약 '-'</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">***</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">Component c =new ConcreteComponent();</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">Component a =new ConcreteComponentA(c);</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">Component b =new ConcreteComponentB(a);</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">***</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Springboot/개발자 면접] 스프링 의존성 주입 방법 3가지, Spring MVC란 | minj.devlog</title>
+  <meta name="description" content="[ 이전 글 ] Spring 프레임워크란?, IoC 컨테이너와 Bean, 스프링 빈의 라이프사이클 (1) (2) 의존성 주입(DI, Dependency Injection) 의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입," />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-dependency-injection-mvc-interview/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Springboot/개발자 면접] 스프링 의존성 주입 방법 3가지, Spring MVC란" />
+  <meta property="og:description" content="[ 이전 글 ] Spring 프레임워크란?, IoC 컨테이너와 Bean, 스프링 빈의 라이프사이클 (1) (2) 의존성 주입(DI, Dependency Injection) 의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입," />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-dependency-injection-mvc-interview/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-dependency-injection-mvc-interview/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-11-28" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Springboot/개발자 면접] 스프링 의존성 주입 방법 3가지, Spring MVC란", "description": "[ 이전 글 ] Spring 프레임워크란?, IoC 컨테이너와 Bean, 스프링 빈의 라이프사이클 (1) (2) 의존성 주입(DI, Dependency Injection) 의존성 주입 3가지 방법 (생성자 주입, Field 주입, Setter 주입,", "datePublished": "2022-11-28", "dateModified": "2022-11-28", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-dependency-injection-mvc-interview/", "image": "https://minjipi.github.io/posts/spring-dependency-injection-mvc-interview/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-dependency-injection-mvc-interview">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-11-28">2022.11.28</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222940540076" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Springboot/개발자 면접] 스프링 의존성 주입 방법 3가지, Spring MVC란</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222940540076 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">[ 이전 글 ]</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222940369013" target="_blank">Spring 프레임워크란?, IoC 컨테이너와 Bean, 스프링 빈의 라이프사이클 (1)</a></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>(2) 의존성 주입(DI, Dependency Injection)</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222711099525" target="_blank">의존성 주입 3가지 방법</a></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222711099525" target="_blank">(생성자 주입, Field 주입, Setter 주입, @RequiredArgsConstructor과 @Autowired 차이점)</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">의존성 주입은 필요한 객체를 직접 생성하는 것이 아닌 외부로부터 객체를 받아서 사용하는 것입니다. 객체 간 의존관계를 미리 설정해두면 스프링 컨테이너가 의존관계를 자동으로 연결해 줍니다. 이렇게 되면 직접 의존하는 객체를 생성하거나 검색해서 가져올 필요 없기 때문에, </span><span class="se-fs- se-ff-"><b>객체 간의 결합도를 줄이고 코드의 재사용성을 높일 수 있습니다</b></span><span class="se-fs- se-ff-">.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-dependency-injection-mvc-interview/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">등록된 빈을 사용하는 3가지 방법</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">① Field 주입</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Autowired
+private SampleObject sampleObject;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">간단하지만 아래 단점으로 권장되지 않습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">불변성 위반: 필드 주입 객체는 final 선언 불가 (* final과 불변객체)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">순환 의존성 알 수 없음: 순환 참조하는 구조가 되었을 때, 필드 주입으로 구현했다면 해당 참조가 실행되어 StackOverflowError가 발생하기 전까지는 알 수 없다. 하지만 생성자 주입으로 구현되어 있다면 애플리케이션이 구동조차 되지 않고 에러를 띄워준다.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">DI 컨테이너의 결합성과 테스트 용이성 위배: 필요한 의존성을 전달하면 독립적으로 인스턴스화 가능해야 한다. 하지만 필드 주입을 사용하면 필요한 의존성을 가진 클래스를 인스턴스화 할 수 없다.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">단일 책임의 원칙: SRP(단일 책임의 원칙)를 위반할 확률. 하나의 클래스에서 주입되는 클래스가 많아질수록 해당 클래스가 책임지는 상황이 많이 발생하게 되는데, 이는 리팩토링이 되어야 할 상황이다. 이때 필드 주입 방식은 비교적 간단한 코드로 의존성을 주입하므로 다른 방식에 비해 무분별하게 의존성을 주입하기 쉽다.</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">② Setter 주입</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">주로 사용하지는 않는 방법 입니다. 왜일까요?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">수정자 주입을 사용하면 setXXX 메서드를 public으로 열어두어야 하기 때문에 언제 어디서든 변경이 가능합니다. 그래서 객체의 상태값을 외부에서 변경할 수 있는 여지가 생겨 캡슐화가 깨지는 문제가 있습니다. 이는 애플리케이션 동작 중에 상태값이 변경될 수 있어 신뢰할 수 없게되는 문제로 이어집니다. 그래서 이 방식은 생성자 주입과 다르게 주입받는 객체가 변경될 가능성이 있는 경우에 사용합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">③ 객체 변이 방지 (final 가능)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">생성자로 의존성을 주입할 때 final로 선언할 수 있고, 이로인해 런타임에서 의존성을 주입받는 객체가 변할 일이 없어지게 됩니다. 하지만 수정자 주입이나 일반 메소드 주입을 이용하게되면 불필요하게 수정의 가능성을 열어두게 되고, 이는 OOP의 5가지 원칙 중 OCP(Open-Closed Principal, 개방-폐쇄의 원칙)를 위반하게 됩니다. 그러므로 생성자 주입을 통해 변경의 가능성을 배제하고 불변성을 보장하는 것이 좋습니다. 또한, 필드 주입 방식은 null이 만들어질 가능성이 있는데, final로 선언한 생성자 주입 방식은 null이 불가능합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">'불변객체'란?</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Immutable Object</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">불변객체란?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">객체 생성 이후 내부의 상태가 변하지 않는 객체 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222940469919" target="_blank">불변 객체 및 final을 사용해야 하는 이유</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">Bean 사용 장점</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">의존성 관리 자동화</span></p></li></ol><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Bean을 통해 객체를 관리하게 되면 Spring에서 의존성 관리를 자동으로 해줍니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">의존성 관리(객체를 사용하는 방법)에는 크게 두 가지의 방법이 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1) 의존성이 필요한 객체를 객체 내부에서 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2) 의존성이 필요한 객체를 객체 외부에서 생성하여 주입한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. 스코프 관리 자동화</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Bean을 통해 객체를 관리하게 되면, Spring에서 스코프 관리를 자동으로 해줍니다. 여기서 스코프 관리란, Spring 컨테이너에서 자동으로 생성한 객체를 간단한 설정을 통해 싱글톤(Singleton) 프로토타입(Prototype) 등의 다양한 방법으로 관리해 주는 것을 말합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. 라이프사이클 인터페이스를 통한 생성 주기 관리</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">Bean 조회 방법</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[ 기본 조회 ]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링 컨테이너에 있는 모든 빈 정보 출력</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class ApplicationContextInfoTest {
+
+  AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+void findAllBean() {
+    String[] beanDefinitionNames = ac.getBeanDefinitionNames();
+for (String beanDefinition : beanDefinitionNames) {
+      Object bean = ac.getBean(beanDefinition);
+      System.out.println("beanDefinition = " + beanDefinition + ", object = " + bean);
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[특정 빈 조회]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ac.getBean(빈 이름, 타입);
+ac.getBean(타입);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 조회 대상 스프링 빈이 없으면 NoSuchBeanDefinitoinException: No bean named available 예외가 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>+ 의존관계 주입할 객체를 어떻게 찾나? 중복되면?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">기본 전략으로 @Autowired 지정하면 컨테이너가 자동으로 해당 빈을 찾습니다. 그리고 이름이 중복되면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">@Primary 혹은 @Qualifier 애노테이션을 사용한다. @Primary 가 조금 더 편리합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://ksr930.tistory.com/280" target="_blank">더 자세한 사용법</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">Spring MVC란? </span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">MVC는 Model, View, Controller의 약자이며, 각 레이어간 기능을 구분하는데 중점을 둔 디자인 패턴입니다. Model은 데이터 관리 및 </span><span class="se-fs- se-ff-"><b>비즈니스 로직을 처리</b></span><span class="se-fs- se-ff-">하는 부분이며, (DAO, DTO, Service 등) View는 </span><span class="se-fs- se-ff-"><b>비즈니스 로직의 처리 결과를 통해 유저 인터페이스가 표현</b></span><span class="se-fs- se-ff-">됩니다. (html, jsp, tymeleaf, mustache 등 화면을 구성하기도 하고, Rest API로 서버가 구현된다면 json 응답으로 구성되기도 한다.) Controller는 </span><span class="se-fs- se-ff-"><b>사용자의 요청을 처리</b></span><span class="se-fs- se-ff-">하고 </span><span class="se-fs- se-ff-"><b>Model과 View를 중개</b></span><span class="se-fs- se-ff-">하는 역할을 합니다. (Model과 View는 서로 연결되어 있지 않기 때문에 Controller가 사이에서 통신 매체가 되어줍니다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">Servlet 이란?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>자바를 사용해 웹을 만들기 위해 필요한 기술. </b></span><span class="se-fs- se-ff-">클라이언트의 요청을 처리하고, 그 결과를 반환하는 Servlet 클래스의 구현 규칙을 지킨 자바 웹 프로그래밍 기술입니다. Spring MVC에서 Controller로 이용되며, 사용자의 요청을 받아 처리한 후에 결과를 반환합니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-dependency-injection-mvc-interview/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 사용자(Client)가 URL을 입력하면 HTTP Request가 Servlet Container로 전송됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. 요청 받은 Servlet Container는 HttpServletRequest, HttpServletResponse 객체를 생성합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. web.xml을 기반으로 사용자가 요청한 URL이 어느 서블릿에 대한 요청인지 찾습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">4. 해당 서블릿에서 service메소드를 호출한 후 GET, POST여부에 따라 doGet() 또는 doPost()를 호출합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">5. doGet() or doPost() 메소드는 동적 페이지를 생성한 후 HttpServletResponse객체에 응답을 보냅니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">6. 응답이 끝나면 HttpServletRequest, HttpServletResponse 두 객체를 소멸시킵니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">filter와 interceptor의 차이</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">실행되는 시점이 다릅니다. 필터는 디스페쳐서블릿 이전에 실행이되는, 웹 어플리케이션 영역이고 인터셉터는 디스패처 서블릿 이후에 실행되는 스프링 영역입니다. 필터는 주로 인코딩, 공통 보안 등 요청에 대한 처리를 담당하고 인터셉터는 세부적인 보안 및 인증 작업이나 로깅, 컨트롤러에 넘겨주는 데이터 가공에 사용됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Spring Security 인증은 어떻게 이루어지는가?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222474006420" target="_blank">Spring Security 기본 개념과 사용예제</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">사용자가 로그인 정보와 함께 인증 요청(HttpRequest)을 하면 AuthenticationFilter가 요청을 가로채고 가로챈 정보를 통해 UsernamePasswordAuthenticationToken(인증용 객체)를 만들고 이를 이용해 AuthenticationManager의 인증 메서드를 호출한다. 이후 UserDetailsService 구현체를 통해 DB에 저장된 정보와 비교해 일치하면 UserDetails 구현 객체를 반환해 SecurityContext에 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">롬복이 만드는 메소드들이 생성되는 시점은?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Lombok은 메소드를 컴파일 하는 과정에 개입해서 추가적인 코드를 만들어냅니다. 이것을 어노테이션 프로세싱이라고 하는데, 어노테이션 프로세싱은 자바 컴파일러가 컴파일 단계에서 어노테이션을 분석하고 처리하는 기법을 말합니다.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

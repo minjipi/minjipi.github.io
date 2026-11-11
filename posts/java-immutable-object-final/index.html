@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Java] 불변객체란? (불변 객체 및 final을 사용해야 하는 이유) | minj.devlog</title>
+  <meta name="description" content="&#x27;불변객체&#x27;란? Immutable Object 1. 불변객체란? 객체 생성 이후 내부의 상태가 변하지 않는 객체 입니다. 불변 객체는 read-only 메소드만을 제공하며, 객체의 내부 상태를 제공하는 메소드를 제공하지 않거나 방어적 복사(defensive-copy)를 통해" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-immutable-object-final/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Java] 불변객체란? (불변 객체 및 final을 사용해야 하는 이유)" />
+  <meta property="og:description" content="&#x27;불변객체&#x27;란? Immutable Object 1. 불변객체란? 객체 생성 이후 내부의 상태가 변하지 않는 객체 입니다. 불변 객체는 read-only 메소드만을 제공하며, 객체의 내부 상태를 제공하는 메소드를 제공하지 않거나 방어적 복사(defensive-copy)를 통해" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-immutable-object-final/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-immutable-object-final/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-11-28" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Java] 불변객체란? (불변 객체 및 final을 사용해야 하는 이유)", "description": "'불변객체'란? Immutable Object 1. 불변객체란? 객체 생성 이후 내부의 상태가 변하지 않는 객체 입니다. 불변 객체는 read-only 메소드만을 제공하며, 객체의 내부 상태를 제공하는 메소드를 제공하지 않거나 방어적 복사(defensive-copy)를 통해", "datePublished": "2022-11-28", "dateModified": "2022-11-28", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-immutable-object-final/", "image": "https://minjipi.github.io/posts/java-immutable-object-final/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-immutable-object-final">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2022-11-28">2022.11.28</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222940469919" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Java] 불변객체란? (불변 객체 및 final을 사용해야 하는 이유)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/java-immutable-object-final/images/image_1.jpg" alt="[Java] 불변객체란? (불변 객체 및 final을 사용해야 하는 이유)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222940469919 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-">'불변객체'란?</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Immutable Object</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system">1. 불변객체란?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">객체 생성 이후 내부의 상태가 변하지 않는 객체 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">불변 객체는 read-only 메소드만을 제공하며, 객체의 내부 상태를 제공하는 메소드를 제공하지 않거나 방어적 복사(defensive-copy)를 통해 제공합니다.(Java에서는 배열이나 객체 등의 참조(Reference)를 전달합니다. 그렇기 때문에 참조를 통해 값을 수정하면 내부의 상태가 변하기 때문에 내부를 복사하여 전달하고 있는데, 이를 방어적 복사(defensive-copy) 라고 한다.) Java의 대표적인 불변 객체로는 String이 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">2. 불변 객체 및 final을 사용해야 하는 이유</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">(1) Thread-Safe하여 병렬 프로그래밍에 유용하며, 동기화를 고려하지 않아도 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">멀티 쓰레드 환경에서 동기화 문제가 발생하는 이유는 공유 자원에 동시에 쓰기가 가능하기 때문입니다. 하지만 만약 공유 자원이 불변이라면 더 이상 동기화를 고려하지 않아도 됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">(2) 실패 원자적인(Failure Atomic) 메소드를 만들 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">가변 객체를 통해 작업을 하는 도중 예외가 발생하면 해당 객체가 불안정한 상태에 빠질 수 있고, 불안정한 상태를 갖는 객체는 또 다른 에러를 유발할 수 있습니다. 하지만 불변 객체라면 어떠한 예외가 발생하여도 메소드 호출 전의 상태를 유지할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">(3) Cache나 Map 또는 Set 등의 요소로 활용하기에 더욱 적합합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">만약 캐시나 Map, Set 등의 원소인 가변 객체가 변경되었다면 이를 갱신하는 등의 부가 작업이 필요한데, 불변 객체라면 한 번 데이터가 저장된 이후에 다른 작업들을 고려하지 않아도 되므로 사용하는데 용이하게 작용할 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">+ 사이드 이펙트를 피해 오류가능성을 최소화할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">+ 다른 사람이 작성한 함수를 예측가능하며 안전하게 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">+ </span><span class="se-fs- se-ff-system"><b>가비지 컬렉션의 성능을 높일 수 있다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">3. 자바에서 불변 객체를 생성하는 법</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1. 클래스를 final로 선언</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. 모든 클래스 변수를 private와 final로 선언</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">3. 객체를 생성하기 위한 생성자 또는 정적 팩토리 메소드를 추가</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">4. 참조에 의해 변경가능성이 있는 경우 방어적 복사를 이용하여 전달</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Java에서는 불변성을 확보할 수 있도록 final 키워드를 제공하고 있습니다. Java에서 변수들은 기본적으로 가변적인데, 변수에 final 키워드를 붙이면 참조값을 변경 못하도록 하여 불변성을 확보할 수 있습니다. Java에서는 final이 붙은 변수의 값을 변경하려고 하면 컴파일 에러가 발생합니다. 하지만 final 키워드가 내부의 객체 상태를 변경하지 못하도록 하는 것은 아닙니다. 예를 들어 final로 선언된 List에는 새로운 객체가 더해져도(상태가 변해도) 문제가 없습니다. 그렇기 때문에 Java에서는 참조에 의해 값이 변경될 수 있는 점들을 유의해야 하고, 이를 방지하려면 불변 클래스로 만들어야 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system" style="color:#777777;">따로 정리하지말고 이해만 해둬야지 했는데, 면접 준비하면서 보니 역시 꽤 중요한 내용이라 정리 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system" style="color:#777777;">자바 스프링 하시는 분들은 알아두셔야 합니다.🤓</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-system" style="color:#999999;">참고 : </span><span class="se-fs- se-ff-system" style="color:#999999;"><a class="se-link" href="https://mangkyu.tistory.com/131" target="_blank">https://mangkyu.tistory.com/131</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

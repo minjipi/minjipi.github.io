@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAVA 디자인패턴 | 싱글톤 패턴 Singleton | minj.devlog</title>
+  <meta name="description" content="a. 프린터 관리자는 단 하나만 존재. b. 프린터 관리자는 3대의 프린터를 관리. c. 프린터 관리자는 이용가능한 프린터를 사용자에게 할당 d. 프린터 이용이 가능한지 확인하려면 프린터 클래스의 isAvailable 메서드를 사용. e." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-singleton-pattern/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JAVA 디자인패턴 | 싱글톤 패턴 Singleton" />
+  <meta property="og:description" content="a. 프린터 관리자는 단 하나만 존재. b. 프린터 관리자는 3대의 프린터를 관리. c. 프린터 관리자는 이용가능한 프린터를 사용자에게 할당 d. 프린터 이용이 가능한지 확인하려면 프린터 클래스의 isAvailable 메서드를 사용. e." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-singleton-pattern/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-singleton-pattern/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-06-17" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JAVA 디자인패턴 | 싱글톤 패턴 Singleton", "description": "a. 프린터 관리자는 단 하나만 존재. b. 프린터 관리자는 3대의 프린터를 관리. c. 프린터 관리자는 이용가능한 프린터를 사용자에게 할당 d. 프린터 이용이 가능한지 확인하려면 프린터 클래스의 isAvailable 메서드를 사용. e.", "datePublished": "2020-06-17", "dateModified": "2020-06-17", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-singleton-pattern/", "image": "https://minjipi.github.io/posts/java-singleton-pattern/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-singleton-pattern">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2020-06-17">2020.06.17</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222003882541" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JAVA 디자인패턴 | 싱글톤 패턴 Singleton</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222003882541 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_postit">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_postit">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-"><b>a. 프린터 관리자는 단 하나만 존재.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-"><b>b. 프린터 관리자는 3대의 프린터를 관리.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-"><b>c. 프린터 관리자는 이용가능한 프린터를 사용자에게 할당</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-"><b>d. 프린터 이용이 가능한지 확인하려면 프린터 클래스의 isAvailable 메서드를 사용.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-"><b>e. 사용자 출력 명령은 UserThread 클래스 이용.</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+// 기본코드
+class Printer {
+private boolean available = true;
+public boolean isAvailable() {
+return available;
+** 실제 사용이 가능한지, 상태값 반환
+	}
+public void print(String name) {
+try {
+			Thread.sleep(new Random().nextInt(10000));
+**프린트 할 때, 슬립(동작 지연)을 줌
+			System.out.println(name + "is using" + this.toString());
+} catch (InterruptedException e) {
+			e.printStackTrace();
+}
+setAvailable(true);
+}
+public void setAvailable(boolean available) {
+this.available = available;
+**프린트 사용한지 불가능한지에 대한 세팅 값
+	}
+}
+class UserThread extends Thread {
+private Printer myPrinter;
+public UserThread(String name) {
+super(name);
+}
+public void run() {
+** 싱글톤패턴 사용
+		PrinterManager mgr = PrinterManager.getPrinterManager();
+		myPrinter = mgr.getPrinter();
+		myPrinter.print(getName());
+}
+}
+public class Client2 {
+private static final int THREAD_NUM = 10;
+public static void main(String[] args) {
+		UserThread[] user = new UserThread[THREAD_NUM];
+for (int i = 0; i &lt; THREAD_NUM; i++) {
+			user[i] = new UserThread((i + 1) + "=thread");
+			user[i].start();
+** 유저 10개로 설정.
+}
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 PrinterManager 에 대한 코드를 작성해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-">요구사항 </span><span class="se-fs-fs15 se-ff-"><i><b>a. 프린터 관리자는 단 하나만 존재 </b></i></span><span class="se-fs-fs15 se-ff-">를 보면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-">여기서 단 하나라는 키워드는</span><span class="se-fs-fs15 se-ff-"><i><b> 싱글턴</b></i></span><span class="se-fs-fs15 se-ff-">  패턴을 사용하라는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+a.
+class PrinterManager {
+private static PrinterManager mgr = null;
+private PrinterManager() {
+}
+public synchronized static PrinterManager getPrinterManager()
+{
+if (mgr==null)
+{
+			mgr = new PrinterManager();
+}
+return mgr;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-"><i><b>b. 프린터 관리자는 3대의 프린터를 관리.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그러면 세 대의 프린터기를 가지고 있을 변수가 필요하다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+class PrinterManager {
+private static PrinterManager mgr = null;
+private ArrayList&lt;Printer&gt; managedPrinters = new ArrayList&lt;Printer&gt;();
+private PrinterManager() {
+		managedPrinters.add(new Printer());
+		managedPrinters.add(new Printer());
+		managedPrinters.add(new Printer());
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">배열 형식으로 프린터기를 관리하게 했다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"><b>c. 프린터 관리자는 '이용가능한 프린터'를 사용자에게 할당</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이용할 수 있는 프린터 = 사용가능함으로 체크되어 있는 프린터.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">사용자가 요청하는 프린터를 전달해 주는 함수 getPrinter 생성하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">루틴을 돌리기 위해 while문 사용.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ public Printer getPrinter()
+**getPrinter는 와일문을 통해서 계속 체크.
+{
+while(true)
+{
+**프린터기가 사용가능한지, 아닌지 판단하기 위해서 체크하는 루틴을 만들어 주자!
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"><b>d. 프린터기가 사용 가능한지, 불가능한지 판단하는 체크 루틴</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public synchronized Printer getPrinter()
+{
+while(true)
+{
+** 가능한 프린터 : 3대 체크 **
+for(Printer printer : managedPrinters)
+{
+if(printer.isAvailable())
+{
+					printer.setAvailable(false);
+** 사용했다는 표시를 하지 않으면 계속 또 만들어 낼 수 있으니까,
+					   여기서 반환해 준 거 사용할거야 라는 표현!
+return printer;
+** 사용가능한 프린터 반환.
+}
+}
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">if 받아온 프린터.에 isAvailable사용할 수 있는지? 코드를 짜고..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">가능하면 return printer 로 반환한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">반환하면 사용을 하겠다는 의미기 때문에 set메소드를 통해 false로 사용할거라는 표현도 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"><b>e. 사용자 출력 명령은 'UserThread' 클래스 이용</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff- se-weight-unset">Thread -이기 때문에 run에서 일어나는 메소드 안에서 일어나는 행위들이 일어나게 되는데-</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+class UserThread extends Thread {
+private Printer myPrinter;
+public UserThread(String name) {
+super(name);
+}
+public void run() {
+		PrinterManager mgr = PrinterManager.getPrinterManager();
+		myPrinter = mgr.getPrinter();
+		myPrinter.print(getName());
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3가지가 같이 돌게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">프린터기가 하나가 아니라 3개를 같이 쓰기 때문에,</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:588px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/java-singleton-pattern/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">b135f71, 7c406074, 1750f08c</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">요 3개가 돌아가면서 비어있는 프린터를 할당해 주는 것을 확인할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">싱글턴 패턴을 이용해 하나의 프린터 매니저를 만들고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">하나의 매니저를 가지고 여러개의 자원들을 활용할 수 있게 만들어 보았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">싱글턴 패턴은 정형화된 구조가 있기 때문에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 구조만 잘 숙지해 둔다면 무리없이 사용할 수 있을 것이다.</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

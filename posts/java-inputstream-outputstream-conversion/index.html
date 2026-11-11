@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java InputStream OutputStream 변환 방법 3가지 | minj.devlog</title>
+  <meta name="description" content="Java InputStream OutputStream 변환 방법 Java 8 에서 void copy(InputStream source, OutputStream target) throws IOException { byte[] buf = new byte[8192]; int" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-inputstream-outputstream-conversion/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Java InputStream OutputStream 변환 방법 3가지" />
+  <meta property="og:description" content="Java InputStream OutputStream 변환 방법 Java 8 에서 void copy(InputStream source, OutputStream target) throws IOException { byte[] buf = new byte[8192]; int" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-inputstream-outputstream-conversion/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-inputstream-outputstream-conversion/images/image_1.jpg" />
+  <meta property="article:published_time" content="2023-06-28" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Java InputStream OutputStream 변환 방법 3가지", "description": "Java InputStream OutputStream 변환 방법 Java 8 에서 void copy(InputStream source, OutputStream target) throws IOException { byte[] buf = new byte[8192]; int", "datePublished": "2023-06-28", "dateModified": "2023-06-28", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-inputstream-outputstream-conversion/", "image": "https://minjipi.github.io/posts/java-inputstream-outputstream-conversion/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-inputstream-outputstream-conversion">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2023-06-28">2023.06.28</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223141544908" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Java InputStream OutputStream 변환 방법 3가지</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/java-inputstream-outputstream-conversion/images/image_1.jpg" alt="Java InputStream OutputStream 변환 방법 3가지" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223141544908 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Java InputStream OutputStream 변환 방법</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Java 8 에서</span></p></li></ol>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+void copy(InputStream source, OutputStream target) throws IOException {
+    byte[] buf = new byte[8192];
+    int length;
+while ((length = source.read(buf)) != -1) {
+        target.write(buf, 0, length);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. Java 9 이상</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+InputStream inputStream = new ByteArrayInputStream(initialString.getBytes();
+ByteArrayOutputStream targetStream = new ByteArrayOutputStream()) {
+inputStream.transferTo(targetStream);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">근데 이 transferTo 메서드 내부를 보면</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+ public long transferTo(OutputStream out) throws IOException {
+        Objects.requireNonNull(out, "out");
+        long transferred = 0;
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        int read;
+while ((read = this.read(buffer, 0, DEFAULT_BUFFER_SIZE)) &gt;= 0) {
+            out.write(buffer, 0, read);
+            transferred += read;
+}
+return transferred;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1을 구현해둔 느낌.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-">Java 에서 inputStream.transferTo 사용 시, 기존 inputStream 의 데이터는 날아가나?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Java의 InputStrea</span><span class="se-fs- se-ff-system"><a class="se-link" href="http://m.transferTo%28%29" target="_blank">m.transferTo()</a></span><span class="se-fs- se-ff-system"> 메서드는 주어진 입력 스트림의 데이터를 다른 출력 스트림으로 전송한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">transferTo() 메서드는 내부적으로 버퍼를 사용하여 데이터를 전송하며, 데이터를 읽으면서 동시에 출력 스트림으로 쓰게 된다. 따라서 전송이 진행되면 입력 스트림의 데이터는 버퍼에서 소비 후 뒤로 밀려나서, 마치 소멸되는듯 보인다. 해당 부분을 다시 읽으려면 따로 mark, reset 등의 메서드를 사용해야한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그래서 만약 기존의 입력 스트림의 데이터를 보존하고 싶다면, transferTo() 메서드를 호출하기 전에 기존의 입력 스트림을 복사하여 새로운 입력 스트림을 생성해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">3. Commons IO 사용</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ByteArrayOutputStream targetStream = new ByteArrayOutputStream()
+IOUtils.copy(inputStream, targetStream);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이 방법도 기존 inputStream 의 데이터는 날림.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-system">출처 </span><span class="se-fs-fs11 se-ff-system"><a class="se-link" href="https://www.baeldung.com/java-inputstream-to-outputstream" target="_blank">https://www.baeldung.com/java-inputstream-to-outputstream</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

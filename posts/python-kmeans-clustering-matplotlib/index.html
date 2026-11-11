@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python 머신러닝 :: 비지도 학습 클러스터링 (K-Means), Matplotlib 연동 예제 | minj.devlog</title>
+  <meta name="description" content="파이썬 비지도 학습 클러스터링 (K-Means), Matplotlib 연동 예제 https://blog.naver.com/ghdalswl77/222086147547 Python 머신러닝 예제 :: 비지도 학습 클러스터링 (K-Means) 파이썬 비지도 학습 클러스터링" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/python-kmeans-clustering-matplotlib/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Python 머신러닝 :: 비지도 학습 클러스터링 (K-Means), Matplotlib 연동 예제" />
+  <meta property="og:description" content="파이썬 비지도 학습 클러스터링 (K-Means), Matplotlib 연동 예제 https://blog.naver.com/ghdalswl77/222086147547 Python 머신러닝 예제 :: 비지도 학습 클러스터링 (K-Means) 파이썬 비지도 학습 클러스터링" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/python-kmeans-clustering-matplotlib/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/python-kmeans-clustering-matplotlib/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-09-12" />
+  <meta property="article:section" content="Backend/Python" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Python 머신러닝 :: 비지도 학습 클러스터링 (K-Means), Matplotlib 연동 예제", "description": "파이썬 비지도 학습 클러스터링 (K-Means), Matplotlib 연동 예제 https://blog.naver.com/ghdalswl77/222086147547 Python 머신러닝 예제 :: 비지도 학습 클러스터링 (K-Means) 파이썬 비지도 학습 클러스터링", "datePublished": "2020-09-12", "dateModified": "2020-09-12", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/python-kmeans-clustering-matplotlib/", "image": "https://minjipi.github.io/posts/python-kmeans-clustering-matplotlib/images/image_1.jpg", "articleSection": "Backend/Python"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="python-kmeans-clustering-matplotlib">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FPython">Backend/Python</a>
+              <time class="post-date" datetime="2020-09-12">2020.09.12</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222087760628" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Python 머신러닝 :: 비지도 학습 클러스터링 (K-Means), Matplotlib 연동 예제</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222087760628 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-system se-style-unset" style="color:#000000;"><b>파이썬 비지도 학습 클러스터링 (K-Means),</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-system se-style-unset" style="color:#000000;"><b>Matplotlib 연동 예제</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222086147547" target="_blank">https://blog.naver.com/ghdalswl77/222086147547</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222086147547" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Python 머신러닝 예제 :: 비지도 학습 클러스터링 (K-Means)</strong>
+<p class="se-oglink-summary">파이썬 비지도 학습 클러스터링 (K-Means) 예제비지도 학습이란?머신러닝을 세 가지 종류로 나누어 볼 수...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><i><b>======= 위 포스팅과 이어지는 내용입니다!</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">저번 포스팅에서는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">머신러닝 비지도 학습, 클러스터링에 대한 이론적인 부분만을 다루었습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이번 포스팅에서는 Matplotlib 를 이용한 3차원 그래프로</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">조금 더 눈에 보이는 클러스터링 실습을 해보려고 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">저번 포스팅 요약 ::</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.85%; height: 43.0px;  background-color: #f7ffe6;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;"><b>비지도 학습</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(unsupervised learning) </span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.15%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#494e52;">알고 있는 출력값이나 정보 없이 학습 알고리즘을 가르쳐야 하는 모든 종류의 머신러닝을 가리킵니다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#494e52;">비지도 학습에서 학습 알고리즘은 입력 데이터만으로 데이터에서 지식을 추출할 수 있어야 합니다.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 34.85%; height: 43.0px;  background-color: #daf8ff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;"><b>군집 알고리즘</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(clustering)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 65.15%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#494e52;">데이터를 비슷한 것끼리 그룹으로 묶는 것입니다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#494e52;">label이 없어도 사진 등에 나타나는 공통적인 특징으로 그룹화를 하는 것입니다. </span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>0. 시각화 패키지 Matplotlib</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">Matplotlib는 파이썬에서 데이타를 차트나 플롯(Plot)으로 그려주는 라이브러리 패키지로서 가장 많이 사용되는 데이타 시각화(Data Visualization) 패키지로 알려져 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">Matplotlib는 라인 플롯, 바 차트, 파이차트, 히스토그램, Box Plot, Scatter Plot 등을 비롯하여 다양한 차트와 플롯 스타일을 지원하며,Matplotlib.org 갤러리 웹페이지에서 다양한 샘플 차트를 볼 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">Matplotlib를 이용하여 데이타 시각화(Data Visualization)를 사용하기 위해서는 아나콘다-주피터를 사용하면 편리하..지만</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">저는 </span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"><b>파이참 환경</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">에서 실습을 진행하려고 합니다!!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>1. Matplotlib 사용법</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">간단한 Matplotlib 2차원 그래프 사용 실습.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"><b>0. 역시 라이브러리 설치 먼저</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">콘솔에 아래와 같이 입력해주세요.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿pip install matplotlib
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">안될시에는 lib 없이!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿pip install matplot
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">설치가 되었다면,</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿from sklearn.cluster import KMeans import matplotlib.pyplot as plt import pandas as pd
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">저번 예제에서 설치한 사이킷런을 import하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">Matplotlib를 사용하기 위해서는 먼저 matplotlib.pyplot 을 아래와 같이 import.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">pyplot을 다른 이름으로 사용할 수 있지만, 통상 plt 라는 alias를 사용합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">그리고 아래의 코드를 .. 입력합니닷</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">그냥 간단하게 저번시간에 배운 사과와 오렌지 예제를</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">2차원 그래프로 출력만 해보겠습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">(</span><span class="se-fs- se-ff-system" style="color:#000000;">그냥 간단한 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>Matplotlib</b></span><span class="se-fs- se-ff-system" style="color:#000000;">사용 실습 입니다.</span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+# 3
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import pandas as pd
+
+features = [[140, 1], [130, 1], [160, 0], [170, 0]]
+data = pd.DataFrame(features)
+data.columns = ['kg', 'surface']
+feature = data[['kg', 'surface']]
+feature.head()
+#################: 전 포스팅에서 했던 내용
+
+model = KMeans(n_clusters=2)
+model.fit(features)
+
+predict = pd.DataFrame(model.predict(feature))
+predict.columns = ['predict']
+r = pd.concat([feature, predict], axis=1)
+plt.scatter(r['kg'], r['surface'], c=r['predict'], alpha=0.5)
+#scatter &lt;- 요게 표를 그려줌!
+             # kg 가 x축 값, surface가 y축 값, predict가 투명도.
+
+plt.xlabel("kg")
+plt.ylabel("surface")
+plt.legend()
+
+plt.show() # 파이참 환경인 경우 .show를 해야함!
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#ffffff;background-color:#000000;">model =</span><span class="se-fs- se-ff-system" style="color:#b0f1ff;background-color:#000000;"> KMeans</span><span class="se-fs- se-ff-system" style="color:#ffffff;background-color:#000000;">(n_clusters=2) </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-&gt; KMeans 의 객체를 생성하고, 찾고자 하는 클러스터 수를 지정.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#ffffff;background-color:#000000;">model.</span><span class="se-fs- se-ff-system" style="color:#b0f1ff;background-color:#000000;">fit</span><span class="se-fs- se-ff-system" style="color:#ffffff;background-color:#000000;">(features)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그런 다음 fit 메서드 호출.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">결과 :</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:46.666666666666664%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/python-kmeans-clustering-matplotlib/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:53.333333333333336%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-kmeans-clustering-matplotlib/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이 간단한 그래프를 짧게 설명하자면..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">마지막 줄의 show()는 :</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">시각화 명령을 실제로 차트로 렌더링(rendering)하고</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">마우스 움직임 등의 이벤트를 기다리라는 지시입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">주피터 노트북에서는 셀 단위로 플롯 명령을 자동 렌더링 해주므로 show 명령이 필요없지만~</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">일반 파이썬 인터프리터로 가동되는 경우를 대비하여 항상 마지막에 실행하도록 해요.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">show 명령을 주면 마지막 플롯 명령으로부터 반환된 플롯 객체의 표현도 가려주는 효과도 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">어쨌든 이제 3차원 그래프를 그려보도록 합니다!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>2. Matplotlib 3차원 그래프 그리기</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"> iris 데이터 로 3차원 그래프 그려보기</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+
+iris = datasets.load_iris()
+
+data = iris.data
+target = iris.target
+
+fig = plt.figure(figsize=(10, 7))
+ax = plt.axes(projection="3d")
+
+ax.scatter3D(data[:, 3], data[:, 0], data[:, 2], c=target);
+                                                 #c=color. 꽃마다 색 다르게
+plt.show()
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">위 코드를 간단히 설명하자면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">iris = datasets.load_iris()</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">로 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"> Iris dataset 를 불러온 것을 볼 수 있는데요,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;"><b>Iris Dataset 란?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>sklearn</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 에서 제공하는 데이터셋인 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>Iris dataset</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 으로써,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">위 데이터셋은 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">Iris,</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b> </b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">붓꽃의 서로 다른 3가지 종(setosa, versicolor, virginica)의</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">sepal(꽃받침), petal(꽃잎) feature를 포함하고 있습니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="https://s3.amazonaws.com/codecademy-content/programs/machine-learning/k-means/iris.svg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">데이터셋은 다음과 같은 내용을 포함하고 있습니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+array([[5.1, 3.5, 1.4, 0.2],
+[4.9, 3. , 1.4, 0.2],
+...
+[5.9, 3. , 5.1, 1.8]])
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">각 row는 하나의 데이터 </span><span class="se-fs- se-ff-system" style="color:#000000;"><i>sample</i></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 을 나타냅니다. 각 column은 feature를 나타내며</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">순서대로 sepal length(꽃받침의 길이), sepal width(꽃받침의 넓이), petal length(꽃잎의 길이), petal width(꽃잎의 넓이) 를 의미합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이렇게 load한 데이터는 </span><span class="se-fs- se-ff-system" style="color:#000000;"><i>Bunch</i></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 라는 객체로 생성되며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">이 객체의 속성으로 .data 이외에 데이터의 label인 .target 과 데이터에 대한 설명인 .DESCR 등이 있는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">자세한 설명은 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><a class="se-link" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris" target="_blank"><b>공식 문서</b></a></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">를 참조하시기 바랍니다ㅎㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">어쨌든 위 코드의 결과로 아래와 같은 3차원 그래프가 나오는 것을 확인합니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-kmeans-clustering-matplotlib/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">이제 이 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>Iris dataset</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 로 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">k-Means 알고리즘과 3차원 그래프를 연동하는 예제를 해봅시다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>3. k-Means 알고리즘 + Matplotlib 연동 예제</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">아래 코드를 입력해 주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">K-Means 알고리즘 순서 입니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+# 3
+from sklearn.cluster import KMeans
+
+k_means = KMeans(n_clusters=3)
+k_means.fit(data)
+k_means_predicted = k_means.predict(data)
+centroids = k_means.cluster_centers_
+target_names = iris.target_names
+
+plt.figure(figsize=(10, 7))
+ax = plt.axes(projection='3d')
+
+ax.scatter(data[k_means_predicted != target, 0],
+           data[k_means_predicted != target, 1],
+           data[k_means_predicted != target, 3], c='k', s=50)
+
+ax.scatter(centroids[0, 0], centroids[0, 1], centroids[0, 3], c='r', s=50, label='centroid1')
+ax.scatter(centroids[1, 0], centroids[1, 1], centroids[1, 3], c='g', s=50, label='centroid2')
+ax.scatter(centroids[2, 0], centroids[2, 1], centroids[2, 3], c='b', s=50, label='centroid3')
+
+ax.legend()
+plt.show()
+print(k_means_predicted)
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#141414;">K-Means 알고리즘 수행 과정</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">1. 모든 샘플들을 공간상에 뿌리고 k개(우리가 분류하고 싶은 데이터 갯수=3개)의 중심점 위치를 랜덤하게 잡습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">2. 그리고 k개의 중심점을 기준으로 공간을 나눈 다음,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">나누어진 각 공간에 속한 점들의 평균 위치로 중심점을 이동시켜서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">3. 각 데이터들을 가장 가까운 centroids가 속한 그룹에 할당합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">4. 2번 과정에서 할당된 결과를 바탕으로 centroids를 새롭게 지정합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">   이런 과정을 반복하여 k개의 최종 중심점 위치를 찾아냅니다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">결과가 어떻게 나왔나요~~?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff- se-style-unset" style="color:#000000;"><b>3.5 k-Means 알고리즘 결과</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-kmeans-clustering-matplotlib/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-kmeans-clustering-matplotlib/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">위 사진의 결과가 나오나요?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">혹은 아래와 같이 나오나요?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-kmeans-clustering-matplotlib/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;">이렇게 다양한 결과가 도출되는 이유는,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system"><b>비지도 학습에서는 사과가 0이다 라고 알려준 적이 없으니까</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">비지도 학습에서는 사과가 0이다 라고 알려준 적이 없기 때문에,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">예를 들어서 사과를 1이라고도 답했다가 0이라고도 답했다가</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">실행할 때마다 바뀌는 결과가 나오는 것 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">답을 뱉어주는 것이 아니라</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그냥 0과 1을 '구분'만 하는 상황!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">아이리스 데이터니까 우리가 원하는 답은 0 1 2 이런건데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1 0 2 이렇게도 답하고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1 2 0 이렇게도 답하고 하는 상황이죠</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+결과 :
+﻿[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 2 2 2 2 1 2 2 2 2
+2 2 1 1 2 2 2 2 1 2 1 2 1 2 2 1 1 2 2 2 2 2 1 2 2 2 2 1 2 2 2 1 2 2 2 1 2
+2 1]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#141414;">그리고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#141414;">111111 중간에 2나 0이 들어간 부분은 오차라고 불 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#141414;">근데 중간중간 다른 값이 섞이면 오차인데 이건 데이터가 많아지면 줄어 듭니다</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.5;"><span class="se-fs- se-ff-system" style="color:#141414;">1111 사이에 2 가끔 있는 것들 틀린 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.5;"><span class="se-fs- se-ff-system" style="color:#141414;">(</span><span class="se-fs- se-ff-system">0 50개 1 50개 2 50개 가 나와야 합니다)</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.5;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.5;"><span class="se-fs- se-ff-system">그래서 중요한 것은</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.5;"><span class="se-fs- se-ff-system"> 사과랑 오렌지를 구분하느냐 인건데,</span></p><p class="se-text-paragraph se-text-paragraph-align-justify" style="line-height:1.5;"><span class="se-fs- se-ff-system">아직 머신이 사과를 사과라 말할 줄 모르는 상황인 것이죠 !!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-kmeans-clustering-matplotlib/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">참고자료 :</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><a class="se-link" href="https://www.youtube.com/channel/UCl9zTDOvOxdCfUt1HqVwwdg" target="_blank">https://www.youtube.com/channel/UCl9zTDOvOxdCfUt1HqVwwdg</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><a class="se-link" href="https://eunsukimme.github.io/ml/2019/12/16/K-Means/" target="_blank">https://eunsukimme.github.io/ml/2019/12/16/K-Means/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

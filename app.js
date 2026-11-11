@@ -214,7 +214,7 @@ function goPost(slug) {
   if (window.IS_LOCAL) {
     window.location.href = (window.BASE_URL || "") + "post.html?slug=" + slug;
   } else {
-    window.location.href = "/posts/" + slug;
+    window.location.href = "/posts/" + slug + "/";
   }
 }
 

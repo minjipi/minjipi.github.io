@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리눅스 쉘(Shell)과 Bash | bashrc, .bash_profile | minj.devlog</title>
+  <meta name="description" content="쉘(Shell) 쉘이란, 사용자와 커널 사이의 매개체 역할을 하는 프로그램이다. 사용자가 커널에 직접 명령을 내릴 수 있게 하는 프로그램이다. 즉, 쉘은 사용자로부터 명령을 받아서 그것을 프로세싱 하기 위해 커널에게 넘겨주는 일을 하는 프로그램이다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/linux-shell-bash-bashrc-bash-profile/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="리눅스 쉘(Shell)과 Bash | bashrc, .bash_profile" />
+  <meta property="og:description" content="쉘(Shell) 쉘이란, 사용자와 커널 사이의 매개체 역할을 하는 프로그램이다. 사용자가 커널에 직접 명령을 내릴 수 있게 하는 프로그램이다. 즉, 쉘은 사용자로부터 명령을 받아서 그것을 프로세싱 하기 위해 커널에게 넘겨주는 일을 하는 프로그램이다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/linux-shell-bash-bashrc-bash-profile/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/linux-shell-bash-bashrc-bash-profile/images/image_1.jpg" />
+  <meta property="article:published_time" content="2023-02-27" />
+  <meta property="article:section" content="Linux/Administration" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "리눅스 쉘(Shell)과 Bash | bashrc, .bash_profile", "description": "쉘(Shell) 쉘이란, 사용자와 커널 사이의 매개체 역할을 하는 프로그램이다. 사용자가 커널에 직접 명령을 내릴 수 있게 하는 프로그램이다. 즉, 쉘은 사용자로부터 명령을 받아서 그것을 프로세싱 하기 위해 커널에게 넘겨주는 일을 하는 프로그램이다.", "datePublished": "2023-02-27", "dateModified": "2023-02-27", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/linux-shell-bash-bashrc-bash-profile/", "image": "https://minjipi.github.io/posts/linux-shell-bash-bashrc-bash-profile/images/image_1.jpg", "articleSection": "Linux/Administration"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="linux-shell-bash-bashrc-bash-profile">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Linux%2FAdministration">Linux/Administration</a>
+              <time class="post-date" datetime="2023-02-27">2023.02.27</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223028885802" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">리눅스 쉘(Shell)과 Bash | bashrc, .bash_profile</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/linux-shell-bash-bashrc-bash-profile/images/image_1.jpg" alt="리눅스 쉘(Shell)과 Bash | bashrc, .bash_profile" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223028885802 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">쉘(Shell)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.368421052631579;"><span class="se-fs- se-ff-system">쉘이란, 사용자와 커널 사이의 매개체 역할을 하는 프로그램이다. 사용자가 커널에 직접 명령을 내릴 수 있게 하는 프로그램이다. 즉, 쉘은 사용자로부터 명령을 받아서 그것을 프로세싱 하기 위해 커널에게 넘겨주는 일을 하는 프로그램이다. 가장 널리 쓰이는 쉘 프로그램은 bash다. (</span><span class="se-fs- se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222247881624" target="_blank">리눅스 쉘이란?</a></span><span class="se-fs- se-ff-system">)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.368421052631579;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">bash</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">Bash는 </span><span class="se-fs- se-ff-system"><b>Bourne Again Shell</b></span><span class="se-fs- se-ff-system">의 축약어다. 리눅스에서 가장 널리 사용되는 쉘이다. bash는 다섯 개의 공통된 설정 파일들을 가지고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system">/etc/profile</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system">/etc/bashrc</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system">~/.bash_profile</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system">~/.bashrc</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system">~/.bash_logout</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">일반적으로 전역적인 파일은 /etc 디렉토리에 위치한다. 지역적인 파일은 사용자 개개인을 위한 설정 내용을 담고 있어서 그 파일을 사용하는 특정 사용자에게만 영향을 끼치는 파일들을 뜻한다. 이들은 대개 사용자의 홈 디렉토리에서 찾아볼 수 있는 숨김 파일이다. 숨김 파일은 ~/.bashrc와 같이 '</span><span class="se-fs- se-ff-system"><b>.</b></span><span class="se-fs- se-ff-system">' 으로 시작한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system">전역적인 설정인 /etc/profile과 /etc/bashrc</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system">개별 사용자마다 다른 설정을 담는, 지역적 설정인 ~/.bashrc, ~/.bash_profile, ~/.bash_logout</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">수행 순서는 /etc/profile --&gt; /etc/bashrc(추정) --&gt; ~/.bash_profile ( --&gt; ~/.bashrc ;처음 bash로 로그인할 때 자동 참조) [--&gt; ~/.bashrc ;bash가 실행될 때마다 실행됨] 즉 처음에 한 번 수행되는 게 전역 파일들, 그다음엔 매번 지역적인 파일들이 참조된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">bashrc는 bash에서 작업할 때마다 수행되는 파일로서, 우리가 그냥 python이라고 입력만 해도 python3.x버전으로 연결되어 작업할 수 있게 해준다. 환경 변수 개념. 만약 모든 사용자에게 적용되게 하려면 /etc/profile에 설정해 주면 되고, 개별 사용자에게 적용되게 하려면 .bash에 설정한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system se-weight-unset">(1) </span><span class="se-fs- se-ff-system"><b>/etc/profile</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">/etc/profile은 환경 변수와 bash가 수행될 때 실행되는 프로그램을 제어하는 전역적인 시스템 설정과 관련된 파일이다. bashrc와 마찬가지로 로그인 시 수행되는 시스템 전체 환경 설정 파일이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system se-weight-unset">(2) </span><span class="se-fs- se-ff-system"><b>~/.bash_profile</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">~/.bash_profile은 환경 변수와 bash가 수행될 때 실행되는 프로그램을 제어하는 지역적인 시스템 설정과 관련된 파일이다. 이들 환경 변수들은 오직 해당 사용자에게만 한정되며, 그 이외의 다른 사용자에게는 영향을 미치지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">즉, 모든 사용자에게 영향을 주는 /etc/profile 과는 달리, ~/.bash_profile는 오직 bash를 실행하는 그 사용자에게만 영향을 준다. 이 파일은 전역적인 설정 파일인 /etc/profile이 수행된 다음 곧바로 수행된다. 시스템에 로그인할 때마다 실행된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system se-weight-unset">(3) </span><span class="se-fs- se-ff-system"><b>~/.bashrc</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">~/.bashrc는 별칭(alias)과 bash가 수행될 때 실행되는 함수를 제어하는 지역적인 시스템 설정과 관련된 파일이다. 이들 별칭과 함수들은 오직 해당 사용자에게만 한정되며, 그 이외의 다른 사용자에게는 영향을 미치지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">bash가 실행될 때마다 수행, 즉 새 터미널 창을 열 때마다 실행된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system se-weight-unset">(4) </span><span class="se-fs- se-ff-system"><b>/etc/bashrc</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">~/.bashrc가 개인용 환경 설정이라면 /etc/bashrc는 전체용(모든 사용자에게 영향을 끼치는) 환경 설정 파일이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system se-weight-unset">(5) </span><span class="se-fs- se-ff-system"><b>~/.bash_logout</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">~/.bash_logout 은 사용자가 로그 아웃하기 바로 직전에 실행하는 프로그램에 관한 bash의 지역적인 시스템 설정과 관련된 파일이다. 이들 프로그램은 오직 그 프로그램을 실행하는 사용자에게만 영향을 끼치며, 다른 사용자에게는 아무런 영향을 주지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system">.bashrc는 bash이 실행될 때마다 수행되고, .bash_profile은 bash이 login shell로 쓰일 때(즉 처음 login 할 때)에 수행된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.4;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.625;"><span class="se-fs-fs11 se-ff-system">참고: </span><span class="se-fs-fs11 se-ff-system"><a class="se-link" href="https://dohk.tistory.com/191" target="_blank">https://dohk.tistory.com/191</a></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.625;"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

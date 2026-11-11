@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스프링이란? 스프링 프레임워크의 핵심기능 (스프링 컨테이너, DI, DL, Ioc, AOP) | minj.devlog</title>
+  <meta name="description" content="1. 스프링이란? 스프링이 왜 만들어 졌는지, 왜 필요했는지 그리고 개인적으로 궁금했던..ㅎㅎ 왜 이름이 spring 인지 알아봤다. 우선 spring인 이유는 EJB 라는 겨울을 넘어 새로운 시작이라는 뜻이다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/what-is-spring-framework/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="스프링이란? 스프링 프레임워크의 핵심기능 (스프링 컨테이너, DI, DL, Ioc, AOP)" />
+  <meta property="og:description" content="1. 스프링이란? 스프링이 왜 만들어 졌는지, 왜 필요했는지 그리고 개인적으로 궁금했던..ㅎㅎ 왜 이름이 spring 인지 알아봤다. 우선 spring인 이유는 EJB 라는 겨울을 넘어 새로운 시작이라는 뜻이다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/what-is-spring-framework/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/what-is-spring-framework/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-07-07" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "스프링이란? 스프링 프레임워크의 핵심기능 (스프링 컨테이너, DI, DL, Ioc, AOP)", "description": "1. 스프링이란? 스프링이 왜 만들어 졌는지, 왜 필요했는지 그리고 개인적으로 궁금했던..ㅎㅎ 왜 이름이 spring 인지 알아봤다. 우선 spring인 이유는 EJB 라는 겨울을 넘어 새로운 시작이라는 뜻이다.", "datePublished": "2021-07-07", "dateModified": "2021-07-07", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/what-is-spring-framework/", "image": "https://minjipi.github.io/posts/what-is-spring-framework/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="what-is-spring-framework">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-07-07">2021.07.07</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222423185514" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">스프링이란? 스프링 프레임워크의 핵심기능 (스프링 컨테이너, DI, DL, Ioc, AOP)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/what-is-spring-framework/images/image_1.jpg" alt="스프링이란? 스프링 프레임워크의 핵심기능 (스프링 컨테이너, DI, DL, Ioc, AOP)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222423185514 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">1. 스프링이란?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">스프링이 왜 만들어 졌는지, 왜 필요했는지</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">그리고 개인적으로 궁금했던..ㅎㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">왜 이름이 spring 인지 알아봤다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">우선 spring인 이유는</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">EJB 라는 겨울을 넘어 새로운 시작이라는 뜻이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">EJB는 내가 써본 적은 없지만, </span><span class="se-fs- se-ff-">김영한 강사님께서</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이것저것 종속된 것이 많아 객체 지향의 장점이 쏙 빠진 것이라고 한다..</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/what-is-spring-framework/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이게 너무 후져서 스프링을 만들게 된 것이라고.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">그래서 스프링의 핵심개념은 당연히</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">좋은 '객체 지향' 애플리케이션을 만들 수 있도록</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">개발자를 도와주는 프레임워크라는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>2. 스프링 프레임워크 핵심기능</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">흔히 스프링이라 부르지만 '스프링 프레임워크'라고 하는 것이 정확한 표현이다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">스프링 프레임워크 </span><span class="se-fs- se-ff-"><b>핵심 기능:</b></span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>DL(Dependency Look-up)과 DI(Dependency Injection)를 통해 IoC (Inversion of Control)을 구현.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">이 말이 무엇인지 하나하나 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="background-color:#fcffee;"><b> 컨테이너 </b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">컨테이너(Container)란, 인스턴스의 생명주기(라이프 사이클)를 관리하고 생성된 인스턴스에게 추가적인 기능을 제공한다. 예를들어  Servelt 요청을 해결해주는(실행해주는) 톰캣(WAS) Servlet 컨테이너가 있다면, WAS에서는 URL로 특정 서블릿에 대한 요청을 받으면 메모리에 캐시되어있는지 확인 후 최신버전이 있거나 메모리에 올라가있지 않을 경우 서블릿을 컴파일하여 메모리에 올린 후 실행한다. 서블릿 클래스를 작성하는것은 개발자이지만 메모리에 올리고 실행하고 사용이 끝난 서블릿을 terminate 하는 작업들은 WAS의 Servlet 컨테이너가 대신해주고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="background-color:#eef5ff;"><b> 의존성 주입 (DI : Dependency Injection) </b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">클래스 사이의 의존 관계를 빈(Bean)설정 정보를 바탕으로 컨테이너가 자동으로 연결해주는 것을 말한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">객체를 직접 생성하는 게 아니라 외부에서 생성한 후 주입 시켜주는 방식이다. 이를 통해 모듈 간의 결합도가 낮아지고 유연성이 높아진다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:450px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="https://velog.velcdn.com/images%2Fgillog%2Fpost%2F08489bda-549e-4dae-851b-8ae1734bf85e%2F21373937580AEF9B37.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">첫번째 방법은 A객체가 B와 C객체를 New 생성자를 통해서 직접 생성하는 방법이고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">두번째 방법은 외부에서 생성 된 객체를 setter()를 통해 사용하는 방법이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이러한 두번째 방식이 의존성 주입의 예시인데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">A 객체에서 B, C객체를 사용(의존)할 때 A 객체에서 직접 생성 하는 것이 아니라 외부(IOC컨테이너)에서 생성된 B, C객체를 조립(주입)시켜 setter 혹은 생성자를 통해 사용하는 방식이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링에서는 객체를 Bean이라고 부르며, 프로젝트가 실행될때 사용자가 Bean으로 관리하는 객체들의 생성과 소멸에 관련된 작업을 자동적으로 수행해주는데 객체가 생성되는 곳을 스프링에서는 Bean 컨테이너라고 부른다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>DI가 적용되지 않은 예 </i></span><span class="se-fs- se-ff- se-style-unset">&gt;</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+class 팥소 {
+}
+class 팥빙수 {
+     팥소 이틀끓인_팥소 = new 팥소();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:450px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/what-is-spring-framework/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>DI가 적용된 예 </i></span><span class="se-fs- se-ff-">&gt;</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Component
+class 팥소 {
+}
+
+@Component
+class 팥빙수 {
+     @Autowired
+     팥소 이틀끓인_팥소;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:450px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/what-is-spring-framework/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="background-color:#f3ffec;"><b> 제어의 역전 (IoC : Inversion of Control) </b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">말 그대로 메소드나 객체의 호출작업을 개발자가 결정하는 것이 아니라, 외부에서 결정되는 것을 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">즉, 개발자가 객체를 생성하는 것이 아니라 컨테이너에서 가져오는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">객체의 의존성을 역전시켜 객체 간의 결합도를 줄이고 유연한 코드를 작성할 수 있게 하여 가독성 및 코드 중복, 유지 보수를 편하게 할 수 있게 한다. 기존에는 다음과 순서로 객체가 만들어지고 실행되었다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+객체 생성-&gt; 의존성 객체 생성,클래스 내부에서 생성 -&gt; 의존성 객체 메소드 호출
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">하지만 스프링에서는 다음과 같은 순서로 객체가 만들어지고 실행된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+객체 생성 -&gt;
+의존성 객체 주입(스스로가 만드는것이 아니라 제어권을 스프링에게 위임하여 스프링이 만들어놓은 객체를 주입) -&gt;
+의존성 객체 메소드 호출
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링이 모든 의존성 객체를 스프링이 실행될때 다 만들어주고 필요한곳에 주입시켜줌으로써 Bean들은 싱글톤 패턴의 특징을 가지며, 제어의 흐름을 사용자가 컨트롤 하는 것이 아니라 스프링에게 맡겨 작업을 처리하게 된다. Spring에서 Bean Factory와 Appllcation Context가 이런 공장의 역할을 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">* bean factory: 스프링의 IoC를 담당하는 핵심 컨테이너</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">빈을 등록/생성/조회/반환/관리한다. 보통은 bean factory 를 바로 사용하지 않고 이를 확장한 application context 를 이용한다. BeanFactory 는 bean factory 가 구현하는 interface 이다. (getBean()등의 메소드가 정의되어 있음)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">* application context: bean factory를 확장한 IoC 컨테이너</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">빈의 등록/생성/조회/반환/관리의 기능은 bean factory 와 같지만, 여기에 spring의 각종 부가 서비스를 추가로 제공한다. ApplicationContext: application context가 구현해야 하는 interface이여, BeanFactory 를 상속한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border:1px solid #000000;border-collapse:collapse;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="2" style="width: 7.37%; height: 40.0px; border:1px solid rgb(208, 208, 208); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>IoC</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 24.39%; height: 40.0px; border:1px solid rgb(208, 208, 208); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>DL</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;">(Dependency Lookup)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>의존성 검색</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 68.25%; height: 40.0px; border:1px solid rgb(208, 208, 208); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff-">의존관계 검색(Dependency Lookup)은 의존관계가 있는 객체를 외부에서 주입 받는 것이 아닌, 의존관계가 필요한 객체에서 직접 검색하는 방식.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset">(</span><span class="se-fs-fs13 se-ff-">DL 사용시 컨테이너가 종속성이 증가하여, 주로 DI를 사용.)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 24.39%; height: 40.0px; border:1px solid rgb(208, 208, 208); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>DI</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;">(Dependency Injection)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>의존성 주입</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 68.25%; height: 40.0px; border:1px solid rgb(208, 208, 208); background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;">각 클래스간의 의존관계를 빈 설정 (Bean Definition) 정보를 바탕으로 컨테이너가 자동으로 연결해주는 것.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;">DI의 종류로는 </span><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>Setter Injection</b></span><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"> / </span><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>Constructor Injection</b></span><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"> / </span><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;"><b>Method Injection </b></span><span class="se-fs-fs13 se-ff- se-style-unset" style="color:#222222;">이 있다.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="background-color:#f7f7f7;"><b> 관점지향 프로그래밍(AOP : Aspect-Oriented Programming):</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">관점 지향 프로그래밍. 쉽게 말해 어떤 로직을 기준으로 핵심적인 관점, 부가적인 관점으로 나누어서 보고 그 관점을 기준으로 각각 모듈화하겠다는 것이다. 여기서 모듈화란 어떤 공통된 로직이나 기능을 하나의 단위로 묶는 것을 말한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">🤔</span><span class="se-fs- se-ff-"><i><b> OOP의 한계?</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">객체지향 프로그래밍은 어플리케이션을 설계할 때 책임과 관심사에 따라 클래스를 분리한다. 클래스가 단일 책임을 가지도록 분리함으로써 각 모듈의 응집도는 높아지고 결합도는 낮아진다. 클래스를 변경하는 이유는 오직 한 가지이며, 어플리케이션의 한 부분에서 변경이 발생했을 때 그 파급효과가 시스템의 전체로 퍼져나가는 정도가 낮아진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그러나 전통적인 객체지향 설계 방식을 충실히 따르더라도 한 가지 아쉬운 점이 존재하는데..</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="https://user-images.githubusercontent.com/56240505/123369146-27997800-d5b8-11eb-9be7-dfd7a34a4f86.png"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 사진처럼, 여러 클래스에 로깅이나 보안 및 트랜잭션 등 공통된 기능들이 흩어져 존재한다는 점이다. 이 부가적인 기능들이 여러 비지니스 로직에서 반복적으로 사용되는 패턴을 보이게 되는데, 이를 하나의 공통된 로직에서 처리할 수 있도록 모듈화하여 개발하는 것이 AOP 를 하는 주요 목적이라고 볼 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[</span><span class="se-fs- se-ff-"><a class="se-link" href="https://velog.io/@dusdn2424/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%8A%A4%ED%94%84%EB%A7%81-AOP-%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC" target="_blank">AOP에 대한 자세한 글</a></span><span class="se-fs- se-ff-">]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>웹 기술: 스프링 MVC</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">MVC(모델-뷰-컨트롤러 패턴): 웹 프로그램밍 개발 시 거의 표준적인 방식인 Spring MVC라 불리는 모델-뷰-컨트롤러(MVC) 패턴을 사용한다. DispatcherServlet이 Controller 역할을 담당하여 각종 요청을 적절한 서비스에 분산시켜주며 이를 각 서비스들이 처리를 하여 결과를 생성하고 그 결과는 다양한 형식의 View 서비스들로 화면에 표시될 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 외에도 </span><span class="se-fs- se-ff-"><b>데이터 접근 기술(</b></span><span class="se-fs- se-ff-">트랜잭션, JDBC, ORM), 배치 프레임워크 등이 있지만 해당 포스팅에서는 여기까지 기술한다. (더 자세한 내용은 여기를 참고)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">3. 스프링부트</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링부트란</span><span class="se-fs- se-ff-"><b> '스프링을 편리하게 사용할 수 있는 프레임워크' </b></span><span class="se-fs- se-ff- se-weight-unset">다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/what-is-spring-framework/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>스프링부트의 장점</b></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">단독으로 실행할 수 있는 스프링 어플리케이션을 쉽게 생성</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">톰캣 같은 웹 서버를 내장해서 별도의 웹 서버를 설치하지 않아도 됨</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">-&gt; 빌드+톰캣 서버 설치 등.. 거기에 빌드된 것 옮기고 등등 그런 과정이 생략</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">쉬운 빌드 구성을 위한 스타터 종속성 제공</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">외부 라이브러리(서드파티) 자동 구성. (예전엔 힘들었다고..)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">외부 구성 같은 프로덕션(모니터링 등) 준비 기능 제공</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">설정이 쉬워짐(기본 세팅이 있고, 내가 필요한 것은 찾아서 추가하면 됨)</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">4. 객체지향</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링부트를 조금 쓰다보니 이런저런 것들이 궁금해져서 잔뜩 정리해 봤다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래서 결론. 스프링부트의 핵심과 결론은 </span><span class="se-fs- se-ff-"><b>객체 지향</b></span><span class="se-fs- se-ff-">이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">대학교 시절 객체 지향에 대해 공부할 때 항상 나왔던 단어 '다형성'을 다시 생각해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다형성이란 레고 부품을 끼고 빼듯 변경이 용이한 것을 말한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">실제 세상의 역할과 구현이라는 편리한 컨셉은 '다형성'을 통해 객체 세상으로 가져올 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(전자를 인터페이스, 후자를 인터페이스를 구현한 객체 or 클래스)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예를 들어보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+역할: 부부의 세계 여다경
+구현: 한소희
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그러나 여다경이라는 역할을 구현한 것이 한소희가 아니라 송혜교 였어도, 여다경이라는 역할을 구현할 수 있고 상대 배역 또한 달라지는 것이 없다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/what-is-spring-framework/images/nv_0.png"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 한계점은 '인터페이스'가 바뀌면 어떻게 되는가?이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">아예 대본이 변하는 느낌.. 그래서 설계시 이 인터페이스를 안정적으로 설계하는 것이 중요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래서 스프링은 이 다형성을 극대화해서 이용할 수 있게 도와주는 것이라 할 수 있겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스프링을 사용하면 드라마의 배우를 선택하듯, 레고 블럭을 조립하듯, 구현을 편리하게 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#999999;">참고 :</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#999999;"><a class="se-link" href="https://velog.io/@gillog/Spring-DIDependency-Injection" target="_blank">https://velog.io/@gillog/Spring-DIDependency-Injection</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#999999;"><a class="se-link" href="https://cydin.tistory.com/6" target="_blank">https://cydin.tistory.com/6</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#999999;"><a class="se-link" href="https://tecoble.techcourse.co.kr/post/2021-06-25-aop-transaction/" target="_blank">https://tecoble.techcourse.co.kr/post/2021-06-25-aop-transaction/</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

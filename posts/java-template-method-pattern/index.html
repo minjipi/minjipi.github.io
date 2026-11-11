@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAVA 디자인패턴 | 템플릿 메서드 패턴 | minj.devlog</title>
+  <meta name="description" content="템플릿 메서드 패턴 ! - 코드 중복 최소화 - 중간에 다른 부분을 Primitive메서드 혹은 hook메서드 라고 한다. 이 부분을 추상 메서드로 구현한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-template-method-pattern/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JAVA 디자인패턴 | 템플릿 메서드 패턴" />
+  <meta property="og:description" content="템플릿 메서드 패턴 ! - 코드 중복 최소화 - 중간에 다른 부분을 Primitive메서드 혹은 hook메서드 라고 한다. 이 부분을 추상 메서드로 구현한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-template-method-pattern/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2020-06-18" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JAVA 디자인패턴 | 템플릿 메서드 패턴", "description": "템플릿 메서드 패턴 ! - 코드 중복 최소화 - 중간에 다른 부분을 Primitive메서드 혹은 hook메서드 라고 한다. 이 부분을 추상 메서드로 구현한다.", "datePublished": "2020-06-18", "dateModified": "2020-06-18", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-template-method-pattern/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-template-method-pattern">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2020-06-18">2020.06.18</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222004366430" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JAVA 디자인패턴 | 템플릿 메서드 패턴</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222004366430 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">템플릿 메서드 패턴 !</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 코드 중복 최소화</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 중간에 다른 부분을 Primitive메서드 혹은 hook메서드 라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"> 이 부분을 추상 메서드로 구현한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+package Template;
+public class Client1 {
+public static void main(String[] args) {
+		Door door = new Door();
+HD hd =new HD(door);
+		hd.move(Direction.UP);
+}
+}
+enum DoorStatus {
+CLOSED, OPENED
+}
+enum MotorStatus {
+MOVING, STOPPED
+}
+enum Direction {
+UP, DOWN
+}
+class Door {
+private DoorStatus doorStatus;
+public Door() {
+		doorStatus = DoorStatus.CLOSED;
+}
+public DoorStatus getDoorStatus() {
+return doorStatus;
+}
+public void close() {
+		doorStatus = doorStatus.CLOSED;
+}
+public void open() {
+		doorStatus = doorStatus.OPENED;
+}
+}
+//
+class HD {
+private Door door;
+private MotorStatus motorStatus;
+public HD(Door door) {
+this.door = door;
+		motorStatus = motorStatus.STOPPED;
+}
+private void moveHD(Direction direction) {
+// 현대 모터 구동 시키는 코드
+}
+public MotorStatus getMotorStatus() {
+return motorStatus;
+}
+private void setMotorStatus(MotorStatus motorStatus) {
+this.motorStatus = motorStatus;
+}
+public void move(Direction direction) {
+		MotorStatus motorStatus=getMotorStatus();
+if ( motorStatus==motorStatus.MOVING) return;
+		
+		DoorStatus doorStatus = door.getDoorStatus();
+if (doorStatus==doorStatus.OPENED) door.close();
+moveHD(direction);
+setMotorStatus(MotorStatus.MOVING);
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">문제점 : </span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"> 다른 회사의 엘리베이터라면?</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다 바꿔줘야 하나..?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+LG 모터
+
+class LG {
+private Door door;
+private MotorStatus motorStatus;
+public LG(Door door) {
+this.door = door;
+		motorStatus = motorStatus.STOPPED;
+}
+private void moveLG(Direction direction) {
+// LG 모터 구동 시키는 코드
+}
+public MotorStatus getMotorStatus() {
+return motorStatus;
+}
+private void setMotorStatus(MotorStatus motorStatus) {
+this.motorStatus = motorStatus;
+}
+public void move(Direction direction) {
+		MotorStatus motorStatus = getMotorStatus();
+if (motorStatus == motorStatus.MOVING)
+return;
+
+		DoorStatus doorStatus = door.getDoorStatus();
+if (doorStatus == doorStatus.OPENED)
+			door.close();
+moveLG(direction);
+setMotorStatus(MotorStatus.MOVING);
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이러면 OCP 원칙에 위배된다..!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">해결책</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 공통되는 부분을 빼서 abstract 클래스 만들기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+abstract class Motor {
+protected Door door;
+private MotorStatus motorStatus;
+public Motor(Door door) {
+this.door = door;
+		motorStatus = motorStatus.STOPPED;
+}
+public MotorStatus getMotorStatus() {
+return motorStatus;
+}
+protected void setMotorStatus(MotorStatus motorStatus) {
+this.motorStatus = motorStatus;
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">하위 클래스</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+class HD extends Motor {
+public HD(Door door) {
+super(door);
+}
+private void moveHD(Direction direction) {
+// 현대 모터 구동 시키는 코드
+}
+public void move(Direction direction) {
+		MotorStatus motorStatus = getMotorStatus();
+if (motorStatus == motorStatus.MOVING)
+return;
+
+		DoorStatus doorStatus = door.getDoorStatus();
+if (doorStatus == doorStatus.OPENED)
+			door.close();
+moveHD(direction);
+setMotorStatus(MotorStatus.MOVING);
+}
+}
+//
+class LG extends Motor {
+public LG(Door door) {
+super(door);
+}
+private void moveLG(Direction direction) {
+// LG 모터 구동 시키는 코드
+}
+public void move(Direction direction) {
+		MotorStatus motorStatus = getMotorStatus();
+if (motorStatus == motorStatus.MOVING)
+return;
+
+		DoorStatus doorStatus = door.getDoorStatus();
+if (doorStatus == doorStatus.OPENED)
+			door.close();
+moveLG(direction);
+setMotorStatus(MotorStatus.MOVING);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>해 결 책</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- move 메서드에서 공통적인 부분을 상위 클래스 Motor로 이동한다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+abstract class Motor {
+protected Door door;
+private MotorStatus motorStatus;
+public Motor(Door door) {
+this.door = door;
+		motorStatus = motorStatus.STOPPED;
+}
+public MotorStatus getMotorStatus() {
+return motorStatus;
+}
+protected void setMotorStatus(MotorStatus motorStatus) {
+this.motorStatus = motorStatus;
+}
+public void move(Direction direction) {
+		MotorStatus motorStatus = getMotorStatus();
+if (motorStatus == motorStatus.MOVING)
+return;
+
+		DoorStatus doorStatus = door.getDoorStatus();
+if (doorStatus == doorStatus.OPENED)
+			door.close();
+moveMotor(direction);
+setMotorStatus(MotorStatus.MOVING);
+}
+protected abstract void moveMotor(Direction direction);
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 각각의 부분 코드.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+class HD extends Motor {
+public HD(Door door) {
+super(door);
+}
+protected void moveMotor(Direction direction) {
+// 현대 모터 구동 시키는 코드
+}
+}
+class LG extends Motor {
+public LG(Door door) {
+super(door);
+}
+protected void moveMotor(Direction direction) {
+// LG 모터 구동 시키는 코드
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">훨씬 간결해 졌다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>[ 템플릿 메서드 패턴 ]</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>전체적으로 동일하면서 부분적으로 다른 메소드의 코드 중복을 최소화 할 때 유용하다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 추상클래스 만들기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. 부분적으로 다른 부분들은 추상 메서드로 빼서 구현</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

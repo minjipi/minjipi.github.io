@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리액트 쇼핑몰 옵션 기능 구현 | minj.devlog</title>
+  <meta name="description" content="리액트로 쇼핑몰 옵션 기능 구현하기 옵션 1 옵션 1의 옵션 1 옵션 1의 옵션2 최종적으로 이렇게 되게 1. 우선 반복되어야 하는 부분을 반복문으로 만들기 function Product() { const optionData = [ { id: 1, title: &quot;옵션1&quot;," />
+  <link rel="canonical" href="https://minjipi.github.io/posts/react-shopping-mall-options/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="리액트 쇼핑몰 옵션 기능 구현" />
+  <meta property="og:description" content="리액트로 쇼핑몰 옵션 기능 구현하기 옵션 1 옵션 1의 옵션 1 옵션 1의 옵션2 최종적으로 이렇게 되게 1. 우선 반복되어야 하는 부분을 반복문으로 만들기 function Product() { const optionData = [ { id: 1, title: &quot;옵션1&quot;," />
+  <meta property="og:url" content="https://minjipi.github.io/posts/react-shopping-mall-options/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/react-shopping-mall-options/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-01-30" />
+  <meta property="article:section" content="Frontend/React" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "리액트 쇼핑몰 옵션 기능 구현", "description": "리액트로 쇼핑몰 옵션 기능 구현하기 옵션 1 옵션 1의 옵션 1 옵션 1의 옵션2 최종적으로 이렇게 되게 1. 우선 반복되어야 하는 부분을 반복문으로 만들기 function Product() { const optionData = [ { id: 1, title: \"옵션1\",", "datePublished": "2022-01-30", "dateModified": "2022-01-30", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/react-shopping-mall-options/", "image": "https://minjipi.github.io/posts/react-shopping-mall-options/images/image_1.jpg", "articleSection": "Frontend/React"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="react-shopping-mall-options">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FReact">Frontend/React</a>
+              <time class="post-date" datetime="2022-01-30">2022.01.30</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222635268819" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">리액트 쇼핑몰 옵션 기능 구현</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/react-shopping-mall-options/images/image_1.jpg" alt="리액트 쇼핑몰 옵션 기능 구현" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222635268819 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">리액트로 쇼핑몰 옵션 기능 구현하기</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-"><b>옵션 1</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-"><b>       옵션 1의 옵션 1</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-"><b>       옵션 1의 옵션2</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/react-shopping-mall-options/images/nv_0.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">최종적으로 이렇게 되게</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">1. 우선 반복되어야 하는 부분을 반복문으로 만들기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function Product() {
+const optionData = [
+{ id: 1, title: "옵션1", select: ["값1-1", "값1-2"] },
+{ id: 2, title: "옵션2", select: ["값2-1", "값2-2", "값2-3"] },
+];
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. 반복 (map 함수 사용)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ {optionData.map((option) =&gt; {
+return (
+&lt;&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;span&gt;{option.title}&lt;/span&gt;
+&lt;span&gt;&lt;/span&gt;
+&lt;i className="fas fa-chevron-up" /&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/&gt;
+);
+})}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">일단은 title만 나오게 해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/react-shopping-mall-options/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">나오는 것 확인..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. 파일 따로 만들기(Option.js)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">반복해서 출력할 때, 데이터에 들어있는 내용이 나오게 하기.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">반복할 때 각 데이터를 props로 옵션 파일에 전달해주고, 그걸 받아와서 출력.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function Option(props) {
+return (
+&lt;ol className="active"&gt;
+&lt;li&gt;
+&lt;span&gt;{props.optionData.title}&lt;/span&gt;
+&lt;span&gt;&lt;/span&gt;
+&lt;i className="fas fa-chevron-up" /&gt;
+&lt;/li&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;li className="active"&gt;
+&lt;li&gt;
+&lt;span&gt;{props.optionData.select}&lt;/span&gt;
+&lt;/li&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+);
+}
+== 아래는 디자인 부분 ==
+const span = styled.span``;
+const ol = styled.ol`
+  margin: 0 12px;
+&amp;.active {
+border: 1px solid #333;
+&gt; li {
+      border-radius: 4px 4px 0 0;
+}
+}
+&gt; li {
+position: relative;
+padding: 12px;
+&gt; span {
+width: 30%;
+}
+&gt; ${AlignRightSpan} {
+width: 60%;
+}
+}
+export default Option;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/react-shopping-mall-options/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">옵션과 옵션의 옵션까지 나온다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">4. 옵션의 옵션 각각 나오게 하기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function Option(props) {
+return (
+&lt;ol className="active"&gt;
+&lt;li&gt;
+&lt;span&gt;{props.optionData.title}&lt;/span&gt;
+&lt;span&gt;&lt;/span&gt;
+&lt;i className="fas fa-chevron-up" /&gt;
+&lt;/li&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;li className={isSelectVisible ? "active" : ""}&gt;
+{props.optionData.select.map((select) =&gt; {
+return (
+&lt;li&gt;
+&lt;span&gt;
+{select}
+&lt;/span&gt;
+&lt;/li&gt;
+);
+})}
+&lt;/li&gt;
+&lt;/ol&gt;
+);
+}
+export default Option;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">5. '옵션의 옵션' 선택하면 옵션에 선택한 값 전달되면서 옵션 창 닫히게</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+const [selectedVal, setSelectedVal] = useState("");
+const [isSelectVisible, setIsSelectVisible] = useState(false);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">isSelectVisible, selectedVal 이라는 스테이트를 만든다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">selectedVal은 선택된 옵션 값을 저장하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">isSelectVisible은 선택된 옵션이나 옵션의 옵션을 보여줄지 말지 상태를 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>* props 와 state.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">props는 부모 컴포넌트가 -&gt; 자식 컴포넌트에게 주는 값.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자식 컴포넌트에서는 props를 받아오기만하고, 받아온 props를 직접 수정 할 수 는 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>state는 컴포넌트 내부에서 선언하며 내부에서 값을 변경 할 수 있다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>props는 (함수 매개변수처럼) 컴포넌트에 전달.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><i>state는 (함수 내에 선언된 변수처럼) 컴포넌트 안에서 관리된다는 차이!</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#999999;">props를 사용했는데도 state를 사용하는 이유:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#999999;">사용하는 쪽과 구현하는 쪽을 철저하게 분리시켜서 양쪽의 편의성을 각자 도모하는 뭐 그런</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#999999;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
+function Option(props) {
+const [isSelectVisible, setIsSelectVisible] = useState(false);
+const [selectedVal, setSelectedVal] = useState("");
+return (
+&lt;ol className={isSelectVisible ? "active" : ""}&gt;
+&lt;li&gt;
+&lt;span&gt;{props.optionData.title}&lt;/span&gt;
+&lt;span&gt;{selectedVal}&lt;/span&gt;
+&lt;i
+          onClick={() =&gt; {
+setIsSelectVisible(!isSelectVisible);
+}}
+          className={
+            isSelectVisible ? "fas fa-chevron-up" : "fas fa-chevron-down"
+}
+/&gt;
+&lt;/li&gt;
+&lt;div&gt;&lt;/div&gt;
+{isSelectVisible ? (
+&lt;li className={isSelectVisible ? "active" : ""}&gt;
+{props.optionData.select.map((select) =&gt; {
+return (
+&lt;li&gt;
+&lt;span
+                  onClick={() =&gt; {
+setSelectedVal(select);
+setIsSelectVisible(!isSelectVisible);
+}}
+&gt;
+{select}
+&lt;/span&gt;
+&lt;/li&gt;
+);
+})}
+&lt;/li&gt;
+) : (
+""
+)}
+&lt;/ol&gt;
+);
+}
+export default Option;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#999999;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#000000;">결과 :</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/react-shopping-mall-options/images/nv_1.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/react-shopping-mall-options/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">* Uncaught ReferenceError .. 라는 리액트 에러</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/react-shopping-mall-options/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이건 스타일끼리 꼬여서 생긴 에러ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">혹시라도 이런 에러나 난다면 스타일(class 적용 순서) 순서를 다시 보자..</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">😵‍💫😵‍💫</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">벌써 하루 사이에 꽤 바뀌었지만</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">일단은 이게 기본!</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

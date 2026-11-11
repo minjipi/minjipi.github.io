@@ -28,7 +28,7 @@
   function postUrl(slug) {
     return window.IS_LOCAL
       ? (window.BASE_URL || '') + 'post.html?slug=' + slug
-      : '/posts/' + slug;
+      : '/posts/' + slug + '/';
   }
 
   function postsUrl(qs) {

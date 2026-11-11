@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>리액트 검색기능 구현 (스프링부트, 리액트 연동 쇼핑몰 검색 기능 구현) | minj.devlog</title>
+  <meta name="description" content="스프링부트, 리액트 연동 쇼핑몰 검색 기능 구현 Header 페이지에서 검색 하면 -&gt; ProductSearch 라는 새 페이지에서 검색 결과가 출력되는 검색 기능을 구현했다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/react-spring-boot-search/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="리액트 검색기능 구현 (스프링부트, 리액트 연동 쇼핑몰 검색 기능 구현)" />
+  <meta property="og:description" content="스프링부트, 리액트 연동 쇼핑몰 검색 기능 구현 Header 페이지에서 검색 하면 -&gt; ProductSearch 라는 새 페이지에서 검색 결과가 출력되는 검색 기능을 구현했다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/react-spring-boot-search/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/react-spring-boot-search/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-03-03" />
+  <meta property="article:section" content="Frontend/React" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "리액트 검색기능 구현 (스프링부트, 리액트 연동 쇼핑몰 검색 기능 구현)", "description": "스프링부트, 리액트 연동 쇼핑몰 검색 기능 구현 Header 페이지에서 검색 하면 -> ProductSearch 라는 새 페이지에서 검색 결과가 출력되는 검색 기능을 구현했다.", "datePublished": "2022-03-03", "dateModified": "2022-03-03", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/react-spring-boot-search/", "image": "https://minjipi.github.io/posts/react-spring-boot-search/images/image_1.jpg", "articleSection": "Frontend/React"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="react-spring-boot-search">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FReact">Frontend/React</a>
+              <time class="post-date" datetime="2022-03-03">2022.03.03</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222662749514" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">리액트 검색기능 구현 (스프링부트, 리액트 연동 쇼핑몰 검색 기능 구현)</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222662749514 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><i>스프링부트, 리액트 연동 </i></span><span class="se-fs- se-ff-"><i><b>쇼핑몰 검색 기능 구현 </b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">Header 페이지에서 검색 하면 -&gt; ProductSearch 라는 새 페이지에서 검색 결과가 출력되는 검색 기능을 구현했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/react-spring-boot-search/images/nv_0.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">"test" 검색</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">이전글 : </span><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222661721733" target="_blank">스프링부트 검색기능 구현</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-"><b>1_</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-"><b>Header.js</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function Header() {
+const [word, setWord] = useState("");
+const onSubmit = async () =&gt; {
+    window.location.href = "/search/" + word;
+};
+return (
+&lt;input
+    onChange={(e) =&gt; {
+setWord(e.target.value);
+    console.log(word);
+}}&gt;&lt;/input&gt;
+&lt;button
+     type="button"
+     onClick={() =&gt; {
+onSubmit();
+}}&gt;&lt;/button&gt;
+);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/react-spring-boot-search/images/nv_1.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">input 으로 검색어를 입력하면 변경된 값을 감지하는 onChange 함수 안에서 setWord로 입력한 검색어인e.target.value를 word에 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 검색 버튼을 누르면 onSubmit 함수가 동작하여 "/search +검색어 word"로 새창 이동이 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">버튼 태그에 type="button"을 해주지 않으면 버튼을 누를 때마다 페이지 새로고침이 되기 때문에 꼭 해줘야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2_</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 Routing.js 파일을 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+class Routing extends React.Component {
+render() {
+return (
+&lt;Router&gt;
+&lt;Routes&gt;
+&lt; 다른 링크들 ... /&gt;
+&lt;Route path="/search/:word" element={&lt;Search /&gt;} /&gt;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Routing.js 파일에서 "/search/:word" 로 word를 알려준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-"><b>3_</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-"><b>ProductSearch.js</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">검색어를 받아 띄워질 새 창인 ProductSearch.js 파일</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import { useParams } from "react-router";
+function Search() {
+const [searchData, setSearchData] = useState([]);
+const params = useParams();
+useEffect(() =&gt; {
+async function fetchData() {
+const result = await axios.get(
+"http://localhost:8080/product/search?word=" + params.word
+      );
+       console.log(result.data.result);
+setSearchData(result.data.result);
+}
+fetchData();
+}, []);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">get 방식으로 받은 </span><span class="se-fs- se-ff-"><a class="se-link" href="http://localhost:8080/product/search?word=" target="_blank">http://localhost:8080/product/search?word=</a></span><span class="se-fs- se-ff-"> 와 params.word를 합쳐 result에 저장, result에 담긴 데이터들을 setSearchData로 searchData에 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이를 useEffect 함수에 만들어 컴포넌트가 렌더링 될 때마다 작업을 실행하게 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">전달한 word를 받기 위해 { useParams } from "react-router"를 import한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 params.word 이렇게 꺼낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">console.log로 result.data.result를 출력해 함수 작동이 잘 되는지 확인해 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/react-spring-boot-search/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">값을 잘 받아오고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이제 이 결과를 화면에 출력해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+{searchData.map((product) =&gt; {
+return (
+&lt;CardImg
+      filename={product.filename.split(",")[0]}
+&gt;/CardImg&gt;
+);
+})}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">map 함수로 searchData에 저장된 값들을 하나씩 빼서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">CardImg 태그에 담아 출력한다. (CardImg는 디자인을 적용한 div 태그)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">처음엔 filename={product.filename} 이렇게만 했었는데 이렇게 했더니, 한 상품에 이미지가 여러장이 저장된 경우 에러가 났다. 백엔드에서 첫번째 이미지만 가져오게 하거나, 프로필용 대표 사진을 따로 저장해서 그걸 가져오게 해도 되겠지만 일단은..   split 함수로 구분하여 첫번째 이미지만 보이게 처리했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

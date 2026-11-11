@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자바기초 &#x27;생성자 오버로딩(Overloading)&#x27; | minj.devlog</title>
+  <meta name="description" content="생성자 오버로딩 (Overloading) 생성자도 결국 메소드. 오버로딩 할 수 있다. 외부에서 제공되는 다양한 데이터들을 이용해서 객체를 초기화 하려면 생성자도 다양화될 필요가 있다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-constructor-overloading/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="자바기초 &#x27;생성자 오버로딩(Overloading)&#x27;" />
+  <meta property="og:description" content="생성자 오버로딩 (Overloading) 생성자도 결국 메소드. 오버로딩 할 수 있다. 외부에서 제공되는 다양한 데이터들을 이용해서 객체를 초기화 하려면 생성자도 다양화될 필요가 있다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-constructor-overloading/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-constructor-overloading/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-02-08" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "자바기초 '생성자 오버로딩(Overloading)'", "description": "생성자 오버로딩 (Overloading) 생성자도 결국 메소드. 오버로딩 할 수 있다. 외부에서 제공되는 다양한 데이터들을 이용해서 객체를 초기화 하려면 생성자도 다양화될 필요가 있다.", "datePublished": "2022-02-08", "dateModified": "2022-02-08", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-constructor-overloading/", "image": "https://minjipi.github.io/posts/java-constructor-overloading/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-constructor-overloading">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2022-02-08">2022.02.08</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222642006981" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">자바기초 &#x27;생성자 오버로딩(Overloading)&#x27;</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/java-constructor-overloading/images/image_1.jpg" alt="자바기초 &#x27;생성자 오버로딩(Overloading)&#x27;" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222642006981 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>생성자 오버로딩 (Overloading)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">생성자도 결국 메소드. 오버로딩 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">외부에서 제공되는 다양한 데이터들을 이용해서 객체를 초기화 하려면 생성자도 다양화될 필요가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Cat 이라는 객체 생성 시,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">외부에서 제공되는 데이터가 없다면 기본 생성자로 Cat 객체를 생성해야 하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">외부에서 name, color 데이터가 제공될 경우, Cat 객체를 생성할 수 있어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">다시말해 두 가지 경우일 때 모두 객체를 생성할 수 있어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">따라서 생성자가 하나뿐이라면, 두 가지 경우에 따라 객체를 모두 생성할 수 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그렇기 때문에!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자바는 다양한 방법으로 객체를 생성할 수 있도록 생성자 오버로딩을 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>생성자 오버로딩 : 매개 변수를 달리하는 생성자를 여러 개 선언이 가능하도록 하는 것.</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+pubilc class 클래스 {
+// 생성자1
+클래스 ( [타입 매개변수1, 타입 매개변수2, . . . ] ) {
+. . .
+}
+클래스 ( [타입 매개변수1, 타입 매개변수2, . . . ] ) {
+// 생성자2
+. . .
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[Cat 클래스에서의 생성자 오버로딩 예시]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Cat {
+Car() { . . . }
+Car(String name) { . . . }
+Car(String name, String color) { . . . }
+Car(String name, String color, int old) { . . . }
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>생성자 오버로딩시 주의할 점.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">매개 변수의 타입과 개수, 선언된 순서가 똑같을 경우</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">매개 변수 이름만 바꾸는 것은 생성자 오버로딩으로 볼 수 없다. 구분 불가하기 때문이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Car(String model, String color) { . . . }</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Car(String color, String model) { . . . } -&gt; 이것은 오버로딩이 아니다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">생성자가 오버로딩 되어 있는 경우</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">new 연산자로 생성자를 호출할 때, 제공되는 매개변수값의 타입과 개수에 의해 호출될 생성자가 결정된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Cat cat1 = new Cat(); -&gt;  기본 생성자로 객체 생성
+Cat cat2 = new Cat("치즈"); -&gt; Car(String name) 생성자 호출
+Cat cat3 = new Cat("치즈", "노랑색"); -&gt; Car(String name, String color) 생성자
+Cat cat4 = new Cat("치즈", "노랑색", 3); -&gt; Car(String name, String color, int old) 생성자
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ex) 다양한 방법으로 Cat 객체가 생성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[ Cat.java 생성자 오버로딩 ]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Cat {
+//필드
+    String name;
+    String color;
+    int old;
+//생성자 오버로딩
+Car(){
+}
+Car(String name) {
+this.name = name; // 필드 model 에 매개변수 값 저장
+}
+Car(String name, String color) {
+this.name = name;
+this.color = color;
+}
+Car(String name, String color, int old) {
+this.name = name;
+this.color = color;
+this.old = old;
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[ CatExample.java 객체 생성 시 생성자 선택 예시 ]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class CatExample {
+public static void main(String[] args) {
+        Cat car1 = new Car(); // 생성자 선택1 : 기본생성자
+        System.out.println();
+        
+        Cat cat2 = new Car("자가용"); // 생성자 선택2
+        System.out.println("car2.name : "+ car2.name); 
+        System.out.println();
+        
+        Cat cat3 = new Car("자가용", "빨강"); // 생성자 선택3
+        System.out.println("car3.name : "+ car2.name); 
+        System.out.println("car3.color : "+ car2.color); // 빨강
+        System.out.println();
+        
+        Cat car4 = new Car("택시", "검정", 200); // 생성자 선택4
+        System.out.println("car4.name : "+ car4.name); 
+        System.out.println("car4.color : "+ car4.color);
+        System.out.println("car4.maxSpeed : "+ car4.maxSpeed);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

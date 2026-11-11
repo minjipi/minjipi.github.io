@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[JPA] 컬렉션 조회 최적화 (페이징을 하면서 컬렉션 엔티티를 같이 조회) | minj.devlog</title>
+  <meta name="description" content="이전 글 컬렉션 조회(일대다 관계) 최적화 페이징을 하면서 컬렉션 엔티티를 같이 조회하려면 어떻게 해야할까? XToOne 관계는 모두 fetch join. (toOne 끼리는 fetch join을 해도 문제없음. 데이터 row수가 변하지 않음.) 컬렉션 조회는 지연로딩으로." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/jpa-collection-fetch-paging/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[JPA] 컬렉션 조회 최적화 (페이징을 하면서 컬렉션 엔티티를 같이 조회)" />
+  <meta property="og:description" content="이전 글 컬렉션 조회(일대다 관계) 최적화 페이징을 하면서 컬렉션 엔티티를 같이 조회하려면 어떻게 해야할까? XToOne 관계는 모두 fetch join. (toOne 끼리는 fetch join을 해도 문제없음. 데이터 row수가 변하지 않음.) 컬렉션 조회는 지연로딩으로." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/jpa-collection-fetch-paging/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/jpa-collection-fetch-paging/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-10-16" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[JPA] 컬렉션 조회 최적화 (페이징을 하면서 컬렉션 엔티티를 같이 조회)", "description": "이전 글 컬렉션 조회(일대다 관계) 최적화 페이징을 하면서 컬렉션 엔티티를 같이 조회하려면 어떻게 해야할까? XToOne 관계는 모두 fetch join. (toOne 끼리는 fetch join을 해도 문제없음. 데이터 row수가 변하지 않음.) 컬렉션 조회는 지연로딩으로.", "datePublished": "2022-10-16", "dateModified": "2022-10-16", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jpa-collection-fetch-paging/", "image": "https://minjipi.github.io/posts/jpa-collection-fetch-paging/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="jpa-collection-fetch-paging">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-10-16">2022.10.16</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222901284549" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[JPA] 컬렉션 조회 최적화 (페이징을 하면서 컬렉션 엔티티를 같이 조회)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/jpa-collection-fetch-paging/images/image_1.jpg" alt="[JPA] 컬렉션 조회 최적화 (페이징을 하면서 컬렉션 엔티티를 같이 조회)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222901284549 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-"><i>이전 글</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222900622339" target="_blank">컬렉션 조회(일대다 관계) 최적화</a></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">페이징을 하면서 컬렉션 엔티티를 같이 조회하려면 어떻게 해야할까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">XToOne 관계는 모두 fetch join. (toOne 끼리는 fetch join을 해도 문제없음. 데이터 row수가 변하지 않음.)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">컬렉션 조회는 지연로딩으로. 여기서 지연 로딩 성능 최적화를 위해, @BatchSize 혹은 hibernate.default_batch_fetch_size 옵션을 사용한다. (후자는 글로벌/전자는 특정 엔티티에만) 적어둔 갯수만큼 미리 땡겨오는 녀석이다.</span></p></li></ol><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[OrderController]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+    @GetMapping("/orders")
+public List&lt;OrderDto&gt; orders() {
+
+        List&lt;Order&gt; orders = orderRepository.findAllWithMemberDelivery();
+        List&lt;OrderDto&gt; result = orders.stream()
+.map(o -&gt; new OrderDto(o))
+.collect(toList());
+return result;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">[OrderRepository]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+ public List&lt;Order&gt; findAllWithMemberDelivery() {
+return em.createQuery(
+"select o from Order o" +
+" join fetch o.member m" +
+" join fetch o.delivery d", Order.class)
+.getResultList();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위에서 설명했듯이, XToOne 관계인 member와 delivery는 그냥 페치조인으로 가져온다. 하지만 orderItems는 ToOne 관계가 아니라 페치조인을 하면 성능최적화가 불가능 하다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">모든 쿼리문을 보기엔 너무 길어서 이 한 장만 첨부했지만 굉장히 길고 N+1 문제가 생긴 상황이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">해결해보자..</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+@GetMapping("/orders")
+public List&lt;OrderDto&gt; orders(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                        @RequestParam(value = "limit", defaultValue = "100") int limit) {
+
+        List&lt;Order&gt; orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+        List&lt;OrderDto&gt; result = orders.stream()
+.map(o -&gt; new OrderDto(o))
+.collect(toList());
+return result;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">offset limit 옵션을 주고, repository에 이 파라미터를 받게 구현한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+public List&lt;Order&gt; findAllWithMemberDelivery(int offset, int limit) {
+return em.createQuery(
+"select o from Order o" +
+" join fetch o.member m" +
+" join fetch o.delivery d", Order.class)
+.setFirstResult(offset)
+.setMaxResults(limit)
+.getResultList();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 yml 파일에 다음과 같이 </span><span class="se-fs- se-ff-"><b>default_batch_fetch_size: 100</b></span><span class="se-fs- se-ff-"> 를 추가한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+jpa:
+hibernate:
+      ddl-auto: create
+    properties:
+hibernate:
+show_sql: true
+format_sql: true
+default_batch_fetch_size: 100
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">여기서 100으로 설정해둔 부분이  in 쿼리의 갯수를 정하는 건데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">여기를 10으로 해두고 총 데이터 수가 100개면 10개 날아가는 식이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">(일단 이는 global하게 설정하는 방법이고, 엔티티에 @BatchSize(size=[]) 옵션을 주면 더 세세하게 설정할 수 있다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">api를 호출해서 결과를 확인해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+http://localhost:8080/orders?offset=0&amp;limit=100
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">결과 쿼리가 굉장히 짧아진 것을 확인할 수 있다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 전 쿼리는 멤버 각각 쿼리를 날렸는데 지금은 in 쿼리로 한번에 날려서 가지고 온다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/jpa-collection-fetch-paging/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">그리고 product도 한번에 4개를 다 가져온다. 이게 지금은 4개지만, 100개라면? ^^ 대박!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpa-collection-fetch-paging/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">그래서 이렇게 하면 1:M:N 이 1:1:1이 되는 최적화가 가능한 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">그런데, 사실 쿼리 수만 따져보면 한번에 조회됐던 모두 fetch join한 버전이 쿼리 1번으로 가장 적긴하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">하지만 뽑은 데이터만 살펴보면 중복된 데이터가 많다는 문제가 있다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpa-collection-fetch-paging/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">이 중복 데이터를 디비에서 어플리케이션으로 다~ 가져오는건데.. 데이터 전송량이 많아지는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">그에 비해 이번 포스팅에서 한 방식을 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpa-collection-fetch-paging/images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">쿼리를 H2 디비에 복붙해서 확인!</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpa-collection-fetch-paging/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">중복 없는 데이터가 나온다. (이 역시 2건, 4건이라 와닿지 않을 수 있지만 100개 1000개 라면!)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">default_batch_fetch_size 덕분에.ㅎㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">📍 그래서 이번 포스팅 결론:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">- default_batch_fetch_size 으로, 1:M:N 이 1:1:1이 되는 최적화가 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">- 컬렉션 페치 조인은 페이징이 불가능하지만 이 방법은 페이징이 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">- </span><span class="se-fs- se-ff-"><b>ToOne 관계는 페치조인을, 나머지는 default_batch_fetch_size 로 최적화 하자.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-right" style="max-width:200px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpa-collection-fetch-paging/images/nv_0.png"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">참고</span></p></div>
+</div>
+</div>
+</div>
+</div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

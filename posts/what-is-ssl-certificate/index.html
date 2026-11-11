@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SSL 인증서란? (SSL 인증서가 안전한 연결을 만드는 법, 공개키, 개인키, 세션키) | minj.devlog</title>
+  <meta name="description" content="0. HTTPS 와 HTTP HTTPS는 HTTP를 안전하게 만드는 방식 HTTP는 암호화되지 않은 방법으로 데이터를 전송하기 때문에 서버와 클라이언트가 주고 받는 메시지를 감청하는 것이 쉽다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/what-is-ssl-certificate/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="SSL 인증서란? (SSL 인증서가 안전한 연결을 만드는 법, 공개키, 개인키, 세션키)" />
+  <meta property="og:description" content="0. HTTPS 와 HTTP HTTPS는 HTTP를 안전하게 만드는 방식 HTTP는 암호화되지 않은 방법으로 데이터를 전송하기 때문에 서버와 클라이언트가 주고 받는 메시지를 감청하는 것이 쉽다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/what-is-ssl-certificate/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/what-is-ssl-certificate/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-11-16" />
+  <meta property="article:section" content="Network" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "SSL 인증서란? (SSL 인증서가 안전한 연결을 만드는 법, 공개키, 개인키, 세션키)", "description": "0. HTTPS 와 HTTP HTTPS는 HTTP를 안전하게 만드는 방식 HTTP는 암호화되지 않은 방법으로 데이터를 전송하기 때문에 서버와 클라이언트가 주고 받는 메시지를 감청하는 것이 쉽다.", "datePublished": "2022-11-16", "dateModified": "2022-11-16", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/what-is-ssl-certificate/", "image": "https://minjipi.github.io/posts/what-is-ssl-certificate/images/image_1.jpg", "articleSection": "Network"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="what-is-ssl-certificate">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Network">Network</a>
+              <time class="post-date" datetime="2022-11-16">2022.11.16</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222929989063" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">SSL 인증서란? (SSL 인증서가 안전한 연결을 만드는 법, 공개키, 개인키, 세션키)</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222929989063 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>0. HTTPS 와 HTTP</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="https://k.kakaocdn.net/dn/bQ0K68/btrQ3TpcVSC/S65ZaOZKHk9H5547WPaFq0/img.png"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">HTTPS는 HTTP를 안전하게 만드는 방식</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">HTTP는 암호화되지 않은 방법으로 데이터를 전송하기 때문에 서버와 클라이언트가 주고 받는 메시지를 감청하는 것이 쉽다. 예를들어 로그인을 위해서 서버로 비밀번호를 전송하거나, 또는 중요한 기밀 문서를 열람하는 과정에서 악의적인 감청이나 데이터의 변조등이 일어날 수 있다. 이를 보안한 것이 HTTPS다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:300px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="https://k.kakaocdn.net/dn/uxSRx/btrRaFKfkyq/wtWY3JJDgaD0OgCS1KtaPk/img.png"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">HTTPS는 TCP위에 놓인 보안계층(SSL)위의 HTTP</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset">- HTTPS 와 SSL</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">웹이 인터넷 위에서 돌아가는 서비스 중 하나인 것처럼,</span><span class="se-fs- se-ff-system se-style-unset"><b> HTTPS도 SSL 프로토콜 위에서 돌아가는 프로토콜</b></span><span class="se-fs- se-ff-system se-style-unset">이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset">- SSL 프로토콜</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">SSL 프로토콜은 링크와 전송되는 데이터의 암호화 변수를 결정한다. 모든 브라우저는 SSL 프로토콜을 사용해 보안 웹 서버와 상호작용할 수 있는 기능이 있다. 그러나 브라우저와 서버는 보안 연결을 수립하기 위해 SSL 인증서라는 것이 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>1. SSL 이란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">보안 소켓 계층(Secure Sockets Layer, SSL)은 서버와 클라이언트 사이에 암호화된 링크를 구성하기 위한 표준 보안 기술, 보안 프로토콜이다. 일반적으로 웹 서버와 브라우저, 또는 메일 서버와 메일 클라이언트 간에 설정되며,</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">신용 카드 번호, 주민등록번호, 로그인 자격 증명과 같이 민감한 정보를 안전하게 전송할 수 있도록 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">일반적으로 브라우저와 웹 서버 사이에 전송되는 데이터는 일반 텍스트로 전송되기 때문에 여전히 도청에 취약하다. 브라우저와 웹 서버 사이에 전송되는 모든 데이터를 공격자가 가로챌 수 있다면 공격자는 그러한 정보를 확인하고 악용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs19 se-ff-system se-style-unset">-  SSL 인증서</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">클라이언트와 서버간의 통신을 공인된 제3자(CA) 업체가 보증해주는 전자화된 문서.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">통신 내용이 노출, 변경되는 것을 방지하고, 클라이언트가 접속하려는 서버가 신뢰 할 수 있는 서버인지 확인이 가능하다. SSL 통신에 사용할 공개키를 클라이언트에게 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>2. SSL 인증서는 어떻게 안전한 연결을 만드나?  (공개키, 개인키, 세션키)</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">기본적으로 SSL 연결을 설정하는 데에는 </span><span class="se-fs- se-ff-system se-style-unset"><b>공개 키, 개인 키, 세션 키</b></span><span class="se-fs- se-ff-system se-style-unset">라는 세 가지 키가 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">🔒 </span><span class="se-fs- se-ff-system se-style-unset"><b>대칭키(비공개키)</b></span><span class="se-fs- se-ff-system se-style-unset">:</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">대칭키는 동일한 키로 암호화와 복호화를 같이 할 수 있는 방식의 암호화 기법이다. 암호화를 할 때 사용하는 일종의 비밀번호를 '키' 라고 한다. 암호화를 할 때 abc 라는 값을 사용했다면 복호화를 할 때도 abc 라는 값을 입력해야 한다는 것이다. 이 키에 따라 암호화된 결과가 달라지기 때문에 키를 모르면 복화화가 불가능하다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">그런데 대칭키 방식은 단점이 있다. 바로 암호를 주고 받는 사람들 사이에 대칭키를 전달하는 것이 어렵다는 점이다. 대칭키가 유출되면 키를 획득한 공격자는 암호의 내용을 복호화 할 수 있기 때문에, 암호가 무용지물이 된다. 그렇기 때문에 키를 비공개 해야해서 비공개키라고도 한다. 그래서 이를 보완하기 위해 도입된 암호화 방식이 '공개키'다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">🔒 </span><span class="se-fs- se-ff-system se-style-unset"><b>비대칭키(공개키)</b></span><span class="se-fs- se-ff-system se-style-unset">:</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">공개키 방식은 두개의 키를 가지는데, A키로 암호화를 하면 B키로 복호화 할 수 있고, B키로 암호화 하면 A키로 복호화 할 수 있는 방식이다. </span><span class="se-fs- se-ff-system se-style-unset"><b>비공개키</b></span><span class="se-fs- se-ff-system se-style-unset">(/개인키/비밀키)</span><span class="se-fs- se-ff-system se-style-unset"><b>와 공개키</b></span><span class="se-fs- se-ff-system se-style-unset">라고도 한다. 비공개키는 자신만이 가지고 있고, 공개키를 타인에게 제공한다. 공개키를 받은 타인은 공개키를 이용해 정보를 암호화 하고, 암호화한 정보를 비공개키를 가진 사람에게 전송한다. 비공개키의 소유자는 이 키를 이용해 암호화된 정보를 복호화한다. 이 방식은 공개키가 유출되어도 비공개키를 모르면 정보를 복호화 할 수 없기 때문에 안전하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">+ 개인 키와 공개 키를 사용한 암호화 및 복호화는 많은 처리 능력을 요구하기 때문에 대칭 세션 키를 생성하기 위한 SSL 핸드셰이크 중에만 사용된다. 보안 연결이 설정된 후에는 전송되는 모든 데이터에 </span><span class="se-fs- se-ff-system se-style-unset"><b>세션 키</b></span><span class="se-fs- se-ff-system se-style-unset">가 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"><b>📝 전자서명:</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">비공개키를 가진 사람은 이를 사용해 정보를 암호화 하고, 공개키와 함께 암호화된 정보를 전송한다. 정보와 공개키를 획득한 사람은 공개키를 사용해 암호화된 정보를 복호화한다. 이 과정에서 공개키가 유출되면 의도하지 않은 공격자에 의해 데이터가 복호화될 위험이 있는데, 이것은 이 방식을 데이터 보호가 아닌 다른 목적으로 응용 사용하기 때문이다. 암호화된 데이터를 공개키를 가지고 복호화 할 수 있다는 것은 그 데이터가 공개키와 쌍을 이루는 비공개 키에 의해 암호화되었다는 의미이다. 즉 공개키가 데이터를 제공한 사람의 신원을 보장해준다. 이를 전자서명이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>3. SSL 인증서의 역할</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">(1) 클라이언트가 접속한 서버가 신뢰할 수 있는 서버임을 보장</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">(2) SSL 통신에 사용할 공개키를 클라이언트에게 제공.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>4. SSL 인증서는 어떻게 안전한 연결을 만드나? (SSL 통신과정)</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">브라우저(클라이언트)가 SSL로 보호된 웹사이트에 접속하려 할 때, 클라이언트와 웹 서버는 </span><span class="se-fs- se-ff-system se-style-unset"><b>SSL 핸드셰이크</b></span><span class="se-fs- se-ff-system se-style-unset">를 사용해 SSL 연결을 수립한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/what-is-ssl-certificate/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs24 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs24 se-ff-system"><i>[1] </i></span><span class="se-fs-fs24 se-ff-system"><i><b>SSL 핸드쉐이크</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">(1) </span><span class="se-fs- se-ff-system se-style-unset"><b>클라이언트 -&gt; 서버</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">      SSL(https)로 보호된 웹 서버에 연결한다. 브라우저에서 서버가 자신의 신원을 증명하도록 요청한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">      이 단계에서 주고 받는 정보:</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">- 클라이언트 측에서 생성한 랜덤 데이터</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">- 클라이언트가 지원하는 암호화 방식들 : 클라이언트와 서버가 지원하는 암호화 방식이 서로 다를 수 있기 때문에 상호간에 어떤 암호화 방식을 사용할 것인지에 대한 협상을 해야 한다. 이 협상을 위해서 클라이언트 측에서는 자신이 사용할 수 있는 암호화 방식을 전송한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">- 세션 아이디 : 이미 SSL 핸드쉐이킹을 했다면 비용과 시간을 절약하기 위해서 기존의 세션을 재활용하게 되는데 이 때 사용할 연결에 대한 식별자를 서버 측으로 전송한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">(2) 서버의 응답</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">      이 단계에서 주고 받는 정보:</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">- 서버 측에서 생성한 랜덤 데이터</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">- 클라이언트가 지원하는 암호화 방식 : 클라이언트가 전달한 암호화 방식 중에서 서버 쪽에서도 사용할 수 있는 암호화 방식을 선택해서 클라이언트로 전달한다. 이로써 암호화 방식에 대한 협상이 종료되고 서버와 클라이언트는 이 암호화 방식을 이용해서 정보를 교환하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">- 인증서 : 서버의 공개키를 포함한 자신의 SSL 인증서 사본을 보낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">(3) </span><span class="se-fs- se-ff-system se-style-unset"><b>클라이언트</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">      서버의 인증서가 CA(공인 인증 기관)에 의해 발급된 것인지 확인하기위해 CA 목록과 대조해 인증서 루트를 확인하고, 인증서가 만료 혹은 해제되지 않았는지 등을 확인한다. 인증서를 신뢰할 경우, 서버의 공개 키를 사용해 대칭 세션키를 생성하고 암호화한 후 다시 전송한다. 이 과정을 더 자세히 설명하자면..</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">     위에서 받은 서버의 랜덤 데이터와 클라이언트의 랜덤 데이터를 조합해서 pre master secret라는 키를 생성한다. 이 키는 뒤에서 살펴볼 세션 단계에서 데이터를 주고 받을 때 암호화하기 위해서 사용될 것이다. 이 때 사용할 암호화 기법은 대칭키이기 때문에 pre master secret 값은 제 3자에게 절대로 노출되어서는 안된다. 그리고 서버의 공개키로 pre master secret 값을 암호화해서 서버로 전송하면 서버는 자신의 비공개키로 안전하게 복호화 할 수 있다. 그럼 서버의 공개키는 어떻게 구할 수 있을까? 서버로부터 받은 인증서 안에 들어있다. 이 서버의 공개키를 이용해서 pre master secret 값을 암호화한 후에 서버로 전송하면 안전하게 전송할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">(4) 서버</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">      서버의 클라이언트가 전송한 pre master secret 값(대칭 세션 키)을 비공개키를 사용해 복호화하고, 이로서 서버와 클라이언트가 모두 pre master secret 값을 공유하게 되었다. 그리고 서버와 클라이언트는 모두 일련의 과정을 거쳐서 pre master secret 값을 master secret 값으로 만든다. master secret는 session key를 생성하는데 이 session key 값을 이용해서 서버와 클라이언트는 데이터를 대칭키 방식으로 암호화 한 후에 주고 받는다. (암호화 세션을 시작한다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">(5) 서버, </span><span class="se-fs- se-ff-system se-style-unset"><b>클라이언트</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">      핸드쉐이크의 종료를 알리고, 서버와 브라우저가 이제부터 전송되는 모든 데이터를 세션키로 암호화함.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs24 se-ff-system"><i>[2] </i></span><span class="se-fs-fs24 se-ff-system"><i><b>세션</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">세션은 실제로 서버와 클라이언트가 데이터를 주고 받는 단계이다. 이 단계에서 핵심은 정보를 상대방에게 전송하기 전에 session key 값을 이용해서 대칭키 방식으로 암호화 한다는 점이다. 암호화된 정보는 상대방에게 전송될 것이고, 상대방도 세션키 값을 알고 있기 때문에 암호를 복호화 할 수 있다. 여기서 공개키가 아니라 대칭키와 공개키를 조합해서 사용하는 이유는, 공개키 방식이 많은 컴퓨터 파워를 사용하기 때문이다. 만약 공개키를 그대로 사용하면 많은 접속이 몰리는 서버는 매우 큰 비용을 지불해야 할 것이다. 반대로 대칭키는 암호를 푸는 열쇠인 대칭키를 상대에게 전송해야 하는데, 암호화가 되지 않은 인터넷을 통해서 키를 전송하는 것은 위험하기 때문이다. 속도는 느리지만 데이터를 안전하게 주고 받을 수 있는 공개키 방식으로 대칭키를 암호화하고, 실제 데이터를 주고 받을 때는 대칭키를 이용해서 데이터를 주고 받는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs24 se-ff-system"><i><b>[3] 세션 종료</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset">데이터의 전송이 끝나면 SSL 통신이 끝났음을 서로에게 알려준다. 이 때 통신에서 사용한 대칭키인 세션키를 폐기한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"> </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-left">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">📣</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">네트워크는 아래 책 추천드립니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://product.kyobobook.co.kr/detail/S000213766983" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Do it! IT 서비스 이해를 위한 네트워크 기초 | 심준보 - 교보문고</strong>
+<p class="se-oglink-summary">Do it! IT 서비스 이해를 위한 네트워크 기초 | 개발자에게 필요한 네트워크의 기초부터 응용까지 그림으로 이해하고 실습으로 체험하며 배운다!개발을 하다가 네트워크 지식의 부족함을 느꼈다면? 이 책으로 네트워크 기초……</p>
+<p class="se-oglink-url">product.kyobobook.co.kr</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">비전공자였지만 ‘doit 네트워크’ 책을 쓰신 저자분의 강의를 듣고</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">현재 규모있는 기업의 백엔드 개발자가 되었습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system">공부를 시작하시는 모든 분들 화이팅 입니다 !!</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

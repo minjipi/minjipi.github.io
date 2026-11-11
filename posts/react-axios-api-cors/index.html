@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>axios API 호출해서 데이터 받아오기 (리액트 axios cors 대충 처리) | minj.devlog</title>
+  <meta name="description" content="1. 프로젝트 폴더에서 axios 설치 yarn add axios 2. API 데이터 받아오기 API를 호출해서 데이터를 받아와보자. react APP을 하나 생성하고 Test.js를 다음과 같이 작성한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/react-axios-api-cors/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="axios API 호출해서 데이터 받아오기 (리액트 axios cors 대충 처리)" />
+  <meta property="og:description" content="1. 프로젝트 폴더에서 axios 설치 yarn add axios 2. API 데이터 받아오기 API를 호출해서 데이터를 받아와보자. react APP을 하나 생성하고 Test.js를 다음과 같이 작성한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/react-axios-api-cors/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/react-axios-api-cors/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-02-15" />
+  <meta property="article:section" content="Frontend/React" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "axios API 호출해서 데이터 받아오기 (리액트 axios cors 대충 처리)", "description": "1. 프로젝트 폴더에서 axios 설치 yarn add axios 2. API 데이터 받아오기 API를 호출해서 데이터를 받아와보자. react APP을 하나 생성하고 Test.js를 다음과 같이 작성한다.", "datePublished": "2022-02-15", "dateModified": "2022-02-15", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/react-axios-api-cors/", "image": "https://minjipi.github.io/posts/react-axios-api-cors/images/image_1.jpg", "articleSection": "Frontend/React"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="react-axios-api-cors">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FReact">Frontend/React</a>
+              <time class="post-date" datetime="2022-02-15">2022.02.15</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222648058850" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">axios API 호출해서 데이터 받아오기 (리액트 axios cors 대충 처리)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/react-axios-api-cors/images/image_1.jpg" alt="axios API 호출해서 데이터 받아오기 (리액트 axios cors 대충 처리)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222648058850 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">1. </span><span class="se-fs- se-ff-nanumbarungothic"><b>프로젝트 폴더에서 axios 설치</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+yarn add axios
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">2. </span><span class="se-fs- se-ff-nanumbarungothic"><b>API 데이터 받아오기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">API를 호출해서 데이터를 받아와보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">react APP을 하나 생성하고 Test.js를 다음과 같이 작성한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import React, { useState } from "react";
+import axios from "axios";
+const Test = () =&gt; {
+const [data, setData] = useState(null);
+const onClick = () =&gt; {
+    axios.get("http://localhost:8080/product/1").then((response) =&gt; {
+setData(response.data);
+});
+};
+return (
+&lt;div&gt;
+&lt;div&gt;
+&lt;button onClick={onClick}&gt;불러오기&lt;/button&gt;
+&lt;/div&gt;
+{data &amp;&amp; (
+&lt;textarea
+          rows={7}
+          value={JSON.stringify(data, null, 2)}
+          readOnly={true}
+/&gt;
+)}
+&lt;/div&gt;
+);
+};
+export default Test;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">코드를 보면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">버튼을 클릭했을 때(onClick) api에 연결해 가져온 값을 setData로 data에 새로 집어넣고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">onClick함수에서 사용한 axios.get 함수가 파라미터로 전달된 주소에 GET요청을 하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그 결과를 .then을 통해 비동기적으로 확인한다. 결과는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/react-axios-api-cors/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그럼 위 코드에 async를 적용해보자. async/await 에 대한 글은 </span><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222644064881" target="_blank">링크</a></span><span class="se-fs- se-ff-nanumbarungothic">를 참고.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-text __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-text se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://blog.naver.com/ghdalswl77/222644064881" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">promise, await, async, axios 정리</strong>
+<p class="se-oglink-summary">REST API 를 사용해 백엔드와 프론트를 완전히 분리(주소로만 통신해서 역할분리)했다. 이 때 리액...</p>
+<p class="se-oglink-url">blog.naver.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">3. </span><span class="se-fs- se-ff-nanumbarungothic"><b>async/await</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">async/await는 Promise를 더욱 쉽게 사용할 수 있도록 해주는 ES8문법이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">이 문법을 사용하려면 함수의 앞부분에 async키워드를 추가하고, 해당 함수 내에서 promise의 앞부분에 await키워드를 사용한다. 이렇게 하면 Promise가 끝날 때까지 기다리고, 결과 값을 특정 변수에 담을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">위 코드에 async를 적용하려면 onClick 시작부분에 async를 추가하고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">promise 부분에 await를 추가하면 끝이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그리고 에러를 처리하기 위해 try/catch구문을 사용했다</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import React, { useState } from "react";
+import axios from "axios";
+const Test = () =&gt; {
+const [data, setData] = useState(null);
+const onClick = async () =&gt; {
+try {
+const response = await axios.get("http://localhost:8080/product/1");
+setData(response.data);
+} catch (e) {
+      console.log(e);
+}
+};
+return (
+&lt;div&gt;
+&lt;div&gt;
+&lt;button onClick={onClick}&gt;불러오기&lt;/button&gt;
+&lt;/div&gt;
+{data &amp;&amp; (
+&lt;textarea
+          rows={7}
+          value={JSON.stringify(data, null, 2)}
+          readOnly={true}
+/&gt;
+)}
+&lt;/div&gt;
+);
+};
+export default Test;
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">* </span><span class="se-fs- se-ff-nanumbarungothic"><i><b>리액트 axios cors</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">웹에서는 다른 출처로의 리소스 요청을 제한하는 것과 관련된 두 가지 정책 CORS와 SOP(Same-Origin Policy)가 있다. SOP(Same-Origin Policy)는 같은 출처에서만 리소스를 공유할 수 있다”라는 규칙을 가진 정책이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">그러나 웹에서 다른 출처에 있는 리소스를 가져와서 사용하는 일은 굉장히 흔한 일이라 무작정 막을 수도 없는 노릇이라 몇 가지 예외 조항을 두고 이 조항에 해당하는 리소스 요청은 출처가 다르더라도 허용하기로 했는데, 그 중 하나가 “CORS 정책을 지킨 리소스 요청”이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">CORS란 Cross Origin Resource Sharing의 약자로, 도메인이 다르더라도 데이터를 공유할 수 있게 해주는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">쉽게 말해서 백엔드를 호출하는 애가 아무나 호출하면 안되니까 호출하는(오리진)이 누군지 확인하는 것,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">특정한 것만 허용시켜서 받아갈 수 있게 해주는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">(error: 405 Method Not Allowed)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">정석적인 해결방안이 있지만(</span><span class="se-fs- se-ff-nanumbarungothic"><a class="se-link" href="https://evan-moon.github.io/2020/05/21/about-cors/" target="_blank">https://evan-moon.github.io/2020/05/21/about-cors/</a></span><span class="se-fs- se-ff-nanumbarungothic">),</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">난 일단 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#9c9c9c;">가라로</span><span class="se-fs- se-ff-nanumbarungothic"> 이렇게 해줬다. 리액트에서 해주는건 없고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic">백엔드인 스프링부트의 controller에 아래 한 줄을 추가했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@CrossOrigin("http://localhost:3000/")
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

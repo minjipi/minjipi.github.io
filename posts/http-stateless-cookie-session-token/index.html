@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP의 특징 | Stateful과 Stateless, 쿠키, 세션, 토큰, 인증방식 비교 | minj.devlog</title>
+  <meta name="description" content="0. HTTP의 특징, 쿠키와 세션을 사용하는 이유 쿠키와 세션을 사용하는 이유 서버와 클라이언트가 통신을 할 때 마다 서버는 클라이언트가 누구인지 인증을 계속해야 한다. 왜냐면 HTTP 프로토콜이 connectionless, stateless한 특성이 있기 때문이다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/http-stateless-cookie-session-token/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="HTTP의 특징 | Stateful과 Stateless, 쿠키, 세션, 토큰, 인증방식 비교" />
+  <meta property="og:description" content="0. HTTP의 특징, 쿠키와 세션을 사용하는 이유 쿠키와 세션을 사용하는 이유 서버와 클라이언트가 통신을 할 때 마다 서버는 클라이언트가 누구인지 인증을 계속해야 한다. 왜냐면 HTTP 프로토콜이 connectionless, stateless한 특성이 있기 때문이다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/http-stateless-cookie-session-token/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/http-stateless-cookie-session-token/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-09-27" />
+  <meta property="article:section" content="Network" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "HTTP의 특징 | Stateful과 Stateless, 쿠키, 세션, 토큰, 인증방식 비교", "description": "0. HTTP의 특징, 쿠키와 세션을 사용하는 이유 쿠키와 세션을 사용하는 이유 서버와 클라이언트가 통신을 할 때 마다 서버는 클라이언트가 누구인지 인증을 계속해야 한다. 왜냐면 HTTP 프로토콜이 connectionless, stateless한 특성이 있기 때문이다.", "datePublished": "2021-09-27", "dateModified": "2021-09-27", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/http-stateless-cookie-session-token/", "image": "https://minjipi.github.io/posts/http-stateless-cookie-session-token/images/image_1.jpg", "articleSection": "Network"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="http-stateless-cookie-session-token">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Network">Network</a>
+              <time class="post-date" datetime="2021-09-27">2021.09.27</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222517833354" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">HTTP의 특징 | Stateful과 Stateless, 쿠키, 세션, 토큰, 인증방식 비교</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222517833354 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>0. </b></span><span class="se-fs-fs24 se-ff-" style="color:#141414;">HTTP의 특징, </span><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>쿠키와 세션을 사용하는 이유</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-nanumsquare" style="color:#141414;"><b>쿠키와 세션을 사용하는 이유</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">서버와 클라이언트가 통신을 할 때 마다 서버는 클라이언트가 누구인지 인증을 계속해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">왜냐면 HTTP 프로토콜이 connectionless, stateless한 특성이 있기 때문이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Connectionless</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Stateless</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">클라이언트가 요청을 한 후</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">응답을 받으면 그 연결을 끊어 버리는 특징</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">통신이 끝나면 상태를 유지하지 않는 특징</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">이 특징들을 두고 HTTP는 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>무상태 프로토콜(stateless)</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"> 이라 하기도 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>1. Stateful, Stateless</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Stateful(세션&amp;쿠키), Stateless(토큰)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateless</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> (무상태) 는 서버에서 HTTP와 같은 client의 이전 상태를 기록하지 않는 접속.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateful (상태유지)</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 은 서버에서 client의 이전 상태를 기록.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>REST</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 개념에서 각각의 요청은 독립적인 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateless</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 방식이며,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">client가 상태정보를 모두 관리할 책임이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateless</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">는</span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b> caching, load balancing, scale out</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">이 장점이지만, 매 요청마다 상태 정보를 전달 받아야 하기 때문에 네트워크 자원을 소모한며 서버는 정보를 처리하기 위한 작업이 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-nanumsquare se-weight-unset" style="color:#141414;">🍪 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Stateful</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">Stateful '구조'는 Server와 Client간 세션의 'State(상태)'에 기반하여 Client에 response를 보낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">이를 위해 세션 '상태'를 포함한 Client와의 세션 정보를 server에 저장하게 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/http-stateless-cookie-session-token/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">대표적인 Stateful 구조를 따르는 프로토콜로 TCP가 있다</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">TCP의 3-way handshaking 과정을 생각해보면..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">Server와 Client는 3-way handshaking 과정에서 SYN과 SYNACK을 주고 받으며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">양단간 세션 '상태'를 established한 '상태'로 만든다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">세션 '상태'가 established가 되면 client와 server는 데이터를 주고 받을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">이렇게 TCP는 세션 '상태'에 따라 Server의 응답이 달라지는 Stateful 프로토콜이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">TCP는 Client와의 세션 정보를 server에 저장하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">세션 상태에 기반한 server의 응답이 달라진다는 점에서 Stateful 하다고 말할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-nanumsquare" style="color:#141414;"><b>📮</b></span><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"><b> Stateless</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">stateless는 무상태, 상태유지를 하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">시스템에서는 유저의 인증 정보를 서버나 세션에 담아두지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanumsquare se-style-unset" style="color:#141414;">대표적인 Stateless 프로토콜로는 UDP와 HTTP 등이 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/http-stateless-cookie-session-token/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">HTTP 프로토콜은 요청에 따른 응답을 받으면 연결이 끊어지고 (connectionless)</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">통신이 종료되면 어떠한 상태도 남지 않는다. (stateless)</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">따라서 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>로그인 후 다시 웹 페이지에 접근하면 로그인 상태가 유지되지 않는다는 문제점</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>2-1. 세션, 쿠키</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff-nanumsquare" style="color:#141414;">이런 HTTP 문제를 해결하기 위해 사용하는 방법으로 </span><span class="se-fs-fs19 se-ff-nanumsquare" style="color:#141414;"><b>세션과 쿠키</b></span><span class="se-fs-fs19 se-ff-nanumsquare" style="color:#141414;">가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">세션과 쿠키에 대한 간단한 예시를 들어본 후 각각의 개념에 더 자세히 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">우리가 브라우저로 어떤 웹사이트를 이용하는 과정을</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">먹거리도 있고 놀거리도 있는 대학 축제를 즐기는 것에 비유해본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">여기서는 쿠폰북이 아닌 '쿠키북'이라는 수첩을 들고 다니며</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">이용하는 부스마다 이를 보여준다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">이 쿠키북에는 부스에서, 혹은 내가 직접 뭔가 기록도 할 수 있고 수정하거나 찢어 버릴수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">떡고치를 먹고 스탬프를 받기도 하고, 사고 싶은 물건이 있으면 적어두고 하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">한번 안내받은 이벤트를 또 권유하려고 한다면, 이미 한번 안내 받았다고 기록해두어 또 제안받지 않을 수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">쿠키북의 핵심은 내가 들고다닌다는 것, 부스 이용시 보여준다는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">쿠키는 사이트 방문과 이용 시 브라우저(즉 내 컴퓨터)에 저장되는 내용이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">이 쿠키북의 문제점은 뭘까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">내가 임의로 고치거나 지울 수 있고 남이 슬쩍 훔쳐보거나 도둑질 할수도있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">그래서 중요한 정보를 쿠키북에 적기는 좀 그렇다는 점이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">부스를 운영하는 사람 입장에서도, 이 사람이 떡꼬치를 3개나 먹고 그 내역을 지워버릴 수 있으니 불안할 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">그래서 내가 관리하는 정보가 아니라, 부스 측에서 관리해야 하는 정보가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">이것이! 부스 한 켠의 '세션' 부스다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">축제를 즐기는 사람들의 중요한 정보를 담당한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">내가 축제에 들어오면, 그때그때 생성되는 바코드를 내 쿠키북에 찍어준다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">그리고 부스를 돌아다니며 뭔가 할 때 마다 '이 사람은 회원으로 확인되어 입장해 있다.' </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">'토찌부스에서 천원짜리 떡꼬치를 사먹었다' 등 쿠키 북에 저장하기 곤란한 정보들을 이 세션에서 관리해주고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">이 정보들이 각각 누구의 것인지는 처음 찍은 바코드로 구분된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">세션을 사용하는 사이트에 접속하면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">서버에서는 사용자를 구분하기 위한 기한이 짧은 임시 키 하나를 브라우저로 보내 쿠키에 저장한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">사이트 이용 시 사용자의 중요한 정보들은 해당 서버의 메모리나 디비에 저장된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">브라우저가 사이트의 페이지들에 접속할 때마다 http 요청에 이 키를 실어서 전송하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">서버는 그 키를 보고 사용자를 확인한다. 그리고 확인한 사용자의 정보들을 가공해서 응답으로 보내주는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">쿠키와 세션은 이 HTTP 특징을 해결하기 위해, 즉 클라이언트 인증을 유지하기 위해 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">예를 들어 쿠키와 세션을 사용하지 않으면 쇼핑몰에서 옷을 구매하려고 최초 로그인을 했음에도 페이지를 이동할 때 마다 계속 로그인을 해야하는 불편한 경험을 하게될 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">서버는 클라이언트가 누군지 기억하지 않기 때문에!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">쿠키와 세션을 사용하면 최초 로그인 후 어떤 방식에 의해 서버가 그 사용자에 대한 인증을 유지하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>🍪 쿠키</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">HTTP의 쿠키는 헨젤과 그레텔의 쿠키(=빵 조각)에도 비유할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">(차이라면 헨젤과 그레텔은 자신들이 돌아갈 길을 잊지 않기 위해서 사용하지만</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">HTTP의 쿠키는 HTTP 요청을 보내는 클라이언트를 식별하기 위해서 사용한다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">쿠키는 클라이언트 측(브라우저)에서 관리되는 작은 기록 정보 파일이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">쿠키에는 사용자 인증이 유효한 시간을 명시할 수 있으며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">한 번 유효 시간이 정해지면 브라우저를 끄더라도 인증이 유지된다는 특징이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>쿠키 동작 방식</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/http-stateless-cookie-session-token/images/image_3.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">아래 설명은 웹 브라우저를 기반으로 설명한 내용!</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">서버나 앱, 크롤러 등 다른 클라이언트에서 HTTP를 호출하는 경우 설정에 따라 다르게 동작함.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">1. 클라이언트가 페이지를 요청</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">2. 서버에서 쿠키를 발급.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">(* 모든 사이트가 항상 최초의 요청에 세션 ID를 발급하는 것은 아님. 하지만 일반적으로 거의 모든 사이트가 사용자 추적을 위해서 최초 방문시 세션 ID를 발급하며, 세션 ID 명이나 값 등의 상세 정책은 사이트마다 다를 수 있다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">3. HTTP </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>헤더</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">에 쿠키를 포함 시켜 응답</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">4. 응답 헤더에는 Cookie 미포함, 브라우저가 종료되어도 쿠키 만료 기간이 있다면 클라이언트에서 보관하고 있음.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">그리고</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">5. 쿠키가 존재하면 요청을 할 경우 HTTP 헤더에 쿠키를 함께 보내서 요청</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">6. 서버에서 쿠키를 읽어 이전 상태 정보를 변경 할 필요가 있을 경우, 쿠키를 업데이트 하여 변경된 쿠키를 HTTP 헤더에 포함시켜 응답.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>쿠키 구성 요소</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 12.93%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Name</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 87.07%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">각각의 쿠키를 구별하는 데 사용되는 이름</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 12.93%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Value</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 87.07%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">쿠키가 갖고 있는 값</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 12.93%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Domain</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 87.07%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">쿠키를 전송할 도메인</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">브라우저는 도메인 정보가 같은 쿠키만 요청 헤더에 Cookie 필드를 자동으로 추가.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 12.93%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Path</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 87.07%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">쿠키를 전송할 요청 경로</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 12.93%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Expires</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 87.07%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">Expires에 명시된 날짜에 쿠키 만료(삭제).</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">Expires, Max-Age가 명시되지 않은 경우 세션 쿠키로 브라우저가 종료되면 해당 쿠키는 삭제된다.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">(요즘 브라우저들은 종료되었다가 다시 시작해도 이전 세션을 복원하는 기능이 있어서 세션이 계속 유지되는 경우가 많다.)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 12.93%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>HttpOnly</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 87.07%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">HttpOnly 필드가 선언되면 스크립트에서는 해당 쿠키에 접근할 수 없음.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">하지만 브라우저가 아닌 다른 클라이언트(ex. 크롤러)에서 접근하면 해당 정보를 취득 가능.</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 12.93%; height: 43.0px;  background-color: #f0ffec;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>Secure</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 87.07%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">Secure 필드가 선언되면 해당 쿠키는 HTTPS(SSL) 프로토콜을 사용한 경우에만 전송됨.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">(하지만 그렇다고 하더라도 절대로 민감한 정보를 담아서는 X)</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">사이트의 자동완성 기능, 오늘 더 이상 이 메시지 안볼래요 기능도 쿠키가 해주고 있다.ㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset" style="color:#141414;">즉 편리한 기능이기는 하나, 지워지거나 조작되는 등 문제에도 큰 일이 나지 않는 수준의 정보들을 브라우저에 저장해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>세션</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">세션이란 </span><span class="se-fs- se-ff-nanumsquare se-decoration-unset" style="color:#141414;"><b>일정 시간동안 같은 사용자(브라우저)로 부터 들어오는 일련의 요구를 하나의 상태로 보고, 그 상태를 일정하게 유지시키는 기술</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">여기서 일정 시간이란, 방문자가 웹 브라우저를 통해 웹 서버에 접속한 시점으로부터 웹 브라우저를 종료함으로써 연결을 끝내는 시점을 말한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">즉, </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><u><b>방문자가 웹서버에 접속해 있는 상태를 하나의 단위</b></u></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">로 보고 세션이라고 칭한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"><b>세션의 동작과정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">1. 사용자가 서버에 로그인 request</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">2. 서버는 request가 들어오면 DB를 쿼리하여 사용자 검증, 유효할 경우 고유한 ID 값을 부여하고 세션 저장소에 저장한다. 이와 연결되는 세션 ID를 생성하여 response header에 포함시켜 response.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">3. 사용자는 서버에서 해당 세션ID를 받아 쿠키에 저장을 한 후 제한된 요청에 접근할 때 마다 쿠키를 request header에 포함시켜 내보낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">4. 서버에서는 쿠키를 받아 세션 저장소에서 검증한 후 요청에 해당하는 데이터를 반환한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/http-stateless-cookie-session-token/images/image_4.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">세션의 동작 과정</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"><b>세션의 특징</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">쿠키(서버에 저장된 세션에 접근하기 위한 세션 ID)가 HTTP 요청 중 노출되어도 쿠키 자체에 중요한 정보는 담겨있지 않다. 하지만 쿠키 자체를 훔쳐 세션에 접근하여 중요한 정보를 빼낼 수 있다. 이를 막기 위해 세션에 유효시간을 넣거나 HTTPS를 사용해 요청을 훔쳐도 그 안의 정보를 보기 힘들게 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">- 쿠키를 통해 세션에 접근하면, 세션 ID로 사용자를 구분할 수 있으므로 일일히 사용자 정보를 확인할 필요가 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">서버에 세션을 저장하기 때문에 사용자 수가 많아지면 서버의 부담이 늘어난다. 또한 서버 확장성(scalability)이 나빠진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">- 서버 사양 업그레이드 뿐만 아니라, 늘어나는 트래픽을 감당하기 위해서 여러 프로세스를 돌리거나 여러 대의 컴퓨터를 추가하는 것이 어려워진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">- 세션은 서버에서 가진 정보이며 쿠키는 사용자에게 발급된 세션을 열기 위한 ID이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">- 인증의 책임을 서버에서 가지기 위해 사용자에게서 쿠키를 받아 세션을 가져온다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">여기서 client 의 HTTP 요청이 탈취 당하여 쿠키가 해킹당한다면 (세션 하이재킹) 서버는 사용자를 오인하여 정보를 제공한다. (세션 하이재킹 예제 : </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><a class="se-link" href="https://sudo-minz.tistory.com/16" target="_blank">https://sudo-minz.tistory.com/16</a></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-left">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://sudo-minz.tistory.com/16" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">SSL 취약점을 이용한 공격, Heart bleeds(하트블리드) 실습과 웹 세션 하이재킹 (2)</strong>
+<p class="se-oglink-summary">SSL 취약점을 이용한 공격,  Heart bleeds(하트블리드) 실습과 웹 세션 하이재킹 [ 이전 글 ]과 이어지는 웹 세션 하이재킹 Heart bleed 실습 입니다. 1. 제로보드 설치 (간단한 웹사이트 생성) 우선 제로보드를..</p>
+<p class="se-oglink-url">sudo-minz.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">또 이것을 막기 위하여 HTTPS를 사용하거나 세션에 유효기한을 걸기도 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>2-2. 토큰</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">세션 기반 인증의 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateful</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 서버는 클라이언트로부터 요청이 있을 때 마다 클라이언트의 상태를 유지한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">사용자가 로그인 하여 인증을 요청하면 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateful</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 서버는 인증에 성공하였을 때의 결과(세션)을 메모리 또는 데이터베이스에 유지하기 때문에 서버에 부하가 발생할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">하지만 토큰 기반 인증은 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateful</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 서버와 반대적 개념인 </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateless</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 서버를 사용하며 상태 정보를 유지하지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">서버가 전달받은 토큰을 검증만 하면 되기 때문에 서버의 부담을 줄이고 서비스의 확장성을 높일 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">1. 사용자가 로그인 request</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">2. 서버는 request가 들어오면 사용자 검증을 통해 유효성을 확인하고 통과한다면 토큰을 response와 반환한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">3. 클라이언트는 토큰을 저장, 서버 요청 시 토큰을 request header에 담아 서버에 요청을 보낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">4. 서버는 토큰을 검증 후, 요청에 응답.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"><b>토큰의 특징</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>- 모바일 앱 사용에 편리</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">세션 기반 인증을 사용하면 쿠키 매니저를 따로 관리해야 하지만 토큰을 사용하게 된다면 웹 요청 API 헤더에 넣어서 사용을 하기 때문에 쿠키 매니저가 필요하지 않다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>- CSRF 방지</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">사용자가 사이트를 벗어나도 이미 쿠키가 사용자 정보를 가지고 있기 때문에 공격자에게 노출 될 위험이 있다. 공격자가 임의로 다른 URL로 유도하여 비밀번호를 바꾸거나 회원 탈퇴를 할 경우 쿠키가 있기 때문에 서버는 요청을 신뢰하고 작업을 수행하게 된다. 이러한 문제를 해결하기 위해 탈퇴 시 비밀번호를 한 번 더 요구하거나, 토큰과 같은 credentail을 포함한다. 토큰 기반 인증에서는 헤더 내 토큰이 포함되어 CSRF를 방지한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>- 서버 확장 문제 해결</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">여러개의 서버에서 한 세션이 첫 번째 서버에 생성되었다고 가정하였을 때, 새로운 요청이 발생하고 그 요청이 다른 서버에 전달되면 해당 서버에는 세션 정보가 없어 unauthrized 응답을 받는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">stick 세션(같은 서버에 세션을 계속 연결시키는 방식)을 사용하여 해결할 수 있지만, 토큰 기반 요청에서 요청 토큰은 모든 요청, 모든 서버가 가로채기 때문에 자연스럽게 이러한 문제가 해결된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"><b>토큰방식의 문제</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateless</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"> 한 토큰의 특성 떄문에 토큰을 강제로 만료할 수 없다는 점이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">토큰이 공격자에게 탈취되었다고 가정하면, 공격자는 토큰이 만료될 때 까지 서버에 요청을 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">토큰 인증 방식의 단점을 보완하기 위해 토큰의 타입을 'Refresh Token'과 'Access Token'으로 나누어 사용하는 방식의 JWT 토큰을 사용하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"><a class="se-link" href="https://blog.naver.com/ghdalswl77?Redirect=Log&amp;logNo=222519729832&amp;from=postView" target="_blank"><b>JWT</b></a></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">JSON Web Token은 인증 헤더 내 사용되는 토큰 포멧이다. 토큰은 base64로 인코딩한 string으로 이루어진다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">서버만 알고 있는 Secret Key로 디지털 서명화되어있기 때문에 신뢰할 수 있다</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">보통 Authorization (로그인, SSO) 또는 안전한 정보 교환을 위해 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">JWT에서는 토큰 자체에 유저 정보를 담아서 HTTP 헤더에 전달하기에 유저 세션을 유지할 필요가 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;">JWT 장점</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">계정 서버와 API 서버가 분리되어 있을 때 API 서버가 계정 서버에게 토큰의 유효성 여부를 물어보지 않고도 스스로 판단할 수 있다는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">Access Token은 단순하게 자원에 접근하는 Access Token이 아니라, 권한/ 인증에 대한 Token을 말한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">Refresh Token은 Access Token과 똑같은 형태의 JWT이며 Access Token의 탈취 문제를 해결하기 위해 발급하는 토큰이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">처음의 로그인을 완료할 때 Access Token과 함께 발급되는 Refresh Token은 긴 유효시간을 가지면서 Access Token이 만료되었을 때 새로 발급해주는 열쇠가 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/http-stateless-cookie-session-token/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;">JWT 특징</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">세션/ 쿠키는 별도 저장소의 관리가 필요하지만, JWT는 서버 입장에서 요청을 받았을 때 발급한 후 검증만 하기 때문에 추가로 저장소가 필요 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">- A 서버로 접속하였다가 B 서버로 요청한다 해도 확장성에 문제가 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">- 토큰 기반으로 하는 다른 인증 시스템에 접근이 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs30 se-ff-nanumsquare" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#141414;"><b>3. 토큰과 세션의 차이</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateful 서버</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">는 클라이언트에게 요청을 받을 때 마다 클라이언트의 상태를 계속해서 유지하고 이 정보를 서비스 제공에 이용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">그 예로는 세션을 유지하는 웹 서버가 있다. 로그인을 하면 세션에 로그인이 되었다고 저장을 하고 서비스를 제공할 때 해당 데이터를 사용한다. 세션은 서버의 메모리 또는 데이터베이스에 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><b>stateless 서버</b></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">는 상태를 유지하지 않는다. 서버는 클라이언트 측에서 들어오는 요청만으로 작업을 처리한다. 클라이언트와 서버의 연결고리가 없기 때문에 서버의 확장성이 높아진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">Client가 고유 식별자를 가지고, 해당 식별자를 바탕으로 인증을 처리한다는 점에서 두 기술은 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><i>세션이 식별자에 대한 정보를 서버에 저장한다고 하지만 결국 식별자의 일부는 Client에 저장한다. 보통 cookie로 저장.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">세션은 그 식별자가 HTTP session에 한정된다는 점에서 토큰보다 제한된 범위의 활용성을 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">큰 흐름에서 세션은 기존의 웹 서비스에서 HTTP session을 기준으로 정보를 처리하는것에 사용이 되었고, 토큰은 고유 식별자로 토큰을 만들어서 Client에 전달하는 방향으로 진화하였기에 토큰만 전달이 되었다면 다양한 포멧(json, xml) 구분없이 상태와 상관없이 stateless 폭 넓게 사용이 될 수 있다. 이것은 토큰 인증방식이 모바일 생태계에 맞는 인증방법이었고 활발하게 확산이 될 수 있는 이유이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">그러므로, 새로운 서비스를 계획한다면 토큰 기반의 인증 방식이 더 나은 판단이 될 가능성이 높다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><i>세션 방식은 해당 서비스가 100% 모바일에 사용될 일이 없다면 선택하여도 된다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;">📣</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;">네트워크는 아래 책 추천드립니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://product.kyobobook.co.kr/detail/S000213766983" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Do it! IT 서비스 이해를 위한 네트워크 기초 | 심준보 - 교보문고</strong>
+<p class="se-oglink-summary">Do it! IT 서비스 이해를 위한 네트워크 기초 | 개발자에게 필요한 네트워크의 기초부터 응용까지 그림으로 이해하고 실습으로 체험하며 배운다!개발을 하다가 네트워크 지식의 부족함을 느꼈다면? 이 책으로 네트워크 기초……</p>
+<p class="se-oglink-url">product.kyobobook.co.kr</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;">비전공자였지만 ‘doit 네트워크’ 책을 쓰신 저자분의 강의를 듣고</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;">현재 규모있는 기업의 백엔드 개발자가 되었습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;">공부를 시작하시는 모든 분들 화이팅 입니다 !</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:2.0;"><span class="se-fs-fs11 se-ff-system" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">참고 : </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><a class="se-link" href="https://mygumi.tistory.com/375" target="_blank">https://mygumi.tistory.com/375</a></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">, </span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><a class="se-link" href="https://russwest.tistory.com/40" target="_blank">https://russwest.tistory.com/40</a></span><span class="se-fs- se-ff-nanumsquare" style="color:#141414;">,</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><a class="se-link" href="https://hyunjun19.github.io/2017/09/23/how-cookie-works/" target="_blank">https://hyunjun19.github.io/2017/09/23/how-cookie-works/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-nanumsquare" style="color:#141414;"><a class="se-link" href="https://www.youtube.com/watch?v=OpoVuwxGRDI" target="_blank">https://www.youtube.com/watch?v=OpoVuwxGRDI</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

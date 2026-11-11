@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>(사진 업로드 구현하기) HTTP multipart/form-data | minj.devlog</title>
+  <meta name="description" content="사진 업로드 구현하기 HTTP multipart/form-data 📩 HTTP multipart/form-data ✔️ 클라이언트 → 서버 파일 업로드하는 과정 ✔️ HTTP 구조 ✔️ multipart/form-data 1." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/http-multipart-form-data-upload/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="(사진 업로드 구현하기) HTTP multipart/form-data" />
+  <meta property="og:description" content="사진 업로드 구현하기 HTTP multipart/form-data 📩 HTTP multipart/form-data ✔️ 클라이언트 → 서버 파일 업로드하는 과정 ✔️ HTTP 구조 ✔️ multipart/form-data 1." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/http-multipart-form-data-upload/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/http-multipart-form-data-upload/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-12-10" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "(사진 업로드 구현하기) HTTP multipart/form-data", "description": "사진 업로드 구현하기 HTTP multipart/form-data 📩 HTTP multipart/form-data ✔️ 클라이언트 → 서버 파일 업로드하는 과정 ✔️ HTTP 구조 ✔️ multipart/form-data 1.", "datePublished": "2021-12-10", "dateModified": "2021-12-10", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/http-multipart-form-data-upload/", "image": "https://minjipi.github.io/posts/http-multipart-form-data-upload/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="http-multipart-form-data-upload">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-12-10">2021.12.10</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222591885389" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">(사진 업로드 구현하기) HTTP multipart/form-data</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/http-multipart-form-data-upload/images/image_1.jpg" alt="(사진 업로드 구현하기) HTTP multipart/form-data" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222591885389 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-"><i>사진 업로드 구현하기</i></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-"><i>HTTP multipart/form-data</i></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs19 se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#222426;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs24 se-ff-nanumbarungothic se-style-unset" style="color:#222426;"><b>📩</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" style="color:#222426;"><b>HTTP multipart/form-data</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff- se-weight-unset">✔️ </span><span class="se-fs- se-ff- se-weight-unset" style="background-color:#f8ffe9;">클라이언트 → 서버 파일 업로드하는 과정</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#222426;">✔️</span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#222426;background-color:#f8ffe9;"> HTTP 구조</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff- se-weight-unset">✔️ </span><span class="se-fs- se-ff- se-weight-unset" style="background-color:#f8ffe9;">multipart/form-data</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-weight-unset se-style-unset" style="color:#222426;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>1. 클라이언트 → 서버 파일 업로드하는 과정</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">사진 전송 이전에, 일반 파일 전송 과정에 대해 먼저 생각해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">파일 업로드를 구현할 때, 클라이언트가 웹브라우저라면 form을 통해서 파일을 등록해서 전송한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이때 웹 브라우저가 보내는 HTTP 메시지는 Content-Type 속성이</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">multipart/form-data로 지정되며, 정해진 형식에 따라 메시지를 인코딩하여 전송한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:31.46893116681636%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="https://user-images.githubusercontent.com/52783516/104418336-189aac80-55ba-11eb-8cb0-6a85ee6dd58d.png"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:68.53106883318364%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/http-multipart-form-data-upload/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">http 구조</span></p></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이를 처리하기 위한 서버는 멀티파트 메시지에 대해서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">각 파트별로 분리하여 개별 파일의 정보를 얻게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이미지 파일을 전송한다고 해서 이메일에 첨부파일을 붙여 메일을 보내는 것처럼 png나 jpg 파일 자체가 전송되는 것이 아니다. 이미지 파일도 문자로 이뤄져 있기 때문에 </span><span class="se-fs- se-ff-"><b>이미지 파일을 스펙에 맞게 문자로 생성하여 HTTP request body에 담아 서버로 전송</b></span><span class="se-fs- se-ff-">한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. </span><span class="se-fs- se-ff-"><b>multipart</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:423px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="https://user-images.githubusercontent.com/52783516/104418336-189aac80-55ba-11eb-8cb0-6a85ee6dd58d.png"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTTP(request와 response)는 위와 같이 4개의 파트로 나눌 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 Message Body에 들어가는 데이터 타입을 HTTP Header에 명시해줄 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 때 명시할 수 있도록 해주는 필드가 바로 </span><span class="se-fs- se-ff-"><b>Content-type</b></span><span class="se-fs- se-ff-">이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">추가적으로 Content-type 필드에는 MIME</span><span class="se-fs- se-ff-"><sup>Multipurpose Internet Mail Extensions </sup></span><span class="se-fs- se-ff-">(웹에서 전송되는 객체 각각에 붙이는 데이터 포맷 라벨) 타입을 기술해줄 수 있는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여러 </span><span class="se-fs- se-ff-"><b>타입</b></span><span class="se-fs- se-ff-"> 중 하나가 </span><span class="se-fs-fs19 se-ff-"><b>multipart</b></span><span class="se-fs- se-ff-"> 이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 웹 클라이언트가 서버에게 파일을 업로드할 때</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>http 프로토콜의 바디 부분에 데이터를 여러 부분으로 나눠서 보내는 것</b></span><span class="se-fs- se-ff-">을 Multipart data라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3.</span><span class="se-fs- se-ff-"><b>multipart/form-data</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">form이란 입력 양식 전체를 감싸는 태그이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">name, action, enctype 등이 있는데, 해당 포스팅에서 알아보고자 하는 multipart/form-data는 바로 이 </span><span class="se-fs- se-ff-"><b>enctype</b></span><span class="se-fs- se-ff-"> 속성값 중 하나다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">enctype는 폼 데이터(form data)가 서버로 제출될 때, 해당 데이터가 인코딩되는 방법을 명시한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">정확하게는 모든 문자를 인코딩하지 않음을 명시한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 방식은 &lt;form&gt; 요소가 파일이나 이미지를 서버로 전송할 때 주로 사용한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+&lt;form action="/home/uploadfiles" method="post" enctype="multipart/form-data"&gt;
+파일명 : &lt;input type="file" name="myfile"&gt;
+&lt;button type="submit"&gt;제출하기&lt;/button&gt;
+&lt;/form&gt;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#222426;">참고 : React+axios를 통해 이미지 업로드 예제 알아보기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"><a class="se-link" href="https://velog.io/@shin6403/HTTP-multipartform-data-%EB%9E%80" target="_blank">https://velog.io/@shin6403/HTTP-multipartform-data-%EB%9E%80</a></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#222426;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude로 노션 자동화하는 법 (Claude Desktop x Notion MCP 연동 가이드) | minj.devlog</title>
+  <meta name="description" content="나 자는 동안 AI 일시켜보기. 이거 진짜 되는건지 확인해봤는데 쩐다.. 혁신 그 자체 👏🏻 명령어 한 줄에, 인공지능이 알아서 노션에 페이지 추가하고 내 점심 메뉴 추천해주는 중! 진짜 나 자는 동안 AI 일시키기가 가능해진 시대가 왔네.." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/claude-desktop-notion-mcp/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Claude로 노션 자동화하는 법 (Claude Desktop x Notion MCP 연동 가이드)" />
+  <meta property="og:description" content="나 자는 동안 AI 일시켜보기. 이거 진짜 되는건지 확인해봤는데 쩐다.. 혁신 그 자체 👏🏻 명령어 한 줄에, 인공지능이 알아서 노션에 페이지 추가하고 내 점심 메뉴 추천해주는 중! 진짜 나 자는 동안 AI 일시키기가 가능해진 시대가 왔네.." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/claude-desktop-notion-mcp/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/claude-desktop-notion-mcp/images/image_1.jpg" />
+  <meta property="article:published_time" content="2025-07-01" />
+  <meta property="article:section" content="AI" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Claude로 노션 자동화하는 법 (Claude Desktop x Notion MCP 연동 가이드)", "description": "나 자는 동안 AI 일시켜보기. 이거 진짜 되는건지 확인해봤는데 쩐다.. 혁신 그 자체 👏🏻 명령어 한 줄에, 인공지능이 알아서 노션에 페이지 추가하고 내 점심 메뉴 추천해주는 중! 진짜 나 자는 동안 AI 일시키기가 가능해진 시대가 왔네..", "datePublished": "2025-07-01", "dateModified": "2025-07-01", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/claude-desktop-notion-mcp/", "image": "https://minjipi.github.io/posts/claude-desktop-notion-mcp/images/image_1.jpg", "articleSection": "AI"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="claude-desktop-notion-mcp">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=AI">AI</a>
+              <time class="post-date" datetime="2025-07-01">2025.07.01</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223917753861" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Claude로 노션 자동화하는 법 (Claude Desktop x Notion MCP 연동 가이드)</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223917753861 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-system">나 자는 동안 AI 일시켜보기.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-system">이거 진짜 되는건지 확인해봤는데 쩐다..</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/claude-desktop-notion-mcp/images/nv_0.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">혁신 그 자체 👏🏻</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">명령어 한 줄에, 인공지능이 알아서 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">노션에 페이지 추가하고 내 점심 메뉴 추천해주는 중!</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:519px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">진짜 나 자는 동안 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">AI 일시키기가 가능해진 시대가 왔네..</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이 시대의 첫 발자국, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">MCP에 대해 알아보고 직접 해보자. </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-decoration-unset">하나도 안어려움. 코딩 없음!</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-nanummaruburi"><b>MCP란?</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-">MCP (Model Context Protocol)</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">LLM이 외부 데이터 소스와 표준화된 방식으로 연결되어, </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">실시간 정보에 접근할 수 있도록 해주는 통신 프로토콜입니다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">MCP를 한마디로 간단하게 설명하면 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><u>"AI가 내 컴퓨터의 프로그램들과 </u></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><u><b>직접 소통</b></u></span><span class="se-fs- se-ff-system"><u>할 수 있게 해주는 다리"</u></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">라고 할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">기존에는 챗지피티한테 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">"노션에 오늘 할 일 추가해줘"라고 하면 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">"죄송합니다. 직접 접근할 수 없어요"라고 했는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이제 클로드는 진짜로 내 노션에 들어가서 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">할 일을 추가해주는거죠.  </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">말 그대로 AI 비서가 내 컴퓨터 안에서 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">일을 대신해주는 시대가 온 건데요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">우선, 제일 만만하게 일 시켜볼만한 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">노션 MCP를 사용해봅시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system">* 사실 노션이 제일 만만한게 아니고 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system">제일 깔끔하고 편리해요.🙂</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-nanummaruburi">노션 MCP 연동하기</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-">0. node 설치</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">바닷길을 건너려면, 배가 필요한 것처럼 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이번 과정에서도 꼭 필요한게 있습니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>node</b></span><span class="se-fs- se-ff-system se-weight-unset"> 라는 건데요.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">아래 명령어 한 줄로 </span><span class="se-fs- se-ff-system se-weight-unset">node</span><span class="se-fs- se-ff-system">를 설치해줍니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+# macOS (Homebrew)
+brew install node
+
+# Windows
+# https://nodejs.org 접속 → LTS 버전 다운로드 및 설치
+
+# Ubuntu
+sudo apt update
+sudo apt install nodejs npm -y
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-"><b>1. Claude Desktop 설치</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Claude Desktop 버전 어플리케이션 다운로드</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><a class="se-link __se_link" href="https://claude.ai/download" target="_blank">https://claude.ai/download</a></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그리고 본인 OS에 맞는 버전으로 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff-system">Claude Desktop를 </span><span class="se-fs- se-ff-system">설치합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-">2. </span><span class="se-fs-fs16 se-ff-"><b>Notion API 키 발급</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">아래의 </span><span class="se-fs- se-ff-system"><b>Notion Developer 페이지</b></span><span class="se-fs- se-ff-system">에 접속해 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">로그인해주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><a class="se-link __se_link" href="https://www.notion.so/profile/integrations" target="_blank">https://www.notion.so/profile/integrations</a></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info __se_link" href="https://www.notion.so/profile/integrations" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">The AI workspace that works for you. | Notion</strong>
+<p class="se-oglink-summary">A tool that connects everyday work into one space. It gives you and your teams AI tools—search, writing, note-taking—inside an all-in-one, flexible workspace.</p>
+<p class="se-oglink-url">www.notion.so</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">"새 API 통합 만들기" 클릭하고, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">아래와 같이 설정합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>새 API 통합</b></span><span class="se-fs- se-ff-system"> 이름 설정하고, 유형은 </span><span class="se-fs- se-ff-system"><b>프라이빗</b></span><span class="se-fs- se-ff-system"> 선택.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그럼 '</span><span class="se-fs- se-ff-system"><b>프라이빗 API 통합 시크릿'</b></span><span class="se-fs- se-ff-system">가 생성되는데, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이걸 복사해둡니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-"><b>3. Notion API와 내 노션 페이지 연결</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">좀 전에 생성한 API와 노션 페이지를 연결해서 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">API가 노션 페이지에 접근 가능하게 해줍시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">노션에서 새 개인 페이지를 추가하고, </span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:462px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">새 개인 페이지를 추가</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">새 페이지에서 우측 상단 점 세개 클릭 &gt; 연결 &gt; 좀 전에 만든 API 를 선택해줍니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">확인 눌러주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-"><b>4. Claude Desktop 설정</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">Claude Desktop 앱에서 아래 이미지와 같이 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">'설정'을 눌러주세요.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">'개발자' 탭 &gt; 설정 편집 클릭해주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">Claude Desktop 의 설정 파일인 </span><span class="se-fs- se-ff-system"><b>claude_desktop_config.json </b></span><span class="se-fs- se-ff-system">에 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">다음 내용을 추가합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+{
+"mcpServers": {
+"notionApi": {
+"command": "npx",
+"args": ["-y", "@notionhq/notion-mcp-server"],
+"env": {
+"OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer [API 통합 시크릿 붙여넣기]\", \"Notion-Version\": \"2022-06-28\" }"
+}
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">OPENAPI_MCP_HEADERS 에 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">아까 복사해둔 '</span><span class="se-fs- se-ff-system"><b>프라이빗 API 통합 시크릿'</b></span><span class="se-fs- se-ff-system se-weight-unset">을 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">붙여넣기 해주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">그리고 Claude Desktop을 재시작 해줍니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">Claude Desktop 프로그램을 완전히 껐다가 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">다시 켜주세요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-"><b>5. Claude Desktop 재시작</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">AI 비서 탄생</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">Claude Desktop 재시작하고, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">Claude에게 일을 시켜 봅시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">저는 노션 새 페이지를 만들어보고 하고, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">거기에 오늘 날짜 페이지를 만들어 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">점메추를 부탁했어요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">결과가 너무 기늑해서 아래 동영상으로 찍어봤습니다 ^^</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <p class="naver-video-note"><a href="https://blog.naver.com/ghdalswl77/223917753861" rel="noopener" target="_blank">🎬 동영상은 네이버 블로그 원문에서 볼 수 있어요.</a></p> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">싱기싱기 ㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이건 진짜 혁신이에요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:474px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">참고로 아직 챗지피티는 이걸 못합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">챗지피티가 생각하는 AI의 시대를 열었다면, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">클로드 MCP는 행동하는 AI의 시대를 열었네요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">더 이상 AI한테 물어보고, 답변 받고, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">내가 직접 실행하는 게 아니라 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">AI가 내 업무 도구들을 직접 조작해서 일을 끝내준다니..</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:581px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/claude-desktop-notion-mcp/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">여러분, 러다이트 운동 하실거 아니죠?</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">    저랑 같이 MCP 해요 !!</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line5">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">다음 </span><span class="se-fs- se-ff-system se-weight-unset">노션 공식 MCP 페이지</span><span class="se-fs- se-ff-system">를 참고하시면 좋습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><a class="se-link __se_link" href="https://github.com/makenotion/notion-mcp-server?tab=readme-ov-file" target="_blank">https://github.com/makenotion/notion-mcp-server?tab=readme-ov-file</a></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><a class="se-link __se_link" href="https://developers.notion.com/docs/mcp" target="_blank">https://developers.notion.com/docs/mcp</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

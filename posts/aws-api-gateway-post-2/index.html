@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS :: API GATEWAY - POST | minj.devlog</title>
+  <meta name="description" content="[ Amazon Web Services ] API GATEWAY + Lambda + RDS 연동 0. DB 생성 연동할 DB 생성하고 접속. 꼭 RDS 아니더라도 상관 없음~! mysql -u admin -p -h 엔드포인트 use DB이름; CREATE TABLE" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/aws-api-gateway-post-2/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="AWS :: API GATEWAY - POST" />
+  <meta property="og:description" content="[ Amazon Web Services ] API GATEWAY + Lambda + RDS 연동 0. DB 생성 연동할 DB 생성하고 접속. 꼭 RDS 아니더라도 상관 없음~! mysql -u admin -p -h 엔드포인트 use DB이름; CREATE TABLE" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/aws-api-gateway-post-2/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/aws-api-gateway-post-2/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-15" />
+  <meta property="article:section" content="Cloud/AWS" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "AWS :: API GATEWAY - POST", "description": "[ Amazon Web Services ] API GATEWAY + Lambda + RDS 연동 0. DB 생성 연동할 DB 생성하고 접속. 꼭 RDS 아니더라도 상관 없음~! mysql -u admin -p -h 엔드포인트 use DB이름; CREATE TABLE", "datePublished": "2021-06-15", "dateModified": "2021-06-15", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/aws-api-gateway-post-2/", "image": "https://minjipi.github.io/posts/aws-api-gateway-post-2/images/image_1.jpg", "articleSection": "Cloud/AWS"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="aws-api-gateway-post-2">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FAWS">Cloud/AWS</a>
+              <time class="post-date" datetime="2021-06-15">2021.06.15</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222399259683" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">AWS :: API GATEWAY - POST</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/aws-api-gateway-post-2/images/image_1.jpg" alt="AWS :: API GATEWAY - POST" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222399259683 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>[ Amazon Web Services ]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>API GATEWAY + Lambda + RDS 연동</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs-fs30 se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>0. DB 생성</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;">연동할 DB 생성하고 접속. 꼭 RDS 아니더라도 상관 없음~!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mysql -u admin -p -h 엔드포인트
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+use DB이름;
+CREATE TABLE student (sname VARCHAR(10), sage INT);
+             테이블명    속성
+
+INSERT INTO student VALUES('pig',10);
+       데이터 몇 개 넣어둠!
+
+select * from student;
+       데이터 확인
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><b>1. Lambda 함수 생성</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">pymysql.ZIP 파일을 다운받아 업로드한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-file se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-file se-l-default se-section-align-">
+<div class="se-module se-module-file">
+<span class="se-file-icon"><strong class="se-blind">첨부파일</strong></span>
+<div class="se-file-name-container">
+<span class="se-file-name">pymySQL</span><span class="se-file-extension">.zip</span>
+</div>
+<a class="se-file-save-button __se_link" href="https://download.blog.naver.com/open/3ca9209382d1d80429c9ab97a1403844e0b749a0d8/EFsQbLdMxbrO9tNRLuoSggWaFwbSq-Nuc1UPM388lgVHGIy8UXoi7_i3C4ZlhENBokiyYwXA8gkR38HkIXvN65TtMsXOhAfr0Q/pymySQL.zip" role="button" target="_blank">
+<span class="se-blind">파일 다운로드</span>
+</a><ul class="se-file-save-option">
+<li class="se-file-save-option-item">
+<button class="se-file-save-option-button se-file-save-option-button-local" type="button">
+<span class="se-file-save-option-button-label">내 컴퓨터 저장</span>
+</button>
+</li>
+<li class="se-file-save-option-item">
+<button class="se-file-save-option-button se-file-save-option-button-cloud" type="button">
+<span class="se-file-save-option-button-label">네이버 MYBOX에 저장</span>
+</button>
+</li></ul>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">바이러스 아님.. ㅜㅜ🐬</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">찾아서 받기 귀찮으신 분들 위에거 다운받으세용</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/aws-api-gateway-post-2/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">코드는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import pymysql
+
+def lambda_handler(event,context):
+    conn = pymysql.connect(
+        host='RDS 엔드포인트', 
+        user='admin', 
+        password='비번',
+        db='DB이름', 
+        charset='utf8')
+ 
+    curs = conn.cursor()
+
+    sql = "INSERT INTO student VALUES('"+event["sname"]+"',"+str(event["sage"])+");"
+    curs.execute(sql)
+    conn.commit()
+return "success"
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">2. </span><span class="se-fs- se-ff-" style="color:#000000;"><b>HTML 코드</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;POST-Ajax Request&lt;/title&gt;
+&lt;script&gt;
+function sendRequest() {
+var httpRequest = new XMLHttpRequest();
+      httpRequest.onreadystatechange = function () {
+if (httpRequest.readyState == XMLHttpRequest.DONE &amp;&amp; httpRequest.status == 200) {
+          document.getElementById("text").innerHTML = httpRequest.responseText;
+}
+};
+var sname = document.getElementById('sname').value;
+var sage = document.getElementById('sage').value;
+      console.log(sname)
+
+      httpRequest.open("POST", "https://z1uxkevndb.execute-api.ap-northeast-2.amazonaws.com/select_stage/insert", true);
+      httpRequest.setRequestHeader("Content-Type", "application/json");
+      httpRequest.send("{\"sname\":\""+sname+"\", \"sage\":"+sage+"}");
+}
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;POST 방식의 요청&lt;/h1&gt;
+이름 : &lt;input id="sname" type="text"/&gt; &lt;br/&gt;
+나 : &lt;input id="sage" type="text"/&gt; &lt;br/&gt;
+&lt;button type="button" onclick="sendRequest()"&gt;POST 방식으로 요청 보내기!&lt;/button&gt;
+&lt;p id="text"&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">✅ 결과</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/aws-api-gateway-post-2/images/image_3.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이름, 나(이)ㅠㅠ</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">웹페이지에서 데이터를 입력(insert)하면 연동된 RDS에 바로 적용이 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line5">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line5 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;">📝</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">정적 컨텐츠는 S3에 올려놓고 쓸 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">'정적 웹 호스팅 되어있는' 버킷에 업로드.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">문제는 사용자가 로그인되어 있다는 처리를 못한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">람다는 서버리스인데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">세션(서버 컴퓨터에 저장. 쿠키는 클라이언트 컴퓨터에 저장)을 저장할 '서버'가  없기 때문에.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;">메모,,</span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

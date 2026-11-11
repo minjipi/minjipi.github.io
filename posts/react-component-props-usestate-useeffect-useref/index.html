@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React 리액트 : Component, Props, useState, useEffect, useRef 개념 정리 | minj.devlog</title>
+  <meta name="description" content="📍Component 컴포넌트를 통해 UI를 재사용 가능한 개별적인 여러 조각으로 나눈다. 컴포넌트는 개념적으로 JavaScript 함수와 유사하다. &#x27;props&#x27;라는 입력을 받은 후, 화면에 어떻게 표시되는지 기술하는 React 엘리먼트를 반환한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/react-component-props-usestate-useeffect-useref/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="React 리액트 : Component, Props, useState, useEffect, useRef 개념 정리" />
+  <meta property="og:description" content="📍Component 컴포넌트를 통해 UI를 재사용 가능한 개별적인 여러 조각으로 나눈다. 컴포넌트는 개념적으로 JavaScript 함수와 유사하다. &#x27;props&#x27;라는 입력을 받은 후, 화면에 어떻게 표시되는지 기술하는 React 엘리먼트를 반환한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/react-component-props-usestate-useeffect-useref/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/react-component-props-usestate-useeffect-useref/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-06-22" />
+  <meta property="article:section" content="Frontend/React" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "React 리액트 : Component, Props, useState, useEffect, useRef 개념 정리", "description": "📍Component 컴포넌트를 통해 UI를 재사용 가능한 개별적인 여러 조각으로 나눈다. 컴포넌트는 개념적으로 JavaScript 함수와 유사하다. 'props'라는 입력을 받은 후, 화면에 어떻게 표시되는지 기술하는 React 엘리먼트를 반환한다.", "datePublished": "2022-06-22", "dateModified": "2022-06-22", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/react-component-props-usestate-useeffect-useref/", "image": "https://minjipi.github.io/posts/react-component-props-usestate-useeffect-useref/images/image_1.jpg", "articleSection": "Frontend/React"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="react-component-props-usestate-useeffect-useref">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FReact">Frontend/React</a>
+              <time class="post-date" datetime="2022-06-22">2022.06.22</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222784353661" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">React 리액트 : Component, Props, useState, useEffect, useRef 개념 정리</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/react-component-props-usestate-useeffect-useref/images/image_1.jpg" alt="React 리액트 : Component, Props, useState, useEffect, useRef 개념 정리" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222784353661 -->
+<div class="se-main-container">
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/react-component-props-usestate-useeffect-useref/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>📍Component</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컴포넌트를 통해 UI를 재사용 가능한 개별적인 여러 조각으로 나눈다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컴포넌트는 개념적으로 JavaScript 함수와 유사하다. 'props'라는 입력을 받은 후, 화면에 어떻게 표시되는지 기술하는 React 엘리먼트를 반환한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">엘리먼트는 일반 객체(plain object)로 React 앱의 가장 작은 단위다. 엘리먼트는 컴포넌트의 '구성 요소'다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컴포넌트를 선언하는 방식에는 함수형 컴포넌트와 클래스형 컴포넌트가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><i><b>Class Component</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ class Welcome extends React.Component {
+render() {
+return &lt;h1&gt;Hello&lt;/h1&gt;;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">클래스형 컴포넌트는 React.Component 클래스를 상속(이미 구현되어 있는 클래스에 기능을 추가함)받는 것으로 기본 형태를 갖춘다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컴포넌트는 jsx를 반환해야하는데, 클래스는 return 문을 사용할 수 없으므로, 클래스형 컴포넌트에서는 JSX를 반환하기 위해 render() 함수를 사용한다. 리액트는 클래스형 컴포넌트의 render() 함수를 자동으로 실행시킨다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><i><b>Function Component</b></i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ function Welcome(props) {
+return &lt;h1&gt;Hello&lt;/h1&gt;;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">함수형 컴포넌트는, props로 받을 객체 인자를 정의하고, JSX를 반환하는 것으로 기본 형태를 갖춘다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">함수형 컴포넌트에서는 return문에서 JSX를 반환할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>📍Props</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컴포넌트는, 데이터를 가진 하나의 'props' 객체 인자를 받은 후 React 엘리먼트를 반환한다. 이때 props는 속성을 나타내는 데이터다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">props는 컴포넌트에서 컴포넌트로 전달하는 데이터다. 컴포넌트의 속성으로, 해당 컴포넌트를 불러와 사용하는 부모 컴포넌트에서만 설정 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">props는 부모 컴포넌트가 자식 컴포넌트에 값을 전달할 때 사용하는 것. 읽기 전용</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>📍State</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">state는 컴포넌트 내부의 동적 데이터를 의미한다. props는 부모 컴포넌트가 설정하는 값으로 컴포넌트 자신은 props를 읽기 전용으로만 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">state를 사용하는 방식에는 컴포넌트의 종류에 따라 2가지가 있다. 클래스형 컴포넌트에서는 컴포넌트 자체가 state를 지니는 방식으로 사용한다. 함수형 컴포넌트에서는 useState라는 함수, Hook을 통해 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">state는 컴포넌트 자기 자신이 가지고 있는 값이다. 변화가 필요할 경우 setState()함수를 통해 값을 변경해줄 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><i><b>📝 Props와 State 정리</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Props</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">부모가 자식한테 넘겨주는 값으로 읽기전용</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">State</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컴포넌트 자신이 가지고 있는 값으로 변경할 수 있음(setState() 함수를 사용하여)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>📍useState</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컴포넌트가 렌더링 될 때 특정 작업을 실행할 수 있도록 하는 Hook.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">리액트의 useEffect 훅을 사용하면 함수 컴포넌트에서도 side effect를 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">useEffect란? </span><span class="se-fs- se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222662749403" target="_blank">https://blog.naver.com/ghdalswl77/222662749403</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>📍useEffect</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">component가 마운트 / 언마운트 / 업데이트될 때, 할 작업을 선택하도록 하는 Hook함수.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">외부 API를 요청하거나, 반복작업 / 작업예약 등에 쓰인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><i>* mount</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">: component가 처음 화면에서 보여질 때 (=새로고침 시) (componentDidMount 메서드)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><i>* unmount</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">: component가 화면에서 사라질 때 (componentWillUnmount 메서드)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><i>* update</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">: 특정 props가 바뀌어 component가 업데이트될 때 (componentWillUpdate 메서드)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>📍useRef</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">특정 DOM을 가리킬 때 사용하는 Hook함수. 대상에 대한 포커스 설정, 특정 엘리먼트의 크기나 색상을 변경할 때 사용한다. HTML에서 id를 사용하여 DOM에 이름을 다는 것처럼 리액트 프로젝트 내부에서 DOM에 이름을 다는 방법.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ref 자체의 뜻이 Javascript의 getElementById() 처럼 컴포넌트의 어떤 부분을 선택할 수 있게 해주는 방법. DOM에 접근 할 수 있도록 하는 기능을 가진 hook이라고 보면 된다. 리액트에 있는 모든 컴포넌트는 reference element(래퍼런스 엘리먼트)를 가지고 있어서 어떤 컴포넌트에 ref={변수명}을 넣어준다면 리액트에서 해당 컴포넌트를 참조하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">📝</span><span class="se-fs- se-ff-system"><i><b> id, getElementById() 사용하지 않고 ref를 사용하는 이유</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">예를들어 컴포넌트 안에 있는 DOM에 id를 지정한 후 해당 컴포넌트를 여러번 재사용하게 됐을 경우를 생각해보자. 유일해야 하는 id가 더이상 유일하지 않고 그에 따른 문제가 생길 수 있다. 그래서 id값 대신 ref를 사용하는 것을 추천한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">📝</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ref는 객체로써 취급되며 Heap에 저장되어 프로그램 종료시까지 같은 메모리 주소를 가진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system">참고 : </span><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://muhly.tistory.com/95" target="_blank">https://muhly.tistory.com/95</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">함수형 컴포넌트 사용시 호출 때마다 모든 변수가 초기화 되어 값이 변경된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">하지만 ref를 사용하는 경우는 임의로 값을 변경하지 않는다면 값이 계속 유지된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">또한, 값이 변경되어도 컴포넌트의 리렌더링이 없어 빠른 참조가 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">일반적으로 id 값, 인스턴스 값, scroll 위치와 같이 초기화되어 처음부터 넘버링 되지 않는 경우에 ref를 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">git nuble game 레포 정리 하다가 작성.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">기초 다지려고 useState, useEffect, useRef 만 사용해 구현했었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:400px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/react-component-props-usestate-useeffect-useref/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -12,15 +12,44 @@ document.addEventListener("DOMContentLoaded", function() {
   if (!slug) { showError("잘못된 접근입니다."); return; }
 
   var idx = POSTS.findIndex(function(p) { return p && p.slug === slug; });
-  if (idx === -1) { showError("글을 찾을 수 없습니다."); return; }
+  if (idx === -1) {
+    // 예전 주소(한글 + _네이버글번호)로 들어오면 새 주소로 보냄
+    redirectOldSlug(slug, function() { showError("글을 찾을 수 없습니다."); });
+    return;
+  }
 
   var post = POSTS[idx];
+
+  // tools/build_pages.py 로 미리 만든 페이지: 본문·제목이 이미 HTML에 있으므로 같은 카테고리 목록만 채움
+  var detail = document.getElementById("postDetail");
+  if (detail && detail.getAttribute("data-prerendered") === "1") {
+    renderCategoryPostList(post, idx);
+    return;
+  }
 
   document.title = post.title + " - minj.devlog";
 
   renderPost(post);
   renderCategoryPostList(post, idx);
 });
+
+function redirectOldSlug(slug, notFound) {
+  var num = (String(slug).match(/_(\d{9,})\/?$/) || [])[1];
+  if (!num) { notFound(); return; }
+  function go() {
+    var next = window.POST_REDIRECTS && window.POST_REDIRECTS[num];
+    if (!next) { notFound(); return; }
+    location.replace(window.IS_LOCAL
+      ? (window.BASE_URL || "") + "post.html?slug=" + encodeURIComponent(next)
+      : "/posts/" + next + "/");
+  }
+  if (window.POST_REDIRECTS) { go(); return; }
+  var s = document.createElement("script");
+  s.src = (window.BASE_URL || "/") + "redirects.js";
+  s.onload = go;
+  s.onerror = notFound;
+  document.head.appendChild(s);
+}
 
 // ── 글 본문 렌더링 ──────────────────────────────────────────
 function renderPost(post) {
@@ -319,7 +348,7 @@ function renderCategoryPostList(post) {
   function postLink(slug) {
     return window.IS_LOCAL
       ? (window.BASE_URL || '') + 'post.html?slug=' + slug
-      : '/posts/' + slug;
+      : '/posts/' + slug + '/';
   }
 
   var BASE = (window.BASE_URL || '/').replace(/\/$/, '') + '/';

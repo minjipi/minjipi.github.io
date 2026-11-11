@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python :: 파이썬으로 데이터베이스 입출력(mysql database) | minj.devlog</title>
+  <meta name="description" content="데이터 베이스 파이썬 프로그램에서 데이터 베이스로 접근, 데이터를 조회, 입력, 수정, 삭제 할 수 있다. pymysql 모듈을 사용하며, connect함수를 사용해 DB에 접근한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/python-mysql-database/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Python :: 파이썬으로 데이터베이스 입출력(mysql database)" />
+  <meta property="og:description" content="데이터 베이스 파이썬 프로그램에서 데이터 베이스로 접근, 데이터를 조회, 입력, 수정, 삭제 할 수 있다. pymysql 모듈을 사용하며, connect함수를 사용해 DB에 접근한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/python-mysql-database/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/python-mysql-database/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-08-26" />
+  <meta property="article:section" content="Backend/Python" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Python :: 파이썬으로 데이터베이스 입출력(mysql database)", "description": "데이터 베이스 파이썬 프로그램에서 데이터 베이스로 접근, 데이터를 조회, 입력, 수정, 삭제 할 수 있다. pymysql 모듈을 사용하며, connect함수를 사용해 DB에 접근한다.", "datePublished": "2020-08-26", "dateModified": "2020-08-26", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/python-mysql-database/", "image": "https://minjipi.github.io/posts/python-mysql-database/images/image_1.jpg", "articleSection": "Backend/Python"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="python-mysql-database">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FPython">Backend/Python</a>
+              <time class="post-date" datetime="2020-08-26">2020.08.26</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222071763565" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Python :: 파이썬으로 데이터베이스 입출력(mysql database)</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222071763565 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff-"><b>데이터 베이스</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">파이썬 프로그램에서 데이터 베이스로 접근, 데이터를 조회, 입력, 수정, 삭제 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">pymysql 모듈을 사용하며, connect함수를 사용해 DB에 접근한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">실행하는 법은 다음과 같다:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/python-mysql-database/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">cmd에서 pip install pymysql로 설치</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿ pip install pymysql
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿import pymysql
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿conn = pymysql.connect(host="192.168.240.200", user="sjb", password="qwer1234", db="sjb")
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">여기서 host는 DB서버 IP주소,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">user는 MySQL에서 생성한 사용자 ID,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">password는 MySQL에서 사용자를 생성할 때 설정한 비밀번호.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">db는 DB 서버에 존재하는 데이터 데이스, 해당 DB로 접근한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-left" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 43.0px;  background-color: #badf98;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">아래는 잠시 데이터 베이스 관련 명령어 설명으로</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">데이터 베이스를 잘 알고 계신다면</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>Ctrl+F </b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">'</span><span class="se-fs- se-ff-system se-style-unset se-decoration-unset" style="color:#000000;"><b>파이썬_데이터베이스</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">'를 찾아가 거기서부터 봐주시면 됩니당!</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>[MySQL] 테이블 만들기,수정하기 </b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Create table, Alter table</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>1. DATABASE</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">MySQL 테이블을 만들기 전에 database가 무엇인지 알아야한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">database는 서로 관련된 table들을 모아놓은 폴더 정도로 생각하셔도 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">따라서 우리는 테이블을 만들기 전에 database를 만들어주어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs13 se-ff-system se-style-unset" style="color:#000000;">모 약간의 늬앙스 차이는 있지만, 스키마 라는 표현을 사용하기도!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿mysql -uroot -p﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">먼저 루트 권한으로 로그인을 하고, 이미 만들어져있는 데이터베이스를 확인해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>(1) show DATABASES;​​</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿mysql&gt; show DATABASES;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">sql이라는 언어를 사용하고 있고, 명령의 끝을 ;로 구분하기 때문에, 반드시 ;를 입력해주어야한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:369px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mysql-database/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">4개의 데이터베이스가 존재하는 것을 확인. 다음으로 DB를 생성하는 명령을 보겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>(2) CREATE DATABASE 'DB이름'</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿mysql&gt; CREATE DATABASE testDB;﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">데이터베이스를 생성하는 명령.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">show DATABASES; 명령을 실행하면 추가되었음을 알 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>(3) DROP DATABASES 'DB이름'</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿mysql&gt; DROP DATABASE testDB;﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">데이터베이스를 삭제하는 명령.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>(4) USE 'DB이름'</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿mysql&gt; use testDB;﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">데이터베이스를 선택하는 명령. 데이터베이스를 선택하면, 이후 작업들은 모두 해당 데이터베이스에서 진행된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">testDB를 생성하고 use를 통해 데이터베이스를 선택하자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>2. CREATE TABLE</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">간단한 사용예제는 다음과 같다:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿
+CREATE TABLE testTable(
+(1)id INT(11) NOT NULL AUTO_INCREMENT,
+(2) name VARCHAR(20) NOT NULL,
+(3) ouccupation VARCHAR(20) NULL,
+(4) height SMALLINT,
+(5) profile TEXT NULL,
+(6) date DATETIME,
+(7) CONSTRAINT testTable_PK PRIMARY KEY(id)
+(8) );
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">(1) 테이블을 생성하는 명령어.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(2) id라는 컬럼을 추가하는 데, INT 타입으로 지정. NOT NULL은 값을 비워둘 수 없음을 의미한다. AUTO_INCREMENT는 자동으로 값이 1씩 증가하도록 설정하는 옵션.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(3) name이라는 컬럼을 추가하는데, 가변길이로 20글자까지 허용. (20글자가 넘어가면 20글자에서 자른다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(4) 위와 동일하지만, 값을 비워두는 것을 허용.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(5) SMALLINT는 INT보다 가질 수 있는 값의 범위가 작다. 메모리 측면에서 이득!</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">(6) TEXT는 아주 긴 문자열을 취급할 때 사용</span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">(7) DATETIME은 날짜와 시간에 관한 타입.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">(8) CONSTRAINT는 제약조건이라는 의미. testTable의 PRIMARY KEY를 id 컬럼으로 지정하겠다는 의미이며, 이 제약조건의 이름을 testTable_PK로 지정한 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">그 외의 옵션으로도 많은 값이 올 수 있는데..</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">중요 기능 두 가지만 더 살펴보자면?</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"><b>CHECK :</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"> 값의 범위를 제한한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"><b>FOREIGN KEY</b></span><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"> : 다른 테이블과 JOIN할 때 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">테이블이 무사히 만들어졌다면, 테이블의 속성을 알아보자!</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>3. DESC 'Table name'</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿DESC testTable;﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a class="se-module-image-link-use se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mysql-database/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">앞서 설정했던 테이블 컬럼들과 옵션을 한 눈에 확인할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>4. ALTER TABLE</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">테이블의 컬럼 값을 추가하거나 삭제하거나 변경하는 명령을 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;">(1) ADD</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿ALTER TABLE 테이블명 ADD 추가할 칼럼명 데이터 유형;﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">추가된 칼럼은 반드시 마지막에 위치하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;">(2) DROP COLUMN</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿ALTER TABLE 테이블명 DROP COLUMN 삭제할 칼럼명;﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;">(3) ALTER</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿ALTER TABLE 테이블명 CHANGE 컬럼명 컬럼명 새자료형﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">칼럼의 데이터 유형, 디폴트 값, NOT NULL 제약조건에 대한 변경을 포함할 수 있음..</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">타입을 변경할 경우에는 NULL 값이 있는지, 데이터 사이즈가 맞는지 등등을 고려하여 반영해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs19 se-ff-system se-style-unset" style="color:#000000;">(4) ADD CONSTRAINT</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+﻿ALTER TABLE 테이블명 ADD CONSTRAINT 제약조건명 제약조건 (칼럼명);﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;">컬럼에 제약조건을 추가할 수 있당.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs-fs15 se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs30 se-ff- se-style-unset" style="color:#000000;"><b>[Python] 파이썬_데이터베이스</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">그럼 이제 본격 적으로 파이썬에서 데이터 베이스에 접근해 봅시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">데이터 입력부터 해봐요!</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs-fs24 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><b><span class="__se-hash-tag">#INSERT사용</span></b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import pymysql
+
+conn = pymysql.connect(host="localhost", user="root"
+, password="qwer1234", db="hahaha")
+
+curs = conn.cursor()
+
+sql = "INSERT INTO student VALUES(%s, %s)"
+
+curs.execute(sql, ('수진몬', 13))
+curs.execute(sql, ('홍반장', 14))
+curs.execute(sql, ('배달민', 13))
+curs.execute(sql, ('할아버지', 99))
+curs.execute(sql, ('고조할아버지', 300))
+
+conn.commit()
+
+
+conn.close()
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs-fs24 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><b><span class="__se-hash-tag">#SELECT사용</span></b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import pymysql
+
+conn = pymysql.connect(host="localhost", user="root", password="qwer1234", db="hahaha")
+curs = conn.cursor()
+sql = "SELECT name FROM student"
+curs.execute(sql)
+rows = curs.fetchall()
+for row in rows:
+print(row)
+
+conn.close()
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs-fs24 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><b><span class="__se-hash-tag">#UPDATE</span></b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import pymysql
+
+conn = pymysql.connect(host="localhost", user="root", password="qwer1234", db="hahaha")
+curs = conn.cursor()
+sql = "UPDATE student SET name=%s where name=%s"
+curs.execute(sql, ('배동민', '배달민'))
+
+conn.commit()
+conn.close()
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs-fs24 se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.0;"><span class="se-fs-fs24 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><b><span class="__se-hash-tag">#DELETE</span></b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import pymysql
+
+conn = pymysql.connect(host="localhost", user="root", password="qwer1234", db="hahaha")
+curs = conn.cursor()
+sql = "DELETE FROM student where name=%s"
+curs.execute(sql, ('홍반장'))
+conn.commit()
+
+
+conn.close()
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><a class="se-link" href="https://yes90.tistory.com/57" target="_blank">https://yes90.tistory.com/57</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+<a class="se-oglink-info" href="https://yes90.tistory.com/57" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">[Python]파이썬의 데이터베이스 Database</strong>
+<p class="se-oglink-summary">파이썬 데이터베이스 프로그래밍 Python Database Programming 앞서 다뤘던 텍스트를 이용한 파일처리는 프로그래밍을 간결하게 처리할 수 있다는 장점이 있지만 보안에 취약하다는 약점이 있다. 데이터베이스는..</p>
+<p class="se-oglink-url">yes90.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

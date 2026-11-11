@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Java/개발자면접] 디자인패턴 싱글톤 (싱글톤 구현방식, 주의점, 단점) | minj.devlog</title>
+  <meta name="description" content="싱글턴이란? 싱글톤(Singleton) 패턴은 어떤 클래스의 인스턴스가 오직 하나임을 보장하며, 이 인스턴스에 접근할 수 있는 전역적인 접촉점을 제공하는 패턴입니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-singleton-interview/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Java/개발자면접] 디자인패턴 싱글톤 (싱글톤 구현방식, 주의점, 단점)" />
+  <meta property="og:description" content="싱글턴이란? 싱글톤(Singleton) 패턴은 어떤 클래스의 인스턴스가 오직 하나임을 보장하며, 이 인스턴스에 접근할 수 있는 전역적인 접촉점을 제공하는 패턴입니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-singleton-interview/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-singleton-interview/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-11-28" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Java/개발자면접] 디자인패턴 싱글톤 (싱글톤 구현방식, 주의점, 단점)", "description": "싱글턴이란? 싱글톤(Singleton) 패턴은 어떤 클래스의 인스턴스가 오직 하나임을 보장하며, 이 인스턴스에 접근할 수 있는 전역적인 접촉점을 제공하는 패턴입니다.", "datePublished": "2022-11-28", "dateModified": "2022-11-28", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-singleton-interview/", "image": "https://minjipi.github.io/posts/java-singleton-interview/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-singleton-interview">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2022-11-28">2022.11.28</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222940107954" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Java/개발자면접] 디자인패턴 싱글톤 (싱글톤 구현방식, 주의점, 단점)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/java-singleton-interview/images/image_1.jpg" alt="[Java/개발자면접] 디자인패턴 싱글톤 (싱글톤 구현방식, 주의점, 단점)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222940107954 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">싱글턴이란?</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">싱글톤(Singleton) 패턴은 어떤 클래스의 인스턴스가 오직 하나임을 보장하며, 이 인스턴스에 접근할 수 있는 전역적인 접촉점을 제공하는 패턴입니다. 즉, 프로그램 시작부터 종료 시까지 어떤 클래스의 인스턴스가 메모리 상에 단 하나만 존재할 수 있게 하고, 이 인스턴스에 대해 어디에서나 접근할 수 있도록 하는 패턴입니다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:161px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/java-singleton-interview/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">싱글톤 패턴이 고안된 이유:</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">개발을 하다보면 어떤 클래스에 대해 단 하나의 인스턴스만을 갖도록 하는 것이 좋은 경우가 있습니다. 예를 들어, 로그를 찍는(Logging) 객체라던가 쓰레드 풀, 윈도우 관리자 등 여러 객체를 관리하는 역할의 객체는 프로그램 내에서 단 하나의 인스턴스를 갖는 것이 바람직합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">어떻게 접근할 수 있나?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">전역변수? 틀린 말은 아니지만.. 더 좋은 방법은 클래스 자신이 자기의 유일한 인스턴스로 접근하는 방법을 자체적으로 관리하는 것입니다. 생성자를 private하게 만들어서 클래스 외부에서는 인스턴스를 생성하지 못하게 차단하고, 내부에서 단 하나의 인스턴스를 생성하여 외부에는 그 인스턴스에 대한 접근 방법을 제공할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222003880819" target="_blank">싱글톤 패턴(Singleton)과 정적 클래스(Static) 차이</a></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">싱글톤(Singleton) 패턴을 구현하는 6가지 방법</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right" style="line-height:1.7;"><span class="se-fs-fs11 se-ff-system se-weight-unset se-style-unset" style="color:#777777;">참고: </span><span class="se-fs-fs11 se-ff-system se-weight-unset se-style-unset" style="color:#777777;"><a class="se-link" href="https://readystory.tistory.com/116" target="_blank">https://readystory.tistory.com/116</a></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">방법들의 공통적 특징:</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">private 생성자만을 정의해 외부 클래스로부터 인스턴스 생성을 차단.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">싱글톤을 구현하고자 하는 클래스 내부에 멤버 변수로써 private static 객체 변수를 만듬.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">public static 메소드를 통해 외부에서 싱글톤 인스턴스에 접근할 수 있도록 접점을 제공.</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">전부 구현할 줄 알아야 한다기 보다는 한번 읽어서 이해하고, 싱글톤의 핵심과 한계 정도만 알아두면 좋을 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(1) Eager Initialization (낭비 &amp; Exception에 대한 Handling x)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Singleton {
+private static final Singleton instance = new Singleton();
+private Singleton(){}
+public static Singleton getInstance(){
+return instance;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">싱글톤 클래스의 인스턴스를 클래스 로딩 단계에서 생성하는 방법.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">이 방법을 사용할 때는 싱글톤 클래스가 다소 적은 리소스를 다룰 때여야 합니다. File System, Database Connection 등 큰 리소스들을 다루는 싱글톤을 구현할 때는 위와 같은 방식보다는 getInstance() 메소드가 호출될 때까지 싱글톤 인스턴스를 생성하지 않는 것이 더 좋습니다. 게다가 Eager Initialization은 Exception에 대한 Handling도 제공하지 않습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(2) Static Block Initialization (낭비)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Singleton {
+private static Singleton instance;
+private Singleton(){}
+static{
+try{
+            instance = new Singleton();
+}catch(Exception e){
+throw new RuntimeException("Exception occured in creating singleton instance");
+}
+}
+public static Singleton getInstance(){
+return instance;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">방식 1과 달리 static 블록 안에서 exception handling은 할 수 있지만, 쓰지 않아도 미리 만들어 둔다는 낭비는 여전하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(3) Lazy Initialization (나중에 초기화하는 방법)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Singleton {
+private static Singleton instance;
+private Singleton(){}
+public static Singleton getInstance(){
+if(instance == null){
+            instance = new Singleton();
+}
+return instance;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">이는 global access 한 getInstance() 메소드를 호출할 때에 인스턴스가 없다면 생성하는 방식 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">그러나 multi-thread 환경에서 동기화 문제가 있습니다. 만약 인스턴스가 생성되지 않은 시점에서 여러 쓰레드가 동시에 getInstance()를 호출한다면 예상치 못한 결과를 얻을 수 있을뿐더러, 단 하나의 인스턴스를 생성한다는 싱글톤 패턴에 위반하는 문제점이 야기될 수 있습니다. 그래서 이 방법으로 구현을 해도 괜찮은 경우는 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>single-thread 환경이 보장됐을 때</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(4) Thread Safe Singleton</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Singleton {
+private static Singleton instance;
+private Singleton(){}
+public static synchronized Singleton getInstance(){
+if(instance == null){
+            instance = new Singleton();
+}
+return instance;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">3번의 문제를 해결하기 위한 방법으로, getInstance() 메소드에 synchronized를 걸어두는 방식입니다. synchronized 키워드는 임계 영역(Critical Section)을 형성해 해당 영역에 오직 하나의 쓰레드만 접근 가능하게 해 오직 하나의 스레드만 접근 가능하게 해 줍니다. 그러나 synchronized 키워드 자체에 대한 비용이 크기 때문에 싱글톤 인스턴스 호출이 잦은 어플리케이션에서는 성능이 떨어지게 됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(5) Bill Pugh Singleton</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class Singleton {
+private Singleton(){}
+private static class SingletonHelper{
+private static final Singleton INSTANCE = new Singleton();
+}
+public static Singleton getInstance(){
+return SingletonHelper.INSTANCE;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">Implementation private inner static class를 두어 싱글톤 인스턴스를 갖게 합니다. 이때 1번이나 2번 방식과의 차이점이라면 SingletonHelper 클래스는 Singleton 클래스가 Load 될 때에도 Load 되지 않다가 getInstance()가 호출됐을 때 비로소 JVM 메모리에 로드되고, 인스턴스를 생성하게 됩니다. 아울러 synchronized를 사용하지 않기 때문에 4번에서 문제가 되었던 성능 저하 또한 해결됩니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">(6) Enum Singleton</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public enum EnumSingleton {
+INSTANCE;
+public static void doSomething(){
+~ do something ~
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">앞서 1~5번에서 살펴본 싱글톤 방식은 사실 완전히 안전할 수 없습니다. 왜냐하면 Java의 Reflection을 통해서 싱글톤을 파괴할 수 있기 때문입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">그러나 이 방법 또한 1, 2번과 같이 사용하지 않았을 경우의 메모리 문제를 해결하지 못한 것과 유연성이 떨어진다는 면에서의 한계를 지니고 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">싱글톤 단점</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">코드 자체가 많아짐</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">의존 관계상 클라이언트가 구체 클래스 의존</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b> (DIP, OCP 위반)</b></span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">유연성이 떨어짐</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>→ 스프링은 '스프링 컨테이너'로 이를 해결해줌</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">싱글톤 방식 주의점</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">객체 인스턴스를 한개 만 생성해서 공유하는 싱글톤 방식은 여러 클라이언트가 하나의 같은 객체 인스턴스를 공유하기 때문에 싱글톤 객체는 상태를 유지하게 설계하면 안된다. </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>→ </b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;"> 공유되지 않는 지역변수, 파라미터, ThreadLocal 등을 사용해야 한다.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.7;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;">가급적 읽기만 가능해야 한다.</span></p></li></ul>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

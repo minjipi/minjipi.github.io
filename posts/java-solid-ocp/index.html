@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAVA 디자인 패턴 | SOLID 원칙 :: OCP 개방 폐쇄 원칙 | minj.devlog</title>
+  <meta name="description" content="0) 객체지향 설계 5대 원칙 SOLID 객체 지향 프로그래밍 및 설계에 5가지 기본 원칙이 있다. - S RP (Single Responsibility Principle) : 단일 책임 원칙 - O CP (Open-Closed Principle) : 개방 폐쇄 원칙 - L" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-solid-ocp/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JAVA 디자인 패턴 | SOLID 원칙 :: OCP 개방 폐쇄 원칙" />
+  <meta property="og:description" content="0) 객체지향 설계 5대 원칙 SOLID 객체 지향 프로그래밍 및 설계에 5가지 기본 원칙이 있다. - S RP (Single Responsibility Principle) : 단일 책임 원칙 - O CP (Open-Closed Principle) : 개방 폐쇄 원칙 - L" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-solid-ocp/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-solid-ocp/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-05-11" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JAVA 디자인 패턴 | SOLID 원칙 :: OCP 개방 폐쇄 원칙", "description": "0) 객체지향 설계 5대 원칙 SOLID 객체 지향 프로그래밍 및 설계에 5가지 기본 원칙이 있다. - S RP (Single Responsibility Principle) : 단일 책임 원칙 - O CP (Open-Closed Principle) : 개방 폐쇄 원칙 - L", "datePublished": "2020-05-11", "dateModified": "2020-05-11", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-solid-ocp/", "image": "https://minjipi.github.io/posts/java-solid-ocp/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-solid-ocp">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2020-05-11">2020.05.11</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/221956310646" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JAVA 디자인 패턴 | SOLID 원칙 :: OCP 개방 폐쇄 원칙</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/221956310646 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>0)</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b> 객체지향 설계 5대 원칙 </b></span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;"><b>SOLID</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset se-decoration-unset" style="color:#222222;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff- se-style-unset se-decoration-unset" style="color:#222222;">객체 지향 프로그래밍 및 설계에 5가지 기본 원칙이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>- </b></span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;background-color:#ffffff;"><b>S</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>RP (Single Responsibility Principle)</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"> : 단일 책임 원칙</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">- </span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;background-color:#ffffff;"><b>O</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>CP (Open-Closed Principle)</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"> : 개방 폐쇄 원칙</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">- </span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;background-color:#ffffff;"><b>L</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>SP (Liskov Substitution Principle) :</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"> 리스코프 치환 원칙</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">- </span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;"></span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;background-color:#ffffff;"><b>I</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>SP (Interface Segregation Principle)</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"> : 인터페이스 분리 원칙</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">- </span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;"></span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;background-color:#ffffff;"><b>D</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>IP (Dependency Inversion Principle)</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"> : 의존 역전 원칙</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><a class="se-link" href="https://ko.wikipedia.org/wiki/SOLID_(%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%EC%84%A4%EA%B3%84)" target="_blank"><b> [출처]</b></a></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">그 중, </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"> </span><span class="se-fs- se-ff- se-style-unset" style="color:#00a84b;background-color:#ffffff;"><b>O</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>CP,</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"> 개방 폐쇄 원칙에 대해 알아보도록 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>1 ) OCP : 개방 폐쇄 원칙</b></span><span class="se-fs- se-ff-"></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><i><b>소프트웨어 엔티티(패키지, 클래스, 모듈, 함수 등)는 확장에 대해서는 개방되어야 하지만,</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><i><b>변경에 대해서는 폐쇄되어야 한다.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">즉, </span><span class="se-fs- se-ff-">기존의 코드를 변경하지 않으면서 기능을 추가할 수 있도록 설계가 되어야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">OCP 원칙이 위반되는 주요 경우로는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">1. 다운 캐스팅이 필요한 경우</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">2. 비슷한 if-else 블록이 존재하는 경우 가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>2 ) OCP 예제</b></span><span class="se-fs- se-ff-"></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff- se-weight-unset se-style-unset">한가지 예시로, </span><span class="se-fs- se-ff-"><i><b>오후 10시가 되면 MP3를 작동 시키는 코드 </b></i></span><span class="se-fs- se-ff-">를 짜보자!</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-">이 코드가 제대로 작동하는지 테스트 하기 위해서는 저녁 10시 까지 기다려야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-">OCP를 적용해 이 문제를 해결하는 코드를 해결해 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-">0. 우선 꼭 필요한 기본 코드를 작성해 본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-">시간을 받아오는 기능을 수행하는</span><span class="se-fs- se-ff-"><b> TimeProvider</b></span><span class="se-fs- se-ff-"> 인터페이스 구현.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+a.
+public class PlayMp3 {
+public static void main(String[] args) {
+}
+}
+interface TimeProvider
+{
+public int getTime();
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 실제 시간을 받아오는 기능을 수행하는 </span><span class="se-fs- se-ff-"><b>RealTimeProvider</b></span><span class="se-fs- se-ff-"> 클래스 작성.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+b.
+class RealTimeProvider implements TimeProvider {
+
+	@Override
+	public int getTime() {
+// TODO Auto-generated method stub
+return 0;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. 테스트용으로 항상 같은 시간(18시, 오후 6시)만 반환하는 </span><span class="se-fs- se-ff-"><b>FakeTimeProvider</b></span><span class="se-fs- se-ff-"> 클래스 작성.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+c.
+class FakeTimeProvider implements TimeProvider {
+
+	@Override
+	public int getTime() {
+// TODO Auto-generated method stub
+return 18;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>return 18; </b></span><span class="se-fs- se-ff-"> 라고 해 주면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">무조건 6시 라는 걸 얻어갈 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이렇게 하면 기본 틀은 다 짠 상태.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이제 실제 기능을 수행할 수 있는 세부적인(?) 코드를 작성해 본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3. RealTimeProvider 에 실제 시간을 받아올 수 있는 코드를 작성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">캘린더</span><span class="se-fs- se-ff-"><b> Calendar</b></span><span class="se-fs- se-ff-"> 같은 경우는, new 키워드가 아니라</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">getInstance 함수를 통해 해당 객체를 가져온다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+b.
+class RealTimeProvider implements TimeProvider {
+	Calendar cal;
+	@Override
+	public int getTime() {
+		cal = Calendar.getInstance();
+return cal.get(Calendar.HOUR_OF_DAY);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#4f0041;"><b>return</b></span><span class="se-fs- se-ff-"><b> </b></span><span class="se-fs- se-ff-" style="color:#0078cb;">cal</span><span class="se-fs- se-ff-">.get(Calendar.</span><span class="se-fs- se-ff-" style="color:#003960;"><i><b>HOUR_OF_DAY</b></i></span><span class="se-fs- se-ff-"><i>)</i></span><span class="se-fs- se-ff-">;</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">요 부분은 이대로 작성하면 현재 시간을 받아올 수 있다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">*</span><span class="se-fs- se-ff-"><b> </b></span><span class="se-fs- se-ff- se-weight-unset">코드 가장 상단에 다음을 import.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import java.util.Calendar;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">4.</span><span class="se-fs- se-ff-"><b> TimeProvider </b></span><span class="se-fs- se-ff- se-weight-unset">이 </span><span class="se-fs- se-ff-">주는 시간을 받아와서,  MP3를 실행할지 말지 결정하는 기능을 수행하는 클래스 TimeReminder 를 작성한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+c.
+class TimeReminder {
+/ 시간을 받아와야 하기 때문에 멤버 변수로 TimeProvider를 선언.
+	TimeProvider tp;
+public void setTimeProvider(TimeProvider tp)
+{
+/ ﻿TimeProvider 객체를 받아서-&gt;해당 클래스에 삽입한다.
+this.tp=tp;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">5. 기능은 음악을 재생하는 기능의 MP3 클래스도 구현한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">편의상 문자만 출력하게 했다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+d.
+class MP3 {
+public void playSong() {
+		System.out.println("음악 재생");
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">6. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+c.
+class TimeReminder {
+// 시간을 받아와야 하기 때문에, 멤버 변수로 TimeProvider를 선언.
+	TimeProvider tp;
+public void setTimeProvider(TimeProvider tp)
+{
+// ﻿TimeProvider 객체를 받아서-&gt;해당 클래스에 삽입한다.
+this.tp=tp;
+}
+public void reminder(MP3 m)
+{
+if (tp.getTime()&gt;=22)
+{
+			m.playSong();
+}
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">tp.에서 받아온 getTime 시간이, 22시 이상이면(크거나 같다면) =</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">{ mp에 playSong 실행 }</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">7.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이제 메인 함수에 실제 동작하는 함수 PlayMp3 를 작성해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">먼저, TimeReminder 객체 rt 를 만들었다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+e.
+public class PlayMp3 {
+public static void main(String[] args) {
+/ TimeReminder 객체 rt 생성
+		TimeReminder rt = new TimeReminder();
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 실제로 타임 체크를 하기 위해서는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">rt에 아까 만들었던... reminder 함수를 호출한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기에 mp3를 넣어야 해서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">바로 객체를 생성해 넣어주었다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+/ 얘가 타임 체크를 할 수 있게 해 주기 : 엠피 객체 생성하고 넣어줌
+
+		rt.reminder(new MP3());
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 어떤 프로바이더를 이용할 것인지도 설정해야 해서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">프로바이더를 넣는 작업도 해준다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+e.
+public class PlayMp3 {
+public static void main(String[] args) {
+// TimeReminder 객체 rt 만들기
+		TimeReminder rt = new TimeReminder();
+------------------------------------------------------------
+여기 :
+// 어떤 프로바이더 할 것인가? 프로바이더 넣는 작업
+		TimeProvider tp;
+		tp = new RealTimeProvider();
+
+		rt.setTimeProvider(tp);
+------------------------------------------------------------
+// 얘가 타임 체크를 할 수 있게 해 주기 : 엠피 객체 생성하고 넣어줌
+		rt.reminder(new MP3());
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">일단은 tp 에 RealTime으로 넣어주었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이렇게되면 지금 현재 시간에 따라,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">mp3가 작동할지에 대한 코드를 작성한 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">지금은 10시가 넘었기 때문에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">출력물이 아래와 같이 나온다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/java-solid-ocp/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이번엔 페이크 타임을 넣어보자!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-solid-ocp/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">페이크 타임은 무조건 6시를 던져줘서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">결과가 출력되지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이렇게 코드를 바꿔가며 테스트 할 수도 있지만</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위는 사실 OCP원칙에 어긋나는 코드라고 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이를 위배하지 않게 코드를 수정하기 위해서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">setting 클래스를 하나 만들고 static 변수로 다음 코드를 입력한다</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class PlayMp3 {
+public static boolean IS_TEST = true;
+} 
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이렇게 하면 나중에 요 값만 바꿔주면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">테스트일 경우 페이크가 돌아가게 만들고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">실제 상황엔 실제 코드가 돌아가게 만드는 OCP원칙에 위배되지 않는 코드가 된다. (핵심은 TimeReminder가 구체 클래스가 아니라 TimeProvider 인터페이스에만 의존한다는 점이다. 그래서 어떤 구현을 넘겨줄지만 바꾸면 되고, TimeReminder 코드는 고치지 않아도 된다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class PlayMp3 {
+public static boolean IS_TEST = true;
+	﻿요 값만 바꿔주면?
+public static void main(String[] args) {
+		TimeReminder rt = new TimeReminder();
+     	TimeProvider tp;
+** 여기 집중 **
+if (IS_TEST) {
+			tp = new RealTimeProvider();
+} else {
+			tp = new FakeTimeProvider();
+}
+
+		rt.setTimeProvider(tp);
+		rt.reminder(new MP3());
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

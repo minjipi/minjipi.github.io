@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>int와 Integer 차이 (Primitive 자료형과 Wrapper 클래스 관계) | minj.devlog</title>
+  <meta name="description" content="int 와 Integer 차이 (Primitive 자료형 - Wrapper 클래스 관계) 1. Wrapper 클래스 자바의 자료형은 크게 기본 타입(primitive type)과 참조 타입(reference type)으로 나뉜다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-int-vs-integer/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="int와 Integer 차이 (Primitive 자료형과 Wrapper 클래스 관계)" />
+  <meta property="og:description" content="int 와 Integer 차이 (Primitive 자료형 - Wrapper 클래스 관계) 1. Wrapper 클래스 자바의 자료형은 크게 기본 타입(primitive type)과 참조 타입(reference type)으로 나뉜다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-int-vs-integer/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/java-int-vs-integer/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-04-13" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "int와 Integer 차이 (Primitive 자료형과 Wrapper 클래스 관계)", "description": "int 와 Integer 차이 (Primitive 자료형 - Wrapper 클래스 관계) 1. Wrapper 클래스 자바의 자료형은 크게 기본 타입(primitive type)과 참조 타입(reference type)으로 나뉜다.", "datePublished": "2022-04-13", "dateModified": "2022-04-13", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-int-vs-integer/", "image": "https://minjipi.github.io/posts/java-int-vs-integer/images/image_1.jpg", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-int-vs-integer">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2022-04-13">2022.04.13</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222699907054" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">int와 Integer 차이 (Primitive 자료형과 Wrapper 클래스 관계)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/java-int-vs-integer/images/image_1.jpg" alt="int와 Integer 차이 (Primitive 자료형과 Wrapper 클래스 관계)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222699907054 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-"><b>int 와 Integer 차이</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-">(Primitive 자료형 - Wrapper 클래스 관계)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">1. </span><span class="se-fs-fs19 se-ff-"><b>Wrapper</b></span><span class="se-fs-fs19 se-ff-"> 클래스</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자바의 자료형은 크게 기본 타입(primitive type)과 참조 타입(reference type)으로 나뉜다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">기본 타입은 byte, char, short, int, long, float, double, boolean 등이 있고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">참조 타입은 class, interface 등이 있는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">프로그래밍을 하다 보면 기본 타입의 데이터를 객체로 표현해야 하는 경우가 종종 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/java-int-vs-integer/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">나의 경우 int형 변수에 if == null 넣으려다가 int Integer 차이를 찾게 됐다..</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이때 기본 자료타입(primitive type)을 객체로 다루기 위해서 사용하는 클래스들을</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">래퍼 클래스(wrapper class)라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">래퍼 클래스는 java.lang 패키지에 포함되어 있으며, 아래와 같이 기본 타입에 대응되는 래퍼 클래스들이 있다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-int-vs-integer/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">2. </span><span class="se-fs-fs19 se-ff-"><b>int Integer 차이</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>int</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fdfff7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>Integer</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">primitive 자료형 (long, float, double ...)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fdfff7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">Wrapper 클래스 (객체)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">산술 연산이 가능.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">null로 초기화 할 수 없다.</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fdfff7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Unboxing을 하지 않으면 산술 연산이 불가능 하지만, null 값을 처리할 수 있다. </span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">null 값 처리가 용이하기 때문에 SQL과 연동할 경우 처리하기 편함.</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">DB에서 자료형이 정수형이지만 null 값이 필요한 경우 VO에서 Integer를 사용할 수 있음.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1) int (primitive type)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">int는 '변수의 타입(data type)'이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">변수(variable)는 '값을 저장할 수 있는 메모리 상의 공간'을 의미한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+int a = 1;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">에서 a가 변수(변수명)이고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그 앞에 적힌 int, 변수의 형을 지정해주고 있는 것이</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">변수의 타입(data type,자료형 )이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">즉 자료형은 data의 type에 따라 값이 저장될 공간의 크기와 저장 형식을 정의한 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이 자료형은 기본형(primitive type)과 참조형(reference type)으로 나뉘는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">int 는 이 중 기본형에 속한다. (boolean, char, byte 등도 기본형.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2) Integer (wrapper class)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">기본형을 표현해야 하는 경우가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 매개변수로 객체를 필요로 할 때</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 기본형 값이 아닌 객체로 저장해야할 때</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 객체 간 비교가 필요할 때</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(이렇게 기본형을 객체로 다루기 위해 사용하는) 클래스들을 래퍼 클래스(wrapper class)라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">3. int와 Integer간의 변환 (Boxing, Unboxing)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">래퍼 클래스(Wrapper class)는 산술 연산을 위해 정의된 클래스가 아니기 때문에</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">인스턴스에 저장된 값을 변경할 수 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">단지 값을 참조하기 위해 새로운 인스턴스를 생성하고, 생성된 인스턴스의 값만을 참조할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:492px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/java-int-vs-integer/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위의 그림과 같이 기본 타입의 데이터를 wrapper 클래스의 인스턴스로 변환하는 과정을 박싱(Boxing)이라고 하고, 래퍼 클래스의 인스턴스에 저장된 값을 다시 기본 타입의 데이터로 꺼내는 과정을 언박싱(UnBoxing)이라고 한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예를 들어 Integer 클래스에는 박싱을 위한 valueOf() 메서드와 언박싱을 위한 intValue() 메서드가 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 80%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>Boxing</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fdfff7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>Unboxing</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Primitive 자료형 -&gt; Wrapper 클래스</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fdfff7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Wrapper 클래스 -&gt; Primitive 자료형</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Integer a = Integer.valueOf(1);</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #fdfff7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">int b = a.intValue();</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="2" rowspan="1" style="width: 100.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">* 오토 박싱(AutoBoxing)과 오토 언박싱(AutoUnBoxing)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">JDK 1.5부터는 이를 자바 컴파일러가 자동으로 처리해준다.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">wrapper 클래스의 인스턴스, 즉 포장 객체는 내부의 값을 비교하기 위해 ==와 !=를 사용할 수 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">동등 연산자(==)를 사용하게 되면, 두 인스턴스의 값을 비교하는 것이 아니라 두 인스턴스의 주소값을 비교하게 되는데, 포장 객체는 내부 값이 아니라 참조를 비교하기 때문이다.이럴 땐 == 말고 equals() 메소드를 사용하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그러나 예외로..! 자바 명세에 따르면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">박싱된 값이 boolean(true, false), char(\u0000~\u007f), byte short int(-128 ~ 127) 라면</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-table_layout2 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout2 se-section-align-" style="width: 61%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">타입</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">값의 범위</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">boolean</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">true, false</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">char</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">\u0000~\u007f</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">byte short int</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">-128 ~ 127</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">==와!= 연산자로 내부의 값을 바로 비교할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">하지만 포장 객체에 어떤 값이 들어갈지 확실하지 않는 상황이라면 동등연산자는 사용하지 않는 편이 좋겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">사용 예제</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public static void main(String[] args) {
+        Integer obj1 = 10;
+        Integer obj2 = 10;
+        Integer obj3 = 300;
+        Integer obj4 = 300;
+
+        System.out.println(obj1 == obj2); //true
+        System.out.println(obj1.intValue() == obj2.intValue()); //true
+        System.out.println(obj1.equals(obj2)); //true
+        System.out.println(obj3 == obj4); //false
+        System.out.println(obj3.intValue() == obj4.intValue()); //true
+        System.out.println(obj3.equals(obj4)); //true
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-">3. 왜 Wrapper 클래스를 쓰지?🤔</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">기본 타입이 아닌 래퍼 클래스를 사용하는 이유를 찾아봤다. 다음과 같이 4가지로 정리할 수 있을 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1) 래퍼 클래스는 기본 데이터 타입을 오브젝트(Object)로 변환할 수 있다. 객체만 받는 메서드나 API에 값을 넘길 때 필요하다. (단, 래퍼 클래스도 불변이라 메서드 안에서 값을 바꿔도 호출한 쪽 변수는 바뀌지 않는다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2) 거의 모든 패키지의 클래스들은 제네릭 타입을 파라미터로 받는다. 제네릭 타입은 래퍼 클래스만 들어갈 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3) 컬렉션 프레임 워크의 데이터 구조는 기본 타입이 아닌 객체만 저장할 수 있으며, 래퍼 클래스를 사용해 자동 박싱과 언박싱이 일어난다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">4) 래퍼 클래스는 기본 타입과 다르게 null 값을 저장할 수 있다. 웹 서버의 경우 클라이언트에서 null 값이 왔을 때 기본 타입이면 예외가 발생한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-">참고 : </span><span class="se-fs-fs11 se-ff-"><a class="se-link" href="http://www.tcpschool.com/java/java_api_wrapper" target="_blank">http://www.tcpschool.com/java/java_api_wrapper</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raspberry pi | 라즈베리파이 삼바(Samba)설치하기 | minj.devlog</title>
+  <meta name="description" content="0. 삼바(Samba) 삼바(samba)는 SMB(Server Message Block) 또는 CIFS (Common Internet File System)로 알려져 있으며 리눅스(UNIX-like)와 윈도우간에 파일 및 프린터를 공유 할 수 있게 해주는 소프트웨어다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/raspberry-pi-samba/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Raspberry pi | 라즈베리파이 삼바(Samba)설치하기" />
+  <meta property="og:description" content="0. 삼바(Samba) 삼바(samba)는 SMB(Server Message Block) 또는 CIFS (Common Internet File System)로 알려져 있으며 리눅스(UNIX-like)와 윈도우간에 파일 및 프린터를 공유 할 수 있게 해주는 소프트웨어다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/raspberry-pi-samba/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2020-05-29" />
+  <meta property="article:section" content="IoT/RaspberryPi" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Raspberry pi | 라즈베리파이 삼바(Samba)설치하기", "description": "0. 삼바(Samba) 삼바(samba)는 SMB(Server Message Block) 또는 CIFS (Common Internet File System)로 알려져 있으며 리눅스(UNIX-like)와 윈도우간에 파일 및 프린터를 공유 할 수 있게 해주는 소프트웨어다.", "datePublished": "2020-05-29", "dateModified": "2020-05-29", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/raspberry-pi-samba/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "IoT/RaspberryPi"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="raspberry-pi-samba">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=IoT%2FRaspberryPi">IoT/RaspberryPi</a>
+              <time class="post-date" datetime="2020-05-29">2020.05.29</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/221982690198" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Raspberry pi | 라즈베리파이 삼바(Samba)설치하기</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/221982690198 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.2;"><span class="se-fs- se-ff-" style="color:#000000;"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.2;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>0. 삼바(Samba)</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">삼바(samba)는 SMB(Server Message Block) 또는 CIFS (Common Internet File System)로 알려져 있으며 </span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">리눅스(UNIX-like)와 윈도우간에</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>파일 및 프린터를 공유 할 수 있게 해주는 소프트웨어다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">컴퓨터 간 파일 공유등의 서비스를 구현하는데 SMB/CIFS 프로토콜를 사용하여, UNIX-like,  OpenVMS, OS/2, AmigaDOS, 그리고 Netware 등 다양한 플랫폼에서 지원되고</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">삼바를 통해 리눅스 서버를 타운영체제와 파일을 공유할 수 있는 파일서버로도 사용할 수 있다!</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">즉, 삼바를 이용하면 라즈베리파이의 파일을 윈도우 환경에서 수정하거나 자유롭게 생성할 수 있다는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;background-color:#ffffff;">그럼 라즈베리파이에서 삼바를 구축하고 사용하는 법을 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:640px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/raspberry-pi-samba/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.2;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>1. 라즈베리파이에 삼바 연결하기</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;"><b>(1) 업데이트 </b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+$ sudo apt-get update
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">설치 중 문제가 발생하지 않도록 업데이트를 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b>(2) 삼바 프로토콜 및 삼바서버, 클라이언트와 관련된 의존성 패키지를 다음의 명령어를 이용하여 설치한다.</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+$sudo apt-get install samba samba-common-bin
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b>(3) 삼바 유저 추가, 패스워드 설정</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+pi@raspberrypi:~ $ sudo smbpasswd -a pi
+New SMB password:
+Retype new SMB password:
+Added user pi.
+pi@raspberrypi:~ $
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">pi라는 삼바유저를 추가한다. 자신이 원하는 패스워드를 입력하고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(비밀번호는 원래 보안상 이유로 보이지 않아요)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-" style="color:#000000;"><b>(4) </b></span><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b>smb.conf 수정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">삼바 설정 파일(smb.conf)을 수정한다. 파일 제일 하단에 새로운 유저 pi 에 대한 설정을 추가한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ $ sudo nano /etc/samba/smb.conf
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(5)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">화살표키로 제일 아래로 내려가서 다음 명령줄들을 입력한다. 입력이 끝나면 ctrl-x (저장), 그리고 y 를 누르고, 같은 파일 이름이므로 enter 를 누르고 빠져나오면 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[pi]
+comment = rpi samba
+path = /home/pi
+valid user = pi
+writable = yes
+read only = no
+browseable = yes
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">* comment - 삼바 서버에 대한 설명</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">path - 삼바 서버로 파일을 다룰 디렉토리= 삼바 서버 접속 시 최초 화면</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;background-color:#ffffff;">valid user - 사용자</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">browseable - 공유 폴더의 목록을 보여주는 옵션</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">(6) </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>삼바 재실행</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">위 코드를 입력하고, 설정된 내용이 반영될 수 있도록 삼바를 재실행시켜준다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+$ sudo service samba restart
+
+위 코드가 안되면,
+
+$sudo /etc/init.d/samba restart
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">그럼 아래의 문구가 뜨며 재시작 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+ $ sudo /etc/init.d/samba restart
+[ ok ] Restarting nmbd (via systemctl): nmbd.service.
+[ ok ] Restarting smbd (via systemctl): smbd.service.
+[ ok ] Restarting samba-ad-dc (via systemctl): samba-ad-dc.service.
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b>(7) 공유폴더접속</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">윈도우의 탐색기 혹은 네트워크를 열어서 폴더 주소 칸에 \\192.168.1.238\ 과 같이 라즈베리파이의 IP 주소를 적어주면, 공유를 설정해둔 라즈베리 파이 폴더에 접속할 수 있다. 여기에서 새로운 디렉토리를 만들고, 파일의 수정, 삭제, 복사, 이동이 가능하게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line3">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line3 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-large_image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-large_image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://webnautes.tistory.com/490" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Samba를 이용하여 Ubuntu와 Windows간  파일 공유하기 ( 설정 방법 )</strong>
+<p class="se-oglink-summary">Ubuntu 16.04가 설치된 컴퓨터와 Windows 10이 설치된 컴퓨터간 파일 공유를 위해 삼바 설정 하는 방법을 설명합니다. SMB (Server Message Block) 윈도우가 설치된 컴퓨터가 파일 공유, 프린터 같은 리소스에 연..</p>
+<p class="se-oglink-url">webnautes.tistory.com</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

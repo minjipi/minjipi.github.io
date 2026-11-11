@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자바 스윙 Java Swing | 캐릭터가 window frame을 벗어나지 않게 하기 | minj.devlog</title>
+  <meta name="description" content="[ 자바 스윙 Java swing 공부 ] 1. 움직이는 캐릭터가 창 (window frame) 을 넘어가지 않는 것. 기존 코드에서는 캐릭터가 왼쪽으로 움직일 때, window frame 을 넘어 무한정 왼쪽 방향으로 갔던 문제를 고치려고 한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/java-swing-keep-character-in-frame/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="자바 스윙 Java Swing | 캐릭터가 window frame을 벗어나지 않게 하기" />
+  <meta property="og:description" content="[ 자바 스윙 Java swing 공부 ] 1. 움직이는 캐릭터가 창 (window frame) 을 넘어가지 않는 것. 기존 코드에서는 캐릭터가 왼쪽으로 움직일 때, window frame 을 넘어 무한정 왼쪽 방향으로 갔던 문제를 고치려고 한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/java-swing-keep-character-in-frame/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2020-07-02" />
+  <meta property="article:section" content="Backend/Java" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "자바 스윙 Java Swing | 캐릭터가 window frame을 벗어나지 않게 하기", "description": "[ 자바 스윙 Java swing 공부 ] 1. 움직이는 캐릭터가 창 (window frame) 을 넘어가지 않는 것. 기존 코드에서는 캐릭터가 왼쪽으로 움직일 때, window frame 을 넘어 무한정 왼쪽 방향으로 갔던 문제를 고치려고 한다.", "datePublished": "2020-07-02", "dateModified": "2020-07-02", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/java-swing-keep-character-in-frame/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Backend/Java"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="java-swing-keep-character-in-frame">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FJava">Backend/Java</a>
+              <time class="post-date" datetime="2020-07-02">2020.07.02</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222019229807" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">자바 스윙 Java Swing | 캐릭터가 window frame을 벗어나지 않게 하기</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222019229807 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">[ 자바 스윙 Java swing 공부 ]</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-"><b>1. 움직이는 캐릭터가 창 (window frame) 을 넘어가지 않는 것.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">기존 코드에서는 캐릭터가 왼쪽으로 움직일 때,</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">window frame 을 넘어 무한정 왼쪽 방향으로 갔던 문제를 고치려고 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/java-swing-keep-character-in-frame/images/nv_0.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">화질 왜 이러는지🥺</span></p></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">현재 프레임 사이즈가 가로 -200px 에서 +200px 이니까</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">캐릭터가 대강 20px라고 가정해서-</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">캐릭터의 x축 위치가 -180에 다다랐을 때 캐릭터가 더 이상 앞으로 가지 못하도록 만들어 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+[ 기존코드 ]
+public int playAnim(JLabel lbl, int imageIndex) {
+if (ImageService.walkingLeftImageName.length &lt;= imageIndex) {
+			imageIndex = 0;
+}
+
+		lbl.setIcon(new ImageIcon("./src/img/" + ImageService.walkingLeftImageName[imageIndex]));
+		
+        lbl.setLocation(lbl.getLocation().x + MOVING_DIRECTION * speed, lbl.getLocation().y);
+return ++imageIndex;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">우선 기존 코드를 설명하자면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanummyeongjo" style="background-color:#e2e2e2;"><b>lbl.setLocation(lbl.getLocation().x + MOVING_DIRECTION * speed, lbl.getLocation().y);</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-nanummyeongjo" style="background-color:#e2e2e2;"><b>return ++imageIndex;</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">x위치를 받아와서, 움직이는 방향*속도를 더한 값이 x위치값, y값.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 프레임으로 쪼개진 이미지가 하나 씩 돌아갈 수 있게 ++imageIndex 가 되어 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>해결책</b></span><span class="se-fs- se-ff-">을 생각해 보면...</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1. 로케이션의 X 값이 -180 이 넘어가면(보다 작으면) : 값을-180 으로 넣고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2. -180을 넘어가지 않으면 그냥 기존 코드대로(평상시 모드) 값을 넣어주기.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여기서 한 단계 더 자세하게 생각해보면 :</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>1.</b></span><span class="se-fs- se-ff-"> if (lbl.getLocation().x 가 -180 보다 작아지면?)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">{ lbl.getLocation().x를 -180으로 고정한다. }</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>2.</b></span><span class="se-fs- se-ff-"> else (lbl.getLocation().x 가 -180보다 크면?)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">{ lbl.setLocation(lbl.getLocation().x + MOVING_DIRECTION * speed, lbl.getLocation().y); }</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs11 se-ff-"><strike>그 다음.. 이거 이렇게 하면 될까요? 물어보고,</strike></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">아래와 같이 코드로 구현한다!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ [ 변경 코드 ]
+public int playAnim(JLabel lbl, int imageIndex) {
+if (ImageService.walkingLeftImageName.length &lt;= imageIndex) {
+			imageIndex = 0;
+}
+		lbl.setIcon(new ImageIcon("./src/img/" + ImageService.walkingLeftImageName[imageIndex]));
+if (lbl.getLocation().x &lt; -180) {
+			lbl.setLocation(lbl.getLocation().x, lbl.getLocation().y);
+}
+else {
+			lbl.setLocation(lbl.getLocation().x + MOVING_DIRECTION * speed, lbl.getLocation().y);
+}
+return ++imageIndex;
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/java-swing-keep-character-in-frame/images/nv_1.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이렇게 하면 영상처럼 캐릭터가 예상했던 위치에서 더 창을 뚫고 나가지 않고 </span><span class="se-fs- se-ff-">멈춘다!</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line7">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line7 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 아래는 위의 코드를 구현하며 내가 찾아봤던 기초적인 것들이다!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">자바 스윙 이라는.. 자바 GUI 인데 자바도 잘 모르면서 이것을 하려고 하니 정말 어렵고 절망스러웠다ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>#</b></span><span class="se-fs- se-ff- se-style-unset" style="color:#555555;"><b>setLocation</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#555555;">아래는 자바에서 자주 쓰이는(?) 메소드들 중 몇 가지다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#555555;">나는 이번 공부를 하기 전까지 setLocation과 getLocation의 차이를 명확하게 알지 못했었다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content" style="border-style:solid;border-width:1px 0px 0px 1px;border-color:#54b800;">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> Point getLocation()</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 컴퍼넌트의 위치</span><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;">를 리턴 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 44.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> Point getLocationOnScreen()</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 44.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 화면의 좌표 공간 위치 리턴 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> String getName()</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 컴퍼넌트의 이름을 리턴 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> void setsize(int width, int height)</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 사이즈를 'width' 및 'height'로변경</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> void setVisible(boolean b)</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 'b'에 의해 컴퍼넌트 표시 or 비표시 설정</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffad98;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> void setLocation(int x, int y)</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffad98;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 이 컴퍼넌트를 새로운 위치로 이동 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffad98;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> Point getLocation()</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 43.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffad98;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#555555;"> 컴퍼넌트의 위치를 리턴</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> setBounds(int x, int y, int width, int height)</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 위치, 너비, 높이 지정 </span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 47.06%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #e3fdc8;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#000000;"><b> add(컴포넌트)</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 52.94%; height: 24.0px; border-style:solid;border-width:0px 1px 1px 0px;border-color:#54b800; background-color: #ffffff;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff- se-style-unset" style="color:#555555;"> 컴포넌트를 부착 </span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#555555;"><b>getLocation</b></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#555555;"> : get 이라는 의미 그대로 값을 받아와 쓰는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#555555;"><b>setLocation</b></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#555555;"> : 내 식대로 표현하자면 세팅한다 할 때 의미 그대로 뭔가 세팅 하는 것.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+if (lbl.getLocation().x &lt; -180) {
+lbl.setLocation(lbl.getLocation().x, lbl.getLocation().y);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그래서 위 코드 중 이 부분을 해석하자면-</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+if (받아온.x 값 &lt; -180) 일 때 {
+lbl.값을 지정해준다(받아온.x값, 받아온.y값);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line3">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line3 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">2. window frame 사이즈가 변할 때마다 이벤트 메시지 출력되게 하기</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/java-swing-keep-character-in-frame/images/nv_2.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">결과🤘🏻</span></p></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+public class Client {
+public static void main(String[] args) {
+    JPanel panel = new JPanel() {
+      @Override
+      public Dimension getPreferredSize() {
+return new Dimension(200, 200);
+}
+};
+    panel.addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentResized(ComponentEvent e) {
+        System.out.println("Resized to " + e.getComponent().getSize());
+}
+      @Override
+      public void componentMoved(ComponentEvent e) {
+        System.out.println("Moved to " + e.getComponent().getLocation());
+}
+});
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.addTab("test", panel);
+    JFrame frame = new JFrame();
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setLayout(new BorderLayout());
+    frame.add(tabbedPane);
+    frame.pack();
+   
+    frame.setVisible(true);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#222222;background-color:#ffffff;">이것을 찾아본 이유는,,,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#222222;background-color:#ffffff;">위의 캐릭터가 창을 벗어나는 시점에서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#222222;background-color:#ffffff;">창의 크기가 캐릭터 속도/위치에 맞춰 늘어나</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#222222;background-color:#ffffff;">캐릭터의 이동을 맞지 못하게! 하는 코드를 구현하고 싶어서 였는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#222222;background-color:#ffffff;">그건 너무 어려운 것 같다ㅜㅜ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#222222;background-color:#ffffff;">기초 공부를 더 하고 도전 하자는 진단..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-nanumgothic se-style-unset" style="color:#222222;background-color:#ffffff;">화이팅~!~!!!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#222222;background-color:#ffffff;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset" style="color:#222222;background-color:#ffffff;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line3">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line3 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#222222;background-color:#ffffff;">** </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#222222;background-color:#ffffff;">자바에서 범위 </span><span class="se-fs- se-ff- se-style-unset" style="color:#222222;background-color:#ffffff;"><b>주석 단축키</b></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#222222;background-color:#ffffff;">는</span><span class="se-fs- se-ff- se-style-unset" style="color:#222222;background-color:#ffffff;"><b> ctrl + shift + /</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#222222;background-color:#ffffff;">주석을 </span><span class="se-fs- se-ff- se-style-unset" style="color:#222222;background-color:#ffffff;"><b>풀기 위한 단축키는 ctrl + shift + \ </b></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

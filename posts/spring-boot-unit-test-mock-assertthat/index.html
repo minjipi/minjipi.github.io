@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Springboot Unit Test] Mock, AssertThat | minj.devlog</title>
+  <meta name="description" content="Springboot Unit Test 공부하며 정리 Mock, AssertThat 1. build.gradle에 다음을 추가 testImplementation &#x27;org.springframework.boot:spring-boot-starter-test&#x27;" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-unit-test-mock-assertthat/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Springboot Unit Test] Mock, AssertThat" />
+  <meta property="og:description" content="Springboot Unit Test 공부하며 정리 Mock, AssertThat 1. build.gradle에 다음을 추가 testImplementation &#x27;org.springframework.boot:spring-boot-starter-test&#x27;" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-unit-test-mock-assertthat/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-unit-test-mock-assertthat/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-07-13" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Springboot Unit Test] Mock, AssertThat", "description": "Springboot Unit Test 공부하며 정리 Mock, AssertThat 1. build.gradle에 다음을 추가 testImplementation 'org.springframework.boot:spring-boot-starter-test'", "datePublished": "2022-07-13", "dateModified": "2022-07-13", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-unit-test-mock-assertthat/", "image": "https://minjipi.github.io/posts/spring-boot-unit-test-mock-assertthat/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-unit-test-mock-assertthat">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-07-13">2022.07.13</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222809309430" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Springboot Unit Test] Mock, AssertThat</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-boot-unit-test-mock-assertthat/images/image_1.jpg" alt="[Springboot Unit Test] Mock, AssertThat" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222809309430 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system"><i><b>Springboot Unit Test </b></i></span><span class="se-fs-fs11 se-ff-system se-weight-unset"><i>공부하며 정리</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system se-weight-unset"><i>Mock, AssertThat</i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-">1.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">build.gradle에 다음을 추가</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>@SpringBootTest 어노테이션</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@SpringBootTest가 하는 역할: @SpringBootApplication을 찾아서 테스트를 위한 빈들을 다 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그리고 @MockBean으로 정의된 빈을 찾아서 교체한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>@MockBean</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">컨트롤러만 테스트하고 싶을 경우 서비스 객체를 MockBean으로 만들어서 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ApplicationContext에 들어있는 빈을 Mock으로 만든 객체로 교체함</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">모든 @Test 마다 자동으로 리셋. 직접 리셋을 관리 하지 않아도 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-">2.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">테스트 코드를 작성할 때, 크게 두 부분으로 나누어서 생각할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1. 실행 단계</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. 검증 단계</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">실행 단계에서는 사용자 입력을 모방하여 테스트할 로직을 실행시키고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">검증 단계에서는 실행 단계가 예상한 대로 동작하는지 검증한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">JUnit에서 이 검증 단계를 도와주는 메소드가 바로 org.junit.Assert.assertThat다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">사용하려면 다음을 import</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">테스트 케이스에서 사용 예시 &gt;</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+@SpringBootTest
+public class OrderServiceTest {
+    @Nested
+    class Success {
+        @Test
+        @DisplayName("주문 성공")
+public void 주문번호_성공() {
+            Order order = Order.builder()
+.orderNum("1COFFEE9MILK2")
+.productName("어리틀바닐라목걸이")
+.build();
+
+            System.out.println(order.getOrderNum().length());
+assertThat(order.getOrderNum().length()).isEqualTo(12);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">assertEquals와 비교해서 가독성, Failure 메세지, 타입 안정성 등 장점들이 있다는데..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">자세한 부분은 다음 링크를 참고 : </span><span class="se-fs- se-ff-system"><a class="se-link" href="https://jongmin92.github.io/2020/03/31/Java/use-assertthat/" target="_blank">https://jongmin92.github.io/2020/03/31/Java/use-assertthat/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">, </span><span class="se-fs- se-ff-system"><a class="se-link" href="https://johngrib.github.io/wiki/junit5-nested/" target="_blank">https://johngrib.github.io/wiki/junit5-nested/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">[ 👩🏻‍💻 혼잣말 ]</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">TDD는 처음인데, 오.. 느끼는게 많았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">좋은 점과 나쁜점에 대해 기록해 두려고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">좋은점은 코드를 더 깔끔하게 짤 수 있다는 점이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">미리 어떻게 만들 것인지 테스트를 해보고 들어가기 때문에..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">어떤 분이 외국 개발자 분들이랑 일할때 초반 몇 달을 변수명 정하고 기능 정리만 정리했다던데, 처음엔 의아했지만 결국 개발 진행 속도가 훨씬 빠르고 깔끔했다는 이야기가 생각났다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">테스트를 먼저 해봄으로써 전체적으로 구조 파악이 되고, 결국 코드가 더 객체 지향적인 코드가 되는 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">아쉬운 점은... 역시 아직 내 실력이 부족하다는 것. 그래서 테스트 코드 작성에 시간이 더 걸린다는 것..ㅋㅋㅋ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이건 TDD의 단점이라기 보단 내 단점이지만, 어쨌든 코드 양이 늘어나긴 하니 그만큼 시간 비용이 더 들 수 있다는 점?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

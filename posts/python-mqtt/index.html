@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python :: MQTT 통신 | MQTT 통신 특징, 파이썬으로 mqtt 통신 하기 | minj.devlog</title>
+  <meta name="description" content="MQTT MQTT 란? MQTT란 M2M, IOT를 위한 프로토콜 로서, 최소한의 전력과 패킷량으로 통신 하는 프로토콜이다. 출처 : https://www.eclipse.org/community/eclipse_newsletter/2014/october/article2.php" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/python-mqtt/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Python :: MQTT 통신 | MQTT 통신 특징, 파이썬으로 mqtt 통신 하기" />
+  <meta property="og:description" content="MQTT MQTT 란? MQTT란 M2M, IOT를 위한 프로토콜 로서, 최소한의 전력과 패킷량으로 통신 하는 프로토콜이다. 출처 : https://www.eclipse.org/community/eclipse_newsletter/2014/october/article2.php" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/python-mqtt/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/python-mqtt/images/image_1.jpg" />
+  <meta property="article:published_time" content="2020-08-29" />
+  <meta property="article:section" content="Backend/Python" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Python :: MQTT 통신 | MQTT 통신 특징, 파이썬으로 mqtt 통신 하기", "description": "MQTT MQTT 란? MQTT란 M2M, IOT를 위한 프로토콜 로서, 최소한의 전력과 패킷량으로 통신 하는 프로토콜이다. 출처 : https://www.eclipse.org/community/eclipse_newsletter/2014/october/article2.php", "datePublished": "2020-08-29", "dateModified": "2020-08-29", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/python-mqtt/", "image": "https://minjipi.github.io/posts/python-mqtt/images/image_1.jpg", "articleSection": "Backend/Python"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="python-mqtt">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FPython">Backend/Python</a>
+              <time class="post-date" datetime="2020-08-29">2020.08.29</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222074611215" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Python :: MQTT 통신 | MQTT 통신 특징, 파이썬으로 mqtt 통신 하기</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/python-mqtt/images/image_1.jpg" alt="Python :: MQTT 통신 | MQTT 통신 특징, 파이썬으로 mqtt 통신 하기" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222074611215 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>MQTT</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>MQTT 란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">MQTT란 M2M, </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;">IOT를 위한 프로토콜</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">로서,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;">최소한의 전력과 패킷량으로 통신</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">하는 프로토콜이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="https://www.eclipse.org/community/eclipse_newsletter/2014/october/images/article1.1.png"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">출처 : </span><span class="se-fs- se-ff-"><a class="se-link" href="https://www.eclipse.org/community/eclipse_newsletter/2014/october/article2.php" target="_blank">https://www.eclipse.org/community/eclipse_newsletter/2014/october/article2.php</a></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">IOT와 모바일 어플리케이션 등의 통신에 매우 적합한 프로토콜. </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">독특한 점이라면</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">MQTT는 HTTP, TCP등의 통신과 같이 클라이언트-서버 구조로 이루어지는 것이 아닌</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;"><b>Broker, Publisher, Subscriber</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;"> 구조</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">로 이루어져있다는 것! 여기에 대해 조금 더 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>MQTT의 특징</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">MQTT의 특징인 통신 방식에 대해 알아보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:607px;">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">PUBLISHER &lt;--&gt;</span><span class="se-fs- se-ff-system" style="color:#000000;"><b> BROKER</b></span><span class="se-fs- se-ff-system" style="color:#000000;"> &lt;--&gt; SUBSCRIBER</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">기존 방식과 비교하자면 '</span><span class="se-fs- se-ff-system" style="color:#000000;"><b>BROKER</b></span><span class="se-fs- se-ff-system" style="color:#000000;">' 가 '서버' 역할을 하는 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"><b>BROKER</b></span><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;"> 를 거쳐 다양한 장비들이 통신을 주고 받는 형태다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">SUBSCRIBER 가</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> 중간에서 서버 역할을 하는 것이고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">메시지를 보내고 싶어하는 쪽이 </span><span class="se-fs- se-ff-system" style="color:#000000;">PUBLISHER.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">아래는 MQTT 를 이해하기 위한 몇가지 키워드들인데 일단 읽어본 다음 예제를 통해 더 이해하도록 하자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset" style="color:#000000;background-color:#98d36c;">#</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;"><b> Client</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> MQTT 의 broker 에 연결된 모든 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;">#</span><span class="se-fs- se-ff-system" style="color:#000000;background-color:#98d36c;"><b> BROKER</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">서버와 클라이언트 사이의 중간 역할.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">모든 메세지를 수신, 필터링, 메시지 구독하는 사람 결정 클라이언트에게 메세지를 보내는 역할.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;"><b># Publish</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"> topic을 지정하여 topic 을 subscribe 하고 있는 클라이언트에게 메세지를 보낸다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;">#</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;"><b> Subscribe</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">topic을 구독하여 topic으로 publish된 메시지를 받는다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;"># </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;background-color:#98d36c;"><b>Topic</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">MQTT의 topic은 슬래쉬(/)를 분리 문자로 사용하여 폴더 및 파일과 유사한 계층 구조를 가진다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+camera/data1  : ex)카메라로부터 받는 데이터
+sensor/data1﻿house : ex)습도 센서로부터 받는 데이터
+house/room
+house/room/main-light
+house/room/left-light
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>MQTT 동작 구조</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">트위터 서비스의 동작구조를 떠올려보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">트위터에서 사용자는 다른 사용자를 follow 할 수 있다. </span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">그럼 다른 사용자가 생성하는 메시지(트윗)를 받아볼 수 있다. 그리고 스스로 메시지를 생성할 수도 있고.. 그럼 자신을 follow하는 사용자에게 메시지가 전달된다. </span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">MQTT도 이와 유사한 동작구조를 갖는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">MQTT 시스템에 참여하는 MQTT 클라이언트는 메시지 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"><b>발행(publish, 트윗에 해당)</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">, 메시지 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"><b>구독(subscribe, follow에 해당)</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"> 두 가지 동작을 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">MQTT 클라이언트가 메시지를 특정 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"><b>채널(Topic, 토픽)</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">에 발행하면,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">이 채널을 구독한 모든 클라이언트에게 메시지가 전달되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;">중간에서 메시지를 수집, 재분해 하는 작업은 MQTT 브로커 담당이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>3. MQTT 테스트 :: in VMware</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">실습 환경 : </span><span class="se-fs- se-ff-system se-style-unset"><b>VMware Ubuntu.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">MQTT 브로커 종류로는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">mosquitto, HiveMQ, Rabbit MQ, IBM MQ, Vertx ... 가 있는데 나는 돈이 없으니까</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">mosquitto 로 실습을 해보도록 하겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">구글 dns랑 통신이 되는지,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;">nslookup 으로  네크워크 설정 문제 없는지 확인.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apt-get install mosquitto
+﻿mosquitto
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">mosquitto 설치하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">mosquitto 실행!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+netstat -anlp | grep :1883
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">실행 중인 것 확인하기.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">창을 두 개 띄워서 하나는 sub, 하나는 pub 이 되도록 하겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">왼쪽이 구독하는 사용자,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">오른쪽이 메시지 보내는 사용자라 치고 실습! (위는 포트 확인용 창)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">서버에 접속하는 개념이라 다른 컴퓨터에서도 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">왼쪽 구독자 환경에서</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+apt-get mosquitto-clients
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">apt-get mosquitto-clients 설치(테스트용)를 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mosquitto_sub -h 192.168.100.88 -t camera/data
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">mosquitto_sub </span><span class="se-fs- se-ff-" style="background-color:#fdd5f5;"><b>-h [브로커의 ip]</b></span><span class="se-fs- se-ff-"> </span><span class="se-fs- se-ff-" style="background-color:#b0f1ff;"><b>-t [메시지 토픽]</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">프롬프트가 떨어지지 않고 brocker과 연결이 유지되고 있는 상태.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">이제 퍼블리셔로 메시지를 보내보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">퍼블리셔 창에서</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+mosquitto_pub -h 192.168.100.88 -t camera/data -m "hi"
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">mosquitto_pub </span><span class="se-fs- se-ff-" style="background-color:#fdd5f5;"><b>-h [브로커의 ip]</b></span><span class="se-fs- se-ff-"> </span><span class="se-fs- se-ff-" style="background-color:#b0f1ff;"><b>-t [메시지 토픽]</b></span><span class="se-fs- se-ff-"><b> </b></span><span class="se-fs- se-ff-" style="background-color:#fff8b2;"><b>[보낼 메시지]</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">"hi " 보내기~~</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">통신 확인.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">(이것이 나중에는 hi 메시지가 아니라 사진이나 코드가 된다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이번엔 sub과 pub을 </span><span class="se-fs- se-ff-"><b>파이썬 코드</b></span><span class="se-fs- se-ff-">로 만들어보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>MQTT 예제 :: in Python</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">파이썬으로 mqtt통신을 해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">파이썬에서 mqtt 통신을 하려면 paho 라이브러리가 필요하다. 다음 명령어로 설치해 준다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+pip install paho-mqtt
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#464646;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset" style="color:#464646;background-color:#ffffff;">1) </span><span class="se-fs- se-ff-system se-style-unset" style="color:#464646;background-color:#ffffff;"><b>subscriber</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#464646;background-color:#ffffff;"> 코드</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import paho.mqtt.client as mqtt
+
+# subscriber callback
+def on_message(client, userdata, message):
+print("message received ", str(message.payload.decode("utf-8")))
+print("message topic=", message.topic)
+print("message qos=", message.qos)
+print("message retain flag=", message.retain)
+
+
+broker_address = "192.168.100.88"
+client1 = mqtt.Client("client1") //구독자 이름
+client1.connect(broker_address) //broker 주소 등록
+client1.subscribe("camera/data") //등록하고픈 토픽 지정
+client1.on_message = on_message
+client1.loop_forever()
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">on_message </span><span class="se-fs- se-ff-system se-style-unset" style="color:#464646;background-color:#ffffff;">​함수를 만들고</span><span class="se-fs- se-ff-system se-style-unset" style="color:#464646;background-color:#ffffff;"><b> </b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#004e82;background-color:#ffffff;"><b>콜백함수</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#464646;background-color:#ffffff;">로 등록시킨다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_postit">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_postit">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;"><b>*</b></span><span class="se-fs-fs15 se-ff-" style="color:#004e82;"><b> </b></span><span class="se-fs- se-ff-" style="color:#004e82;"><b>callback 함수</b></span><span class="se-fs-fs15 se-ff-" style="color:#000000;"><b>:</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;">이벤트 발생을 기다려야할 때,</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;">뭔가 돌아와야 호출이 되도록!</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;">이벤트를 받았을 때(비동기 작업 후 처리하는)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;">자동으로 실행되는 함수.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-" style="color:#000000;"></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;background-color:#e3fdc8;">client.on_message</span><span class="se-fs- se-ff-system" style="color:#000000;"> = on_message : 내가 만든 함수를 등록시키는 부분 퍼블레셔한테 메시지를 받아올 함수. 근데 이 메시지가 언제 올 지 모르니까, 이런 함수를 callback으로 등록 한 것.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;background-color:#e3fdc8;">broker_address </span><span class="se-fs- se-ff-system" style="color:#000000;">: 사설 아이피 사용 시 포트포워딩 필수, 클라우드의 경우는 포-포-딩 필요 X </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">loop : 무한 반복 돌리기</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">2) </span><span class="se-fs- se-ff-system" style="color:#000000;"><b>publisher</b></span><span class="se-fs- se-ff-system" style="color:#000000;"> 코드</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+#publisher 코드
+
+import paho.mqtt.client as mqtt
+
+mqttc = mqtt.Client("client2")
+mqttc.connect("192.168.100.88", 1883)
+mqttc.publish("camera/data", "ㅋㅌㅊㅋㅌㅊ!!!!!!!!")
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">여기까지..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">그리고 사실 내가 위에서 실수한 것이 하나 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">현재 코드엔 breoker 가 없는 상황이다.ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">이렇게만 하고 실행하려하면</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ConnectionRefusedError:
+[WinError 10061] 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다. ﻿
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">에러가 뜬다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">아까 broker을 어디에 설치했었지?..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">아까 실습했던 vmware 에서 포트포워딩을 해주어 가상머신 우분투에 있는 broker과 연결시켜 주는 작업이 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-"><b>MQTT 예제 :: VMware 우분투 포트포워딩</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">0.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:329px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">1.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:592px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">2. 우측 하단의 Help 버튼 위에 보이는 </span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;"><b>Change Settings</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;"> 클릭</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">3. VMnet NAT 선택 -&gt; NAT </span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;"><u><b>S</b></u></span><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">ettings... 클릭.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">4. 포트번호 1883 등록</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#333333;background-color:#ffffff;">그리고 코드를 다음과 같이 수정한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import paho.mqtt.client as mqtt
+
+# subscriber callback
+def on_message(client, userdata, message):
+print("message received ", str(message.payload.decode("utf-8")))
+print("message topic=", message.topic)
+print("message qos=", message.qos)
+print("message retain flag=", message.retain)
+
+
+client1 = mqtt.Client("client1")
+client1.connect('localhost', 1883)
+client1.subscribe("camera/data")
+client1.on_message = on_message
+client1.loop_forever()
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그리고 나서 sub을 실행하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">pub을 실행하면 다음과 같은 성공적인 결과 메시지가 출력된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/python-mqtt/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">성공!</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system"><b>📣 네트워크는 아래 책 추천드립니다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-center">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://product.kyobobook.co.kr/detail/S000213766983" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Do it! IT 서비스 이해를 위한 네트워크 기초 | 심준보 - 교보문고</strong>
+<p class="se-oglink-summary">Do it! IT 서비스 이해를 위한 네트워크 기초 | 개발자에게 필요한 네트워크의 기초부터 응용까지 그림으로 이해하고 실습으로 체험하며 배운다!개발을 하다가 네트워크 지식의 부족함을 느꼈다면? 이 책으로 네트워크 기초……</p>
+<p class="se-oglink-url">product.kyobobook.co.kr</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system">비전공자였지만 ‘doit 네트워크’ 책을 쓰신 저자분의 강의를 듣고</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system">현재 규모있는 기업의 백엔드 개발자가 되었습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system">공부를 시작하시는 모든 분들 화이팅 입니다 !!</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-" style="color:#b7b7b7;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-" style="color:#b7b7b7;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Postman이나 Advanced REST client로 JWT Test &#x27;JWT Token has expired&#x27;에러 | minj.devlog</title>
+  <meta name="description" content="JWT (Json Web Token) Postman이나 Advanced REST client로 JWT Test 중 만난 JWT Token has expired 에러 1. JWT 동작 과정 &#x27;JWT Token has expired&#x27; 해결 방법은 3번 부터 보세요! 1." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/jwt-token-has-expired-postman/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Postman이나 Advanced REST client로 JWT Test &#x27;JWT Token has expired&#x27;에러" />
+  <meta property="og:description" content="JWT (Json Web Token) Postman이나 Advanced REST client로 JWT Test 중 만난 JWT Token has expired 에러 1. JWT 동작 과정 &#x27;JWT Token has expired&#x27; 해결 방법은 3번 부터 보세요! 1." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/jwt-token-has-expired-postman/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/jwt-token-has-expired-postman/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-09-23" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Postman이나 Advanced REST client로 JWT Test 'JWT Token has expired'에러", "description": "JWT (Json Web Token) Postman이나 Advanced REST client로 JWT Test 중 만난 JWT Token has expired 에러 1. JWT 동작 과정 'JWT Token has expired' 해결 방법은 3번 부터 보세요! 1.", "datePublished": "2021-09-23", "dateModified": "2021-09-23", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jwt-token-has-expired-postman/", "image": "https://minjipi.github.io/posts/jwt-token-has-expired-postman/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="jwt-token-has-expired-postman">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-09-23">2021.09.23</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222513649801" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Postman이나 Advanced REST client로 JWT Test &#x27;JWT Token has expired&#x27;에러</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222513649801 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs-fs16 se-ff-nanummyeongjo"><i><b>JWT</b></i></span><span class="se-fs- se-ff- se-weight-unset"><i> (Json Web Token)</i></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset">Postman이나 Advanced REST client로 JWT Test 중 만난</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs-fs16 se-ff-nanummyeongjo"><b>JWT Token has expired</b></span><span class="se-fs- se-ff- se-weight-unset"> 에러</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>1. JWT 동작 과정</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">'JWT Token has expired' 해결 방법은 3번 부터 보세요!</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/jwt-token-has-expired-postman/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset">1. 클라이언트 로그인 요청 POST(id, pw)</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset">2. 서버는 (id, pw)가 맞는지 확인 후 맞다면 JWT를 Secret Key로 생성 후 전달</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset">3. 클라이언트는 Token을 로컬 쿠키에 저장</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset">4. 클라이언트는 서버에 요청할 때 항상 헤더에 Token을 포함시킴</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset">5. 서버는 요청을 받을 때마다 Secret Kye를 사용해Token이 유효한지 검증</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset"> - 서버만이 Secret Key를 가지고 있기 때문에 검증 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset"> - Token이 검증되면 따로 username, pw를 검사하지 않아도 user identification 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset">6. 서버의 Response</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-weight-unset">2. Backend (Spring boot, JWT, Spring Security) 구조</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:400px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jwt-token-has-expired-postman/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">3. JwtRequestFilter 동작 과정</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">1. User Request's Header에서 Token이 있는지 확인</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">2. 있다면 Token 추출</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">3. JwtUserDetailsService에서 userName으로 user의 detail 얻어옴</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">4. JwtTokenUtil에서 Token 유효성 검사</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"> validateToken(jwtToken, userDetails)</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">5. 유효한 Token이면 Spring Security에 유효한 User라 알려주고 hello() method에게 접근 가능하게 설정</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">4. Postman이나 Advanced REST client로 'JWT Test'</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">총 3단계</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"><b>1. GET /hello</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">GET </span><span class="se-fs- se-ff-"><a class="se-link" href="http://localhost:8090/hello" target="_blank">http://localhost:8090/hello</a></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">우선 처음 접근할 땐, Token이 없기 때문에 404 에러가 뜬다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"><b>2. POST /authenticate</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">POST </span><span class="se-fs- se-ff-"><a class="se-link" href="http://localhost:8090/authenticate" target="_blank">http://localhost:8090/authenticate</a></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">BODY JSON</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+{
+"username" : "user_id",
+"password" : "user_pw"
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">Token이 return된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">결과 :</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jwt-token-has-expired-postman/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"><b>3. /hello with Token</b></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">GET </span><span class="se-fs- se-ff-"><a class="se-link" href="http://localhost:8090/hello" target="_blank">http://localhost:8090/hello</a></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-">Headers는 다음과 같이 해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"><i>key: Authorization</i></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff-"><i>values : Bearer (Token값)</i></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">예시는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jwt-token-has-expired-postman/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">Bearer 한칸 띄고 &lt;&gt;로 토큰을 감싸주는 사람도 있던데, 그냥 이렇게 하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">이렇게 하면 되는건데... 자꾸 난 JWT Token has expired 라는 에러가 뜨는거다 ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">JWT Token has expired</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">JWT Token has expired</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">하 이것의 해결법은 참 간단했다</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">doGenerateToken 수정이었다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jwt-token-has-expired-postman/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">원래 코드엔 5 * 1000 라고 되어 있었는데 ㅋㅋ</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">이게 5초다 5초..</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">그니까 방금 과정의 2단계에서 3단계까지 5초 안에 해야 되는거다ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">그래서 이 부분을 대충 늘려주었더니</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jwt-token-has-expired-postman/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">반가운 Hello! 가 떴다 ㅎㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">사실 이건.. 에러라고 하기엔 뭐하다 ㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset">Jwt 예제 코드 받아서 테스트 해보다가 만난 문제였는데, 이 코드에 대한 설명이 많지 않아서 + jwt를 잘 몰라서 삽질을 좀 했다. 아마 이 예제코드로 테스트 하시는 분들 중 expired 문제 해결법 찾는 사람의 시간을 단축시켜주고자 +_+ 포스팅 했다..</span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jwt-token-has-expired-postman/images/image_7.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">그렇게 추석이 지났다 🌕</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-justify"><span class="se-fs- se-ff- se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

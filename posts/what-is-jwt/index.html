@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JWT란? JWT 형식, 동작과정 | minj.devlog</title>
+  <meta name="description" content="1. JWT란? JWT(Json Web Token)는 비밀키를 이용하여 서명된 JSON 형태의 데이터다. 여기에 사용자 인증 정보를 넣어서 토큰 * 을 발급해주면, 추후 인증이 필요한 리소스에 접근 시 사용자가 서버에 토큰을 포함해서 전송하여 서버측에서는 복잡한 인증 과정" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/what-is-jwt/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JWT란? JWT 형식, 동작과정" />
+  <meta property="og:description" content="1. JWT란? JWT(Json Web Token)는 비밀키를 이용하여 서명된 JSON 형태의 데이터다. 여기에 사용자 인증 정보를 넣어서 토큰 * 을 발급해주면, 추후 인증이 필요한 리소스에 접근 시 사용자가 서버에 토큰을 포함해서 전송하여 서버측에서는 복잡한 인증 과정" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/what-is-jwt/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/what-is-jwt/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-09-28" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JWT란? JWT 형식, 동작과정", "description": "1. JWT란? JWT(Json Web Token)는 비밀키를 이용하여 서명된 JSON 형태의 데이터다. 여기에 사용자 인증 정보를 넣어서 토큰 * 을 발급해주면, 추후 인증이 필요한 리소스에 접근 시 사용자가 서버에 토큰을 포함해서 전송하여 서버측에서는 복잡한 인증 과정", "datePublished": "2021-09-28", "dateModified": "2021-09-28", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/what-is-jwt/", "image": "https://minjipi.github.io/posts/what-is-jwt/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="what-is-jwt">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2021-09-28">2021.09.28</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222519729832" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JWT란? JWT 형식, 동작과정</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222519729832 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>1. JWT란?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">JWT(Json Web Token)는 </span><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">비밀키를 이용하여 서명된 JSON 형태의 데이터다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">여기에 사용자 인증 정보를 넣어서 토큰</span><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;"><sup>*</sup></span><span class="se-fs- se-ff-system se-weight-unset" style="color:#000000;">을 발급해주면, 추후 인증이 필요한 리소스에 접근 시 사용자가 서버에 토큰을 포함해서 전송하여 서버측에서는 복잡한 인증 과정 없이 토큰만으로 사용자를 인증 및 인가할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"><b>* 토큰?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">토큰이라는  단어의 뜻은 동전. 버스카드나 교통카드라고 생각하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">근데 이 동전으론 시장에 가서 물건을 사거나 할 수는 없고, 버스를 탈 때 동전을 넣듯이 토큰은 특정한 목적에만 사용할 수 있다. 돈 보다는 바우처하고 비슷!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">즉, 토큰은 일종에 권리를 주는 것이라 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">버스를 탈 수 있는 권리, 지하철을 탈 수 있는 권리를 부여 해주는것. 이 권리를 받는 방법은.. 토큰의 경우 돈을 냈느냐 안냈느냐다. 돈을 내면 토큰을 받고 이 토큰을 내고 버스에 탈 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">서버에서는 사용자가 결제한 돈도 왔다갔다 한다. 그렇기 때문에 '권한'이라는 것이 중요함!! 인터넷에 사이트를 올리면 전 세계에서 접근 할 수 있기 때문에 사용자나 해커나 이 사이트에 접근을 할 수 있다. 그래서 사용자들의 돈을 보호 하기 위해 본인만 돈을 넣고 빼고 주문을 넣고 결제를 할 수 있게 만들어야 한다. 이 토큰은 여기서 본인 확인 수단이 된다! 로그인을 할 때 id와 pw를 넣고 로그인을 하면 서버가 그것을 확인 해서 id와 pw가 맞으면 이 사용자가 유효한 사용자라는 토큰을 발행 해준다. 그러면 사용자들은 이 토큰을 가지고 해당 사이트의 여러 버스에 해당하는 서비스들을 이용 할 수 있는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system" style="color:#000000;"><b>JWT의 특징</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">JWT에서는 토큰 자체에 유저 정보를 담아서 HTTP 헤더에 전달하기에 </span><span class="se-fs- se-ff-system" style="color:#000000;"><b>유저 세션을 유지할 필요가 없다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system" style="color:#000000;"><b>JWT와 세션의 차이</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">세션 : '세션 저장소'에 접근할 수 있는 </span><span class="se-fs- se-ff-system" style="color:#000000;"><b>세션 아이디</b></span><span class="se-fs- se-ff-system" style="color:#000000;"> 발급.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">JWT : 그런거 없음. 대신 Secret Key로 </span><span class="se-fs- se-ff-system" style="color:#000000;"><b>토큰</b></span><span class="se-fs- se-ff-system" style="color:#000000;"> 발급</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system" style="color:#000000;"><b>JWT의 필요성</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">1. Session의 한계</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">Cookie는 정보를 클라이언트 측에 저장하고 Session은 정보를 서버측에 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">따라서 유저의 수가 너무 많으면 서버가 과부하되는 문제가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">2. Scale Out의 한계</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">서버 확장(scale out)시 세션 정보 동기화 문제.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">3. REST API는 Stateless를 지향</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">사용자의 상태 정보를 저장하지 않는 형태 (ex 세션, 쿠키)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>2. JWT 형식</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">JWT는 헤더, 페이로드, 서명 세 가지 정보를 base64로 인코딩한 값을 콤마('.')를 사이에 두고 이어붙인 형태로 생성된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image"><div class="se-state-error">
+<div class="se-state-error-detail">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">구조는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/what-is-jwt/images/image_1.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"><b>1. Header</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">Header 는  JWT 서명에 사용된 알고리즘을 담는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- typ: 토큰의 타입을 지정함. (JWT)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- alg: 해싱 알고리즘을 지정함. 해싱 알고리즘으로는 보통 HMAC SHA256 혹은 RSA 가 사용되며, 이 알고리즘은, 토큰을 검증 할 때 사용되는 signature 부분에서 사용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"><b>2. Payload</b></span><span class="se-fs- se-ff-system" style="color:#000000;"> :</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">Payload 부분에는 토큰에 담을 정보가 들어있다. 여기에 담는 정보의 한 ‘조각’ 을 클레임(claim) 이라고 부르고, 이는 name / value 의 한 쌍으로 이뤄져있다. 토큰에는 여러개의 클레임 들을 넣을 수 있다. 클레임 의 종류는 다음과 같이 크게 세 분류로 나뉘어져있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#000000;">(1) </span><span class="se-fs-fs13 se-ff-system" style="color:#000000;"><b>등록된 (registered) 클레임</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-weight-unset" style="color:#000000;">등록된 클레임들은 서비스에서 필요한 정보들이 아닌, 토큰에 대한 정보들을 담기위하여 이름이 이미 정해진 클레임들이다. 등록된 클레임의 사용은 모두 선택적 (optional)이며, 이에 포함된 클레임 이름들은 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+sub : 어떤 것에 대해 말하는지
+name : user의 이름 등
+iat : 토큰 생성 시간
+exp : 만료 시간
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#000000;">(2) </span><span class="se-fs-fs13 se-ff-system" style="color:#000000;"><b>공개 (public) 클레임</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-weight-unset" style="color:#000000;">공개 클레임들은 충돌이 방지된 (collision-resistant) 이름을 가지고 있어야 한다. 충돌을 방지하기 위해서는, 클레임 이름을 URI 형식으로 지음.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#000000;">(3) </span><span class="se-fs-fs13 se-ff-system" style="color:#000000;"><b>비공개 (private) 클레임</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-weight-unset" style="color:#000000;">등록된 클레임도아니고, 공개된 클레임들도 아닌.. 양 측간에 (보통 클라이언트 &lt;-&gt;서버) 협의하에 사용되는 클레임 이름들.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"><b>3. Signature</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">헤더의 인코딩값과, 정보의 인코딩값을 합친후(헤더와 페이로드를 각각 base64로 인코딩한 후 콤마로 이어붙인다.) 주어진 비밀키로 해쉬를 하여 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">이때 비대칭키 암호화 방식을 사용하기 때문에 서버측에서는 이 토큰을 받아서 시그니처를 복호화하여 디코딩하는 방식으로 토큰의 유효성을 검증할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>3. JWT 동작과정</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-" style="max-width:645px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/what-is-jwt/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">1. 클라이언트 로그인 요청 POST(id, pw)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">2. 서버는 (id, pw)가 맞는지 확인 후 맞다면 JWT를 Secret Key로 생성 후 전달</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">3. 클라이언트는 Token을 로컬 쿠키에 저장</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">4. 클라이언트는 서버에 요청할 때 항상 헤더에 Token을 포함시킴</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">5. 서버는 요청을 받을 때마다 Secret Kye를 사용해Token이 유효한지 검증</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 서버만이 Secret Key를 가지고 있기 때문에 검증 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- Token이 검증되면 따로 username, pw를 검사하지 않아도 user identification 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">6. 서버의 Response</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-system" style="color:#000000;">참고 : </span><span class="se-fs- se-ff-system" style="color:#000000;"><a class="se-link" href="https://velopert.com/2389" target="_blank">https://velopert.com/2389</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

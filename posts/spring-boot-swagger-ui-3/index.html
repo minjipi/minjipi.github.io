@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spring Boot Swagger UI 3.x 적용 및 사용법 | minj.devlog</title>
+  <meta name="description" content="API Docs가 필요한 이유.. 1. Swagger란? 백엔드 개발에 있어서 Web API를 문서화하기 위한 도구이며, 쉽게는 제품의 설명서라고도 생각할 수 있다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-swagger-ui-3/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Spring Boot Swagger UI 3.x 적용 및 사용법" />
+  <meta property="og:description" content="API Docs가 필요한 이유.. 1. Swagger란? 백엔드 개발에 있어서 Web API를 문서화하기 위한 도구이며, 쉽게는 제품의 설명서라고도 생각할 수 있다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-swagger-ui-3/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-swagger-ui-3/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-06-30" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Spring Boot Swagger UI 3.x 적용 및 사용법", "description": "API Docs가 필요한 이유.. 1. Swagger란? 백엔드 개발에 있어서 Web API를 문서화하기 위한 도구이며, 쉽게는 제품의 설명서라고도 생각할 수 있다.", "datePublished": "2022-06-30", "dateModified": "2022-06-30", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-swagger-ui-3/", "image": "https://minjipi.github.io/posts/spring-boot-swagger-ui-3/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-swagger-ui-3">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-06-30">2022.06.30</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222794931667" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Spring Boot Swagger UI 3.x 적용 및 사용법</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222794931667 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">API Docs가 필요한 이유..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-"><b>1. Swagger란?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">백엔드 개발에 있어서 Web API를 문서화하기 위한 도구이며, 쉽게는 제품의 설명서라고도 생각할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">간단한 설정으로 프로젝트의 API 목록을 웹에서 확인 및 테스트 가능하게 하는 라이브러리이고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">특히 RESTful API를 문서화시키고 관리하는 것에 많이 쓰인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">API 문서를 일반 문서로 작성하게 되면 API가 변경될 때마다 문서를 함께 수정해줘야 하는 번거로움이 있는데 SpringBoot에서는 Swagger를 사용하면 문서 수정을 자동화할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">RESTful API 를 테스트할 수 있다는 것도 큰 장점이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">참고로 Swagger는 Java에 종속된 라이브러리는 아니고, Node.js( swagger-ui-express , swagger-jsdoc ), Laravel ( L5 Swagger ) 등 언어마다 다양한 에코시스템 프로젝트가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>2. build.gradle 의존성 추가</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">사용할 gradle dependency는 </span><span class="se-fs- se-ff-"><a class="se-link" href="https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui" target="_blank">링크</a></span><span class="se-fs- se-ff-">에서 찾을 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+dependencies {
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ℹ️ Swagger 3.x.x 이후 부터 접속url 변경 등 2.x.x 와 3.x.x 는 차이점이 있다. 해당 프로젝트는 Swagger 3.0.0을 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ℹ️ </span><span class="se-fs- se-ff-"><b>Swagger 3.x.x 버전 호환 이슈 해결</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+에러 메세지: failed to start bean 'documentationpluginsbootstrapper'; nested exception is java.lang.nullpointerexception
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">spring boot 2.6.x 버전과 Swagger 3.x.x 간에 호환 이슈가 있기에 아래처럼 Porject별 설정 파일 (application.yml 혹은 application.properties)에 추가해야 한다. Spring Boot에서 설정이 변경되어 호환 이슈가 발생한다고 한다. 해결 방법으로는 application.yml 파일 혹은 application.properties 파일에 다음 설정을 추가하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1) application.yml</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+spring:
+mvc:
+pathmatch:
+      matching-strategy: ant_path_matcher
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2) application.properties</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">3) 나의 경우 위 설정방법을 추가해도 장애가 발생했는데, Spring Boot 버전을 2.6.X -&gt; 2.5.X로 낮춰서 해결했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>3. Swagger 설정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">swagger 설정을 위해 SwaggerConfig 클래스를 생성한다. 클래스 이름은 임의로 작성해도 된다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import java.util.ArrayList;
+
+@Configuration
+@EnableSwagger2
+@EnableAutoConfiguration
+public class SwaggerConfiguration {
+private String version;
+private String title;
+
+    @Bean
+    public Docket api() {
+        version = "v1";
+        title = "aLittleVanilla API " + version;
+return new Docket(DocumentationType.SWAGGER_2)
+.select()
+.apis(RequestHandlerSelectors.basePackage("com.minji.vbackend"))
+.paths(PathSelectors.any())
+.build()
+.groupName(version)
+.useDefaultResponseMessages(false)
+.apiInfo(apiInfo(title, version))
+.useDefaultResponseMessages(false);
+}
+private ApiInfo apiInfo(String title, String version) {
+return new ApiInfo(
+                title,
+"A Little Vanilla API Docs",
+                version,
+"http://www.alittlevanilla.kro.kr/",
+new Contact("Contact Me", "https://blog.naver.com/ghdalswl77", "ghdalswl77@naver.com"),
+"Licenses",
+"http://www.alittlevanilla.kro.kr/",
+new ArrayList&lt;&gt;());
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>@EnableSwagger2</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Swagger2 버전을 활성화 하겠다는 어노테이션.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>Docket</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Swagger 설정의 핵심이 되는 Bean. API 자체에 대한 스펙은 컨트롤러에서 작성함.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">useDefaultResponseMessages()</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">false로 설정하면, swagger에서 제공해주는 응답코드 ( 200,401,403,404 )에 대한 기본 메시지를 제거한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">불필요한 응답코드와 메시지를 제거하기 위함이며, 컨트롤러에서 명시해줄 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"> groupName()</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- Docket Bean이 한 개일 경우 : 기본 값은 default이므로, 생략가능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- 여러 Docket Bean을 생성했을 경우 : groupName이 충돌하지 않아야 하므로, 여기서는 각 Docket Bean의 버전을 명시해주었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">select()</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ApiSelectorBuilder를 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">apis()</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">api 스펙이 작성되어 있는 패키지를 지정한다. 즉, 컨트롤러가 존재하는 패키지를 basepackage로 지정하여, RequestMapping( GetMapping, PostMapping ... )이 선언된 API를 문서화한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">paths()</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">apis()로 선택되어진 API중 특정 path 조건에 맞는 API들을 다시 필터링하여 문서화합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">apiInfo()</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">제목, 설명 등 문서에 대한 정보들을 보여주기 위해 호출한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">파라미터 정보: public ApiInfo( title, description, version, termsOfServiceUrl, contact, license, licenseUrl, vendorExtensions )</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>2.5 버전 추가</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+    @Bean
+    public Docket api() {
+        version = "v2";
+        title = "aLittleVanilla API " + version;
+return new Docket(DocumentationType.SWAGGER_2)
+.select()
+.apis(RequestHandlerSelectors.basePackage("com.minji.vbackend"))
+.paths(PathSelectors.any())
+.build()
+.groupName(version)
+.useDefaultResponseMessages(false)
+.apiInfo(apiInfo(title, version))
+.useDefaultResponseMessages(false);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">위 클래스에 이렇게 추가하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>3. Controller (API)에 Swagger DOC 어노테이션 추가</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-boot-swagger-ui-3/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">예시</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">@Api</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- value : 태그</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- tags : 해당하는 XXXXcontroller.java 에 대한 Title명칭 부여</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">@ApiOperation : 한개의 API URL과 메서드 선언</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- value : API에 대한 간략한 설명 요약하여 작성 (title 같이)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- notes : API에 대한 자세한 설명 작성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">@ApiParam</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- value= 파라미터에 대한 설명 description</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- example = 파라미터의 default 값이 있을 때 사용</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- required = true : 파라미터의 필수인지 표기 필수는 true, 아니면 false</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">- %주의%, @ApiParam은 적용하는 파라미터의 컴마 없이 사용해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>3. 화면 예시</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">프로젝트 실행 후 </span><span class="se-fs- se-ff-"><a class="se-link" href="http://localhost:8080/swagger-ui/#/" target="_blank">http://localhost:8080/swagger-ui/#/</a></span><span class="se-fs- se-ff-"> 로 접속.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-swagger-ui-3/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-swagger-ui-3/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-swagger-ui-3/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-"><b>4.  response를 글로벌 메시지로 설정</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">응답코드와 헤더 그리고 응답에 대한 설명을 명시할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">swaggerconfig.java 파일에 다음을 추가한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+    @Bean
+    public Docket api() {
+        version = "v1";
+        title = "aLittleVanilla API " + version;
+
+        List&lt;ResponseMessage&gt; responseMessages = new ArrayList&lt;&gt;();
+        responseMessages.add(new ResponseMessageBuilder()
+.code(200)
+.message("OK!")
+.build());
+        responseMessages.add(new ResponseMessageBuilder()
+.code(404)
+.message("Not Found.")
+.build());
+        responseMessages.add(new ResponseMessageBuilder()
+.code(500)
+.message("Internal Server Error.")
+.build());
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-">참고 : </span><span class="se-fs-fs11 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><a class="se-link" href="https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api" target="_blank">https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><a class="se-link" href="https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X" target="_blank">https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><a class="se-link" href="https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations" target="_blank">https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs11 se-ff-system se-style-unset" style="color:#000000;background-color:#ffffff;"><a class="se-link" href="https://victorydntmd.tistory.com/341#recentComments" target="_blank">https://victorydntmd.tistory.com/341#recentComments</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

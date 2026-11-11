@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥) | minj.devlog</title>
+  <meta name="description" content="비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥) 데이터를 받는 방식인 동기와 비동기 그리고 AJAX. 각각이 무엇이며, 어떤 특징이 있는지 예시를 통해 알아본다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/async-ajax-callback/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥)" />
+  <meta property="og:description" content="비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥) 데이터를 받는 방식인 동기와 비동기 그리고 AJAX. 각각이 무엇이며, 어떤 특징이 있는지 예시를 통해 알아본다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/async-ajax-callback/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/async-ajax-callback/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-07-20" />
+  <meta property="article:section" content="Frontend/Web" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥)", "description": "비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥) 데이터를 받는 방식인 동기와 비동기 그리고 AJAX. 각각이 무엇이며, 어떤 특징이 있는지 예시를 통해 알아본다.", "datePublished": "2021-07-20", "dateModified": "2021-07-20", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/async-ajax-callback/", "image": "https://minjipi.github.io/posts/async-ajax-callback/images/image_1.jpg", "articleSection": "Frontend/Web"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="async-ajax-callback">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Frontend%2FWeb">Frontend/Web</a>
+              <time class="post-date" datetime="2021-07-20">2021.07.20</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222438273191" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/async-ajax-callback/images/image_1.jpg" alt="비동기 통신과 AJAX (동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222438273191 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>비동기 통신과 AJAX</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">(동기 비동기의 개념, 차이,장단점, 예시, 콜백함수, 콜백지옥)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">데이터를 받는 방식인 동기와 비동기 그리고 AJAX.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">각각이 무엇이며, 어떤 특징이 있는지 예시를 통해 알아본다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 100.0%; height: 44.0px;  background-color: #fdfff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">0. </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#141414;"><b>동기와 비동기 개념</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">1. </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#141414;"><b>동기와 비동기 장단점</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">    비동기 예시,</span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#141414;"><b> AJAX</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">    비동기 예시,  </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#141414;"><b>setTimeout()</b></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">3. </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#141414;"><b>콜백 함수</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">, 비동기 처리 방식의 문제점 해결</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">4. </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#141414;"><b>콜백 지옥</b></span><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;"> (Callback hell)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumsquare se-weight-unset se-style-unset" style="color:#141414;">5. </span><span class="se-fs- se-ff-nanumsquare se-style-unset" style="color:#141414;"><b>비동기 처리의 이유</b></span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>0. 동기와 비동기 개념</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:477px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/async-ajax-callback/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>동기(synchronous : 동시에 일어나는)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>- </b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">요청을 하면 (바로) 응답을 받는다는 의미. 말 그대로 동시에 일어난다는 뜻. 요청과 그 결과가 동시에 일어난다는 약속. 바로 요청을 하면 시간이 얼마가 걸리던지 요청한 자리에서 결과가 주어져야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#030066;"><b>-&gt; 요청과 결과가 한 자리에서 동시에 일어남.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#030066;"><b>-&gt; A노드와 B노드 사이의 작업 처리 단위(transaction)를 동시에 맞추겠다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#030066;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>비동기(Asynchronous : 동시에 일어나지 않는)</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">- 동시에 일어나지 않는다를 의미. 요청과 결과가 동시에 일어나지 않을거라는 약속이다. 요청과 응답이 다른 시간대 존재하기 때문에, 요청내용에 대해 지금 바로 혹은 당장 응답받지 않아도 된다. (바로 응답이 와도 되고!)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#030066;"><b>-&gt; 요청한 그 자리에서 결과가 주어지지 않음.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#030066;"><b>-&gt; 노드 사이의 작업 처리 단위를 동시에 맞추지 않아도 된다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>1. 동기와 비동기 장단점</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">동기와 비동기는 상황에 따라서 각각의 장단점이 있다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>동기방식</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">은 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#0055ff;">설계가 매우 간단하고 직관적</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이지만 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#ff0000;">결과가 주어질 때까지 아무것도 못하고 대기해야 하는 단점</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">이 있고, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>비동기방식</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">은 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#ff0000;">동기보다 복잡</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">하지만 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#0055ff;">결과가 주어지는데 시간이 걸리더라도 그 시간 동안 다른 작업을 할 수 있으므로 자원을 효율적으로 사용</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">할 수 있는 장점이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>페이지 리로드의 경우, 전체 리소스를 다시 불러와야하는데 이미지, 스크립트 , 기타 코드등을 모두 재요청할 경우 불필요한 리소스 낭비가 발생하게 되지만 비동기식 방식을 이용할 경우 필요한 부분만 불러와 사용할 수 있으므로 매우 큰 장점이 있다.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">동기는 추구하는 같은 행위(목적)가 동시에 이루어지며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">비동기는 추구하는 행위(목적)가 다를 수도 있고, 동시에 이루어지지도 않는다고 요약할 수 있겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>2. 동기와 비동기 예시</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>동기의 예시</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">C언어의 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#008299;">scanf()</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">와 Java의 Scanner 객체의 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#008299;">next()</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">메서드 같이 사용자의 입력을 받는 함수 등, 일반적으로 사용하는 함수들은 대부분 동기적 방식. 아래 예시를 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Scanner sc = new Scanner(System.in);
+int num = sc.nextInt();
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#008299;">sc.nextInt()</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#2f9d27;"> </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">결과 사용자가 입력을 하면, 그 값은 num이라는 변수에 담긴다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">즉, </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#008299;">nextInt()</span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"> 메서드를 호출하고 그 결과를 자신이 직접 처리!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">따라서 위의 코드는 동기적 방식이라 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>비동기 예시, AJAX</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">비동기 처리의 가장 기본적인 사례는 제이쿼리의 ajax이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">화면에 표시할 이미지나 데이터를 서버에서 불러와 표시할 때, ajax 라는 네트워크 통신 기술로 클라이언트가 요청한 데이터를 서버로부터 가져온다. 아래 ajax 코드를 살펴보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function getData() {
+var tableData;
+	$.get('https://domain.com/products/1', function(response) {
+		tableData = response;
+});
+return tableData;
+}
+
+console.log(getData());
+==================================================================
+결과 : undefined
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">여기서 3번 째 줄의 $.get()이 바로 ajax 통신을 하는 부분이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"><a class="se-link" href="https://domain.com" target="_blank">https://domain.com</a></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"> 에 HTTP GET 요청으로 1번 상품(product) 정보를 요청하는 코드.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">지정된 URL에 ‘데이터 하나 보내주세요' 라는 요청을 날리는 것과 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">그렇게 서버에서 받아온 데이터는 response 인자에 담기고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">tableData = response; 로 받아온 데이터를 tableData라는 변수에 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">그럼 이제 이 getData()를 호출하면 어떻게 될까? 받아온 데이터가 뭐든 일단 뭔가 찍히겠지?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">그치만 결과는 undefined가 나온다. 왜일까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">이유는 $.get()로 데이터를 요청하고, 받아올 때까지 기다려주지 않고 다음 코드인 return tableData;를 실행했기 때문이다. 따라서 getData()의 결과 값은 초기 값을 설정하지 않은 tableData의 값 undefined를 출력한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">이렇게 특정 로직의 실행이 끝날 때까지 기다려주지 않고 나머지 코드를 먼저 실행하는 것이 비동기 처리이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset">자바스크립트에서 비동기 처리가 필요한 이유를 생각해보면, 화면에서 서버로 데이터를 요청했을 때 서버가 언제 그 요청에 대한 응답을 줄지도 모르는데 마냥 다른 코드를 실행 안 하고 기다릴 순 없기 때문이다. 위에선 간단한 요청 1개만 보냈지만, 만약 100개를 보낸다면? 비동기 처리가 아닌 동기 처리라면 코드 실행하고 기다리고, 실행하고 기다리고.. 아마 웹 애플리케이션을 실행하는데 수십 분은 걸릴 것이다. 다음 비동기 예시를 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>비동기 예시, </b></span><span class="se-fs-fs19 se-ff- se-weight-unset se-style-unset" style="color:#000000;"> </span><span class="se-fs-fs19 se-ff- se-weight-unset se-style-unset" style="color:#008299;">setTimeout()</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">다음은 또 다른 비동기 방식의 예시인  JS의 </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#008299;">setTimeout()</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#4174d9;"> </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">함수이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">setTimeout()은 Web API의 한 종류이다.  코드를 바로 실행하지 않고 지정한 시간만큼 기다렸다가 로직을 실행한다. 다음 예시 코드를 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+setTimeout(foo, 3000);
+function boo(){
+   console.log("2");
+}
+console.log("1");
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#008299;"><b>setTimeout()</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b> </b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">함수를 호출하면 3초 뒤에 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#008299;"><b>boo()</b></span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b> </b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">함수가 수행되는 코드이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#008299;">setTimeout()</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"> 함수를 호출한 후 3초라는 시간이 흘러야 </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#008299;">boo()</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"> 함수가 수행되며,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">이 시간 동안 프로그램은 다음 코드를 읽기 때문에 위 코드는 콘솔에 1, 2 순서로 출력이 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">여기서 </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#008299;">boo()</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">함수를 </span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#008299;">setTimeout()</span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">함수의 </span><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"><b>콜백(callback)함수</b></span><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">콜백 함수란, 비동기 방식에서 어떤 수행이 완료되었을 때(event가 발생했을 때) 수행해야 할 함수이다. 비동기 방식에서는 함수를 호출한 쪽에서 수행 결과를 직접 처리하지 않고 콜백 함수를 통해 수행 결과를 처리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">3. </span><span class="se-fs- se-ff- se-style-unset" style="color:#000000;"><b>콜백함수</b></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#000000;">, 비동기 처리 방식의 문제점 해결</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">앞에서 자바스크립트 비동기 처리 방식에 의해 야기될 수 있는 문제들을 살펴봤다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">이제 이 문제들은 콜백(callback) 함수를 이용해 해결해보도록 한다. 다음은 앞에서 살펴본 ajax 통신 코드를 콜백 함수로 개선한 코드이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+function getData(callbackFunc) {
+	$.get('https://domain.com/products/1', function(response) {
+callbackFunc(response);
+/서버에서 받은 데이터 response를 callbackFunc() 함수에 넘겨줌.
+});
+}
+getData(function(tableData) {
+	console.log(tableData);
+/$.get()의 response 값이 tableData에 전달됨
+});
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">이렇게 콜백함수를 사용하면 특정 로직이 끝났을 때 원하는 동작을 실행시킬 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">콜백 함수의 동작 방식은 식당 자리 예약에 비유할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">주말 점심, 맛집을 찾아가면 보통 자리가 없다. 그래서 대기자 명단에 이름을 써두고, 그 맛집에 자리가 날 때까지 주변을 돌아다닌다. 만약 식당에서 자리가 생기면 자리가 났다고 연락이 온다. 그 전화를 받는 시점이, 여기서의 콜백 함수가 호출되는 시점과 같다. 손님 입장에서는 자리가 날 때까지 식당에서 기다리지 않고 근처 가게에서 잠깐 쇼핑을 할 수도 있고, 아니면 다른 식당 자리를 알아볼 수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">자리가 났을 때만 연락이 오기 때문에 미리 가서 기다릴 필요도 없고, 직접 식당 안에 들어가서 자리가 비어 있는지 확인할 필요도 없다. 자리가 준비된 시점, 즉 데이터가 준비된 시점에서만 우리가 원하는 동작(자리에 앉는다, 특정 값을 출력한다 등)을 수행할 수 있다. 그래서 다음과 같은 문제점이 생기기도 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#000000;"><b>4. 콜백 지옥</b></span><span class="se-fs-fs19 se-ff- se-weight-unset se-style-unset" style="color:#000000;"> (Callback hell)</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">콜백 지옥은 비동기 처리 로직을 위해 콜백 함수를 연속해서 사용할 때 발생하는 문제다. 아래 코드를 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+$.get('url', function(response) {
+parseValue(response, function(id) {
+auth(id, function(result) {
+display(result, function(text) {
+				console.log(text);
+});
+});
+});
+});
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">웹 서비스를 개발하다 보면 서버에서 데이터를 받아와 화면에 표시하기까지 인코딩, 사용자 인증 등을 처리해야 하는 경우가 있다. 만약 이 모든 과정을 비동기로 처리해야 한다고 하면, 위와 같이 콜백 안에 콜백을 계속 무는 형식으로 코딩을 하게 된다. 이러한 코드 구조는 가독성도 떨어지고 로직을 변경하기도 어려운데, 이와 같은 코드 구조를 콜백 지옥이라고 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:522px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/async-ajax-callback/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;">이를 해결하는 방법으로는 Promise, Async를 사용하거나, 각 콜백 함수를 분리하는 코딩 패턴을 사용하면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-weight-unset se-style-unset" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>5. 비동기적 처리의 이유</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">정리해보자. 비동기 처리가 필요한 이유는 무엇일까?</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">제이쿼리의 ajax 통신과 같이 원하는 데이터를 서버로 부터 받아오는 방식을 취하는 어플리케이션을 만들었다고 가정해 본다. 서버로부터 데이터를 받아와서 해당 데이터를 처리해야 하므로, 데이터를 받아오는 코드는 전체 코드중의 최상단에 위치해야 할 것이다. 그런데 만약 비동기적 처리를 하지 않고 동기적 처리를 하는 어플리케이션이라면?</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">서버로부터 데이터를 받아오는 코드의 실행이 완전히 끝난 뒤에 이후의 코드를 처리할 것인데,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">받아오는 데이터의 크기가 작고 갯수가 적다면 크게 상관없을 수 있지만 받아오는 데이터의 크기가 크고 많다면?</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">모든 데이터의 수신을 완료한 다음 나머지 코드를 실행할 수 있으므로, 데이터를 받아오는 동안에 프로그램은 사실상 멈춰있는것과 다름없다. 언제 끝날지도 모르는 요청때문에 나머지 코드를 실행시키지 못하고 사용자를 기다리게 하는 아주 불친절한 프로그램이 될 것. 데이터를 수신해야할 때마다 기다려야 한다면 누구도 그 어플리케이션을 사용하고 싶지 않을것이다. 이러한 사용자의 불편을 없애기 위해, 데이터의 수신과 기다려야하는 코드들을 비동기적으로 처리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">위에서 언급한 AJAX를 사용하는 이유도 이와 같다. 단순하게 WEB화면에서 무언가 부르거나 데이터를 조회하고 싶을 경우, 페이지 전체를 새로고침하지 않기 위해 사용한다고 볼 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">기본적으로 HTTP 프로토콜은 클라이언트쪽에서 Request를 보내고 서버쪽에서 Response를 받으면 이어졌던 연결이 끊기게 되어있다. 그래서 화면의 내용을 갱신하기 위해서는 다시 request를 하고 response를 하며 페이지 전체를 갱신하게 된다. 하지만 이렇게 할 경우, 엄청난 자원낭비와 시간낭비를 초래하고 말 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">AJAX는 HTML 페이지 전체가 아닌 일부분만 갱신할 수 있도록 XMLHttpRequest객체를 통해 서버에 request한다. 이 경우, JSON이나 XML형태로 필요한 데이터만 받아 갱신하기 때문에 그만큼의 자원과 시간을 아낄 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.75;"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">물론 AJAX의 단점 또한 존재한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">히스토리 관리가 되지 않고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">페이지 이동없는 통신으로 인한 보안상의 문제,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">연속으로 데이터를 요청 시, 서버 부하,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">XMLHttpRequest를 통해 통신하는 경우, 사용자에게 아무런 진행 정보가 주어지지 않음(요청이 완료되지 않았는데 사용자가 페이지를 떠나거나 오작동할 우려가 발생하게 된다.),</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">AJAX를 쓸 수 없는 브라우저에 대한 문제 이슈,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">HTTP 클라이언트 기능 한정,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">지원하는 Charset이 한정,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">Script로 작성되므로 디버깅이 용이하지 않음,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;">동일-출처 정책으로 인하여 다른 도메인과는 통신이 불가능(Cross-Domain문제) 등이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

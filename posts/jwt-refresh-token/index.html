@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JWT에서 Refresh Token이 필요한 이유 | minj.devlog</title>
+  <meta name="description" content="구현중인 프로젝트에서는 회원가입 후 로그인 시 JWT를 발급해준다. 이 토큰은 애플리케이션 전반에서 사용자를 인증하는데 사용된다. 기존의 세션과는 달리 다양한 플랫폼에서 토큰만으로 인증할 수 있다는 장점이 있어 유용하게 사용하고 있다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/jwt-refresh-token/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="JWT에서 Refresh Token이 필요한 이유" />
+  <meta property="og:description" content="구현중인 프로젝트에서는 회원가입 후 로그인 시 JWT를 발급해준다. 이 토큰은 애플리케이션 전반에서 사용자를 인증하는데 사용된다. 기존의 세션과는 달리 다양한 플랫폼에서 토큰만으로 인증할 수 있다는 장점이 있어 유용하게 사용하고 있다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/jwt-refresh-token/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2022-01-28" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JWT에서 Refresh Token이 필요한 이유", "description": "구현중인 프로젝트에서는 회원가입 후 로그인 시 JWT를 발급해준다. 이 토큰은 애플리케이션 전반에서 사용자를 인증하는데 사용된다. 기존의 세션과는 달리 다양한 플랫폼에서 토큰만으로 인증할 수 있다는 장점이 있어 유용하게 사용하고 있다.", "datePublished": "2022-01-28", "dateModified": "2022-01-28", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jwt-refresh-token/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="jwt-refresh-token">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-01-28">2022.01.28</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222633555696" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">JWT에서 Refresh Token이 필요한 이유</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222633555696 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">구현중인 프로젝트에서는 회원가입 후 로그인 시 JWT를 발급해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">이 토큰은 애플리케이션 전반에서 사용자를 인증하는데 사용된다. 기존의 세션과는 달리 다양한 플랫폼에서 토큰만으로 인증할 수 있다는 장점이 있어 유용하게 사용하고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">그런데 이 JWT( </span><span class="se-fs- se-ff-system" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222519729832" target="_blank">JWT 구조</a></span><span class="se-fs- se-ff-system" style="color:#000000;"> )를 활용한 기능 개발에 몰두하느라 가장 중요한 점을 잊고 있었다..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">이 토큰 자체가 HTTPS를 사용하지 않는 환경이거나 기타 보안 취약점으로 인해 노출되었을 때 어떻게 이 문제를 해결할 것인가? 라는 점이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">처음 애플리케이션에서는 토큰의 유효 기간을 1시간으로 설정했었다. 그런데 여기서 문제였던 점은 1시간은 생각보다 짧았고, 게시글을 쓰다가 잠깐 한눈 판 사이 1시간이 지나버리면 (자동 임시저장 기능이 없었기에) 글 작성 완료 버튼을 눌렀을 때 작성을 마친 글이 날아가고 재로그인 화면에 떨어진다는 것이었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">그럼 이 토큰의 만료기간을 하루, 아니 몇 주로 늘리면 안 되나? 라고 생각했지만..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">access token은 JWT이므로 그 자체로 인증 정보를 모두 가지고 있어서 탈취되면 매우 위험한 상황이 발생할 수 있다. access token은 서버에 저장되지 않으므로</span><span class="se-fs- se-ff-system" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222517833354" target="_blank">(stateless)</a></span><span class="se-fs- se-ff-system" style="color:#000000;"> token이 탈취되면 서버에서는 막을 방법이 없다. 만료 기간이 일주일인 access token을 탈취한 해커는 일주일 동안 정상 사용자 행세를 할 수 있어서 access token의 만료 기간은 짧은 것이 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">인증 토큰을 탈취당했다는 것 자체가 문제지만, 만약 이런 문제가 발생했을 때 어떻게 피해를 최소화할 수 있을까? 이 때 사용할 수 있는 것이 바로 Refresh Token이었다. 현재 프로젝트에는 이 Refresh Token 기능이 아직 구현되지 않았기 때문에 추후 구현을 위해 좀 더 조사해보았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-weight-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system" style="color:#000000;"><b>Access Token, Refresh Token</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">위의 방식으로 받은 토큰은 언급했듯이 서버측 리소스에 접근할 때 클라이언트 본인을 인증할 수 있는 액세스 토큰으로 동작한다. 그런데 이 JWT는 </span><span class="se-fs- se-ff-system" style="color:#000000;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222517833354" target="_blank">Stateless한 방식이기 때문에</a></span><span class="se-fs- se-ff-system" style="color:#000000;"> 서버측에서는 </span><span class="se-fs- se-ff-system" style="color:#000000;"><u>이 토큰을 갖고 있는 클라이언트가 정말 클라이언트 본인이 맞는지 확인할 수 없다는 문제점</u></span><span class="se-fs- se-ff-system" style="color:#000000;">이 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">그래서 이에 대한 보안 대책으로 'refresh token'이라는 추가적인 토큰을 활용할 수 있다. refresh token은 사용자 인증이 아닌 새로운 액세스 토큰을 생성하는 용도로만 사용된다. 한마디로 refresh token은 access token을 재발급받을 수 있는 token이다. 굳이 별도의 토큰을 두고 새로운 액세스 토큰을 발급 받도록 한 이유는 위의 JWT 유출 문제를 다음처럼 해결하기 위해서다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- Access Token의 유효 기간을 짧게 설정한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- Refresh Token의 유효 기간은 길게 설정한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 사용자는 Access Token과 Refresh Token을 둘 다 서버에 전송하여 전자로 인증하고 만료됐을 시 후자로 새로운 Access Token을 발급받는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 공격자는 Access Token을 탈취하더라도 짧은 유효 기간이 지나면 사용할 수 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 정상적인 클라이언트는 유효 기간이 지나더라도 Refresh Token을 사용하여 새로운 Access Token을 생성, 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">한마디로 OTP 인증처럼 짧은 시간 동안에만 사용할 수 있도록 하고 주기적으로 재발급받도록 하여 토큰이 유출되더라도 그 피해를 최소화하는 방식이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system" style="color:#000000;"><b>Refresh Token의 탈취</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">그런데 이 Refresh Token 자체가 탈취당한다면? 공격자는 이 토큰의 유효 기간만큼 다시 Access Token을 생성해서 다시 정상적인 사용자인 척 위장할 수 있다. 그렇기 때문에 여기서는 서버측의 검증 로직이 필요한데 </span><span class="se-fs- se-ff-system" style="color:#000000;"><a class="se-link" href="https://stackoverflow.com/questions/32060478/is-a-refresh-token-really-necessary-when-using-jwt-token-authentication" target="_blank">스택오버플로우의 답변</a></span><span class="se-fs- se-ff-system" style="color:#000000;">을 보면 다음과 같은 방법을 제안하고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 데이터베이스에 각 사용자에 1대1로 맵핑되는 Access Token, Refresh Token 쌍을 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 정상적인 사용자는 기존의 Access Token으로 접근하며 서버측에서는 데이터베이스에 저장된 Access Token과 비교하여 검증한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 공격자는 탈취한 Refresh Token으로 새로 Access Token을 생성한다. 그리고 서버측에 전송하면 서버는 데이터베이스에 저장된 Access Token과 공격자에게 받은 Access Token이 다른 것을 확인한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 만약 데이터베이스에 저장된 토큰이 아직 만료되지 않은 경우, 즉 굳이 Access Token을 새로 생성할 이유가 없는 경우 서버는 Refresh Token이 탈취당했다고 가정하고 두 토큰을 모두 만료시킨다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">- 이 경우 정상적인 사용자는 자신의 토큰도 만료됐으니 다시 로그인해야 한다. 하지만 공격자의 토큰 역시 만료됐기 때문에 공격자는 정상적인 사용자의 리소스에 접근할 수 없다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">중요한 것은 발급된 토큰 자체는 그냥 그 JWT 문자열 자체로 존재하는 것이기 때문에 클라이언트나 서버측에서 전역적으로 만료시킬 수 있는 개체가 아니다. 그렇기 때문에 토큰의 유효 기간이 지나기 전까지는 만료된 토큰을 NoSQL 같은 데이터베이스에 저장하여 관리할 필요가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">만약 공격자가 Refresh Token을 탈취해서 정상적인 사용자가 Access Token을 다시 발급받기 전에 자기가 먼저 Access Token을 생성한다면 어떻게 될까? 이 경우에도 Access Token의 충돌이 일어나기 때문에 서버측에서는 두 토큰을 모두 폐기해야 할 것이다. 그래서 ietf 문서에서는 아예 Refresh Token도 Access Token과 같은 유효 기간을 가지도록 하여 사용자가 한 번 Refresh Token으로 Access Token을 발급받았으면 Refresh Token도 다시 발급받도록 하는 것을 권장하고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">그럼 만약에 공격자가 Access Token, Refresh Token을 둘 다 탈취한다면 어떻게 할까? 이 때는 방법이 없다. 프론트엔드나 백엔드 로직을 강화하여 토큰이 유출되지 않도록 보완하는 수 밖에 없을 것이다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:618px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/jwt-refresh-token/images/nv_0.png"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">스택오버플로우 답변.</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">이런 토큰을 읽고 쓰는 데이터베이스는 빠른 속도가 필요하고 키-값 쌍으로 다루는 편이 적절하다고 생각하기 때문에.. NoSQL을 적용해보면 좋을것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system" style="color:#000000;"><b>토큰의 저장 장소</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">서버에서는 NoSQL이나 기타 데이터베이스에 저장할 수 있다. 그럼 클라이언트에서는 어디에 저장할 수 있을까? 브라우저 환경의 경우 흔히 생각하는 방법은 쿠키, 로컬 스토리지 등 다양한 곳이 있지만 스택오버플로우에서는 http-only 속성이 부여된 쿠키에 저장하는 것을 권장하고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">해당 속성이 부여된 쿠키는 자바스크립트 환경에서 접근할 수 없기 때문이다. 그래서 XSS나 CSRF가 발생하더라도 토큰이 누출되지 않는다. 일반 쿠키나 브라우저의 로컬 스토리지는 자바스크립트로 자유롭게 접근할 수 있기 때문에 보안 측면에서는 권장되지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system" style="color:#000000;"><b>결론</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#000000;">JWT로 단순히 인증하는 것만 생각했던 점이 아쉽다. 토큰 자체가 탈취될 경우 발생할 수 있는 문제나.. 그 이상을 생각해 봐야겠다. NoSQL인 Redis도 적용해봐야겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#000000;">참고 </span><span class="se-fs-fs13 se-ff-" style="color:#000000;"><a class="se-link" href="https://d2.naver.com/helloworld/24942" target="_blank">https://d2.naver.com/helloworld/24942</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#000000;"><a class="se-link" href="https://stackoverflow.com/questions/32060478/is-a-refresh-token-really-necessary-when-using-jwt-token-authentication" target="_blank">https://stackoverflow.com/questions/32060478/is-a-refresh-token-really-necessary-when-using-jwt-token-authentication</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-" style="color:#000000;"><a class="se-link" href="https://tecoble.techcourse.co.kr/post/2021-10-20-refresh-token/" target="_blank">https://tecoble.techcourse.co.kr/post/2021-10-20-refresh-token/</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Kubernetes] 쿠버네티스의 &#x27;Pod&#x27;, Pod 네트워킹 | minj.devlog</title>
+  <meta name="description" content="쿠버네티스 네트워킹 이해하기 🐳 Pod와 Pod 네트워킹에 대한 긴 글이다.📝 한 Pod가 다른 Pod와 어떻게 통신하는지 알아보자. 쿠버네티스의 Pod 네트워킹 쿠버네티스는 도커와는 달리, 파드 단위로 컨테이너들을 관리한다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/kubernetes-pod-networking/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Kubernetes] 쿠버네티스의 &#x27;Pod&#x27;, Pod 네트워킹" />
+  <meta property="og:description" content="쿠버네티스 네트워킹 이해하기 🐳 Pod와 Pod 네트워킹에 대한 긴 글이다.📝 한 Pod가 다른 Pod와 어떻게 통신하는지 알아보자. 쿠버네티스의 Pod 네트워킹 쿠버네티스는 도커와는 달리, 파드 단위로 컨테이너들을 관리한다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/kubernetes-pod-networking/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/kubernetes-pod-networking/images/image_1.jpg" />
+  <meta property="article:published_time" content="2021-06-24" />
+  <meta property="article:section" content="Cloud/Kubernetes" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Kubernetes] 쿠버네티스의 'Pod', Pod 네트워킹", "description": "쿠버네티스 네트워킹 이해하기 🐳 Pod와 Pod 네트워킹에 대한 긴 글이다.📝 한 Pod가 다른 Pod와 어떻게 통신하는지 알아보자. 쿠버네티스의 Pod 네트워킹 쿠버네티스는 도커와는 달리, 파드 단위로 컨테이너들을 관리한다.", "datePublished": "2021-06-24", "dateModified": "2021-06-24", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/kubernetes-pod-networking/", "image": "https://minjipi.github.io/posts/kubernetes-pod-networking/images/image_1.jpg", "articleSection": "Cloud/Kubernetes"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="kubernetes-pod-networking">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Cloud%2FKubernetes">Cloud/Kubernetes</a>
+              <time class="post-date" datetime="2021-06-24">2021.06.24</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222408631328" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Kubernetes] 쿠버네티스의 &#x27;Pod&#x27;, Pod 네트워킹</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/kubernetes-pod-networking/images/image_1.jpg" alt="[Kubernetes] 쿠버네티스의 &#x27;Pod&#x27;, Pod 네트워킹" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222408631328 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-" style="color:#000000;"><i><b>쿠버네티스 네트워킹 이해하기 </b></i></span><span class="se-fs- se-ff-" style="color:#000000;">🐳</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Pod와 Pod 네트워킹에 대한 긴 글이다.📝</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">한 Pod가 다른 Pod와 어떻게 통신하는지 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>쿠버네티스의 Pod 네트워킹</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">쿠버네티스는 도커와는 달리, 파드 단위로 컨테이너들을 관리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">파드는 여러개의 컨테이너로 구성 될 수 있는데, 컨테이너들은 모두 동일한 IP를 부여받을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이 때 동일한 IP를 부여받게끔 해주는 것이 바로 pause 라는 컨테이너 덕분이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/kubernetes-pod-networking/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">pause 컨테이너는 파드가 실행되고 있는 노드에서 docker ps 명령어로 확인 할 수 있다.</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">하나의 파드를 생성하게 되면 그 파드의 컨테이너들은 pause 컨테이너의 네트워크 네임스페이스의 인터페이스 IP 하나를 갖게되는 것이다. 따라서 컨테이너들끼리 127.0.0.1로 포트를 구분하여 서로 통신할 수 도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">쿠버네티스의 네트워크 방식을 아주 간단하게 살펴보았다. 이제 Pod와, Pod 네트워킹에 대해  자세히 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-" style="color:#000000;"><b>'Pod'란 무엇일까?</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Pod는 쿠버네티스의 기장 기본이 되는 단위.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">적어도 한개 이상의 컨테이너를 구성하고 같은 host와 network 스택을 공유하고 volume과 같은 리소스들을 공유할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그렇다면 “네트워크 스택을 공유한다”는 의미는 무엇일까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">Pod 안의 모든 컨테이너가 localhost를 통해 서로에게 도달이 가능하다는 것을 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">예를 들어, 80포트를 이용하고 있는 nginx 컨테이너가 있으면 scrapyd를 실행하고 있는 다른 컨테이너에서 </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="http://localhost:80" target="_blank">http://localhost:80</a></span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"> 으로 첫번째 컨테이너에 접근할 수 있다. 어떻게 동작하는 것일까?</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">먼저 컨테이너 한개를 실행하게 되면 어떤 일이 벌어지는지 살펴보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">위에서부터 아래로, physical network interface인 eth0을 볼 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">거기에는 docker0이라는 bridge가 달려 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그리고 docker0 bridge에는 다시 virtual network interface인 veth0이 연결되어 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">docker0는 호스트 네트워크 네임스페이스 또는 디폴트 네트워크 네임스페이스 라고 하고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">아래의 veth0, veth1(베스)들은 컨테이너 네트워크 네임스페이스 라고 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[ 네트워크 네임스페이스는 별도의 ARP, 라우팅, iptables가 존재한다. ]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">호스트의 기본 네트워크는 docker0 에서 만들어져 관리되고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">컨테이너의 기본 네트워크는 veth0, veth1에서 만들어져 관리된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">네트워크 네임스페이스는 서로 연결되기 전까지는 독립적으로 동작한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이 때 서로의 네트워크 네임스페이스를 연결시켜주는 역할을 하는 것이 veth(Virtual Ethernet)라는 가상장치이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이렇게 베스로 양쪽 끝을 서로 다른 네트워크 네임스페이스 또는 장치에 연결할 수 있으므로 베스쌍(veth pair)이라고도 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-wrappingParagraph se-l-inner-big-left">
+<div class="se-component-content">
+<div class="se-component-slot se-component-slot-float">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+<div class="se-component-slot">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">자, 다시 이 그림을 보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">docker0과 veth0은 172.17.0.0/24 처럼 같은 네트워크로 묶여 있는 것을 볼 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">해당 네트워크에서 docker0은 172.17.0.1로 설정이 되있고 veth0(172.17.0.2)의 default gateway 역할을 한다. 이때 docker가 컨테이너를 실행할 때 네트워크 namespace를 적절히 설정하여 컨테이너 안에서는 veth0만 보이게 된다. 그리고 컨테이너는 docker0와 eth0을 통해 바깥 세상과 통신을 한다.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이제 두번째 컨테이너를 실행시켜 보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-wrappingParagraph se-l-inner-big-left">
+<div class="se-component-content">
+<div class="se-component-slot se-component-slot-float">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+</div>
+<div class="se-component-slot">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">위에서 볼 수 있듯, 두번째 컨테이너는 veth1라는 새로운 가상 네트워크 인터페이스를 가진다. 그리고 이것은 docker0 bridge에 연결이 된다. 새로 생선된 veth1에는 172.17.0.3으로 할당 되었고, 이는 첫번째 컨테이너와 bridge와 같은 논리적 네트워크 대역이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그렇기에 서로의 IP를 어떻게든 알 수만 있다면 (discover) bridge를 통해 서로 통신할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그치만.. 이것만으로는 Pod의 네트워크 스택을 공유해 주진 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그러나 namespace는 매우 유연한 구조로 되어있다. 도커에서는 컨테이너를 실행할 때 새로운 virtual network interface를 생성하는 대신 기존에 생성된 interface를 이용할 수 있는데, 아래 그림과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-wrappingParagraph se-l-inner-big-left">
+<div class="se-component-content">
+<div class="se-component-slot se-component-slot-float">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+<div class="se-component-slot">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">두번째 컨테이너에서 새로운 veth1을 가지는게 아니라 veth0를 같이 사용하게 된다. 이것을 통해 몇가지 사실을 알 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">두 컨테이너 모두 바깥에서 172.17.0.2로 접근을 할 수 있다. 그리고 안에서는 localhost를 통해서 port로 통신할 수 있다. 이것은 다시 말해 같은 포트를 동시에 열수 없다는 것을 얘기한다. 이런 방법을 통해 두개의 process가 독립된 환경에서 서로의 결합을 가지지 않으면서도 같은 네트워크 환경을 공유할 수 있게 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">쿠버네티스에서는 이를 특별한 컨테이너(pause)를 통해 구현한다. 이 컨테이너는 각 Pod마다 존재하며 다른 컨테이너에게 network interface를 제공하는 역할만을 담당한다. 쿠버네티스 Pod가 실행되는 worker node에 들어가서 docker ps라고 검색을 하면 적어도 한개 이상의 pause라는 명령으로 실행된 컨테이너를 볼수 있다. pause 명령을 가진 컨테이너는 쿠버네티스가 SIGTERM 명령을 내리기 전까지 아무것도 하지 않고 sleep 상태로 존재한다. 하는 일이 거의 없지만 이 pause 컨테이너가 서로 다른 컨테이너끼리, 바깥 세상과의 통신을 담당하는 Pod의 핵심이라고 볼 수 있겠다! 그래서 마지막 구조는 아래와 같다.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-wrappingParagraph se-l-inner-big-left">
+<div class="se-component-content">
+<div class="se-component-slot se-component-slot-float">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_7.jpg"/>
+</a>
+</div>
+</div>
+</div>
+<div class="se-component-slot">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">한개 Pod 내에서 여러개의 컨테이너들이 서로 대화할 수 있다고 해서 시스템을 만들진 못한다. 그래서 service는 쿠버네티스의 핵심 디자인 철학이며 서로 다른 Pod가 동일한 서버에 있든, 다른 서버에 위치하든 상관 없이 통신할 수 있게 해준다. 이를 설명하기 위해 먼저 클러스터 레벨의 노드를 준비해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이제.. 사람들이 별로 좋아하지 않는 네트워크 라우팅, 라우트에 대한 얘기가 조금 나온다.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">쿠버네티스 클러스터는 한개 이상의 노드를 가지고 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">노드란, 물리적이든 가상이든 컨테이너 런타임을 탑재하고 있고- 쿠버네티스 컴포넌트들이 들어 있는 host 시스템을 말한다. 그리고 쿠버네티스 컴포넌트들이 다른 노드와 통신할 수 있게 만든다. 간단히 두개의 노드를 갖는 클러스터는 다음과 같은 모양일 것이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-wrappingParagraph se-l-inner-big-left">
+<div class="se-component-content">
+<div class="se-component-slot se-component-slot-float">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+<div class="se-component-slot">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그림에서는 private network 대역을 10.100.0.0/24로 설정하였고 라우터를 10.100.0.1, 나머지 두개의 노드를 각각 10.100.0.2와 10.100.0.3으로 설정했다. 이러한 설정으로 본다면 각 노드들은 다른 노드를 eth0를 통하여 통신할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">하지만 앞서 보았다시피 Pod들은 해당 private network 대역과 맞지 않는다. Pod들은 bridge를 통해 전혀 다른 네트워크 대역을 가지고 있고, 그것들은 가상으로 생성이 되어있으며 특정 노드에만 존재한다. 이것을 조금 더 명확하게 설명하기 위해 그림에서 Pod를 추가해 보겠다.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>먼저 default gateway가 10.100.0.1로 설정 되어있다.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>왼쪽의 host는 인터페이스 eth0가 10.100.0.2로 설정되어 있고</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그것은 docker0과 연결되어 있고 해당 주소는 172.17.0.1로 되어 있고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그것과 맞물린 veth0은 172.17.0.2로 설정되어 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">veth0 인터페이스는 pause 컨테이너를 통해 생성되었고 나머지 컨테이너들이 전부 네트워크 스택을 공유하고 있다. host내에 들어 있는 지역 라우팅 rule 설정으로 인해, eth0 인터페이스에 172.17.0.2의 목적지를 가진 패킷은 bridge로 전달되고 그것은 veth0으로 다시 전달 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이제 우리가 172.17.0.2 Pod가 이 host에 있다는 것을 알면 10.100.0.2의 타겟을 해당 주소로 라우터 rule을 설정하면 된다. 그렇게 되면 최종적으로 veth0으로 가게 될 것이다. 이제 다른 host를 살펴보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><i><b>오른쪽의 host에도 eth0이 있고 10.100.0.3으로 설정되어 있다.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">또한 같은 default gateway를 사용한다. 그리고 똑같이 docker0 bridge가 172.17.0.1로 eth0과 연결되어 있다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">음.. 문제가 있어 보인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">어쩌면 왼쪽 host에 있는 bridge와는 다른 주소로 설정될 수도 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">예를 들어, 10.100.0.3 호스트에서 어떤 패킷을 컨테이너로 보낸다고 하였을때, 각 호스트의 도커 브릿지 주소가 다르면 어찌해서 구분하여 패킷을 컨테이너로 보낼 수 있지만, 최악의 상황에서는 각 호스트의 도커 브릿지 주소가 같게 되면 (예를 들어 172.17.0.2) 서로 구분할 수 없어 어디로 보내야 할지 모르게 된다.(물론 호스트 레벨에서는 10.100.0.2와 10.100.0.3으로 구분할 수는 있지만, 컨테이너 레벨에서는 구분할 수 없다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">이런 일은 꽤 쉽게 일어날 수 있다. 만약 도커를 그냥 설치하고 바로 사용한다면 이렇게 세팅될 확률이 높다. 어찌되었든 이러한 문제는 근본적인 문제를 보여주고 있는데... 바로 한쪽 노드에서 다른 노드의 bridge에 어떠한 내부 주소를 할당 받았는지 모르는 문제가 있다. 왜냐하면 우리가 그곳으로 패킷을 보내야할지 말지를 알아야 하기 때문이다. 새로운 구조가 필요해 보인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">쿠버네티스에서는 2가지 방법으로 이 문제를 해결한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">가장 먼저 쿠버네티스는 각 노드 bridge의 IP가 서로 겹치지 않게 전체를 아우르는 주소 대역을 할당한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">그리고 난 뒤 각 bridge에 실제 주소를 해당 주소 대역 안에서 할당한다.(역자주: 이와 같은 상황을 피하려면 각 호스트별로 subnet을 나눈다. 그렇게 되면 각 호스트마다 클러스터 전체에서 유일한 IP가 할당될 수 있다. 예를 들어 10.100.0.2 호스트는 172.17.1.0/24 주소대역만을 사용하도록 하고 10.100.0.3 호스트에서는 172.17.2.0/24 주소대역만을 사용하도록 하는 경우, 서로 IP가 겹치는 상황이 발생하지 않게 된다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">두번째로 10.100.0.1에 있는 gateway에 어떤 패킷이 어떤 bridge로 가야하는지에 대해 라우팅 테이블을 설정한다. (어떤 노드의 eth0를 통해 해당 bridge를 접근할 수 있는지-) 이렇게 가상 네트워크 인터페이스와 bridge와 라우팅 rule의 조합을 일컬어 overlay network라 하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">쿠버네티스 네트워크에 대해 얘기할때 저는 주로 이것을 Pod 네트워크라고 부른다. 왜냐하면 overlay network를 이용하여 pod들이 서로 정보를 주고 받기 때문이다. 아래에 그림이 쿠버네티스 네트워크의 모습이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/kubernetes-pod-networking/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">일반적으로는 이러한 네트워크가 어떻게 동작하는지 생각할 필요는 없다. 보통 하나의 Pod가 다른 Pod와 통신할 때, service라는 추상화된 layer를 통하여서 통신하는데 일종의 software 정의 proxy(software-defined proxy) 역할을 한다. 이것은 다음 포스트에서 다시 알아보겠다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#999999;">하지만 간혹 Pod의 네트워크 주소로 어떤 문제를 디버깅할 때 필요할 것이고 그럴 경우 명시적으로 해당 주소로 네트워크를 라우팅해야 한다. 예를 들어, 쿠버네티스 Pod를 떠나는 트래픽 중 10.0.0.0/8 대역은 기본적으로 NAT 변환 되지 않는다. 그렇기 때문에 해당 대역대로 다른 내부 네트워크와 통신하려 한다면 다시 해당 Pod로 라우팅되게 라우트 rule을 설정해야 할 것이다. 이 때, 이 글이 도움 되길 🍀</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#999999;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#999999;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#999999;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#999999;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;">참고 : </span><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"><a class="se-link" href="https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/" target="_blank">https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-nanumbarungothic" style="color:#000000;"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

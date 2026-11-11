@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elasticsearch forcemerge 란? | minj.devlog</title>
+  <meta name="description" content="Elasticsearch forcemerge 란? forcemerge 란 Elasticsearch에서 불필요한 Segments를 병합 하거나 삭제 된 doc들을 병합 하는 기능으로, Elasticsearch에서 사용되는 인덱스 최적화 작업 중 하나이다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/elasticsearch-forcemerge/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Elasticsearch forcemerge 란?" />
+  <meta property="og:description" content="Elasticsearch forcemerge 란? forcemerge 란 Elasticsearch에서 불필요한 Segments를 병합 하거나 삭제 된 doc들을 병합 하는 기능으로, Elasticsearch에서 사용되는 인덱스 최적화 작업 중 하나이다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/elasticsearch-forcemerge/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/elasticsearch-forcemerge/images/image_1.jpg" />
+  <meta property="article:published_time" content="2023-10-24" />
+  <meta property="article:section" content="Search/Elasticsearch" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Elasticsearch forcemerge 란?", "description": "Elasticsearch forcemerge 란? forcemerge 란 Elasticsearch에서 불필요한 Segments를 병합 하거나 삭제 된 doc들을 병합 하는 기능으로, Elasticsearch에서 사용되는 인덱스 최적화 작업 중 하나이다.", "datePublished": "2023-10-24", "dateModified": "2023-10-24", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/elasticsearch-forcemerge/", "image": "https://minjipi.github.io/posts/elasticsearch-forcemerge/images/image_1.jpg", "articleSection": "Search/Elasticsearch"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="elasticsearch-forcemerge">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Search%2FElasticsearch">Search/Elasticsearch</a>
+              <time class="post-date" datetime="2023-10-24">2023.10.24</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223245161689" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Elasticsearch forcemerge 란?</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/elasticsearch-forcemerge/images/image_1.jpg" alt="Elasticsearch forcemerge 란?" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223245161689 -->
+<div class="se-main-container">
+<div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">Elasticsearch forcemerge 란?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">forcemerge 란 Elasticsearch에서 불필요한 Segments를 병합 하거나 삭제 된 doc들을 병합 하는 기능으로,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Elasticsearch에서 사용되는 인덱스 최적화 작업 중 하나이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#999999;">* _stat API 를 통해 index를 확인해보면 Deleted 된 doc 들이 남아있는 경우가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system" style="color:#999999;">Elasticsearch 는 delete 시 delete한 doc들을 바로 삭제하지 않고 기록만 해두었다가 이후 forcemerge를 통해 한 번에 Disk에서 삭제되는 구조이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그래서 forcemerge 를 통해 디스크 공간 사용량을 줄이고 검색 및 집계 성능을 향상시킬 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><a class="se-link" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-forcemerge.html" target="_blank">https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-forcemerge.html</a></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oglink se-l-image __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-oglink se-l-image se-section-align-">
+<div class="se-module se-module-oglink">
+
+<a class="se-oglink-info" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-forcemerge.html" target="_blank">
+<div class="se-oglink-info-container">
+<strong class="se-oglink-title">Force merge API | Elasticsearch Guide [8.10] | Elastic</strong>
+<p class="se-oglink-summary">Elastic Docs › Elasticsearch Guide [8.10] › REST APIs › Index APIs Force merge API edit Forces a merge on the shards of one or more indices. For data streams, the API forces a merge on the shards of the stream’s backing indices. POST / my-index-000001 / _forcemerge Copy as curl View in Console Reque...</p>
+<p class="se-oglink-url">www.elastic.co</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">forcemerge API 사용방법</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">forcemerge 중에는 샤드 크기가 증가하게 되고 이에 따라 샤드 재배치가 일어날 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">샤드 재배치이 발생하면 해당 샤드는 forcemerge 작업이 완료되었더라도 forcemerge 작업 이전의 shard로 복제되기 때문에 두 번 작업을 해야할 수 있으니 미리 샤드 재배치 중지를 해두는 것이 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">샤드 재배치 중지</span></p></li></ol>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+PUT _cluster/settings
+{
+"persistent": {
+"cluster.routing.allocation.enable": "none"
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. flush</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+POST _flush
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">* 클러스터 내의 인덱스를 명시적으로 플러시(Flush)하는 명령어.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Elasticsearch는 자동 플러시 메커니즘을 가지고 있어 데이터를 디스크에 주기적으로 저장하지만</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">때로는 명시적으로 플러시를 수행하고 데이터를 즉시 디스크에 저장하는 경우가 있을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">3. forcemerge</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+POST /INDEX/_forcemerge?only_expunge_deletes=true
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">4. 확인</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+get INDEX/_stats
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">5. 샤드 재배치 활성화</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+PUT _cluster/settings
+{
+"persistent": {
+"cluster.routing.allocation.enable": "all"
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

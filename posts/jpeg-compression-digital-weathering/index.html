@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>디지털 풍화가 생기는 이유! JPEG 압축 방식에 대하여 | minj.devlog</title>
+  <meta name="description" content="디지털 풍화는 왜 생길까? Compress my cat to JPG 디지털 풍화.. 다들 뭔지 아시져..? 누가 쓴 글을 캡쳐해서 SNS에 올리고, 그걸 또 누가 캡쳐해서 커뮤니티에 올리고, 또 그걸 누가 캡쳐해서 썸네일로 쓰고.." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/jpeg-compression-digital-weathering/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="디지털 풍화가 생기는 이유! JPEG 압축 방식에 대하여" />
+  <meta property="og:description" content="디지털 풍화는 왜 생길까? Compress my cat to JPG 디지털 풍화.. 다들 뭔지 아시져..? 누가 쓴 글을 캡쳐해서 SNS에 올리고, 그걸 또 누가 캡쳐해서 커뮤니티에 올리고, 또 그걸 누가 캡쳐해서 썸네일로 쓰고.." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/jpeg-compression-digital-weathering/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/jpeg-compression-digital-weathering/images/image_1.jpg" />
+  <meta property="article:published_time" content="2025-06-26" />
+  <meta property="article:section" content="Media" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "디지털 풍화가 생기는 이유! JPEG 압축 방식에 대하여", "description": "디지털 풍화는 왜 생길까? Compress my cat to JPG 디지털 풍화.. 다들 뭔지 아시져..? 누가 쓴 글을 캡쳐해서 SNS에 올리고, 그걸 또 누가 캡쳐해서 커뮤니티에 올리고, 또 그걸 누가 캡쳐해서 썸네일로 쓰고..", "datePublished": "2025-06-26", "dateModified": "2025-06-26", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jpeg-compression-digital-weathering/", "image": "https://minjipi.github.io/posts/jpeg-compression-digital-weathering/images/image_1.jpg", "articleSection": "Media"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="jpeg-compression-digital-weathering">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Media">Media</a>
+              <time class="post-date" datetime="2025-06-26">2025.06.26</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223912617929" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">디지털 풍화가 생기는 이유! JPEG 압축 방식에 대하여</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223912617929 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs24 se-ff-nanummaruburi">디지털 풍화는 왜 생길까?</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi se-weight-unset">Compress my cat to JPG</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:235px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/jpeg-compression-digital-weathering/images/image_1.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">디지털 풍화.. 다들 뭔지 아시져..?</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">누가 쓴 글을 캡쳐해서 SNS에 올리고, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그걸 또 누가 캡쳐해서 커뮤니티에 올리고, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">또 그걸 누가 캡쳐해서 썸네일로 쓰고..</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이런식으로 한 이미지가 계속 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">인터넷 세상에서 돌아가다보면,</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"> 이렇게 너덜해진 '</span><span class="se-fs- se-ff-system"><b>디지털 풍화</b></span><span class="se-fs- se-ff-system">' 작용이 일어난다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이렇게 되는 이유는</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">우리가 이미지를 캡쳐하거나, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">이미지를 플랫폼에 업로드할 때마다 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">자동으로 '</span><span class="se-fs-fs16 se-ff-system"><b>압축</b></span><span class="se-fs- se-ff-system se-weight-unset">'되는 이미지들이 있기 때문이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">캡쳐+업로드+캡쳐+업로드 가 아니라 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"><u>캡쳐+압축+업로드+캡쳐+압축+업로드</u></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">가 되는 것이기에 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">픽셀이 짜부되어 풍화 작용이 일어나는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">압축을 뭐 어떻게 하길래 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">내 소중한 이미지가 이래 너덜해지는 걸까!</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이미지 압축의 핵심이자 첫 걸음, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">'</span><span class="se-fs- se-ff-system"><b>JPEG</b></span><span class="se-fs- se-ff-system">' 포맷에 대해 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_corner">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_corner">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff- se-style-unset">Joint Photographic Experts Group.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff- se-style-unset"><b>'JPEG'.</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">jpg, jpeg 확장자의 이미지 파일 형식</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">어쩌다가 이미지를 '압축'할 생각을 했을까?</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이 jpeg이 만들어질 당시 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">1900년대 초반의 세상은 지금처럼 인터넷이 빠르지도, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">저장공간이 넉넉하지도 않았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">인터넷이 전화선 모뎀으로 연결되던 시절이었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이 시절 이미지 파일은 당연히 사치였는데, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그래서 컴공 똑똑 박사님들은 생각했다. </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-default">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset">이미지 파일을 좀 줄일 수 없나?</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs16 se-ff- se-style-unset">어떤 부분을 줄일 수 있을까?</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:300px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">박사님들은 고민 끝에</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><u>어차피 사람 눈에 잘 안보이는 부분은 버려도 된다</u></span><span class="se-fs- se-ff-system">는 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">결론을 내렸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">우리 눈은 사실 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">밝기에는 민감하고, 색상에는 둔감하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그리고 전체적인 틀이나 구조는 잘 보지만, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">작은 디테일은 잘 알아차리지 못한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이</span><span class="se-fs- se-ff-system se-weight-unset"> 두 가지 사실을 박사님들은 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">이렇게 정리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset" style="background-color:#eefff3;">1.</span><span class="se-fs- se-ff-system" style="background-color:#eefff3;"><b> </b></span><span class="se-fs- se-ff-system" style="background-color:#eefff3;"><i><b>밝기에는 민감하고, 색상에는 둔감하다</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">-&gt; </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"><i>밝기 정보(Y)는 최대한 유지하고,</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"><i>색상 정보(Cb, Cr)는 좀 뭉개도 되겠다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이걸 '</span><span class="se-fs- se-ff-system se-style-unset"><b>다운샘플링</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">'기법을 통해 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">색상 정보를 절반 이하로 줄여버린다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset" style="background-color:#eefff3;">2. </span><span class="se-fs- se-ff-system" style="background-color:#eefff3;"><i><b>저주파(전체 흐름)에는 민감하고, </b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system" style="background-color:#eefff3;"><i><b>고주파(디테일)에는 둔감하다.</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">-&gt; </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">이걸 </span><span class="se-fs- se-ff-system"><b>DCT + 양자화</b></span><span class="se-fs- se-ff-system se-weight-unset"> 과정으로 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset">눈에 잘 안 띄는 고주파 정보를 과감하게 버린다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset">직접 jpeg 이미지를 압축 해봤다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-imageStrip se-imageStrip2 se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-imageStrip se-l-default">
+<div class="se-imageStrip-container se-imageStrip-col-2">
+<div class="se-module se-module-image" style="width:50.0%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_4.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-image" style="width:50.0%;">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_5.jpg"/>
+</a>
+</div>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">원본 이미지  vs 50% 압축 이미지</span></p></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">실제로 이미지 압축을 해보니, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">압축한 티가 별로 안났다!</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">정말 버려도 되는 부분만 버린 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">그럼 도대체 어디를 어떻게 버린 건지 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">좀 더 자세히 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-nanummaruburi se-style-unset"><b>JPEG 압축</b></span><span class="se-fs-fs19 se-ff-nanummaruburi se-style-unset">, </span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_corner">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_corner">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">1. 색 공간 변환 (RGB → YCbCr)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">2. 블록 분할 (8x8 Block Splitting)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">3. DCT (이산 코사인 변환)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">4. 양자화 (Quantization)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">5. 지그재그 스캔 (Zigzag Scan)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">6. DC / AC 계수 부호화</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">7. 허프만 인코딩 (Huffman Coding)</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">8. 최종 JPEG 스트림 생성</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">JPEG 파일은 위의 7단계를 통해 짜부된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_6.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">내 이미지 하나를 예시로 </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이 과정을 따라가 본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>0. 이미지 준비</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Sampling &amp; Quantization</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs16 se-ff-system se-style-unset"><b>Sampling</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">JPEG 압축 전, 준비 운동.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">실제 세상의 이미지는 연속적인 빛의 흐름이다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이것을 컴퓨터가 이해할 수 있게</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">어떤 색을 가진 점, 즉 픽셀로 표현하는데 이것이 '샘플링'이다. </span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/nv_0.png"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">해상도가 높을수록, 표현되는 점(픽셀)의 수가 많아지고, 그만큼 이미지도 더 선명해진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">샘플링으로 점을 찍었으면, 이제 그 점에 어떤 색이 들어 있는지 숫자로 표현한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">RGB(빨, 초, 파) 각각 0~255 사이의 정수로 나타내서 색을 숫자로 정리하는 과정인데, </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이를 디지털화(Digitization) 또는 넓은 의미에서의 초기 양자화(Quantization)라고 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>1. 색 공간 변환</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">RGB -&gt; YCbCr</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">우리가 알고 있는 디지털 이미지는 기본적으로</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>RGB(빨강, 초록, 파랑)</b></span><span class="se-fs- se-ff-system se-style-unset"> 세 가지 색으로 이루어져 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">(참고로 우리 눈에도 이 세 가지 색을 감지하는 세포가 존재한다. 적색, 녹색, 청색 빛에 반응하는 원추세포 세 종류가 있고, 이 덕분에 </span><span class="se-fs- se-ff-system se-style-unset"><u>RGB처럼 색을 인식</u></span><span class="se-fs- se-ff-system se-style-unset">할 수 있다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">JPEG은 압축을 더 잘하기 위해</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">이 색상 정보를 </span><span class="se-fs- se-ff-system se-style-unset"><b>YCbCr</b></span><span class="se-fs- se-ff-system se-style-unset">이라는 방식으로 바꾼다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">왜냐하면, </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">우리 눈은 밝기 변화에는 민감하지만,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">색상의 미세한 차이에는 둔감한 편이라 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">밝기(Y)정보는 잘 보여야 하니까 그대로 두고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">색상 정보(Cb, Cr)는 대~충 뭉쳐도 괜찮겠다 판단한 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>YCbCr 방식</b></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>Y (Luminance)</b></span><span class="se-fs- se-ff-system se-style-unset">: 밝기 정보</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>Cb</b></span><span class="se-fs- se-ff-system se-style-unset">: 파란색 성분과 밝기의 차이</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>Cr</b></span><span class="se-fs- se-ff-system se-style-unset">: 빨간색 성분과 밝기의 차이</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">예를 들어 4개의 픽셀이 있다고 가정했을때,</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[ A ] [ B ]
+[ C ] [ D ]
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이 4픽셀의 색상(Cb, Cr)을 각각 따로 저장하지 않고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이 4개를 평균내서 하나의 색상 값으로 묶어버리는 것이다. 이에 대해 다음과 같은 이점이 생긴다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">원래는 색상 정보가 4개 필요</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">다운샘플링하면 색상 정보는 1개만 저장</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">결과적으로 용량은 1/4로 줄어듬</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이를 </span><span class="se-fs- se-ff-system se-style-unset"><b>다운샘플링</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">(downsampling) 또는, </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">더 정확하게는 </span><span class="se-fs- se-ff-system se-style-unset"><b>크로마 서브샘플링</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">(chroma </span><span class="se-fs- se-ff-system se-style-unset">subsampling)이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이 과정을 거친 내 고양이 이미지는 다음과 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_7.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b>색 공간 변환 결과 (RGB → YCbCr)</b></span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">좌상단: 원본 RGB 이미지</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">상단 중간: Y (밝기 정보. 해상도 유지되어야 함.)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">상단 우측: Cb (원본. 파랑 - 밝기 차이)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">하단 좌측: Cr (원본. 빨강 - 밝기 차이)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">하단 중간, 우측: Cb, Cr를 각각 4:2:0 방식으로 다운샘플링한 결과</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>2. Block splitting (8x8)</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">엄밀히 말하자면 Y채널은 8x8 블럭으로, </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">CbCr채널은 다운샘플링 방식에 따라 각각 8x8(4:4:4), 16x8(4:2:2), 16x16(4:2:0)으로 분할.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이어서 Y, Cb, Cr 세 채널이 각각</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">8×8 블록</span><span class="se-fs- se-ff-system se-style-unset"> 단위로 분할된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">아래는 밝기 채널을 8x8 블록으로 분할한 결과다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>3. DCT (Discrete Cosine Transform)</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">이산 코사인 변환</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">분할된 블록 안의 밝기나 색상 값들을 숫자 패턴으로 바꿔주는 작업이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이것을</span><span class="se-fs- se-ff-system se-style-unset"><b> DCT</b></span><span class="se-fs- se-ff-system se-style-unset"> (Discrete Cosine Transform), 이산 코사인 변환이라고 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">쉽게 말해, 음악도 악보를 보면 정말 복잡해 보여도 </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">고음, 중음, 저음으로 나눌 수 있는 것처럼 </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이미지도 가로 줄무의, 세로 줄무늬, 땡땡이 패턴 등 </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">기본적인 패턴 조각들로 바꾸는 것이다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이걸 또 박사님들이 흔하게 사용되는 64개의 패턴 표를 미리 만들어놨다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_9.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">저 표는</span><span class="se-fs- se-ff-"><b> DCT Basis Functions</b></span><span class="se-fs- se-ff-"> 라고 한다.</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이 64개의 조각을 </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">'</span><span class="se-fs- se-ff-system se-style-unset"><b>얼마나 섞어야</b></span><span class="se-fs- se-ff-system se-style-unset"> 이미지와 비슷하게 표현할 수 있을까?"를 계산하는 것이 바로 DCT 이고</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">그리고 '</span><span class="se-fs- se-ff-system se-style-unset"><b>얼마나 섞어야'</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">를 수치로 나타낸 것이 계수(coefficient)다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset"><b>DCT 과정</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">① </span><span class="se-fs- se-ff-system se-style-unset"><b>[0~255] 범위: 원본 밝기값</b></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">왼쪽의 [0, 255] 범위는 원본 이미지의 </span><span class="se-fs- se-ff-system se-style-unset"><b>밝기 값</b></span><span class="se-fs- se-ff-system se-style-unset">이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">각각의 숫자는 </span><span class="se-fs- se-ff-system se-style-unset"><b>8x8 블록 안의 픽셀 밝기</b></span><span class="se-fs- se-ff-system se-style-unset">를 의미한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">②</span><span class="se-fs-fs15 se-ff-system se-style-unset"><b> -128을 빼줌 </b></span><span class="se-fs-fs15 se-ff-system se-weight-unset se-style-unset">(중앙 정렬)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">JPEG에서는 계산을 좀 더 효율적으로 하기 위해,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">모든 숫자에서 128을 빼서 -128~127 사이 값으로 바꾼다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">이걸 하면 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">밝기가 중간값(0)을 중심으로</span><span class="se-fs- se-ff-system se-style-unset"> 퍼지게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">밝은 건 양수, 어두운 건 음수로 나타남.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">③ </span><span class="se-fs-fs15 se-ff-system se-style-unset"><b>DCT (이산 코사인 변환)</b></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이제 이 숫자 덩어리를 수학적으로 </span><span class="se-fs- se-ff-system se-style-unset"><b>주파수 성분</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">으로 쪼갠다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이때 각 패턴이 얼마나 섞여 있는지를 숫자(계수)로 표현하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">가장 왼쪽 위에 있는 </span><span class="se-fs- se-ff-system se-style-unset"><b>DC 계수</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">는 블록 전체의 평균 밝기와 관련된 </span><span class="se-fs- se-ff-system se-style-unset"><b>저주파</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset"> 성분이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">나머지 63개의 </span><span class="se-fs- se-ff-system se-style-unset"><b>AC 계수</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">는 고양이 귀의 경계선이나 커피 거품의 결처럼 세부적인 디테일(고주파)을 나타낸다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이 사람 눈이 잘 못 느끼는 고주파 성분(AC 계수)을 줄이거나 생략함으로써, 파일 크기를 줄이는 것이 </span><span class="se-fs- se-ff-system se-style-unset"><b>Jpeg 이미지 압축의 핵심 원리</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>4. 양자화 (Quantization)</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">파일 크기를 줄이기 위해, </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">'중요하지 않은 세부 정보'를 버리는 것!</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">양자화는 DCT 변환을 통해 얻은 64개의 계수들(주파수별 세기)를 </span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">좀 더 적은 정보로 저장하기 위해</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">64개의 계수를 미리 정해진 양자화 테이블의 값으로 나눠준 뒤 반올림하여 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">비교적 중요하지 않은 고주파 성분은 대부분 0으로 만들고, 중요한 정보만 남기는 과정이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"><b>위에서 구한 DCT 계수 블록:</b></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[ 577.8, 1.8, -2.6, -0.2, -0.2, -0.3, -0.3, -0.5 ],
+[ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+[ 1.7, 1.8, -2.6, -0.1, -0.1, -0.3, -0.1, -0.8 ],
+[ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+[ 0.2, 0.2, -0.6, 0.1, 0.2, -0.1, 0.5, -0.8 ],
+[ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ],
+[ -0.4, -0.6, 0.4, 0.1, 0.3, -0.0, 0.6, -0.6 ],
+[ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"><b>JPEG 표준 양자화 행렬 예시 (품질 50 기준):</b></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[ 16, 11, 10, 16, 24, 40, 51, 61 ],
+[ 12, 12, 14, 19, 26, 58, 60, 55 ],
+[ 14, 13, 16, 24, 40, 57, 69, 56 ],
+[ 14, 17, 22, 29, 51, 87, 80, 62 ],
+[ 18, 22, 37, 56, 68, 109, 103, 77 ],
+[ 24, 35, 55, 64, 81, 104, 113, 92 ],
+[ 49, 64, 78, 87,103, 121, 120, 101 ],
+[ 72, 92, 95, 98,112, 100, 103, 99 ]
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>양자화 수행 방법:</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">양자화 계수 = DCT 계수 ÷ 양자화 행렬의 값 → 반올림</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset">이 계산을 거치면 다음고 같은 결과가 나온다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[ 36, 0, 0, 0, 0, 0, 0, 0 ],
+[ 0, 0, 0, 0, 0, 0, 0, 0 ],
+[ 0, 0, 0, 0, 0, 0, 0, 0 ],
+[ 0, 0, 0, 0, 0, 0, 0, 0 ],
+[ 0, 0, 0, 0, 0, 0, 0, 0 ],
+[ 0, 0, 0, 0, 0, 0, 0, 0 ],
+[ 0, 0, 0, 0, 0, 0, 0, 0 ],
+[ 0, 0, 0, 0, 0, 0, 0, 0 ]
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset">오. DC 계수 하나(36)만 남고 나머지는 </span><span class="se-fs- se-ff-system se-style-unset"><b>모두 0</b></span><span class="se-fs- se-ff-system se-style-unset">이 됐다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset">덜 중요한 부분을 효율적으로 줄인 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset">압축률을 높이고 싶다면 양자화 테이블의 값을 더욱 크게 하면 되고, 압축률을 줄이는 대신 이미지 품질을 높이고 싶다면 양자화 테이블의 값을 줄이면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">참고로 포토샵에서 JPEG 로 이미지 내보내기 시</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">이 '품질 값'슬라이더가 Quantization Table 이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">품질이 낮을수록 Quantization table이 커져서 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">더 많은 주파수 계수를 0으로 만들고, 고주파 정보가 날아가는 원리다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset"><b>5. zigzag 스캐닝</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">1차원 리스트로 스캐닝.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">위의 64개의 양자화된 2차원 배열 값을</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">지그재그 순서로 1차원 배열(리스트)로 변환하는 과정이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">지그재그 순서로 나열하는 이유는, 그렇다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">왼쪽 위 저주파부터 시작해서 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">가장 오른쪽 하단의 고주파로 끝나게 하기 위해서이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">나의 경우, 깔끔하게도 제일 첫번째를 제외한 모든 정보가 0이 나왔는데, 보통 지그재그로 나열하면 앞쪽은 숫자, 뒤쪽은 0 이 잔뜩나온다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">0이 연속되니 압축 효율이 높아지는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">0이 연속되는게 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">왜 압축 효율이 높아지는 거냐면...</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff- se-style-unset">6. 부호화</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">나 진짜(x10) 배고파</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">부호화(Encoding는 정보를 더 적은 비트(bit)로 표현해서 공간을 절약하고 전송을 빠르게 하기 위한 과정이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">내 경우, 이미지를 줄인다고 줄였는데도 아직</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0... </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">이렇게나 중복된 숫자가 많다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">이럴땐 그냥 36 한번, 0 20번. 이렇게 줄이면 좋은데, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">이 방식이 바로 런렝스 부호화(Run-Length Encoding)이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">그런데 DC계수 부호화와 AC 계수 부호화의 차이가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-">1. DC 계수 부호화: </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"><b>차분 부호화 (Differential Encoding)</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">DC 계수는 각 블록의 전체 밝기 평균을 나타내는 값이라고 했다. 이 값은 보통 인접한 블록끼리 큰 차이가 나지 않기 때문에, 각 블록의 DC 값을 그냥 저장하는 것보다,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">"</span><span class="se-fs- se-ff-system se-style-unset"><b>이전 블록보다 얼마나 밝아졌는지(혹은 어두워졌는지)"</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset"> 를 저장하면 훨씬 숫자가 작고, 효율적으로 표현할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-style-unset"><b>예시:</b></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">블록1의 DC: 100</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">블록2의 DC: 104</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">저장할 값은: 104 - 100 = 4</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">이</span><span class="se-fs- se-ff-system se-weight-unset se-style-unset"> "차이" 값만 저장!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">그리고, 저장 시 이 차이 값을 범주(Category)로 한번 더 분류한다. </span><span class="se-fs- se-ff-system se-style-unset">예를들어 4는 이진수로 100, 즉 3비트로 표현리 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">그렇다면 Category 3로 분류!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">그리고 이 Category 번호를 '허프만 코드'로 한번 더 바꿔서 저장한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">JPEG 표준에는 각 Category에 해당하는 DC 허프만 코드가 정의되어 있는데, Category 3의 경우 보통 100으로 표현된다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">(단, 실제 JPEG 파일 내에서는 별도의 DHT 세그먼트를 통해 커스텀 허프만 테이블을 사용하는 경우도 있다.)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">그렇다면 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">허프만 코드의 Category 3 = 100</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">실제 값인 4 = 100</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">최종적으로 저장되는 DC정보 저장 값은</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">100100 이 되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_postit">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_postit">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-"><b>1. 이전 DC 계수와의 차이값</b></span><span class="se-fs-fs13 se-ff-"> 계산</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-"><b>2. Category</b></span><span class="se-fs-fs13 se-ff-"> 구함 (몇 비트로 표현 가능한가?)</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-"><b>3. Category 번호를 허프만 코드로 인코딩</b></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-"><b>4. 실제 차이값을 2진수로 표현해서 붙임</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">복잡함 ;</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-">2. AC 계수 부호화: </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"><b>Run-Length + 허프만 부호화</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">AC 계수는 DC 계수와 달리 고주파 정보(디테일)를 담고 있다. 하지만 대부분은 </span><span class="se-fs- se-ff-system se-style-unset"><b>값이 0</b></span><span class="se-fs- se-ff-system se-style-unset">입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">압축하면서 고주파 정보(눈에 잘 안 보이는 디테일)를 대부분 버려도 티가 잘 안 나기 때문이다,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">그래서 JPEG에서는 AC 계수를 효율적으로 저장하기 위해</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>"0이 몇 번 반복됐는지 + 0이 아닌 값"의 쌍으로 압축</b></span><span class="se-fs- se-ff-system se-style-unset">해버린다. 이 방식을 </span><span class="se-fs- se-ff-system se-style-unset"><b>런렝스 인코딩(Run-Length Encoding, RLE)</b></span><span class="se-fs- se-ff-system se-style-unset"> 이라고한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">설명에 앞서 내 예시를 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">아래와 같이 살짝 다듬어 본다 ^^;</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[36, 0, 0, 0, 2, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-weight-unset"><i>36 1개, 나머지 0은 너무 극단적이라..</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">역시 AC 계수는 대부분 0이고, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">의미 있는 값은 몇 개 안된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">내 경우 다음과 같이 정리할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-table_layout1 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout1 se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><b>인덱스 범위</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><b>값</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><b>설명</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>결과 쌍</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">1</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">0</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">0개 0 뒤에 36 (DC는 제외)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(0, 36) ← 생략</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">2~4</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">0</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">3개 0 뒤에 2</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(3, 2)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">5~6</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">0</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">2개 0 뒤에 -1</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(2, -1)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">8~11</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">0</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">4개 0 뒤에 1</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(4, 1)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">이후</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">0</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">전부 0 → 종료 신호</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">(EOB)</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">남은 값이 전부 0이면, </span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">그냥 "여기까지 다 0입니다!" 한 줄로 표현한다.</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">이걸 간단하게 다음처럼 정리할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[
+(3, 2),
+(2, -1),
+(4, 1),
+(EOB)
+]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset">이것을 또 어덯게 저장하냐면,</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.8;"><span class="se-fs- se-ff-system se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset">1. (ZeroCount, Value) -&gt; </span><span class="se-fs-fs15 se-ff- se-style-unset"><b>Category 계산</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">양수/음수 상관없이 절댓값 기준으로 계산한다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">2 → 양수, 2비트 필요 → Category 2</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">-1 → 음수, 1비트 필요 → Category 1</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">1 → 양수, 1비트 필요 → Category 1</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset">2. (ZeroCount, Category) 조합 -&gt; </span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-style-unset"><b>AC 허프만 코드.</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">허프만 코드는 JPEG 표준 테이블에서 나온 예시</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">JPEG에서 AC 계수는 (ZeroRunLength, Category) 형태로 묶여 허프만 테이블을 참조한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">Category는 해당 값의 크기(절댓값 기준)를 몇 비트로 표현할 수 있는지를 나타내며, </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">허프만 테이블은 (ZeroRunLength, Category) 조합에 대응되는 코드를 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">그 다음, 실제 값은 Category 길이만큼의 이진수로 표현되는데</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">양수는 일반 이진수 그대로 사용하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">음수는 양수 표현값에 대해 가장 큰 값에서 역으로 매핑한다. </span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+(3, 2) → 11100
+(2, 1) → 1100
+(4, 1) → 11101
+(0, 0) → 1010 (EOB)
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset">3. 뒤에 실제 값의 이진 표현을 붙임</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">Category가 2면, 2비트로 값을 이진수 표현한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이 때 양수는 그대로 표현하고, </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">음수는 보수 표현 (category 길이만큼의 비트) 으로 나타내되, 부호 없는 이진수 중 가장 큰 수부터 역순으로 대응시킨다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+Category 2 (2비트):
+양수 1 → 01
+양수 2 → 10
+음수 -1 → 00
+음수 -2 → 11
+
+Category 1 (1비트):
+양수 1 → 1
+음수 -1 → 0
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">그래서 최종 적으로는 다음처럼 정리가 되고,</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-table_layout1 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout1 se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><b>(ZeroRun, Value)</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><b>Category</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><b>Huffman Code</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><b>Value Bits</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">(3, 2)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">2</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">11100</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">10</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">(2, -1)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">1</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">1100</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">0</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">(4, 1)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">1</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">11101</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">EOB</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">-</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">1010</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">-</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">최종 인코딩 결과 (비트 스트림)는 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+11100 10 1100 0 11101 1 1010
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이것이 내 이미지의 한 8×8 블록의 AC 계수 부호화 결과가 되는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이제 좀 전에 저장한 DC와 이 AC를 더하면 끝난다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">7. 최종 JPEG 스트림 생성</span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">마지막_최종_진짜최종_last.jpg</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이렇게 도출된 각 블록의 DC + AC 스트림을 이어붙인다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">DC (차이값 4): 100 (허프만) + 100 (값 비트)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">AC: 11100 10 1100 0 11101 1 1010</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">-&gt; 100100111001011100011010</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이게 한 블록이다.ㅋㅋ</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">모든 블록에 아래 과정을 반복한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">1. 각 블록의 DC 계수 → </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">차분값 계산 + 허프만 부호화 + 값 비트</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">2. 각 블록의 AC 계수 → </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">런렝스 + 허프만 부호화 + 값 비트</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">3. 이를 순서대로 이어붙임</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">4. 이 과정을 Y, Cb, Cr 각 채널에 대해 블록 단위로 반복.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:200px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이것이 보여 모든 블록의 DC, AC를 차례대로 이어붙이면, 하나의 거대한 비트 스트림이 생성된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이 거대한 비트스트림은 </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">그냥 텍스트가 아니라, JPEG 포맷 구조에 맞게 다양한 헤더, 세그먼트와 함께 저장된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs16 se-ff-system se-style-unset"><b>JPEG 파일 구조</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-table se-l-table_layout1 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout1 se-section-align-" style="width: 100%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>세그먼트</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  background-color: #fafff5;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"><b>설명</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">SOI (Start of Image)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">파일 시작 (0xFFD8)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">APP0 (JFIF 등)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">파일 식별자 (0xFFE0)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">DQT</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">Quantization Table (양자화 테이블 정보)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">SOF0</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">이미지 크기, 컬러 구성 (Baseline DCT용)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">DHT</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">Huffman Table (DC, AC용 허프만 테이블)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">SOS</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">Start of Scan – 이제부터 본격 이미지 데이터</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">압축 데이터</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">위에서 만든 DC+AC 부호화 비트스트림</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">EOI (End of Image)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">파일 끝 (0xFFD9)</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">JPEG 파일 구조에 대해서는 </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">구글에 'jpeg file format structure'라고 검색하면 </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">글로벌 인재들이 정리한 JPEG 파일 구조 정보를 무료로 얻어갈 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이렇게 "디지털 풍화는 왜 되는 걸까?" 라는 호기심에서 시작해 JPEG 이미지 포맷의 압축 과정을 하나하나 따라가 봤다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">결국 </span><span class="se-fs- se-ff-system se-style-unset"><u><b>JPEG라는 이미지 파일 자체가 </b></u></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-style-unset"><u><b>처음부터 손실 압축 방식</b></u></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이기 때문에, </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">저장하는 순간부터 정보 일부가 짜부된다.(사라진다)</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">그리고 이 과정을 반복하다 보면 </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">우리가 흔히 말하는 디지털 풍화 현상이 생기는 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">만약 원본 그대로의 품질을 유지하고 싶다면,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">PNG나 BMP처럼 </span><span class="se-fs- se-ff-system se-style-unset"><b>무손실 압축 방식의 포맷</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">을 사용하는 것이 훨씬 더 적절하다. </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">ㅎ 이렇게 말하니 또 무손실 압축 방법이</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">너무 궁금해 지지 않는가..</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이건 좀 더 알아보고 정리해 봐야겠다. </span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line7">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line7 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-nanummaruburi se-weight-unset"><i>p.s.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-nanummaruburi se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/jpeg-compression-digital-weathering/images/image_16.jpg"/>
+</a>
+</div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5157894736842106;"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">이미지 파일 압축 관련 프로그램을 만들며 </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">알게된 정보를 정리해 봤다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">이미지를 이렇게까지 알고 싶진 않았지만. 흥미롭긴하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">학부생때 배웠던 것들이 꽤 나왔는데 </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">그땐 내 인생에 쓸모없는 지식이라 생각했었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">보통 퓨리에 변환이 인생에 쓸모있을거라 생각은 안하지..</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">아무튼 이렇게 묵혀있던 글 하나를 발행해본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">틀린 부분이 있다면 </span></p><p class="se-text-paragraph se-text-paragraph-align-center" style="line-height:1.5157894736842106;"><span class="se-fs-fs13 se-ff-system se-weight-unset se-style-unset">댓글로 알려주세요 ~~ 👼🏻 </span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

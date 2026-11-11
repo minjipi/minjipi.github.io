@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spring Boot + JWT + Security + Security 권한 설정해서 &#x27;회원가입/로그인 구현&#x27; | minj.devlog</title>
+  <meta name="description" content="Spring Boot + JWT + Security + Security 권한 설정해서 회원가입/로그인 구현. 구현하고자 하는 전체 로직은 다음과 같다. 1. ID/PW 로그인 시도 -&gt; &lt;- 2. ID/PW 검증 후 Access Token 발급 3." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-boot-jwt-security-signup-login/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Spring Boot + JWT + Security + Security 권한 설정해서 &#x27;회원가입/로그인 구현&#x27;" />
+  <meta property="og:description" content="Spring Boot + JWT + Security + Security 권한 설정해서 회원가입/로그인 구현. 구현하고자 하는 전체 로직은 다음과 같다. 1. ID/PW 로그인 시도 -&gt; &lt;- 2. ID/PW 검증 후 Access Token 발급 3." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-boot-jwt-security-signup-login/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-boot-jwt-security-signup-login/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-03-18" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Spring Boot + JWT + Security + Security 권한 설정해서 '회원가입/로그인 구현'", "description": "Spring Boot + JWT + Security + Security 권한 설정해서 회원가입/로그인 구현. 구현하고자 하는 전체 로직은 다음과 같다. 1. ID/PW 로그인 시도 -> <- 2. ID/PW 검증 후 Access Token 발급 3.", "datePublished": "2022-03-18", "dateModified": "2022-03-18", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-boot-jwt-security-signup-login/", "image": "https://minjipi.github.io/posts/spring-boot-jwt-security-signup-login/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-boot-jwt-security-signup-login">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-03-18">2022.03.18</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222675846877" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Spring Boot + JWT + Security + Security 권한 설정해서 &#x27;회원가입/로그인 구현&#x27;</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-boot-jwt-security-signup-login/images/image_1.jpg" alt="Spring Boot + JWT + Security + Security 권한 설정해서 &#x27;회원가입/로그인 구현&#x27;" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222675846877 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-"><b>Spring Boot + JWT + Security + Security 권한 설정해서 회원가입/로그인 구현.</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">구현하고자 하는 전체 로직은 다음과 같다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+1. ID/PW 로그인 시도 -&gt;
+&lt;- 2. ID/PW 검증 후 Access Token 발급
+
+3. API 요청 시,
+Access Token 헤더에 담아서 요청 -&gt;
+&lt;- 4. API 응답 또는
+            Access Token 만료 응답 줌
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">1. JWT</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">JWT 에 관련된 글은 따로 작성했기 때문에 링크로 대체.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"><a class="se-link" href="https://blog.naver.com/ghdalswl77?Redirect=Log&amp;logNo=222519729832&amp;from=postView" target="_blank">JWT(Json Web Token) :: JWT 형식, 동작과정</a></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222567270983" target="_blank">스프링부트 JWT 인증 과정 (더 좋은 코드)</a></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">2. Spring Security의 구조</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">Spring Security 는 사용자 정보 (ID/PW) 검증 및 유저 정보 관리 등을 쉽게 사용할 수 있도록 제공한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">* 스프링 시큐리티는 원래 세션 기반 인증을 사용하기 때문에 JWT와 별개로 생각해야 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">여기서는 일단 필요한 시큐리티 정보만 세팅하고 어떤식으로 동작하는지만 파악한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">필요한 Settings</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">build.gradle </span><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#141414;">Spring Security 추가</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+implementation 'org.springframework.boot:spring-boot-starter-security'
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#141414;">Jwt Dependency 추가</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-" style="color:#141414;"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>3.</b></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"> Member 도메인 설계</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">시큐리티 자체적으로 UserDetails 의 구현체인 User 를 사용하기 때문에 헷갈리지 않도록 Account나 Member 로 이름 짓는게 좋다고 한다. </span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">[ Member 도메인 ]</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- Member Dao</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- MemberService</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- MemberController</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>3-1. Member DAO</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Repository;
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+@Repository
+public class MemberDao {
+private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+this.jdbcTemplate = new JdbcTemplate(dataSource);
+}
+public PostMemberRes createMember(PostMemberReq postMemberReq) {
+
+        String createMemberQuery = "insert into Member (email, password, nickname ) VALUES (?, ?, ?)";
+        Object[] createMemberParams = new Object[]{postMemberReq.getEmail(), postMemberReq.getPassword(), postMemberReq.getNickname(),
+};
+this.jdbcTemplate.update(createMemberQuery, createMemberParams);
+
+        String getLastInsertIdxQuery = "select last_insert_id()";
+        int lastInsertIdx = this.jdbcTemplate.queryForObject(getLastInsertIdxQuery, int.class);
+
+        String createAuthorityQuery = "insert into authority values(?, ?)";
+        Object[] createAuthorityParams = new Object[]{lastInsertIdx, 0};
+this.jdbcTemplate.update(createAuthorityQuery, createAuthorityParams);
+return new PostMemberRes(lastInsertIdx, 1);
+}
+public PostMemberRes createSeller(PostMemberReq postMemberReq) {
+
+        String createMemberQuery = "insert into Member (email, password, nickname ) VALUES (?, ?, ?)";
+        Object[] createMemberParams = new Object[]{postMemberReq.getEmail(), postMemberReq.getPassword(), postMemberReq.getNickname(),
+};
+this.jdbcTemplate.update(createMemberQuery, createMemberParams);
+
+        String getLastInsertIdxQuery = "select last_insert_id()";
+        int lastInsertIdx = this.jdbcTemplate.queryForObject(getLastInsertIdxQuery, int.class);
+
+        String createAuthorityQuery = "insert into authority values(?, ?)";
+        Object[] createAuthorityParams = new Object[]{lastInsertIdx, 0};
+this.jdbcTemplate.update(createAuthorityQuery, createAuthorityParams);
+
+        createAuthorityQuery = "insert into authority values(?, ?)";
+        createAuthorityParams = new Object[]{lastInsertIdx, 1};
+this.jdbcTemplate.update(createAuthorityQuery, createAuthorityParams);
+return new PostMemberRes(lastInsertIdx, 1);
+}
+public UserLoginRes findByEmail(String email) {
+        String getEmailQuery = "SELECT * FROM member LEFT OUTER JOIN authority on member.idx=authority.member_idx WHERE email=?";
+return this.jdbcTemplate.queryForObject(getEmailQuery
+                , (rs, rowNum) -&gt; new UserLoginRes(
+                        rs.getObject("idx", int.class),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        Arrays.asList(new SimpleGrantedAuthority(Authority.values()[rs.getObject("role", int.class)].toString()))
+), email);
+}
+public Boolean getUserEmail(String email) {
+        String findEmailQuery = "SELECT * FROM member WHERE email=?";
+try {
+            UserLoginRes userLoginRes = this.jdbcTemplate.queryForObject(findEmailQuery
+                    , (rs, rowNum) -&gt; new UserLoginRes(
+                            rs.getObject("idx", int.class),
+                            rs.getString("email"),
+                            rs.getString("password"),
+new ArrayList&lt;&gt;()
+), email);
+if (userLoginRes.getEmail() != null) {
+return true;
+} else {
+return false;
+}
+} catch (EmptyResultDataAccessException e) {
+return false;
+}
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset">쇼핑몰 사이트라 가정하고, member 유저와 seller 유저가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset">member는 특별한 인증 없이 가입이 가능하지만</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset">seller는 판매자라 쇼핑몰 측에 판매자 신청을 하고, 심사에 통과되면 쇼핑몰 측에서 seller 가입 url을 주는 시나리오다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>3-2) Authority</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public enum Authority {
+ROLE_MEMBER, ROLE_SELLER, ROLE_ADMIN
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">권한은 Enum 클래스로 구현.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>3-3) Member DB</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:550px;">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-boot-jwt-security-signup-login/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset" style="color:#141414;">member 테이블과 authority 테이블은 위와 같이 구성했다.</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">한 </span><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset" style="color:#141414;">member는 여러개의 authority를 부여받을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset" style="color:#141414;">이렇게 구현한 이유는 페이지 접근 권한 때문이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset" style="color:#141414;">member는 상품 조회 페이지에만 접근할 수 있고,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset" style="color:#141414;">seller는 상품 등록 페이지와 상품 조회 페이지 모두 접근 할 수 있어야 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+role 0이 접근할 수 있는 페이지 : 상품 조회 페이지
+role 1이 접근할 수 있는 페이지 : 상품 등록 페이지
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">그래서 member role은 0, seller role은 0,1 두 개를 부여한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-weight-unset se-style-unset" style="color:#141414;">🤔 </span><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>member 테이블과 authority 테이블을 나눈 이유</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">멤버 테이블 즉 사용자 테이블을 만들 때,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이름 나이 성별 이메일 전화번호 등은 보통 한 사람 당 하나씩만 있을 테니 하나의 테이블로 만는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">그런데 만약 취미라던가 다른 여러가지의 값을 가질 수 있는 정보를 같은 테이블에 만들면 문제가 생긴다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">예를 들어..</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 53%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이름</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">성별</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">기술</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">토찌</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여자</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset se-style-unset">html</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">토찌</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여자</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 33.33%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">css</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">토찌의 기술이 뭐가 있는지 기술에 대한 정보만 추가하고 싶은데,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">계속 여자라는 정보도 같이 넣어야 하는 거다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">중복된 데이터가 쓸데없이 추가되는 거고,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">만약 이름이 바뀌거나 성별이 바뀌면 그에따라 또 수정해야하는 데이터가 많아진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">귀찮기도 할 뿐더러 연산도 늘어나니 비효율적이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">그럼 테이블을 따로 만든다면?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 34%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이름</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">성별</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">토찌</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여자</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">토찌</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">여자</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 34%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이름</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  background-color: #f7f7f7;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">기술</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">토찌</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">HTML</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">토찌</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 50.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">CSS</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이름이나 성별이 바뀌어도 그 부분 한번만 고쳐주면 된다!💡</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이런 이유 때문에 여러 개의 값을 가질 수 있는 데이터들은 따로 테이블을 만드는게 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">여기서는 그것이 </span><span class="se-fs-fs15 se-ff- se-weight-unset se-style-unset" style="color:#141414;">authority</span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>3-4) MemberService</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MemberService {
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    MemberDao memberDao;
+public PostMemberRes createMember(PostMemberReq postMemberReq) {
+        postMemberReq.setPassword(passwordEncoder.encode(postMemberReq.getPassword()));
+return memberDao.createMember(postMemberReq);
+}
+
+    @Transactional
+    public PostMemberRes createSeller(PostMemberReq postMemberReq) {
+        postMemberReq.setPassword(passwordEncoder.encode(postMemberReq.getPassword()));
+return memberDao.createSeller(postMemberReq);
+}
+public Boolean getUserEmail(String email) {
+return memberDao.getUserEmail(email);
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">createSeller 메서드는 seller role에 0과 1을 부여해야 하는데</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">혹시 0만 부여한 상태에서 에러가 났을 경우를 대비해 @Transactional 어노테이션(스프링에서 지원하는 선언적 트랜잭션)을 달았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>3-5) MemberController</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/member")
+public class MemberController {
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+
+    @ResponseBody
+    @PostMapping("/signup")
+public BaseResponse&lt;PostMemberRes&gt; createMember(@RequestBody PostMemberReq postMemberReq) {
+try {
+            System.out.println("========================== Req: " + postMemberReq);
+            PostMemberRes postMemberRes = memberService.createMember(postMemberReq);
+return new BaseResponse&lt;&gt;(postMemberRes);
+} catch (Exception exception) {
+            System.out.println(exception);
+return new BaseResponse&lt;&gt;(BaseResponseStatus.FAIL);
+}
+}
+
+    @ResponseBody
+    @PostMapping("/sellersignup")
+public BaseResponse&lt;PostMemberRes&gt; createSeller(@RequestBody PostMemberReq postMemberReq) {
+try {
+            System.out.println("========================== Req: " + postMemberReq);
+
+            PostMemberRes postMemberRes = memberService.createSeller(postMemberReq);
+return new BaseResponse&lt;&gt;(postMemberRes);
+} catch (Exception exception) {
+            System.out.println(exception);
+return new BaseResponse&lt;&gt;(BaseResponseStatus.FAIL);
+}
+}
+
+    @ResponseBody
+    @GetMapping("{email}")
+public Boolean getUserEmail(@PathVariable("email") String email) {
+        Boolean result = memberService.getUserEmail(email);
+return result;
+}
+
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+public ResponseEntity&lt;?&gt; createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        System.out.println(authenticationRequest.getUsername());
+        System.out.println(authenticationRequest.getPassword());
+
+        Authentication authentication = authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        UserLoginRes userLoginRes = (UserLoginRes) authentication.getPrincipal();
+        final String token = jwtTokenUtil.generateToken(userLoginRes);
+return ResponseEntity.ok(new JwtResponse(token));
+}
+private Authentication authenticate(String username, String password) throws Exception {
+try {
+return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+} catch (DisabledException e) {
+throw new Exception("USER_DISABLED", e);
+} catch (BadCredentialsException e) {
+throw new Exception("INVALID_CREDENTIALS", e);
+}
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>4. JWT 와 Security 설정</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- </span><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>JWT 관련</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">JwtTokenUtil : 유저 정보로 JWT 토큰을 만들거나 토큰을 바탕으로 유저 정보를 가져옴.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">JwtFilter: Spring Request 앞단에 붙일 Custom Filter</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- </span><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>Spring Security 관련</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">JwtAuthenticationEntryPoint: 인증 정보 없을 때 401 에러</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">WebSecurityConfig: 스프링 시큐리티에 필요한 설정,  JWT Filter 를 추가</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">SecurityUtil: SecurityContext 에서 전역으로 유저 정보를 제공하는 유틸 클래스</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>✅  JwtTokenUtil.java</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">JWT token구현에 핵심이 되는 클래스. JWT 토큰에 관련된 암호화, 복호화, 검증 로직은 다 이곳에서 이루어진다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Component
+public class JwtTokenUtil implements Serializable {
+private static final long serialVersionUID = -2550185165626007488L;
+public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    @Value("${jwt.secret}")
+private String secret;
+//jwt 토큰에서 사용자 이름 검색.
+public String getUsernameFromToken(String token) {
+return getClaimFromToken(token, Claims::getSubject);
+}
+//jwt 토큰에서 만료 날짜 검색.
+public Date getExpirationDateFromToken(String token) {
+return getClaimFromToken(token, Claims::getExpiration);
+}
+public &lt;T&gt; T getClaimFromToken(String token, Function&lt;Claims, T&gt; claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+return claimsResolver.apply(claims);
+}
+// JWT에서 회원 정보 추출.
+private Claims getAllClaimsFromToken(String token) {
+return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+}
+//check if the token has expired
+private Boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+return expiration.before(new Date());
+}
+//Jwt 생성.
+public String generateToken(UserDetails userDetails) {
+        Map&lt;String, Object&gt; claims = new HashMap&lt;&gt;();
+return doGenerateToken(claims, userDetails.getUsername());
+}
+//Jwt 발급.
+private String doGenerateToken(Map&lt;String, Object&gt; claims, String subject) {
+return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+.signWith(SignatureAlgorithm.HS512, secret).compact();
+}
+// 토큰유효성 + 만료일자 확인.
+public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+return (username.equals(userDetails.getUsername()) &amp;&amp; !isTokenExpired(token));
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">해당 클래스에서는 token 발급, token에서 username을 추출, token의 유효성검사를 한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>✅  jwtRequestFilter.java</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Component
+public class JwtRequestFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtUserDetailsService jwtUserDetailsService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
+        final String requestTokenHeader = request.getHeader("Authorization");
+
+        String username = null;
+        String jwtToken = null;
+// JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
+if (requestTokenHeader != null &amp;&amp; requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
+try {
+                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+} catch (IllegalArgumentException e) {
+                System.out.println("Unable to get JWT Token");
+} catch (ExpiredJwtException e) {
+                System.out.println("JWT Token has expired");
+}
+} else {
+            logger.warn("JWT Token does not begin with Bearer String");
+}
+// 토큰을 받으면 유효성을 검사.
+if (username != null &amp;&amp; SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+// 토큰이 유효한 경우.. 수동으로 인증을 설정하도록 Spring Security를 구성
+if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+// 컨텍스트에서 인증을 설정한 후, 현재 사용자가 인증되었음을 지정. Spring Security Configurations 성공적으로 통과.
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+}
+}
+        chain.doFilter(request, response);
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">jwtRequestFilter 역시 중요한 부분중 하나인데 OncePerRequestFilter 를 상속받은 클래스로써 요청당 한번의 filter를 수행하도록 doFilterInternal() 메서드를 구현해주면 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>doFilterInternal</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">실제 필터링 로직을 수행하는 곳.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">Request Header 에서 Authorization값을 꺼내어 토큰을 검사하고 여러가지 검사 후 유저 정보를 꺼내서 SecurityContext 에 저장한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">가입/로그인/재발급을 제외한 모든 Request 요청은 이 필터를 거치기 때문에 토큰 정보가 없거나 유효하지 않으면 정상적으로 수행되지 않는다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>✅  </b></span><span class="se-fs-fs19 se-ff-nanumgothic se-style-unset" style="color:#141414;"><b>WebSecurityConfig</b></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#141414;">Spring Security를 사용하기 위해 Spring Security Filter Chain을 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff-nanumgothic se-weight-unset se-style-unset" style="color:#141414;">WebSecurityConfigurerAdapter를 상속 받은 클래스에 @EnableWebSecurity 어노테이션을 추가한다. </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    private JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    @Autowired
+    private UserDetailsService jwtUserDetailsService;
+
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+// configure AuthenticationManager so that it knows from where to load user for matching credentials
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+}
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+return new BCryptPasswordEncoder();
+}
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+return super.authenticationManagerBean();
+}
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.cors().configurationSource(request -&gt; new CorsConfiguration().applyPermitDefaultValues());
+// CSRF 설정 Disable
+        httpSecurity.csrf().disable()
+// 특정 API는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정.
+.authorizeRequests().antMatchers("/member/*").permitAll()
+.antMatchers("/**").permitAll().
+// all other requests need to be authenticated
+anyRequest().authenticated().and().
+// exception handling 할 때 우리가 만든 클래스를 추가.
+exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+.accessDeniedHandler(jwtAccessDeniedHandler)
+// 시큐리티는 기본적으로 세션을 사용하지만, 여기서는 세션을 사용하지 않기 때문에 세션 설정을 Stateless 로 설정.
+.and().sessionManagement()
+.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+// Add a filter to validate the tokens with every request
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- httpSecurity.cors().configurationSource :  스프링 시큐리티 CORS 허용 정책.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- csrf() : html tag 를 통한 공격 ( api 서버 이용시 disable() )</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint) :</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">exceptionHandling을 위해서 실제 구현한 jwtAuthenticationEntryPoint을 넣어준다. jwtAuthenticationEntryPoint 아래에서 구현한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- sessionManagement().sessionCreationPolicy(SessionCreationPolicy.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">STATELESS) : 시큐리티에서 세션을 생성 하지도 않고, 기존것을 사용하지 않기 위한 전략</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">→ JWT 토큰 방식 사용하기 위함.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">addFilterBefore() : 인증을 처리하는 기본 필터 UsernamePasswordAuthenticationFilter</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">대신 JwtAuthenticationFilter 라는 별도의 인증 로직을 가진 커스텀 필터 추가.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">→ jwtTokenProvider를 생성자 파라미터로 넣은 이유는 JwtAuthenticationFilter에 종속성을 추가하기 위함.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">/member/* 에 해당하는 url들은 권한을 가진 사용자만 접근 가능.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">/product/** 에 해당하는 url들은 MEMBER 권한을 가진 사용자만 접근 가능.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">- 그 외 나머지 url들은 권한 상관 없이 접근 가능 (permitAll)</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>✅  JwtAuthenticationEntryPoint.java</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Serializable;
+
+@Component
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
+private static final long serialVersionUID = -7858869558953243875L;
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException {
+
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">JwtAuthenticationEntryPoint는 Jwt 검증시 발생하는 Exception을 처리해주기 위해, AuthenticationEntryPoint를 구현하여 인증에 실패한 사용자의 response에 HttpServletResponse.SC_UNAUTHORIZED를 담아주도록 구현한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>✅  JwtAccessDeniedHandler</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Component
+public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
+// 필요한 권한이 없이 접근하려 할때 403
+        response.sendError(HttpServletResponse.SC_FORBIDDEN);
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>✅  JwtUserDetailsService.java</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Service
+public class JwtUserDetailsService implements UserDetailsService {
+    @Autowired MemberDao memberDao;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        UserLoginRes userLoginRes = memberDao.findByEmail(username);
+        System.out.println("userLoginRes: "+userLoginRes);
+if (userLoginRes != null) {
+return new UserLoginRes(userLoginRes.getIdx(), userLoginRes.getEmail(), userLoginRes.getPassword(),
+new ArrayList&lt;&gt;());
+} else {
+throw new UsernameNotFoundException("User not found with username: " + username);
+}
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">JwtUserDetailsService는 들어온 email으로 Member를 찾아서 결과적으로 User 객체를 반환해주는 역할 + 컨트롤러에서 넘어온 email과 password 값이 db에 저장된 비밀번호와 일치하는지 검사한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>5. 사용자 인증 과정</b></span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">지금까지 스프링 시큐리티와 JWT 를 사용하기 위한 설정들을 다 정리했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">지금부터는 실제로 사용자 로그인 요청이 들어왔을 때 인증 처리 후에 JWT 토큰을 발급하는 과정에 대해 알아본다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs19 se-ff- se-style-unset" style="color:#141414;"><b>✅  JwtUserDetailsService.java</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+
+@Service
+public class JwtUserDetailsService implements UserDetailsService {
+    @Autowired MemberDao memberDao;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserLoginRes userLoginRes = memberDao.findByEmail(username);
+        System.out.println("userLoginRes: "+userLoginRes);
+if (userLoginRes != null) {
+return new UserLoginRes(userLoginRes.getIdx(), userLoginRes.getEmail(), userLoginRes.getPassword(),
+new ArrayList&lt;&gt;());
+} else {
+throw new UsernameNotFoundException("User not found with username: " + username);
+}
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">UserDetailsService 인터페이스를 구현한 클래스.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">loadUserByUsername 메소드를 오버라이드 하는데 여기서 넘겨받은 UserDetails 와 Authentication 의 패스워드를 비교하고 검증하는 로직을 처리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">구현 하는 동안 대체 어디서 패스워드를 비교하는지 궁금했는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">loadUserByUsername 메소드를 어디서 호출하는지 내부를 타고 들어가보면...</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_3.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"><b> JwtUserDetailsService.java</b></span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">loadUserByUsername 는 여러 곳에서 호출하고 있는데 이 중에서 DaoAuthenticationProvider 내부를 확인해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">[DaoAuthenticationProvider]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_4.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">DaoAuthenticationProvider</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">username 을 받아서 넘겨주는 retrieveUser 메소드 내부에서 호출한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이 retrieveUser 는 어디서 호출하냐면..</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_5.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">AbstractUserDetailsAuthenticationProvider </span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">DaoAuthenticationProvider 의 부모 클래스인 AbstractUserDetailsAuthenticationProvider 에서 호출하고 있었다. DaoAuthenticationProvider 를 다시 확인해보면 오버라이드 해서 구현되어 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_6.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">DaoAuthenticationProvider</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">실제로 비밀번호 검증이 이루어지는 부분은 이 곳이었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">Request 로 받아서 만든 authentication 와 DB 에서 꺼낸 값인 userDetails 의 비밀번호를 비교한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">DB 에 있는 값은 암호화된 값이지만 passwordEncoder 가 알아서 비교해주는 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">6. API 호출 테스트</span></h2></div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이제 서버를 띄우고 API 호출을 해본다. API 요청은 Advanced REST client를 사용했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>6-1) 가입</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+{
+"email":"minji03@minji.com",
+"password":"minji03",
+"nickname":"minji03"
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">권한 테스트를 위해 위 방식으로 minji01, minji02, minji03을 가입 시켰다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_7.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">디비 확인</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_8.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">minji02에게는 role을 0 으로 일반 member 권한을 부여하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">minji03에게는 seller라는 권한을 부여했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"><b>6-2) 로그인</b></span><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">[일반 멤버 로그인]</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+http://localhost:8080/member/authenticate
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_9.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">minji02로 로그인.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_10.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">토큰 발급.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이 토큰으로 /product/lists"에 접근한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">WebSecurityConfig 파일에서</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">antMatchers("/product/lists").authenticated() 설정 했으므로</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">접근이 허용되어야 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_11.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">접근 성공.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이번엔 .antMatchers("/product/search").hasRole("SELLER")로</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">seller 권한이 부여된 사용자만 접근 하능한 url로 접근 시도.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_12.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">구현한대로 403 forbidden 에러,</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">서버가 허용하지 않는 웹 페이지나 미디어를 사용자가 요청할 때 웹 서버가 반환하는 HTTP 상태코드를 반환했다.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">이번엔 seller 권한을 부여한 minji03으로 로그인 해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+http://localhost:8080/member/authenticate
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_13.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_14.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">마찬가지로 토큰 발급.</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;">토큰을 가지고 아까는 403 에러가 떴던 /product/search로 접근해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/image_15.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs- se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;">200OK, 구현한대로 접근이 허용된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:375px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/spring-boot-jwt-security-signup-login/images/nv_0.gif"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;">포스팅의 중심 내용과는 별개로,</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;">리액트로 간단한 프론트단을 구현해 이메일, 비밀번호 유효성 검사 기능도 추가했다. 어려워서 시행착오가 길었지만 이렇게 앞 뒤가 잘 되는걸 보면 정말 뿌듯하다..! 아직도 손 봐야할 부분들이 꽤 있긴하지만ㅎㅎ</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;">우선 지금은 쿼리문으로 직접 디비에서 member 권한을 update 해줬는데, 추후 admin만 접근 가능한 페이지에서 등업(?) 기능도 구현할 예정이다. 그 외에도 빼먹은 기능들이 좀 있고 좋지 못한 코드도 많다ㅠㅠ</span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;">발전시키는 대로 이 포스팅도 수정해야지!</span></p><p class="se-text-paragraph se-text-paragraph-align-left" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-" style="line-height:1.5;"><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;">참고 : </span><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"><a class="se-link" href="https://velog.io/@tjdals080/spring-boot-security-jwt3" target="_blank">https://velog.io/@tjdals080/spring-boot-security-jwt3</a></span><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"> , </span><span class="se-fs-fs13 se-ff- se-weight-unset se-style-unset" style="color:#141414;"><a class="se-link" href="https://sudo-minz.tistory.com/52" target="_blank">https://sudo-minz.tistory.com/52</a></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

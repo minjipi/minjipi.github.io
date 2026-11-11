@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[springboot 프로젝트 JPA] 내가 JPA를 사용한 이유, JPA의 장점 등 | minj.devlog</title>
+  <meta name="description" content="내가 JPA를 사용한 이유, JPA의 장점, ORM, JPA, Spring Data JPA, JPQL, QueryDSL 1. 내가 JPA를 사용한 이유 hello JPA!😀 새로 시작한 리팩토링 프로젝트에서 JPA를 사용하게 되었다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/why-i-used-jpa/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[springboot 프로젝트 JPA] 내가 JPA를 사용한 이유, JPA의 장점 등" />
+  <meta property="og:description" content="내가 JPA를 사용한 이유, JPA의 장점, ORM, JPA, Spring Data JPA, JPQL, QueryDSL 1. 내가 JPA를 사용한 이유 hello JPA!😀 새로 시작한 리팩토링 프로젝트에서 JPA를 사용하게 되었다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/why-i-used-jpa/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/why-i-used-jpa/images/image_1.jpg" />
+  <meta property="article:published_time" content="2022-07-13" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[springboot 프로젝트 JPA] 내가 JPA를 사용한 이유, JPA의 장점 등", "description": "내가 JPA를 사용한 이유, JPA의 장점, ORM, JPA, Spring Data JPA, JPQL, QueryDSL 1. 내가 JPA를 사용한 이유 hello JPA!😀 새로 시작한 리팩토링 프로젝트에서 JPA를 사용하게 되었다.", "datePublished": "2022-07-13", "dateModified": "2022-07-13", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/why-i-used-jpa/", "image": "https://minjipi.github.io/posts/why-i-used-jpa/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="why-i-used-jpa">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2022-07-13">2022.07.13</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222809316027" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[springboot 프로젝트 JPA] 내가 JPA를 사용한 이유, JPA의 장점 등</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/why-i-used-jpa/images/image_1.jpg" alt="[springboot 프로젝트 JPA] 내가 JPA를 사용한 이유, JPA의 장점 등" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/222809316027 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-weight-unset" style="color:#777777;"><i>내가 JPA를 사용한 이유, JPA의 장점,</i></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system se-weight-unset" style="color:#777777;"><i>ORM, JPA, Spring Data JPA, JPQL, QueryDSL</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>1. 내가 JPA를 사용한 이유</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">hello JPA!😀</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">새로 시작한 리팩토링 프로젝트에서 JPA를 사용하게 되었다.  </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">JPA는 올해 초 프로젝트 시작할때 써보려고 조금 깔짝 거렸었는데..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222314293012" target="_blank">JPA란? Java Persistence API, ORM, hibernate</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222314410957" target="_blank">Spring Data JPA</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77/222489613651" target="_blank">스프링 프로젝트 계층 구조 이해 (Controller, Service, Repository, Domain Model, Entity, DTO, DAO)</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">복잡해서 결국 그냥 JDBC로 갔었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">꾸역꾸역 써보려고 했지만, 쿼리문에서 자꾸 문법 에러나고.. (그냥 SQL도 능숙하지 않았는데 JPA를 잘 할 수 있었을리 없지..^^)</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system">공부 더 하고 쓰자 싶어서 일단 뺐었는데</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">그렇게 시작한 프로젝트가 진행되면서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">점점 table이 많아지고~~</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">테스트 할 때마다 엄청나게 긴 쿼리들 복붙 복붙..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">칼럼 하나 추가할때도 하나가 하나가 아니며</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">귀찮은 과정이 참 많다는 것을 느꼈다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs13 se-ff-system">그때 문득 이거 시간낭비 아닐까..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">이래서 jpa 쓰는구나 라는 생각이 들었다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">귀찮고 번거로운 일이 생기는 이유는 애초에 두 언어가 지향하는 성격이 달라서다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">자바는 데이터를 옮기고 이런 저런 일을 수행하는</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">(객체지향)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">vs 디비는 그런 데이터를 보관</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">그래서 이 두 언어의 간극을 좁히기 위해 개발된 것이 바로 JPA인 것이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system">말을 조금 풀어 썼는데, 이에 대한 자세한 정리를 </span><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://blog.naver.com/ghdalswl77?Redirect=Update&amp;logNo=222861119624" target="_blank"><b>[여기]</b></a></span><span class="se-fs-fs13 se-ff-system"><b> </b></span><span class="se-fs-fs13 se-ff-system">에 해 두었다.!</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>2. JPA 사용</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">JPA에 대한 이론은 김영한님의 자바 orm 표준 jpa 프로그래밍으로 학습했고</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">실습은 구멍가게코딩단의 코드로 배우는 스프링부트로 학습했다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그렇게 이번 프로젝트에서 데뷔한 JPA.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">JPA는 ORM(Object-Relational Mapping) 기술이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>'ORM (Object Relational Mapping)'</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">RDB 테이블을 객체지향적으로 사용하기 위한 기술. 말그대로 객체 관계 매핑</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/why-i-used-jpa/images/image_2.jpg"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">ORM이란 이런 것.</span></p></div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">객체는 객체대로 설계하고, 관계형 데이터베이스는 관계형 데이터베이스대로 설계해서 ORM 프레임워크가 중간에서 매핑해준다. jpa를 사용해서 jdbc를 사용하는 것이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/why-i-used-jpa/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">JPA는 어플리케이션과 DBMS 사이의 인터페이스 역할을 해주기 때문에 개발자는 JPA 인터페이스에 맞춰서 구현되어 있는 기능을 사용하면 된다. 다음은 JPA가 동작하는 과정이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/why-i-used-jpa/images/image_4.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">JPA를 사용하기로 결심한 이유는 역시 위에서 언급한 문제점들을 해결하기 위해서이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>JPA 사용 장점</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> - 패러다임의 불일치를 해결한다. 객체지향적으로 데이터를 관리할 수 있기 때문에 비즈니스 로직에 집중 할 수 있으며, 객체지향 개발이 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 테이블 생성, 변경, 관리가 쉽다. (JPA를 잘 이해하고 있는 경우..)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 로직을 쿼리에 집중하기 보다는 객체자체에 집중 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 빠른 개발 가능</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>단점</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 어렵다. 장점을 더 극대화 하기 위해서 알아야 할게 많다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">- 잘 이해하고 사용하지 않으면 데이터 손실이 있을 수 있다. (persistence context)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs13 se-ff-system"><i>더 자세한 내용은 아래 강의를 추천,</i></span><span class="se-fs-fs13 se-ff-system" style="color:#555555;"><i> 내 블로그 글도 추천..ㅎ</i></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-oembed se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-oembed se-section-align- se-l-default">
+<div class="se-module se-module-oembed se-is-progress" style="padding-top: 56.49999999999999%;"></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">3. </span><span class="se-fs- se-ff-"><b>Spring Data JPA</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">+ 쿼리 메소드</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">JPA를 공부하다보니, 책의 저자인 김영한님께서 이 </span><span class="se-fs- se-ff-system"><a class="se-link" href="https://www.youtube.com/watch?v=b4wLi_bognA&amp;list=PLumVmq_uRGHgBrimIp2-7MCnoPUskVMnd&amp;index=24" target="_blank">jpa를 더 편하게 쓸 수 있는 기술</a></span><span class="se-fs- se-ff-system">에 대해 알려주셨다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">바로 Spring Data JPA 다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Spring Data JPA는 Spring에서 제공하는 모듈 중 하나로, 개발자가 JPA를 더 쉽고 편하게 사용할 수 있도록 도와준다. JPA를 한 단계 추상화시킨 Repository라는 인터페이스가에 정해진 규칙대로 메소드를 입력하면, Spring이 알아서 해당 메소드 이름에 적합한 쿼리를 날리는 구현체를 만들어 Bean으로 등록해준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-">4. JPQL</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">JPA, springDataJPA는 다양한 쿼리 방법을 지원한다. JPQL, JPA Criteria, QueryDSL 등..</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">그 중 가장 기본맛인 JPQL에 대해 알아보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">JPQL은</span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b> Java Persistence Query Language</b></span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">객체지향 쿼리 언어다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Member member = em.find(Member.class, 1);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">SQL처럼 테이블 대상이 쿼리가 아니라 엔티티 객체를 대상으로 쿼리한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">예를들어, 테이블이 아닌 객체를 대상으로 검색하는 객체지향 쿼리라고 이해하면 될 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">JPA에서 단순히 PK값으로 find()만 하는것이 아니기 때문에 여러가지 조건으로 검색하는 복잡한 쿼리를 위해 JPQL이 존재한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">JPQL을 분석하고, JPA가 적절한 SQL을 만들어 데이터베이스를 조회하는 식이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;"><b>&gt; member entity</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Entity(name = "Member")
+public class Member {
+     @Column(name = "name")
+     private String username;
+     // ...
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset"><b>&gt; JPQL</b></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+String jpql = "select m from Member as m where m.username = 'kim'";
+List&lt;Member&gt; resultList = em.createQuery(jpql, Member.class).getResultList();
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이렇게 메소드 이름을 분석해서 JPQL 쿼리를 실행하기도 하고, </span><span class="se-fs- se-ff-system se-style-unset" style="color:#000000;">@Query 어노테이션을 사용해서 직접 JPQL을 지정할 수도 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+public interface MemberRepository extends JpaRepository&lt;User, Long&gt; {
+  @Query("select m from Member u where m.name = ?1")
+  List&lt;User&gt; findByName(String name, Pageable pageable);
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs24 se-ff-">5. </span><span class="se-fs-fs24 se-ff- se-style-unset"><b>QueryDSL</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Java 코드로 JPQL을 작성할 수 있다.</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-style-unset">JPQL</span><span class="se-fs- se-ff-system">로도 해결하기 어려운 동적쿼리나 더욱 복잡한 쿼리를 해결하기 위해 </span><span class="se-fs- se-ff-system se-style-unset"><b>QueryDSL</b></span><span class="se-fs- se-ff-system">이 필요하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">복잡한 검색 조건이나 join 등의 기능도 구현이 가능하다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">JPA를 사용한다고 가정해보자. 간단한 쿼리라면 인터페이스에 메서드 명세만 잘 정의해 주면 별다른 문제 없이 사용할 수 있다. 예를 들면 아래처럼 “제목에 특정 문자열이 포함된 기사를 조회”하는 메서드처럼 말이다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+Article findByTitleContains(String title);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">조금 더 복잡한 쿼리가 필요한 경우에는 어떨까? 앞서 살펴본 것처럼 단순히 특정 문자열이 제목에 포함된 기사를 조회하는 것이 아니라 기사를 작성한 사용자의 레벨을 기준으로 조회한다고 가정해보자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이런 경우 JPA 자체 제공 메서드만으로 해결하기 어렵다. 네이티브 쿼리로 해보자.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+@Query(value = "SELECT id, title, user_id FROM article WHERE user_id IN (SELECT id FROM user WHERE level &gt; :level)", nativeQuery = true)
+List&lt;Article&gt; findByLevel(String level);
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">흠.. 가독성도 별로고 문자열을 이어 붙여가며 직접 작성하기 때문에 오타가 발생하기 딱 좋다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이 코드를 Querydsl로 변경하면 어떻게 될까?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_stripe">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+public List&lt;Article&gt; findByUserLevel(String level) {
+    QArticle article = QArticle.article;
+    QUser user = QUser.user;
+
+    return queryFactory.selectFrom(article)
+        .where(
+            article.userId.in(
+                JPAExpressions
+                    .select(user.id)
+                    .from(user)
+                    .where(user.level.gt(level))
+            )
+        )
+        .fetch();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">언뜻보기엔 코드양만 늘었을지 몰라도,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">개발 환경을 고려보면.. 가독성도 좋은데 친절하게 컴파일 오류까지 발생시켜준다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">이번 프로젝트에서 사용해보니</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">Querydsl의 최대 장점은 '</span><span class="se-fs- se-ff-system se-style-unset"><b>검색조건에 따라 동작하는 동적쿼리를 생성하기 편하다</b></span><span class="se-fs- se-ff-system se-weight-unset se-style-unset">.' 인 것 같다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset se-style-unset">*QueryDSL은 </span><span class="se-fs- se-ff-system">JPQL을 코드로 작성할 수 있도록 도와주는 빌더 역할이기 때문에 결국 jpql로 변환된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:600px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="https://images.velog.io/images/dev_zzame/post/0491a410-cf2e-4e35-a26a-e33671955d9a/64585171-96511580-d3d2-11e9-947d-8f1e98e46100.png"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">여기까지 프로젝트에 JPA를 도입하며 공부한 내용이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">하려고보니 이것저것 많아서 해당 포스팅에서는 단어들과 간단한 개념 정리만 해보았다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">아직 능숙하지 않지만 더 진행해보며 친해지면 좋을 것 같다 🙂</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system">📍참고</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://github.com/holyeye/jpabook/blob/master/ch12-springdata-shop/src/test/java/jpabook/jpashop/repository/OrderRepositoryTest.java" target="_blank">https://github.com/holyeye/jpabook/blob/master/ch12-springdata-shop/src/test/java/jpabook/jpashop/repository/OrderRepositoryTest.java</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://velog.io/@swchoi0329/Spring-Boot%EC%97%90%EC%84%9C-JPA-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0" target="_blank">https://velog.io/@swchoi0329/Spring-Boot%EC%97%90%EC%84%9C-JPA-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://azderica.github.io/01-spring-jpa/" target="_blank">https://azderica.github.io/01-spring-jpa/</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html" target="_blank">https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://velog.io/@jodawooooon/JPA-JPA%EC%99%80-QueryDSL" target="_blank">https://velog.io/@jodawooooon/JPA-JPA%EC%99%80-QueryDSL</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system">inflearn.com/questions/38771</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-system"><a class="se-link" href="https://madplay.github.io/post/introduction-to-querydsl" target="_blank">https://madplay.github.io/post/introduction-to-querydsl</a></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maven Wrapper 란? (Maven Wrapper 실행방법) | minj.devlog</title>
+  <meta name="description" content="Maven Wrapper 란? Maven Wrapper는 Maven Java 기반 프로젝트의 빌드, 의존성 관리, 테스트, 패키징 등을 관리하는 빌드 도구 프로젝트를 실행할 수 있는 도구입니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/maven-wrapper/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="Maven Wrapper 란? (Maven Wrapper 실행방법)" />
+  <meta property="og:description" content="Maven Wrapper 란? Maven Wrapper는 Maven Java 기반 프로젝트의 빌드, 의존성 관리, 테스트, 패키징 등을 관리하는 빌드 도구 프로젝트를 실행할 수 있는 도구입니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/maven-wrapper/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/maven-wrapper/images/image_1.jpg" />
+  <meta property="article:published_time" content="2023-06-16" />
+  <meta property="article:section" content="DevTools" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Maven Wrapper 란? (Maven Wrapper 실행방법)", "description": "Maven Wrapper 란? Maven Wrapper는 Maven Java 기반 프로젝트의 빌드, 의존성 관리, 테스트, 패키징 등을 관리하는 빌드 도구 프로젝트를 실행할 수 있는 도구입니다.", "datePublished": "2023-06-16", "dateModified": "2023-06-16", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/maven-wrapper/", "image": "https://minjipi.github.io/posts/maven-wrapper/images/image_1.jpg", "articleSection": "DevTools"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="maven-wrapper">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=DevTools">DevTools</a>
+              <time class="post-date" datetime="2023-06-16">2023.06.16</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223130437873" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">Maven Wrapper 란? (Maven Wrapper 실행방법)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/maven-wrapper/images/image_1.jpg" alt="Maven Wrapper 란? (Maven Wrapper 실행방법)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223130437873 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>Maven Wrapper 란?</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Maven Wrapper는 </span><span class="se-fs- se-ff-system"><b>Maven</b></span><span class="se-fs- se-ff-system"><sup> </sup></span><span class="se-fs-fs13 se-ff-system"><sup>Java 기반 프로젝트의 빌드, 의존성 관리, 테스트, 패키징 등을 관리하는 빌드 도구</sup></span><span class="se-fs- se-ff-system"> 프로젝트를 실행할 수 있는 도구입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Maven Wrapper는 이 Maven을 설치하지 않고도 Maven 프로젝트를 실행할 수 있도록 도와줍니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">일반적으로 Maven을 사용하려면 로컬 개발 환경에 Maven을 설치해야 하는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Maven Wrapper를 사용하면 프로젝트 디렉토리 내에 Maven Wrapper 스크립트와 설정 파일을 함께 포함시켜서</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">특정 버전을 빌드 할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ex) </span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.3/apache-maven-3.8.3-bin.zip
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">프로젝트 내에 다음과 같이 Maven Wrapper 프로젝트 설정 파일을 생성하고, 특정 버전을 명시해줌으로써 빌드 도구의 버전과 설정을 프로젝트와 함께 버전 관리할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">그리고 Maven Wrapper를 사용하면 다른 개발자들이 Maven을 설치하지 않고도 Maven Wrapper 스크립트를 실행하여 프로젝트를 빌드하고 실행할 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"><b>2. Maven Wrapper 실행하기</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">1. .mvn/wrapper 디렉토리 생성</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">프로젝트 루트 디렉토리에서 .mvn/wrapper 디렉토리를 생성합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">2. maven-wrapper.properties 파일 추가</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">.mvn/wrapper 디렉토리 내에 maven-wrapper.properties 파일을 생성합니다. (Maven 3.8.3 버전 예시)</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.3/apache-maven-3.8.3-bin.zip
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">원하는 Maven 버전의 배포 URL을 사용하여 해당 버전을 지정할 수 있는데,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Maven 공식 사이트나 Maven 중앙 저장소에서 사용 가능한 버전을 확인하고 URL을 업데이트해야 합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">3. Maven Wrapper 실행</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">터미널에서 프로젝트 디렉토리로 이동한 후 mvnw 명령어를 실행하여 Maven Wrapper를 실행합니다. (프로젝트 디렉토리에서 mvnw 명령어 실행. 윈도우는 mvnw.cmd)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Maven/target Clean 및 build</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+ ./mvnw clean package
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이때 만 mvnw 실행 권한이 없다면 실행 권한을 추가해야 합니다. (chmod +x mvnw)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+./mvnw compile
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이상 입니다. ~.~</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

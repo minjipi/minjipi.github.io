@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GIF 파일이란? GIF 파일 구조, LZW 압축 방식 | minj.devlog</title>
+  <meta name="description" content="All of Gif GIF 파일 구조와 LZW 압축 방식에 대하여 Intro. 우노하나 만해 gif 요즘 흩날려라 천본앵 보다 더 인기가 좋아진 우노하나 만해 GIF 입니다." />
+  <link rel="canonical" href="https://minjipi.github.io/posts/gif-file-structure-lzw/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="GIF 파일이란? GIF 파일 구조, LZW 압축 방식" />
+  <meta property="og:description" content="All of Gif GIF 파일 구조와 LZW 압축 방식에 대하여 Intro. 우노하나 만해 gif 요즘 흩날려라 천본앵 보다 더 인기가 좋아진 우노하나 만해 GIF 입니다." />
+  <meta property="og:url" content="https://minjipi.github.io/posts/gif-file-structure-lzw/" />
+  <meta property="og:image" content="https://minjipi.github.io/apple-touch-icon.png" />
+  <meta property="article:published_time" content="2025-07-31" />
+  <meta property="article:section" content="Media" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "GIF 파일이란? GIF 파일 구조, LZW 압축 방식", "description": "All of Gif GIF 파일 구조와 LZW 압축 방식에 대하여 Intro. 우노하나 만해 gif 요즘 흩날려라 천본앵 보다 더 인기가 좋아진 우노하나 만해 GIF 입니다.", "datePublished": "2025-07-31", "dateModified": "2025-07-31", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/gif-file-structure-lzw/", "image": "https://minjipi.github.io/apple-touch-icon.png", "articleSection": "Media"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="gif-file-structure-lzw">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Media">Media</a>
+              <time class="post-date" datetime="2025-07-31">2025.07.31</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223953976591" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">GIF 파일이란? GIF 파일 구조, LZW 압축 방식</h1>
+        </div>
+        
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223953976591 -->
+<div class="se-main-container">
+<div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs19 se-ff-nanummaruburi se-weight-unset se-style-unset">All of Gif</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-nanummaruburi se-weight-unset se-style-unset">GIF 파일 구조와 LZW 압축 방식에 대하여</span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-default se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi"><i><b>Intro.</b></i></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-extend">
+<div class="se-section se-section-image se-l-default se-section-align-center">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" src="/posts/gif-file-structure-lzw/images/nv_0.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">우노하나 만해 gif</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">요즘 흩날려라 천본앵 보다 더 인기가 좋아진</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"> 우노하나 만해 GIF 입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">다들 좋아하는 명장면 몇 개쯤은</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이런 GIF 파일로 가지고 계시죠?</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">GIF 파일은 인터넷에서 흔히 보는 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">짤방이나 움짤을 저장하는 대표적인 이미지 포맷입니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-center" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/gif-file-structure-lzw/images/nv_1.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">흩날려라 천본앵</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">그런데 이 GIF, 실제로는 꽤 똑똑한 구조와 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">압축 방식을 가진 포맷입니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이번 글에서는 </span><span class="se-fs- se-ff-system" style="background-color:#f9ffee;">GIF 파일의 구조</span><span class="se-fs- se-ff-system">와 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">내부 동작 원리(</span><span class="se-fs- se-ff-system" style="background-color:#f9ffee;">LZW 압축 방식)</span><span class="se-fs- se-ff-system">를 </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">쉽게 설명해 보겠습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system"><b>1. GIF 파일이란?</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs16 se-ff-"><b>Graphics Interchange Format.</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">8-bit 컬러 무손실 이미지 포맷</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">GIF 파일은 인터넷 전송과 온라인 콘텐츠 표현에 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">최적화된 형식으로 설계된 이미지 포맷입니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">GIF 파일의 주요 특징은 다음과 같습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">8비트(최대 256색) 팔레트 기반 이미지</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">무손실 압축 (LZW 알고리즘)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">단일 파일 내 복수 이미지 프레임 -&gt; 애니메이션 효과!</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system"><b>2. GIF 구조</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">GIF는 내부적으로 여러 블록으로 나뉘어 구성됩니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">간단하게는 이렇게 표현할 수 있어요.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-code_stripe __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_stripe">
+<pre><code>
+
+[Header]
+[Logical Screen]
+[색상 테이블]
+[이미지 데이터들]
+[종료]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">좀 더 자세히 표현하자면 다음과 같습니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-default se-section-align-" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi"><b>구조</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi"><b>역할</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi"><b>크기</b></span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #e2e2e2;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi"><b>예시</b></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Header Block</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">파일이 GIF 포맷임을 식별하는 파일 구조 정보 + 버전</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">"GIF87a" 또는 "GIF89a"</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">6 바이트</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">47 49 46 38 39 61 -&gt; "GIF89a"</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Logical Screen Descriptor</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">전체 캔버스의 크기, 색상 정보, 비율 등을 지정</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">7 바이트</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">C8 00 F0 00 F7 00 00 -&gt; 200x240px, GCT 사용, 256색</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-"></span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">C8 00: Width = 0x00C8 = 200</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">F0 00: Height = 0x00F0 = 240</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">F7: 플래그 (Global Color Table 있음, 크기 256색, 정렬 등 포함)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">00: Background Color Index</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">00: Pixel Aspect Ratio (0 = 무시)</span></p></li></ul>
+</div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Global Color Table</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">전역 색상 팔레트. </span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">이미지의 색상 인덱스를 정의</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">선택적, 최대 768바이트</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">FF FF FF, 00 00 00 등</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="4" rowspan="1" style="width: 100.0%; height: 43.0px;  background-color: #fffdf3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><i>GIF 이미지 1</i></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Local Image Descriptor</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">각 프레임의 위치 및 크기 정의</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">10 바이트</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">2C 00 00 00 00 40 01 B4 00 00</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Local Color Table</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">각 이미지별 독립된 색상 팔레트 정의 (선택적)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">최대 768바이트</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">색상 수 × 3바이트</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Image data</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">LZW 압축된 픽셀 인덱스 데이터</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">가변</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">02 16 ... 00 (Sub-block 구조)</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="4" rowspan="1" style="width: 100.0%; height: 26.0px;  background-color: #fffdf3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><i>GIF 이미지 2</i></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Local Image Descriptor</span></p></div>
+</td><td class="se-cell" colspan="3" rowspan="3" style="width: 75.0%; height: 129.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-">반복</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Local Color Table</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  background-color: #f4fff1;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Image data</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="4" rowspan="1" style="width: 100.0%; height: 43.0px;  background-color: #fffdf3;">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-"><i>GIF 이미지 n ..</i></span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-nanummaruburi">Trailer</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">파일의 끝을 나타냄</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">1</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 25.0%; height: 43.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-">0x3B</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs19 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">이 구조는 정해진 순서대로 이어져 있으며, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">다양한 확장 블록도 중간에 삽입될 수 있습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system"><b>3. GIF 데이터 압축 방식 (LZW)</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-"><b>Lempel-Ziv-Welch</b></span><span class="se-fs-fs15 se-ff-"> 알고리즘</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset">GIF에서 사용되는 LZW 압축은 Lempel-Ziv-Welch 알고리즘에 기반한 </span><span class="se-fs-fs15 se-ff-system se-weight-unset"><u>무손실 압축 기법</u></span><span class="se-fs-fs15 se-ff-system se-weight-unset">입니다. </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset">중복이 많은 데이터에 대해 높은 압축률을 달성하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset">GIF에서는 이미지의 색상 인덱스를 </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system se-weight-unset">효율적으로 저장하기 위해 이 방식을 사용합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs-fs15 se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">압축의 핵심은 중복되는 시퀀스를 짧은 코드로 치환하는 것인데요. 간단한 예제 흐름을 통해 알아봅시다.</span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-quotation se-l-quotation_corner">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_corner">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff-">입력 시퀀스:</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs15 se-ff- se-decoration-unset"><b>A B A B A B A B</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">1) 압축 과정 설명에 앞서 사전 규칙(핵심 개념)</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>STRING</b></span><span class="se-fs- se-ff-system se-weight-unset">: 지금까지 읽은 문자열 시퀀스. 초기에는 1글자.</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>CHAR</b></span><span class="se-fs- se-ff-system se-weight-unset">: 새로 읽은 문자 (1바이트)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>STRING + CHAR</b></span><span class="se-fs- se-ff-system se-weight-unset">: 새로운 후보 시퀀스 -&gt; 테이블에 있으면 확장, 없으면 등록</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">2) 압축 과정</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>1. 초기화</b></span><span class="se-fs- se-ff-system se-weight-unset">:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">테이블에 0~255 코드 초기화 + Clear Code(256), End of Info Code(257)</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>2. STRING</b></span><span class="se-fs- se-ff-system se-weight-unset"> ← 첫 문자</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>3. 반복</b></span><span class="se-fs- se-ff-system se-weight-unset">:</span></p><ol class="se-text-list se-text-list-type-decimal"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">다음 문자 CHAR를 읽어 STRING+CHAR 탐색</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">존재하면 STRING ← STRING+CHAR (계속 시퀀스 확장)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">없다면?</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset">STRING에 해당하는 코드 출력</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">STRING+CHAR을 테이블에 등록 (새 코드 부여)</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">STRING ← CHAR</span></p></li></ol><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>4. 종료 시</b></span><span class="se-fs- se-ff-system se-weight-unset">:</span></p><ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">마지막 STRING의 코드 출력</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">End of Info 코드 출력</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-table se-l-table_layout1 __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-table se-l-table_layout1 se-section-align-" style="width: 100.0%;">
+<div class="se-table-container">
+<table class="se-table-content">
+<tbody><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">단계</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">STRING</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">CHAR</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">동작</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">출력 코드</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">테이블 추가</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 39.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">1</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 39.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">A</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 39.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">B</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 39.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">A+B 없음 → A 출력</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 39.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">65 (A)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 39.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">256: AB</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">2</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">B</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">A</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">B+A 없음 → B 출력</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">66 (B)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">257: BA</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">3</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">A</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">B</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">AB 있음 → 확장</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">4</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">AB</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">A</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">ABA 없음 → AB 출력</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">256</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">258: ABA</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">5</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">A</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">B</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">AB 있음 → 확장</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">6</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">AB</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">⏹️ (종료)</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">AB 있음 → AB 출력</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">256</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td></tr><tr class="se-tr"><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">마지막</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">종료 → 마지막 코드 출력</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">-</span></p></div>
+</td><td class="se-cell" colspan="1" rowspan="1" style="width: 16.67%; height: 40.0px;  ">
+<div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">257: EOI</span></p></div><div class="se-module se-module-text"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">(End of Info)</span></p></div>
+</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-sectionTitle se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-sectionTitle se-l-default">
+<div class="se-module se-module-text"><h2 class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs24 se-ff-system"><b>4. 데이터 저장 방식</b></span></h2></div>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system">GIF 내부에서 이미지 정보는 이렇게 저장됩니다.</span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-code se-l-default __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-default">
+<pre><code>
+
+[시작 코드 크기]
+[255바이트 이하의 서브 블록들]
+[종료(0x00)]
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<ul class="se-text-list se-text-list-type-bullet-disc"><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">LZW 압축 결과가 여러 개의 블록으로 쪼개짐</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">각 블록은 [길이][데이터] 형식</span></p></li><li class="se-text-list-item"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">마지막에 0x00으로 마무리</span></p></li></ul><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">디코더는 이 블록들을 읽으며 압축을 풀고, </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset">다시 원래 색상 인덱스들을 복원합니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line7">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line7 se-section-align-center">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system se-weight-unset"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-image se-l-default __se-component">
+<div class="se-component-content se-component-content-normal">
+<div class="se-section se-section-image se-l-default se-section-align-left" style="max-width:500px;">
+<div class="se-module se-module-image">
+<a class="se-module-image-link __se_image_link __se_link" href="#" onclick="return false;">
+<img alt="" class="se-img" decoding="async" loading="lazy" src="/posts/gif-file-structure-lzw/images/nv_2.gif"/>
+</a>
+</div>
+<div class="se-module se-module-text se-caption"><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff- se-weight-unset">미안하다 이거 보여주려고 어그로끌었다..</span></p></div>
+</div>
+</div>
+
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">저도 맨날 gif를 모으기만 했지, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">이렇게 파보는 건 처음이네요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">종종 동영상을 gif 변환하는데, </span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">변환 프로그램마다 조금씩 다르길래 흥미가 생겼어요.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system">아무튼 제 생각보다 더 대단한 gif 파일이었습니다.</span></p><p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div>  <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> <div class="se-component se-horizontalLine se-l-line1">
+<div class="se-component-content">
+<div class="se-section se-section-horizontalLine se-l-line1 se-section-align-right">
+<div class="se-module se-module-horizontalLine">
+<hr class="se-hr"/>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-nanummaruburi se-weight-unset">참고</span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-nanummaruburi"><a class="se-link __se_link" href="https://www.dspguide.com/ch27/5.htm" target="_blank">https://www.dspguide.com/ch27/5.htm</a></span></p><p class="se-text-paragraph se-text-paragraph-align-right"><span class="se-fs-fs13 se-ff-nanummaruburi"><a class="se-link __se_link" href="https://giflib.sourceforge.net/whatsinagif/lzw_image_data.html" target="_blank">https://giflib.sourceforge.net/whatsinagif/lzw_image_data.html</a></span></p><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>

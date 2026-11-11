@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Springboot] @Qualifier, @Primary, @Bean(name=&quot;&quot;) | minj.devlog</title>
+  <meta name="description" content="[Springboot] @Qualifier, @Primary, @Bean(name=&quot;&quot;) 하나의 서비스에 2개의 datasource 를 사용하려 할 때, 메인 데이터베이스 커넥션에 @Primary 를 사용하여 default 로 설정하고 서브 데이터베이스 커넥션에" />
+  <link rel="canonical" href="https://minjipi.github.io/posts/spring-qualifier-primary-bean-name/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="minj.devlog" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="[Springboot] @Qualifier, @Primary, @Bean(name=&quot;&quot;)" />
+  <meta property="og:description" content="[Springboot] @Qualifier, @Primary, @Bean(name=&quot;&quot;) 하나의 서비스에 2개의 datasource 를 사용하려 할 때, 메인 데이터베이스 커넥션에 @Primary 를 사용하여 default 로 설정하고 서브 데이터베이스 커넥션에" />
+  <meta property="og:url" content="https://minjipi.github.io/posts/spring-qualifier-primary-bean-name/" />
+  <meta property="og:image" content="https://minjipi.github.io/posts/spring-qualifier-primary-bean-name/images/image_1.jpg" />
+  <meta property="article:published_time" content="2023-11-13" />
+  <meta property="article:section" content="Backend/Spring Boot" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[Springboot] @Qualifier, @Primary, @Bean(name=\"\")", "description": "[Springboot] @Qualifier, @Primary, @Bean(name=\"\") 하나의 서비스에 2개의 datasource 를 사용하려 할 때, 메인 데이터베이스 커넥션에 @Primary 를 사용하여 default 로 설정하고 서브 데이터베이스 커넥션에", "datePublished": "2023-11-13", "dateModified": "2023-11-13", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/spring-qualifier-primary-bean-name/", "image": "https://minjipi.github.io/posts/spring-qualifier-primary-bean-name/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* 네이버 '소제목'을 h2 로 바꿨지만 모양은 원래대로 */
+    .naver-post .se-section-sectionTitle h2 { font: inherit; margin: 0; padding: 0; border: 0; color: inherit; }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" style="position:relative;">
+    <a href="/" class="logo">minj<span class="logo-dot">.</span></a>
+    <nav class="topbar-nav">
+      <a href="/posts/" class="topnav-link">posts</a>
+      <a href="/" class="topnav-link">about</a>
+    </nav>
+    <div class="topbar-right">
+      <!-- 검색창은 search-nav.js 가 자동 주입 -->
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main post-detail-wrap">
+      <article class="post-detail" id="postDetail" data-prerendered="1" data-slug="spring-qualifier-primary-bean-name">
+        <div class="post-detail-header">
+          <div class="post-detail-header-top">
+            <div class="post-detail-meta">
+              <a class="post-cat-badge" href="/posts/?cat=Backend%2FSpring%20Boot">Backend/Spring Boot</a>
+              <time class="post-date" datetime="2023-11-13">2023.11.13</time>
+            </div>
+            <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/223263896323" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
+          </div>
+          <h1 class="post-detail-title">[Springboot] @Qualifier, @Primary, @Bean(name=&quot;&quot;)</h1>
+        </div>
+        <div class="post-detail-thumb"><img src="/posts/spring-qualifier-primary-bean-name/images/image_1.jpg" alt="[Springboot] @Qualifier, @Primary, @Bean(name=&quot;&quot;)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-body" id="postBody">
+          <div class="post-body naver-post">
+<!-- source: https://blog.naver.com/ghdalswl77/223263896323 -->
+<div class="se-main-container">
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-center"><span class="se-fs-fs11 se-ff-system" style="color:#9c9c9c;"><b>[Springboot] @Qualifier, @Primary, @Bean(name="")</b></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i>하나의 서비스에 </i></span><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i><b>2개의 datasource</b></i></span><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i> 를 사용하려 할 때,</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i>메인 데이터베이스 커넥션에 </i></span><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i><b>@Primary</b></i></span><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i> 를 사용하여 default 로 설정하고</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i>서브 데이터베이스 커넥션에 </i></span><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i><b>@Qualifier</b></i></span><span class="se-fs-fs13 se-ff-system" style="color:#141414;"><i> 로 명시적으로 의존성을 주입받아 사용할 수 있도록 구성 할 수 있다.</i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs13 se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system" style="color:#141414;"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system">스프링 컨테이너가 올라갈 때, 스프링은 컴포넌트를 스캔하며 빈을 생성한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system">스프링은 싱글톤 전략을 채택하기 때문에 한 가지 타입의 빈은 한 번만 생성되며, 애플리케이션이 구동되는 동안 하나의 빈을 계속하여 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system">하지만 아래와 같이 @Bean으로 생성하는 객체들 중 같은 클래스(타입)인 빈이 있다면 어떨까?</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Configuration
+public class Config {
+
+    @Bean
+    public Employee JohnEmployee() {
+return new Employee("John");
+}
+
+    @Bean
+    public Employee TonyEmployee() {
+return new Employee("Tony");
+}
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">스프링은 어느 것을 빈으로 생성하여야 하는지 알 수 없기 때문에 컨테이너를 띄우지 못하고 NoUniqueBeanDefinitionException 예외를 던진다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이런 경우 다음 두 가지 어노테이션을 사용해 </span><span class="se-fs- se-ff-system"><b>같은 타입의 multiple bean 을 생성</b></span><span class="se-fs- se-ff-system se-weight-unset">할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>1. @Primary</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">Simply put, we use @Primary to give higher preference to a bean when there are multiple beans of the same type.  https://www.baeldung.com/spring-primary</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Primary 는 같은 타입의 빈을 2개 이상 생성할 때, 하나의 빈에게 더 높은 선호도를 부여하기 위해 사용한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">아래 코드를 보자. TonyEmployee() bean 에 @Primary를 붙여, 스프링이 TonyEmployee() bean 의 의존성을 JohnEmployee() 보다 먼저 주입하도록 설정한다. 즉, TonyEmployee 을 default bean 으로 생성한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Configuration
+public class Config {
+
+    @Bean
+    public Employee JohnEmployee() {
+return new Employee("John");
+}
+
+    @Bean
+    @Primary
+    public Employee TonyEmployee() {
+return new Employee("Tony");
+}
+}
+
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>2. @Qualifier</b></span></p></div>
+<div class="se-module se-module-text se-cite"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">By default, Spring resolves autowired entries by type. If more than one bean of the same type is available in the container, the framework will throw NoUniqueBeanDefinitionException, indicating that more than one bean is available for autowiring.  https://www.baeldung.com/spring-qualifier-annotation</span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"><b>왜</b></span><span class="se-fs- se-ff-system"><i><b> </b></i></span><span class="se-fs- se-ff-system">@Qualifier</span><span class="se-fs- se-ff-system"><i><b> </b></i></span><span class="se-fs- se-ff-system"><b>가</b></span><span class="se-fs- se-ff-system"><i><b> </b></i></span><span class="se-fs- se-ff-system"><b>필요할까</b></span><span class="se-fs- se-ff-system"><i><b>?</b></i></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Autowired 어노테이션은 스프링에서 빈에 의존성을 주입하기 위해 사용되는 방법이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">스프링은 타입으로 해당 빈을 찾는다. 그러나 @Autowired 를 통한 의존성 주입 시, 같은 타입의 빈이 하나 이상이라면, autowiring 할 대상이 유니크하지 않기 때문에 마찬가지로 NoUniqueBeanDefinitionException 을 던지게 된다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">아래와 같이 스프링이 주입할 수 있는 bean 후보가 2개가 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">Formatter 의 구현체로 FooFormatter 와 BarFormatter 가 빈으로 생성되고, 서비스 레이어에서 의존성을 주입 받도록 하고자 한다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Component("fooFormatter")
+public class FooFormatter implements Formatter {
+public String format() {
+return "foo";
+}
+}
+
+@Component("barFormatter")
+public class BarFormatter implements Formatter {
+public String format() {
+return "bar";
+}
+}
+
+@Component
+public class FooService {
+
+    @Autowired
+    private Formatter formatter;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">하지만 스프링은 두 개의 빈 중 어느 것을 주입하여야 하는지 알지 못하기 때문에 NoUniqueBeanDefinitionException 을 던지게 된다. 이런 문제를 해결하기 위해 @Qualifier를 사용할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+public class FooService {
+    @Autowired
+    @Qualifier("fooFormatter")
+private Formatter formatter;
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">형식은 @Qualifier 어노테이션("구현체")</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">이를 사용하므로써 스프링은 같은 타입의 multiple bean을 제대로 찾을 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Primary 와 마찬가지로, Component 와 함께 사용하여 스프링이 컴포넌트를 스캔하는 과정에서 @Qualifier 를 함께 읽게 할 수 있다.</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Component
+@Qualifier("fooFormatter")
+public class FooFormatter implements Formatter {
+//...
+}
+
+@Component
+@Qualifier("barFormatter")
+public class BarFormatter implements Formatter {
+//...
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-">3. </span><span class="se-fs- se-ff-"><b>@Qualifier vs @Primary</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Primary :</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">같은 타입의 multiple beans 이 존재할 때, 이들 간의 선호도를 정의하여, </span><span class="se-fs- se-ff-system"><b>하나의 구현체를 default 값으로 사용</b></span><span class="se-fs- se-ff-system">하게 하는 것. 기본값으로 주입되어야 하는 빈을 특정하고 싶다면 @Primary를 사용하자.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Qualifier:</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">다른 빈을 같은 injection point 에서 사용하여야 하는 순간도 있는데, 이 경우 @Qualifier를 사용하여 </span><span class="se-fs- se-ff-system"><b>default 로 주입된 빈이 아닌, 다른 특정 빈을 주입</b></span><span class="se-fs- se-ff-system"> 할 수 있다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs-fs15 se-ff-system">@Qualifier, @Primary 어노테이션이 둘 다 존재할 때는 </span><span class="se-fs-fs15 se-ff-system"><b>@Qualifier 가 우선한다</b></span><span class="se-fs-fs15 se-ff-system">. 기본적으로 Primary 는 default 값을 정의하는 반면, Qualifier 는 특정한 값을 정의하기 때문이다.</span><span class="se-fs- se-ff-system"> </span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-quotation se-l-quotation_line">
+<div class="se-component-content">
+<div class="se-section se-section-quotation se-l-quotation_line">
+<blockquote>
+<div class="se-module se-module-text se-quote"><p class="se-text-paragraph se-text-paragraph-align-left"><span class="se-fs- se-ff-"><b>4. @Bean("name") vs @Component </b></span><span class="se-fs- se-ff-">+ </span><span class="se-fs- se-ff-"><b>@Qualifier</b></span></p></div>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Component
+@Qualifier("apple")
+public class Apple implements Fruit {
+//...
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Component 어노테이션은 클래스를 Spring의 빈으로 등록하고,</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Qualifier 어노테이션은 해당 빈에 이름(qualifier)을 부여한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">즉, Apple 클래스를 스프링 빈으로 등록하고, 해당 빈에 'apple' 이라는 이름을 부여한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-code se-l-code_black __se-component">
+<div class="se-component-content">
+<div class="se-section se-section-code se-l-code_black">
+<pre><code>
+
+@Bean("banana")
+public Fruit banana() {
+//...
+return new Banana();
+}
+
+</code></pre>
+</div>
+</div>
+
+</div> <div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Bean 어노테이션은 banana() 메서드를 사용하여 Banana 객체를 Spring 컨테이너에 빈으로 등록한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Bean("banana")는 "banana"라는 이름의 빈을 등록하고, banana() 메서드가 Banana 객체를 생성하여 반환한다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Bean:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" src="/posts/spring-qualifier-primary-bean-name/images/image_2.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Qualifier:</span></p>
+</div>
+</div>
+</div>
+</div> <div class="se-component se-image se-l-default">
+<div class="se-component-content se-component-content-fit">
+<div class="se-section se-section-image se-l-default se-section-align-left">
+<div class="se-module se-module-image">
+<a area-hidden="true" class="se-module-image-link __se_image_link __se_link" onclick="return false;">
+<img alt="" class="se-image-resource egjs-visible" decoding="async" loading="lazy" src="/posts/spring-qualifier-primary-bean-name/images/image_3.jpg"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="se-component se-text se-l-default">
+<div class="se-component-content">
+<div class="se-section se-section-text se-l-default">
+<div class="se-module se-module-text">
+<p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Component, @Qualifier를 사용한 방식은 클래스 수준에서 빈을 등록하고, 해당 빈에 qualifier를 부여하는 방식이고</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system">@Bean을 사용한 방식은 메서드 수준에서 빈을 등록하고, 메서드 이름을 빈의 이름으로 사용하는 방식이다.</span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p><p class="se-text-paragraph se-text-paragraph-align-"><span class="se-fs- se-ff-system"></span></p>
+</div>
+</div>
+</div>
+</div> </div>
+          </div>
+        </div>
+      </article>
+
+      <nav class="post-nav" id="postNav" aria-label="같은 카테고리 글"></nav>
+    </main>
+  </div>
+
+  <script src="/posts.js"></script>
+  <script src="/path-resolver.js"></script>
+  <script src="/sidebar.js"></script>
+  <script src="/post.js"></script>
+  <script src="/search-nav.js"></script>
+</body>
+
+</html>
