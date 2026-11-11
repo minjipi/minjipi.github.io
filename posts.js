@@ -2370,16 +2370,6 @@ const POSTS = [
       "posts/객체지향_오버로딩과_오버라이딩의_차이_생성자_221648884759/images/image_1.jpg",
   },
   {
-    id: 199,
-    slug: "공유_P011_파이썬의_for_loop_for_loop_of_Python_222158480610",
-    title: "[공유] [P011] 파이썬의 for loop (for loop of Python)",
-    summary: "",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-11-30",
-    thumb: null,
-  },
-  {
     id: 200,
     slug: "네트워크_패킷을_이용한_해킹TCP_Open_Scan_TCP_Half_Scan_FIN_Scan_222317688795",
     title:
@@ -2583,19 +2573,6 @@ const POSTS = [
     date: "2021-02-22",
     thumb:
       "posts/사용자_로그인_관련_명령어_su_who_last_222252450624/images/image_1.jpg",
-  },
-  {
-    id: 217,
-    slug: "속보_시진핑_한국에서_대포통장_사기로_수사중_보이스피싱_사례_공유_및_안_당하는_법_223841615742",
-    title:
-      "속보. 시진핑 한국에서 대포통장 사기로 수사중 (보이스피싱 사례 공유 및 안 당하는 법)",
-    summary:
-      "고자극 주의 며칠 전, 동생이 대 ) 포 통장을 만들어서 성 ( 범 ( 죄 자금에 사용했다. 가 아니라 동생이 보이스피싱 당할 뻔한 이야기. 뻔한 이야기지만 사기 패턴 공유함. 1. 보이스",
-    category: "Life",
-    tags: [],
-    date: "2025-04-21",
-    thumb:
-      "posts/속보_시진핑_한국에서_대포통장_사기로_수사중_보이스피싱_사례_공유_및_안_당하는_법_223841615742/images/image_1.jpg",
   },
   {
     id: 218,
@@ -3434,17 +3411,6 @@ const POSTS = [
     date: "2025-09-07",
     thumb:
       "posts/GIF의_혁신_gifski_gif_만들기_사이트_추천_223998926014/images/image_1.jpg",
-  },
-  {
-    id: 289,
-    slug: "GNS3_는_어려워_222051746289",
-    title: "GNS3 는 어려워",
-    summary:
-      "의아하게도 나는 GNS 나갔다 들어오면 다시 설정해 줘야하는 상황이 발생. 오류 메시지 '요청시간이 만료되었습니다.' 그냥 저 컴퓨터 다시 만들고, 선 열결하고, 설정하니까 된다. 에구구..",
-    category: "Network",
-    tags: [],
-    date: "2020-08-05",
-    thumb: "posts/GNS3_는_어려워_222051746289/images/image_1.jpg",
   },
   {
     id: 290,
