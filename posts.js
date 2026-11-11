@@ -345,8 +345,7 @@ const POSTS = [
     category: "AI",
     tags: [],
     date: "2025-07-01",
-    thumb:
-      "posts/claude-desktop-notion-mcp/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 34,
@@ -522,7 +521,7 @@ const POSTS = [
     category: "Backend/Java",
     tags: [],
     date: "2021-04-08",
-    thumb: "posts/java-annotation/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 54,
@@ -841,8 +840,7 @@ const POSTS = [
     category: "Cloud/Kubernetes",
     tags: [],
     date: "2021-06-09",
-    thumb:
-      "posts/kubernetes-sidecar-pattern-1/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 91,
@@ -948,8 +946,7 @@ const POSTS = [
     category: "Backend/MSA",
     tags: [],
     date: "2021-06-25",
-    thumb:
-      "posts/monolithic-vs-microservice-architecture/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 106,
@@ -1007,8 +1004,7 @@ const POSTS = [
     category: "DevTools",
     tags: [],
     date: "2021-04-01",
-    thumb:
-      "posts/intellij-java-selenium-crawling/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 111,
@@ -1577,7 +1573,7 @@ const POSTS = [
     category: "Security",
     tags: [],
     date: "2021-04-22",
-    thumb: "posts/ssl-strip-example/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 173,
@@ -1739,8 +1735,7 @@ const POSTS = [
     category: "Search/Kafka",
     tags: [],
     date: "2021-06-30",
-    thumb:
-      "posts/kafka-pod-communication-nodeport/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 190,
@@ -1786,7 +1781,7 @@ const POSTS = [
     category: "Backend/Java",
     tags: [],
     date: "2020-07-06",
-    thumb: "posts/java-null/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 194,
@@ -1830,8 +1825,7 @@ const POSTS = [
     category: "Backend/Java",
     tags: [],
     date: "2019-09-15",
-    thumb:
-      "posts/oop-overloading-vs-overriding-constructor/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 200,
@@ -1842,8 +1836,7 @@ const POSTS = [
     category: "Security",
     tags: [],
     date: "2021-04-21",
-    thumb:
-      "posts/tcp-port-scan-open-half-fin/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 201,
@@ -1854,8 +1847,7 @@ const POSTS = [
     category: "Cloud/Docker",
     tags: [],
     date: "2025-09-17",
-    thumb:
-      "posts/docker-network-isolation-linux/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 202,
@@ -1936,8 +1928,7 @@ const POSTS = [
     category: "Linux/Administration",
     tags: [],
     date: "2020-08-31",
-    thumb:
-      "posts/linux-absolute-relative-path/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 210,
@@ -1996,7 +1987,7 @@ const POSTS = [
     category: "Security",
     tags: [],
     date: "2021-04-21",
-    thumb: "posts/arp-spoofing-lab/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 215,
@@ -2315,8 +2306,7 @@ const POSTS = [
     category: "Linux/Troubleshooting",
     tags: [],
     date: "2021-04-21",
-    thumb:
-      "posts/macos-check-close-open-ports/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 264,
@@ -2327,8 +2317,7 @@ const POSTS = [
     category: "Backend/Architecture",
     tags: [],
     date: "2021-06-17",
-    thumb:
-      "posts/api-vs-endpoint/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 265,
@@ -2339,8 +2328,7 @@ const POSTS = [
     category: "Cloud/AWS",
     tags: [],
     date: "2020-08-30",
-    thumb:
-      "posts/aws-api-gateway-lambda-rest-api/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 266,
@@ -2926,8 +2914,7 @@ const POSTS = [
     category: "Backend/Python",
     tags: [],
     date: "2020-08-29",
-    thumb:
-      "posts/python-mqtt/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 320,
@@ -3057,8 +3044,7 @@ const POSTS = [
     category: "Backend/Python",
     tags: [],
     date: "2020-08-28",
-    thumb:
-      "posts/python-socket-programming-threads/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 331,
@@ -3445,8 +3431,7 @@ const POSTS = [
     category: "Media",
     tags: [],
     date: "2025-11-04",
-    thumb:
-      "posts/video-to-gif-site-4-usage/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 366,
@@ -3480,8 +3465,7 @@ const POSTS = [
     category: "Network",
     tags: [],
     date: "2020-08-25",
-    thumb:
-      "posts/network-ping-nslookup/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 369,
@@ -3492,7 +3476,7 @@ const POSTS = [
     category: "Network",
     tags: [],
     date: "2021-02-12",
-    thumb: "posts/network-public-private-ip/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 370,
@@ -3701,8 +3685,7 @@ const POSTS = [
     category: "Security",
     tags: [],
     date: "2021-05-04",
-    thumb:
-      "posts/sophos-firewall-install-1/images/image_1.jpg",
+    thumb: "",
   },
   {
     id: 390,
