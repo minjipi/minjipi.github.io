@@ -342,18 +342,6 @@ const POSTS = [
       "posts/aws-spring-boot-deploy-slow-tomcat-service/images/image_1.jpg",
   },
   {
-    id: 32,
-    slug: "chromedriver-download",
-    title: "ChromeDriver 다운로드 하는 법 (Chrome 버전 확인)",
-    summary:
-      "크롤링 프로그램을 만들기 위해서는 ChromeDriver가 필요하다. 그 첫걸음으로 현재 사용 중인 Chrome 브라우저 버전에 맞는 버전의 ChromeDriver 설치해야 하는데ChromeDriver 는 본인의 C",
-    category: "DevTools",
-    tags: [],
-    date: "2024-10-18",
-    thumb:
-      "posts/chromedriver-download/images/image_1.jpg",
-  },
-  {
     id: 33,
     slug: "claude-desktop-notion-mcp",
     title:
@@ -522,40 +510,6 @@ const POSTS = [
       "posts/chatgpt-hidden-space-u202f/images/image_3.jpg",
   },
   {
-    id: 49,
-    slug: "html-signup-form",
-    title: "HTML :: html 회원가입 폼 만들기",
-    summary:
-      'html로만 회원가입 폼 만들기! 스크립트 입히기 전 입니당 < html > < head > < meta charset = "utf-8" > < title > 회원가입 폼 < / title > < / head > <',
-    category: "Frontend/Web",
-    tags: [],
-    date: "2020-07-28",
-    thumb: "posts/html-signup-form/images/image_1.jpg",
-  },
-  {
-    id: 50,
-    slug: "html-meta-tag",
-    title: "HTML :: meta 태그, meta 태그 쓰는 곳",
-    summary:
-      "meta 태그 정의 및 특징 <meta> 태그는 해당 문서에 대한 정보인 메타데이터(metadata)를 정의할 때 사용 합니다. <meta> 요소는..",
-    category: "Frontend/Web",
-    tags: [],
-    date: "2020-08-18",
-    thumb: null,
-  },
-  {
-    id: 51,
-    slug: "html-table",
-    title: "HTML :: table, table-border 속성 (솔직히 이것만 알면 html끝)",
-    summary:
-      "자바스크립트 하기 전 필수 코스 HTML #a link 링크를 추가할 때 사용하는 <a> 태그. 링크를 만들 때는 2가지 정보가 필요하다. 이동하려는 실제 웹페이지 주소(=URL) 와 내가 만든 웹페이지에서 보여지는",
-    category: "Frontend/Web",
-    tags: [],
-    date: "2020-07-27",
-    thumb:
-      "posts/html-table/images/image_1.jpg",
-  },
-  {
     id: 52,
     slug: "iot-indoor-navigation-project",
     title: "IOT 프로젝트 '실내 길찾기'",
@@ -674,41 +628,6 @@ const POSTS = [
       "posts/java-singleton-vs-static-class/images/image_1.jpg",
   },
   {
-    id: 63,
-    slug: "java-singleton-pattern",
-    title: "JAVA 디자인패턴 | 싱글톤 패턴 Singleton",
-    summary:
-      "a. 프린터 관리자는 단 하나만 존재. b. 프린터 관리자는 3대의 프린터를 관리. c. 프린터 관리자는 이용가능한 프린터를 사용자에게 할당 d. 프린터 이용이 가능한지 확인하려면 프린터 클래스의 isAvailabl",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-06-17",
-    thumb:
-      "posts/java-singleton-pattern/images/image_1.jpg",
-  },
-  {
-    id: 64,
-    slug: "java-singleton-pattern-example",
-    title: "JAVA 디자인패턴 | 싱글톤 패턴 Singleton 예제 코드1",
-    summary:
-      "0. 싱글턴 패턴을 적용해 아래 요구조건을 충족하는 코드를 작성해보자! - 사용자는 티켓 발행기를 이용해 티켓을 발행 받을 수 있음. - 티켓 발행기는 딱 하나만 존재. - 발행된 티켓은 고유의 시리얼 번호가 있음.",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-05-25",
-    thumb:
-      "posts/java-singleton-pattern-example/images/image_1.jpg",
-  },
-  {
-    id: 65,
-    slug: "java-design-pattern-warmup",
-    title: "JAVA 디자인패턴 워밍업",
-    summary:
-      "음원을 구매하는 웹사이트의 장바구니 할인율을 고려해, 장바구니에 담긴 음원의 총가격을 계산하는 기능 을 구현해 보자. 각 음원은 할인모드에 따라 할인율이 다르게 적용된다. 현재 OnSale 모드와 Today Ev",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-04-02",
-    thumb: "posts/java-design-pattern-warmup/images/image_1.jpg",
-  },
-  {
     id: 66,
     slug: "java-template-method-pattern",
     title: "JAVA 디자인패턴 | 템플릿 메서드 패턴",
@@ -729,18 +648,6 @@ const POSTS = [
     tags: [],
     date: "2020-05-02",
     thumb: null,
-  },
-  {
-    id: 68,
-    slug: "java-alphabet-to-array-index",
-    title: "[JAVA] 자바로 알파벳을 배열 인덱스로 변환하기 (toCharArray)",
-    summary:
-      "자바로 알파벳을 배열 인덱스로 변환하기 알파벳을 배열의 인덱스로 변환한다는 말은 다음과 같다. 알파벳은 총 26개의 문자가 존재한다. 이를 배열로 바꾼다면 a 는 0 번째 인덱스로 b 는 1번째 인덱스로 ..",
-    category: "Backend/Java",
-    tags: [],
-    date: "2022-10-18",
-    thumb:
-      "posts/java-alphabet-to-array-index/images/image_1.jpg",
   },
   {
     id: 69,
@@ -800,30 +707,6 @@ const POSTS = [
     date: "2022-11-28",
     thumb:
       "posts/java-immutable-object-final/images/image_1.jpg",
-  },
-  {
-    id: 74,
-    slug: "java-scanner-multiplication-table",
-    title: "Java 자바 기초 | Scanner, int nextInt 으로 원하는 단의 구구단 코드",
-    summary:
-      "Scanner 클래스 - 읽은 바이트를 문자, 정수, 실수, 불린, 문자열 등 다양한 타입으로 변환하여 리턴 하는 클래스 - java.util.Scanner - Scanner는 입력되는 키 값을 공백으로 구분되는 토",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-07-06",
-    thumb:
-      "posts/java-scanner-multiplication-table/images/image_1.jpg",
-  },
-  {
-    id: 75,
-    slug: "java-multiplication-table-try-catch",
-    title: "Java 자바 기초 | 원하는 단의 구구단 코드, 자바 try-catch문",
-    summary:
-      "문자열이 입력되면 try-catch문을 이용해서 InputMismatchException 에 '다시 입력하시오'라는 메시지 출력 하기. * 방금 for(;;) 대신 while (true) 라고 바꾸는 것이 더 예",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-07-07",
-    thumb:
-      "posts/java-multiplication-table-try-catch/images/image_1.jpg",
   },
   {
     id: 77,
@@ -976,19 +859,6 @@ const POSTS = [
       "posts/kubernetes-sidecar-pattern-1/images/image_1.jpg",
   },
   {
-    id: 90,
-    slug: "kubernetes-sidecar-pattern-2",
-    title:
-      "[Kubernetes] 쿠버네티스 - 사이드카 패턴(Sidecar pattern), 사이드카 패턴 예제",
-    summary:
-      "[Kubernetes] 사이드카 패턴 - Sidecar pattern - 사이드카 패턴(Sidecar) 이란? 사이드카 패턴은 원래 사용하려고 했던 기본 컨테이너의 기능을 확장하거나 강화하는 용도의 컨테이너를 추",
-    category: "Cloud/Kubernetes",
-    tags: [],
-    date: "2021-07-05",
-    thumb:
-      "posts/kubernetes-sidecar-pattern-2/images/image_1.jpg",
-  },
-  {
     id: 91,
     slug: "kubernetes-autoscaling",
     title: "[Kubernetes] 쿠버네티스 - 오토스케일링(k8s Autoscaling)",
@@ -1026,31 +896,6 @@ const POSTS = [
       "posts/kubernetes-pod-networking/images/image_1.jpg",
   },
   {
-    id: 94,
-    slug: "leetcode-1304-find-n-unique-integers",
-    title:
-      "LeetCode | 1304. Find N Unique Integers Sum up to Zero 풀이, 파이썬 리스트 요소추가, 파이썬 증감연산자",
-    summary:
-      "1304. Find N Unique Integers Sum up to Zero 문제: Given an integer n , return any array containing n unique integers suc",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-11-18",
-    thumb:
-      "posts/leetcode-1304-find-n-unique-integers/images/image_1.jpg",
-  },
-  {
-    id: 95,
-    slug: "leetcode-1436-destination-city",
-    title: "LeetCode | 1436. Destination City 풀이, 파이썬 map 함수",
-    summary:
-      "1436. Destination City 문제: You are given the array paths , where paths[i] = [cityA i , cityB i ] means there exists a",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-11-16",
-    thumb:
-      "posts/leetcode-1436-destination-city/images/image_1.jpg",
-  },
-  {
     id: 96,
     slug: "tmux-commands",
     title: "[Linux] tmux 사용법, 명령어 정리",
@@ -1085,43 +930,6 @@ const POSTS = [
     date: "2020-06-05",
     thumb:
       "posts/linux-permission-chmod-chown/images/image_1.jpg",
-  },
-  {
-    id: 99,
-    slug: "macos-ip-address-settings",
-    title: "MAC OS :: 맥북 IP주소 설정 방법(수동, 자동)",
-    summary:
-      "MAC OS IP주소 설정 방법(수동, 자동) 1. 시스템 환경설정 > 네트워크 2. 네트워크 > '고급' 3. TCP/IP 탭 > 여기서 DHCP 사용으로 하면 자동으로 IP 설정 하는 것. 스크롤버",
-    category: "DevTools",
-    tags: [],
-    date: "2021-02-13",
-    thumb:
-      "posts/macos-ip-address-settings/images/image_1.jpg",
-  },
-  {
-    id: 100,
-    slug: "macos-apache-apachectl",
-    title: "[ MAC Os apache 실행 ] 맥 아파치 실행, apachectl 옵션",
-    summary:
-      '​ 맥에서 아파치 다운로드 ​ 는 이미 깔려 있어서 다운로드 받을 필요 없이 터미널에서 sudo apache start 하면 실행된다ㅎㅎ ​ 명령어 입력하고 127.0.0.1 로 접속해서 "It works!" 뜨면 ',
-    category: "DevTools",
-    tags: [],
-    date: "2021-01-29",
-    thumb:
-      "posts/macos-apache-apachectl/images/image_1.jpg",
-  },
-  {
-    id: 101,
-    slug: "vmware-fusion-12-vmmon-error",
-    title:
-      'MAC Os :: vmware fusion 12 설치, "could not open /dev/vmmon: 파이프 연결 해제됨."',
-    summary:
-      '​ 맥 vmware fusion 12 설치 + 설치 중 "could not open /dev/vmmon: 파이프 연결 해제됨." 에러 메시지가 뜨는 것 해결. ​ ​ 1. MAC Os :: vmware fusion ',
-    category: "DevTools",
-    tags: [],
-    date: "2021-01-29",
-    thumb:
-      "posts/vmware-fusion-12-vmmon-error/images/image_1.jpg",
   },
   {
     id: 103,
@@ -1236,17 +1044,6 @@ const POSTS = [
       "posts/maven-wrapper/images/image_1.jpg",
   },
   {
-    id: 112,
-    slug: "openjdk-11-install",
-    title: "💻 OpenJDK 11 설치 (버전 충돌 해결)",
-    summary:
-      "1. OpenJDK 11 설치 yum - y install java - 11 - openjdk java - 11 - openjdk - devel cat > / etc / profile . d / java11 . sh",
-    category: "DevTools",
-    tags: [],
-    date: "2021-04-22",
-    thumb: null,
-  },
-  {
     id: 113,
     slug: "openstack-linuxbridge-to-ovs-ssh",
     title:
@@ -1270,19 +1067,6 @@ const POSTS = [
     date: "2021-05-07",
     thumb:
       "posts/openstack-victoria-packstack-install/images/image_1.jpg",
-  },
-  {
-    id: 115,
-    slug: "openstack-swift-container",
-    title:
-      "[OpenStack] 오픈 스택 컨테이너 생성 - 컨테이너를 네이버 클라우드 처럼 사용하기",
-    summary:
-      "오픈 스택 컨테이너 생성 컨테이너 생성 업로드 해보기 링크 주소 뒤에 /업로드한 파일 이름 붙여서 들어가면 업로드한 사진 페이지가 나온다. 네이버 클라우드 처럼 쓸 수 있네요 그렇네요 ~~",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-10",
-    thumb:
-      "posts/openstack-swift-container/images/image_1.jpg",
   },
   {
     id: 116,
@@ -1578,29 +1362,6 @@ const POSTS = [
     thumb: "posts/linux-pam-module/images/image_1.jpg",
   },
   {
-    id: 139,
-    slug: "pub-sub-pattern",
-    title: "📬 Pub/Sub구조 (비동기, Pub/Sub 비동기 작동)",
-    summary:
-      "micro-frontends 를 공부하다가 자꾸 눈에 띄는 Pub/Sub구조. Pub/Sub구조에 대해 간단히 정리한 포스팅이다. # Pub/Sub 구조 Pub/Sub 구조는 '비동기식' 메세징 패턴. 그렇다면",
-    category: "Backend/Architecture",
-    tags: [],
-    date: "2021-06-28",
-    thumb:
-      "posts/pub-sub-pattern/images/image_1.jpg",
-  },
-  {
-    id: 140,
-    slug: "python-if-examples",
-    title: "Python :: 간단한 파이썬 예제 [조건문]",
-    summary:
-      "0. 파이썬의 조건문 규칙 파이썬의 조건문은 다른 언어와 조금 다르다. 어떤 부분이 다른지 알아보고, 예제를 통해 연습해 보자! if (공백) True : (Tab) 값이 참일 때 실행할 문장 (Tab) 값이 참",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-07-21",
-    thumb: null,
-  },
-  {
     id: 141,
     slug: "python-kmeans-clustering-matplotlib",
     title:
@@ -1639,18 +1400,6 @@ const POSTS = [
       "posts/python-boto3-s3-image-analysis/images/image_1.jpg",
   },
   {
-    id: 144,
-    slug: "python-kmeans-clustering-example",
-    title: "Python 머신러닝 예제 :: 비지도 학습 클러스터링 (K-Means)",
-    summary:
-      "파이썬 비지도 학습 클러스터링 (K-Means) 예제 비지도 학습이란? 클러스터링 (K-Means) 머신러닝을 세 가지 종류로 나누어 볼 수 있다. 지도 학습 , 비지도 학습 , 그리고 강화 학습 이다. 이번 시간에",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-09-10",
-    thumb:
-      "posts/python-kmeans-clustering-example/images/image_1.jpg",
-  },
-  {
     id: 145,
     slug: "pycharm-venv-scikit-learn-tensorflow",
     title:
@@ -1685,42 +1434,6 @@ const POSTS = [
     date: "2020-09-08",
     thumb:
       "posts/python-decision-tree/images/image_1.jpg",
-  },
-  {
-    id: 148,
-    slug: "python-string-reverse-max-math-pow",
-    title:
-      "Python :: 파이썬 문자열 거꾸로 출력하기, 가장 큰 수 찾기, math.pow()",
-    summary:
-      "[문자열 거꾸로 출력하기] ‘abcde’ 라는 문자열을 거꾸로 출력해보자. 즉, ‘edcba’ 라는 출력을 원한다. 무수히 많은 방법이 있겠지만, 몇 가지만 살펴보자. 일단 단순히 for문을 통해 해결하는 방법이 있",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-08-18",
-    thumb: null,
-  },
-  {
-    id: 149,
-    slug: "python-install-pycharm",
-    title: "Python :: 파이썬 설치 및 개발 환경 구축 (파이참PyCharm 설치)",
-    summary:
-      "Python 파이썬 설치 및 개발 환경 구축 0. 파이썬 프로그램 설치. 서론 없이 바로 다운부터 받자! 우선 파이썬 공식 홈페이지의 다운로드 페이지 에서 윈도우용 파이썬 언어 패키지를 다운로드한다. Downlo",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-07-21",
-    thumb:
-      "posts/python-install-pycharm/images/image_1.jpg",
-  },
-  {
-    id: 150,
-    slug: "python-if-dict-loop-examples",
-    title: "Python :: 파이썬 조건문, 딕셔너리, 반복문 예제",
-    summary:
-      "#조건문 #조건문 예제 1 # 반복문 numlist = [ 20 , 36654 , 132 , 768 , 3 , 86 , 2 ] print ( '100 이하의 수: ' ) for number in numlist : i",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-07-31",
-    thumb:
-      "posts/python-if-dict-loop-examples/images/image_1.jpg",
   },
   {
     id: 151,
@@ -1794,18 +1507,6 @@ const POSTS = [
     date: "2021-03-30",
     thumb:
       "posts/raspberry-pi-opencv-upper-body-detection/images/image_1.jpg",
-  },
-  {
-    id: 157,
-    slug: "raspberry-pi-microphone-speaker",
-    title: "Raspberry Pi :: 라즈베리파이 마이크, 스피커 연결",
-    summary:
-      "스피커 : Advanced -> Audio 스피커 테스트 녹음 : arecord -- format = S16_LE -- duration = 10 -- rate = 160000 -- file - type =",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-10-04",
-    thumb:
-      "posts/raspberry-pi-microphone-speaker/images/image_1.jpg",
   },
   {
     id: 159,
@@ -2055,18 +1756,6 @@ const POSTS = [
       "posts/java-int-vs-integer/images/image_1.jpg",
   },
   {
-    id: 185,
-    slug: "jquery-vs-javascript",
-    title: "jQuery | 자바스크립트와 제이쿼리 비교, 제이쿼리 사용법",
-    summary:
-      "자바스크립트, 제이쿼리 자바스크립트는 웹브라우저에서 작동하는 스크립트이다. 기능성 홈페이지 99% 이상이 이 기술을 사용하고 있다고 해도 될 정도로 많이 쓰이고 있다. 그렇다면 jQuery 는? jQuery",
-    category: "Frontend/Web",
-    tags: [],
-    date: "2020-08-01",
-    thumb:
-      "posts/jquery-vs-javascript/images/image_1.jpg",
-  },
-  {
     id: 186,
     slug: "java-decorator-pattern",
     title: "java | 디자인패턴 데커레이터 패턴 : Decorator Pattern",
@@ -2102,18 +1791,6 @@ const POSTS = [
     date: "2021-06-30",
     thumb:
       "posts/kafka-pod-communication-nodeport/images/image_1.jpg",
-  },
-  {
-    id: 189,
-    slug: "kali-linux-2020-root-password",
-    title: "🏴‍☠️ kali Linux 2020 root password 문제 해결",
-    summary:
-      "kali Linux 2020 version를 virtualBox에 구동 후 root (su) 계정 접속되지 않는 문제. kali Linux 초기 계정은 kali이고 password는 계정과 동일하게 kali",
-    category: "Security",
-    tags: [],
-    date: "2021-04-21",
-    thumb:
-      "posts/kali-linux-2020-root-password/images/image_1.jpg",
   },
   {
     id: 190,
@@ -2195,18 +1872,6 @@ const POSTS = [
     tags: [],
     date: "2023-02-27",
     thumb: "posts/sudo-su-difference/images/image_1.jpg",
-  },
-  {
-    id: 197,
-    slug: "raspberry-pi-proximity-screen-switcher-1",
-    title: "가까이 오면 실행중인 화면이 바뀌는 장치 만들기.1",
-    summary:
-      "0. 라이브러리 설치 pip install pypiwin32 ++ 1. 특정 윈도우(창)의 핸들 받아오는 함수 import win32gui def GetHwnds ( pid = None ) : def call",
-    category: "IoT/RaspberryPi",
-    tags: [],
-    date: "2020-09-16",
-    thumb:
-      "posts/raspberry-pi-proximity-screen-switcher-1/images/image_1.jpg",
   },
   {
     id: 198,
@@ -2414,31 +2079,6 @@ const POSTS = [
       "posts/linux-su-who-last/images/image_1.jpg",
   },
   {
-    id: 218,
-    slug: "spring-boot-ambiguous-mapping-error",
-    title:
-      "스프링부트 에러 Caused by: Ambiguous mapping. Cannot map 'sampleController' method 해결",
-    summary:
-      "스프링부트 에러 Caused by: Ambiguous mapping. Cannot map 'sampleController' method 해결 이유는 GetMapping이 두 개 존재해서 그런거였다. 그래서",
-    category: "Backend/Spring Boot",
-    tags: [],
-    date: "2021-04-13",
-    thumb:
-      "posts/spring-boot-ambiguous-mapping-error/images/image_1.jpg",
-  },
-  {
-    id: 219,
-    slug: "openstack-glance",
-    title: "오픈스택 Glance(이미지 관리 서비스)",
-    summary:
-      "오픈스택 Glance(이미지 관리 서비스) # 이미지 : 가상머신 ova 파일 같은 것. 1) Glance 구조 이미지를 저장하면 glance-registry로 Glance DB에 저장 2) 가상머신 이미지 형식",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-12",
-    thumb:
-      "posts/openstack-glance/images/image_1.jpg",
-  },
-  {
     id: 220,
     slug: "openstack-cinder-volume-service-down",
     title:
@@ -2463,19 +2103,6 @@ const POSTS = [
     date: "2021-05-13",
     thumb:
       "posts/openstack-pike-no-valid-host-found/images/image_1.jpg",
-  },
-  {
-    id: 222,
-    slug: "openstack-compute-ovs-agent-down",
-    title:
-      "📍 오픈스택 에러 :: compute 서비스 다운, 네트워크 노드 Open vSwitch agent 서비스 다운",
-    summary:
-      "1. Open vSwitch agent setenforce 0 systemctl restart neutron - openvswitch - agent 2. 컨트롤러에서 먼저 : systemctl restart",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-18",
-    thumb:
-      "posts/openstack-compute-ovs-agent-down/images/image_1.jpg",
   },
   {
     id: 223,
@@ -2560,30 +2187,6 @@ const POSTS = [
       "posts/sql-injection-bypass/images/image_1.jpg",
   },
   {
-    id: 230,
-    slug: "eclipse-tomcat-chrome",
-    title: "이클립스 톰캣 연동, 이클립스 웹 프로젝트 크롬으로 실행되게 설정",
-    summary:
-      "1. 이클립스 톰캣 연동 하기 아래 servers 탭의 저것 클릭 1, 2, 3 차례대로 클릭. 계속 Next 하다가 톰캣이 있는 경로로 browse 후 Finish. 이어서 2. 톰캣 프로젝트",
-    category: "DevTools",
-    tags: [],
-    date: "2020-12-16",
-    thumb:
-      "posts/eclipse-tomcat-chrome/images/image_1.jpg",
-  },
-  {
-    id: 231,
-    slug: "intellij-css-not-applied",
-    title: "인텔리제이 CSS 파일 적용 안되는 에러",
-    summary:
-      "분명히 경로 맞게 해 줬는데도 계속 CSS 파일을 못찾길래 살펴보니 web war exploded 파일과 그냥 파일이 따로 나눠져 있었고 내용이 달랐다. web war exploded 에 static 파일 넣",
-    category: "DevTools",
-    tags: [],
-    date: "2021-03-29",
-    thumb:
-      "posts/intellij-css-not-applied/images/image_1.jpg",
-  },
-  {
     id: 232,
     slug: "java-stack-implementation",
     title: "[자료구조::Java] 스택(Stack) 자바로 구현하기",
@@ -2607,75 +2210,6 @@ const POSTS = [
     date: "2020-12-09",
     thumb:
       "posts/java-queue-circular-queue/images/image_1.jpg",
-  },
-  {
-    id: 234,
-    slug: "java-stack-implementation-2",
-    title: "[자료구조] Java Stack 구현 / 자바 스택 구현",
-    summary:
-      "Stack (스택) 한쪽 끝에서만 자료를 넣고 뺄 수 있는 자료구조 스택. - 데이터를 일시적으로 보관하는 자료구조 - 선입후출 (FILO: First In, Last Out ) - 스택에 데이터를 넣는 push,",
-    category: "Backend/Java",
-    tags: [],
-    date: "2022-05-16",
-    thumb:
-      "posts/java-stack-implementation-2/images/image_1.jpg",
-  },
-  {
-    id: 235,
-    slug: "java-alternating-characters",
-    title: "자바 Java 문제풀이 | 두 가지 문자를 번갈아가며 표시하는 프로그램",
-    summary:
-      "읽은 값의 개수만큼 *와 +를 번갈아 가며 표시하는 프로그램 작성. public class Random1 { public static void main ( String[] args ) { // TODO Auto-",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-07-14",
-    thumb: null,
-  },
-  {
-    id: 236,
-    slug: "java-swing-keep-character-in-frame",
-    title: "자바 스윙 Java Swing | 캐릭터가 window frame을 벗어나지 않게 하기",
-    summary:
-      "[ 자바 스윙 Java swing 공부 ] 1. 움직이는 캐릭터가 창 (window frame) 을 넘어가지 않는 것. 기존 코드에서는 캐릭터가 왼쪽으로 움직일 때, window frame 을 넘어 무한정",
-    category: "Backend/Java",
-    tags: [],
-    date: "2020-07-02",
-    thumb: null,
-  },
-  {
-    id: 237,
-    slug: "java-method-overloading",
-    title: "자바기초 '메소드 오버로딩(overloading)'",
-    summary:
-      "메소드 오버로딩(overloading) 메소드 오버로딩 이란 같은 이름의 메소드를 중복 정의하는 것을 의미 한다. 자바에서는 원래 한 클래스 내에 같은 이름의 메소드를 둘 이상 가질 수 없다. 하지만 매개변수의",
-    category: "Backend/Java",
-    tags: [],
-    date: "2022-02-07",
-    thumb:
-      "posts/java-method-overloading/images/image_1.jpg",
-  },
-  {
-    id: 238,
-    slug: "java-constructor",
-    title: "자바기초 '생성자'",
-    summary:
-      "Java 생성자 생성자란? 클래스로 객체를 만들 때 무조건 호출되는 메소드. new 연산자와 같이 사용되어 클래스로부터 객체를 생성할 때 호출되어 객체의 초기화를 담당한다. 여기서 객체 초기화란 필드를 초기화하거",
-    category: "Backend/Java",
-    tags: [],
-    date: "2022-02-08",
-    thumb: "posts/java-constructor/images/image_1.jpg",
-  },
-  {
-    id: 239,
-    slug: "java-constructor-overloading",
-    title: "자바기초 '생성자 오버로딩(Overloading)'",
-    summary:
-      "생성자 오버로딩 (Overloading) 생성자도 결국 메소드. 오버로딩 할 수 있다. 외부에서 제공되는 다양한 데이터들을 이용해서 객체를 초기화 하려면 생성자도 다양화될 필요가 있다. Cat 이라는 객체 생성",
-    category: "Backend/Java",
-    tags: [],
-    date: "2022-02-08",
-    thumb:
-      "posts/java-constructor-overloading/images/image_1.jpg",
   },
   {
     id: 240,
@@ -2749,117 +2283,6 @@ const POSTS = [
       "posts/kafka-install-kubernetes/images/image_1.jpg",
   },
   {
-    id: 246,
-    slug: "openstack-manual-9-cinder",
-    title:
-      "[클라우드] Open Stack 오픈 스택 수동 설치 cinder (블록 스토리지 서비스) 설치 /9",
-    summary:
-      "(1) DB 설정 [1] controller mysql -u root -p CREATE DATABASE cinder; GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhos",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-11",
-    thumb:
-      "posts/openstack-manual-9-cinder/images/image_1.jpg",
-  },
-  {
-    id: 247,
-    slug: "openstack-manual-3-glance",
-    title: "[클라우드] Open Stack 오픈 스택 수동 설치 'glance' /3",
-    summary:
-      "2. glance (이미지 서비스) (1) DB 생성 [1] controller mysql - u root - p CREATE DATABASE glance ; GRANT ALL PRIVILEGES ON glanc",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-10",
-    thumb:
-      "posts/openstack-manual-3-glance/images/image_1.jpg",
-  },
-  {
-    id: 248,
-    slug: "openstack-manual-8-horizon",
-    title:
-      "[클라우드] Open Stack 오픈 스택 수동 설치 'horizon (대시보드 서비스)'설치 /8",
-    summary:
-      "(1) 서비스 설치 [1] controller dnf - y install openstack - dashboard (2) 서비스 설정 [1] controller vi / etc / openstack - dashb",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-11",
-    thumb:
-      "posts/openstack-manual-8-horizon/images/image_1.jpg",
-  },
-  {
-    id: 249,
-    slug: "openstack-manual-7-neutron",
-    title:
-      "[클라우드] Open Stack 오픈 스택 수동 설치 'neutron 네트워크 서비스'설치 /7",
-    summary:
-      "### 중요한 부분이니, 시작하기 전 스냅샷 찍어두시면 좋습니다 ### 5. neutron (네트워크 서비스) (1) DB 생성 [1] controller mysql -u root -p CREATE DATABAS",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-11",
-    thumb:
-      "posts/openstack-manual-7-neutron/images/image_1.jpg",
-  },
-  {
-    id: 250,
-    slug: "openstack-manual-6-nova-compute-node",
-    title:
-      "[클라우드] Open Stack 오픈 스택 수동 설치 'nova' 설치(compute 노드) /6",
-    summary:
-      "(5) compute 노드 서비스 설치 ** compute 노드에서 진행) dnf - y install openstack - nova - compute (5) compute 노드 서비스 설정 [2] compute",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-11",
-    thumb: null,
-  },
-  {
-    id: 251,
-    slug: "openstack-manual-5-nova",
-    title: "[클라우드] Open Stack 오픈 스택 수동 설치 'nova'설치 /5",
-    summary:
-      "### 시작하기 전 스냅샷 찍어두시면 좋습니다 ### 4) nova (컴퓨팅 서비스) (1) DB 생성 [1] controller mysql -u root -p CREATE DATABASE nova_api; CR",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-11",
-    thumb: null,
-  },
-  {
-    id: 252,
-    slug: "openstack-manual-4-placement",
-    title: "[클라우드] Open Stack 오픈 스택 수동 설치 'placement'설치 /4",
-    summary:
-      "### 시작하기 전 스냅샷 찍어두시면 좋습니다 ### 3. placement 배포 서비스, Stein 버전 이전에는 nova 서비스에 포함되어 있었지만 stein 이후 버전에서는 따로 빠져나옴. https://b",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-10",
-    thumb:
-      "posts/openstack-manual-4-placement/images/image_1.jpg",
-  },
-  {
-    id: 253,
-    slug: "openstack-manual-2-services",
-    title:
-      "[클라우드] Open Stack 오픈 스택 수동 설치 '오픈스택 서비스 설치' /2",
-    summary:
-      "인증관련 서비스부터 설치 2. 오픈스택 서비스 설치 1) keystone (인증 서비스) (1) DB 생성 [1] controller mysql -u root -p CREATE DATABASE keystone;",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-10",
-    thumb:
-      "posts/openstack-manual-2-services/images/image_1.jpg",
-  },
-  {
-    id: 254,
-    slug: "openstack-flavor",
-    title: "[클라우드] Open Stack 오픈스택 :: Flavor 추가",
-    summary:
-      "오픈스택 Flavor 추가 확인: 플레이버 두 개 더 만들어본다. 확인:",
-    category: "Cloud/OpenStack",
-    tags: [],
-    date: "2021-05-12",
-    thumb:
-      "posts/openstack-flavor/images/image_1.jpg",
-  },
-  {
     id: 255,
     slug: "openstack-controller-reboot-checklist",
     title:
@@ -2931,17 +2354,6 @@ const POSTS = [
     date: "2020-08-17",
     thumb:
       "posts/python-venv/images/image_1.jpg",
-  },
-  {
-    id: 261,
-    slug: "python-payroll-program",
-    title: "파이썬 문제 :: 사원 임금 관리 프로그램",
-    summary:
-      "흑 ㅠ class Person : def __init__ ( self , id , name ) : self . __id = id self . __name = name def get_id ( self ) : retur",
-    category: "Backend/Python",
-    tags: [],
-    date: "2020-07-27",
-    thumb: null,
   },
   {
     id: 262,
@@ -3973,18 +3385,6 @@ const POSTS = [
     thumb: "posts/thymeleaf-basic-syntax/images/image_1.jpg",
   },
   {
-    id: 352,
-    slug: "xampp-port-443-in-use-vmware",
-    title: "XAMPP 포트 중복 에러 'port 443 in use by vmware'",
-    summary:
-      "XAMPP를 사용중에 443 포트의 중복 에러가 발생했다! 가상머신으로 사용하고 있던 VMWARE와 관련된 문제였는데 이 해결방법을 알아본다. XAMPP 문제해결 필자의 경우 VMWare가 443 포트를 사용중이",
-    category: "DevTools",
-    tags: [],
-    date: "2020-08-06",
-    thumb:
-      "posts/xampp-port-443-in-use-vmware/images/image_1.jpg",
-  },
-  {
     id: 353,
     slug: "zookeeper-session-expired-connection-error",
     title:
@@ -4119,19 +3519,6 @@ const POSTS = [
     date: "2022-07-13",
     thumb:
       "posts/why-i-used-jpa/images/image_1.jpg",
-  },
-  {
-    id: 364,
-    slug: "vmware-mac-address-remote-host-identification-changed",
-    title:
-      "vm ware 문제 : Device has different MAC address than expected, REMOTE HOST IDENTIFICATION HAS CHANGED",
-    summary:
-      "vm ware 에러 문제1 : Device has different MAC address than expected, ignoring. 문제2: WARNING: REMOTE HOST IDENTIFICATION HAS",
-    category: "DevTools",
-    tags: [],
-    date: "2021-04-23",
-    thumb:
-      "posts/vmware-mac-address-remote-host-identification-changed/images/image_1.jpg",
   },
   {
     id: 365,
@@ -4765,18 +4152,6 @@ const POSTS = [
     date: "2021-07-30",
     thumb:
       "posts/intellij-git/images/image_1.jpg",
-  },
-  {
-    id: 421,
-    slug: "engineer-information-processing-database-summary",
-    title: "📝 정처기 필기 요약 '데이터 베이스' 요약 정리",
-    summary:
-      "정처기 필기 준비 했을 때 정리해둔 문서. 1. 데이터 베이스 정의 (1) 정보와 데이터 ① 데이터 관찰이나 측정을 통해서 수집된 사실이나 값 (수치, 스트링) ② 정보 데이터를 가공하여 얻은 결과로써 부",
-    category: "Database",
-    tags: [],
-    date: "2021-07-19",
-    thumb:
-      "posts/engineer-information-processing-database-summary/images/image_1.jpg",
   },
   {
     id: 422,
