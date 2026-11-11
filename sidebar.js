@@ -28,6 +28,7 @@
         { label: "AWS", cat: "Cloud/AWS" },
         { label: "Docker", cat: "Cloud/Docker" },
         { label: "Kubernetes", cat: "Cloud/Kubernetes" },
+        { label: "Azure", cat: "Cloud/Azure" },
         { label: "Elasticsearch", cat: "Search/Elasticsearch" },
         { label: "Kafka / Zookeeper", cat: "Search/Kafka" },
       ],
@@ -48,6 +49,7 @@
       children: [
         { label: "Environment &amp; Tools", cat: "DevTools" },
         { label: "Ansible", cat: "DevOps/Ansible" },
+        { label: "Jenkins", cat: "DevOps/Jenkins" },
       ],
     },
     {
@@ -60,7 +62,10 @@
     },
     {
       label: "Frontend",
-      children: [{ label: "React", cat: "Frontend/React" }],
+      children: [
+        { label: "HTML / CSS / JS", cat: "Frontend/Web" },
+        { label: "React", cat: "Frontend/React" },
+      ],
     },
     {
       label: "AI",

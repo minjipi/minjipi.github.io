@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   if (!slug) { showError("잘못된 접근입니다."); return; }
 
-  var idx = POSTS.findIndex(function(p) { return p.slug === slug; });
+  var idx = POSTS.findIndex(function(p) { return p && p.slug === slug; });
   if (idx === -1) { showError("글을 찾을 수 없습니다."); return; }
 
   var post = POSTS[idx];
@@ -163,6 +163,36 @@ function cleanNaverHtml(root, slug) {
   // 불필요한 스크립트/데이터 태그 제거
   var scripts = root.querySelectorAll("script, style[type='text/data'], .__se_module_data");
   scripts.forEach(function(el) { el.remove(); });
+
+  // 네이버 블로그에서 같이 긁혀 온 광고 자리(빈 상자로 남음) 제거
+  root.querySelectorAll(".ssp-adcontent, [id^='ssp-adcontent'], iframe[title='AD']").forEach(function(el) { el.remove(); });
+
+  // 네이버 스티커와 링크 미리보기 썸네일은 네이버 서버 밖에서는 열리지 않아(403) 깨진 그림으로 보이므로 제거
+  root.querySelectorAll(".se-component.se-sticker").forEach(function(el) { el.remove(); });
+  root.querySelectorAll(".se-oglink-thumbnail").forEach(function(el) {
+    var img = el.querySelector("img");
+    if (img && /pstatic\.net/.test(img.getAttribute("src") || "")) el.remove();
+  });
+
+  // 네이버 동영상은 네이버 밖에서 재생되지 않고 플레이어 글자(해상도 목록 등)만 남으므로 원문 안내로 바꿈
+  var logNo = (String(slug || "").match(/_(\d{9,})$/) || [])[1];
+  root.querySelectorAll(".se-component.se-video").forEach(function(el) {
+    var title = el.querySelector(".se-video-title-text, .se-video-title");
+    var note = document.createElement("p");
+    note.className = "naver-video-note";
+    var label = "🎬 동영상" + (title && title.textContent.trim() ? " '" + title.textContent.trim() + "'" : "") + "은 네이버 블로그 원문에서 볼 수 있어요.";
+    if (logNo) {
+      var a = document.createElement("a");
+      a.href = "https://blog.naver.com/ghdalswl77/" + logNo;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = label;
+      note.appendChild(a);
+    } else {
+      note.textContent = label;
+    }
+    el.parentNode.replaceChild(note, el);
+  });
 
   // 텍스트 단락 추출
   var paragraphs = root.querySelectorAll(".se-text-paragraph");
