@@ -4,20 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JPA cascade (cascade = CascadeType.REMOVE) | minj.devlog</title>
+  <title>[JPA] cascade = CascadeType.REMOVE 사용법과 주의점 | minj.devlog</title>
   <meta name="description" content="JPA는 부모에서 자식에게 영속성을 전이하는 기능을 제공한다. 간단히 말하자면, 부모가 변경 될 때 해당 부모의 자식의 상태도 변경되게 하는 것이다. 예를 들어 게시물에 댓글들이 달려있다. 만약 게시물을 삭제하면 댓글들도 같이 삭제되도록 하고 싶은 것이다." />
   <link rel="canonical" href="https://minjipi.github.io/posts/jpa-cascade-remove/" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="minj.devlog" />
   <meta property="og:locale" content="ko_KR" />
-  <meta property="og:title" content="JPA cascade (cascade = CascadeType.REMOVE)" />
+  <meta property="og:title" content="[JPA] cascade = CascadeType.REMOVE 사용법과 주의점" />
   <meta property="og:description" content="JPA는 부모에서 자식에게 영속성을 전이하는 기능을 제공한다. 간단히 말하자면, 부모가 변경 될 때 해당 부모의 자식의 상태도 변경되게 하는 것이다. 예를 들어 게시물에 댓글들이 달려있다. 만약 게시물을 삭제하면 댓글들도 같이 삭제되도록 하고 싶은 것이다." />
   <meta property="og:url" content="https://minjipi.github.io/posts/jpa-cascade-remove/" />
   <meta property="og:image" content="https://minjipi.github.io/posts/jpa-cascade-remove/images/image_1.jpg" />
   <meta property="article:published_time" content="2022-01-04" />
   <meta property="article:section" content="Backend/Spring Boot" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "JPA cascade (cascade = CascadeType.REMOVE)", "description": "JPA는 부모에서 자식에게 영속성을 전이하는 기능을 제공한다. 간단히 말하자면, 부모가 변경 될 때 해당 부모의 자식의 상태도 변경되게 하는 것이다. 예를 들어 게시물에 댓글들이 달려있다. 만약 게시물을 삭제하면 댓글들도 같이 삭제되도록 하고 싶은 것이다.", "datePublished": "2022-01-04", "dateModified": "2022-01-04", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jpa-cascade-remove/", "image": "https://minjipi.github.io/posts/jpa-cascade-remove/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[JPA] cascade = CascadeType.REMOVE 사용법과 주의점", "description": "JPA는 부모에서 자식에게 영속성을 전이하는 기능을 제공한다. 간단히 말하자면, 부모가 변경 될 때 해당 부모의 자식의 상태도 변경되게 하는 것이다. 예를 들어 게시물에 댓글들이 달려있다. 만약 게시물을 삭제하면 댓글들도 같이 삭제되도록 하고 싶은 것이다.", "datePublished": "2022-01-04", "dateModified": "2022-01-04", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jpa-cascade-remove/", "image": "https://minjipi.github.io/posts/jpa-cascade-remove/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -57,7 +57,7 @@
             </div>
             <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222612580943" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
           </div>
-          <h1 class="post-detail-title">JPA cascade (cascade = CascadeType.REMOVE)</h1>
+          <h1 class="post-detail-title">[JPA] cascade = CascadeType.REMOVE 사용법과 주의점</h1>
         </div>
         
         <div class="post-detail-body" id="postBody">

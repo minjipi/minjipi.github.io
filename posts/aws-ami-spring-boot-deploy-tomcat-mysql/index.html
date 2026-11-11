@@ -4,20 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AWS :: AWS 이미지 생성 (스프링부트 프로젝트 배포, Ubuntu에 tomcat 설치, Ubuntu에 mySQL 설치) | minj.devlog</title>
+  <title>[AWS] AMI 이미지 만들기: Ubuntu에 Tomcat·MySQL 설치하고 스프링부트 배포 | minj.devlog</title>
   <meta name="description" content="[ Amazon Web Services ] AWS 이미지 생성 스프링부트 배포(톰캣, DB 연동) 전체 구조 목표 : AWS 인스턴스에 개인 웹 사이트 스프링부트 프로젝트를 올리고, 해당 톰캣 인스턴스로 이미지를 생성한다." />
   <link rel="canonical" href="https://minjipi.github.io/posts/aws-ami-spring-boot-deploy-tomcat-mysql/" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="minj.devlog" />
   <meta property="og:locale" content="ko_KR" />
-  <meta property="og:title" content="AWS :: AWS 이미지 생성 (스프링부트 프로젝트 배포, Ubuntu에 tomcat 설치, Ubuntu에 mySQL 설치)" />
+  <meta property="og:title" content="[AWS] AMI 이미지 만들기: Ubuntu에 Tomcat·MySQL 설치하고 스프링부트 배포" />
   <meta property="og:description" content="[ Amazon Web Services ] AWS 이미지 생성 스프링부트 배포(톰캣, DB 연동) 전체 구조 목표 : AWS 인스턴스에 개인 웹 사이트 스프링부트 프로젝트를 올리고, 해당 톰캣 인스턴스로 이미지를 생성한다." />
   <meta property="og:url" content="https://minjipi.github.io/posts/aws-ami-spring-boot-deploy-tomcat-mysql/" />
   <meta property="og:image" content="https://minjipi.github.io/posts/aws-ami-spring-boot-deploy-tomcat-mysql/images/image_1.jpg" />
   <meta property="article:published_time" content="2021-06-13" />
   <meta property="article:section" content="Cloud/AWS" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "AWS :: AWS 이미지 생성 (스프링부트 프로젝트 배포, Ubuntu에 tomcat 설치, Ubuntu에 mySQL 설치)", "description": "[ Amazon Web Services ] AWS 이미지 생성 스프링부트 배포(톰캣, DB 연동) 전체 구조 목표 : AWS 인스턴스에 개인 웹 사이트 스프링부트 프로젝트를 올리고, 해당 톰캣 인스턴스로 이미지를 생성한다.", "datePublished": "2021-06-13", "dateModified": "2021-06-13", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/aws-ami-spring-boot-deploy-tomcat-mysql/", "image": "https://minjipi.github.io/posts/aws-ami-spring-boot-deploy-tomcat-mysql/images/image_1.jpg", "articleSection": "Cloud/AWS"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[AWS] AMI 이미지 만들기: Ubuntu에 Tomcat·MySQL 설치하고 스프링부트 배포", "description": "[ Amazon Web Services ] AWS 이미지 생성 스프링부트 배포(톰캣, DB 연동) 전체 구조 목표 : AWS 인스턴스에 개인 웹 사이트 스프링부트 프로젝트를 올리고, 해당 톰캣 인스턴스로 이미지를 생성한다.", "datePublished": "2021-06-13", "dateModified": "2021-06-13", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/aws-ami-spring-boot-deploy-tomcat-mysql/", "image": "https://minjipi.github.io/posts/aws-ami-spring-boot-deploy-tomcat-mysql/images/image_1.jpg", "articleSection": "Cloud/AWS"}</script>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -57,9 +57,9 @@
             </div>
             <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222396797371" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
           </div>
-          <h1 class="post-detail-title">AWS :: AWS 이미지 생성 (스프링부트 프로젝트 배포, Ubuntu에 tomcat 설치, Ubuntu에 mySQL 설치)</h1>
+          <h1 class="post-detail-title">[AWS] AMI 이미지 만들기: Ubuntu에 Tomcat·MySQL 설치하고 스프링부트 배포</h1>
         </div>
-        <div class="post-detail-thumb"><img src="/posts/aws-ami-spring-boot-deploy-tomcat-mysql/images/image_1.jpg" alt="AWS :: AWS 이미지 생성 (스프링부트 프로젝트 배포, Ubuntu에 tomcat 설치, Ubuntu에 mySQL 설치)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-thumb"><img src="/posts/aws-ami-spring-boot-deploy-tomcat-mysql/images/image_1.jpg" alt="[AWS] AMI 이미지 만들기: Ubuntu에 Tomcat·MySQL 설치하고 스프링부트 배포" onerror="this.parentElement.style.display='none'" /></div>
         <div class="post-detail-body" id="postBody">
           <div class="post-body naver-post">
 <!-- source: https://blog.naver.com/ghdalswl77/222396797371 -->

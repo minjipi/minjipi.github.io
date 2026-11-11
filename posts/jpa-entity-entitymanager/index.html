@@ -4,20 +4,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>엔티티(Entity), 엔티티매니저(EntityManager) | minj.devlog</title>
+  <title>[JPA] 엔티티(Entity)와 엔티티 매니저(EntityManager) | minj.devlog</title>
   <meta name="description" content="엔티티(Entity) 객체, 엔티티를 다루는 엔티티매니저(EntityManager) 객체 JPA의 가장 큰 특징은 영속성(Persistence)이다. JPA를 사용해 검색한 DB매핑정보(엔티티)는 메모리(영속 컨텍스트)에 저장되고, 이러한 엔티티를 영속객체라 부른다." />
   <link rel="canonical" href="https://minjipi.github.io/posts/jpa-entity-entitymanager/" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="minj.devlog" />
   <meta property="og:locale" content="ko_KR" />
-  <meta property="og:title" content="엔티티(Entity), 엔티티매니저(EntityManager)" />
+  <meta property="og:title" content="[JPA] 엔티티(Entity)와 엔티티 매니저(EntityManager)" />
   <meta property="og:description" content="엔티티(Entity) 객체, 엔티티를 다루는 엔티티매니저(EntityManager) 객체 JPA의 가장 큰 특징은 영속성(Persistence)이다. JPA를 사용해 검색한 DB매핑정보(엔티티)는 메모리(영속 컨텍스트)에 저장되고, 이러한 엔티티를 영속객체라 부른다." />
   <meta property="og:url" content="https://minjipi.github.io/posts/jpa-entity-entitymanager/" />
   <meta property="og:image" content="https://minjipi.github.io/posts/jpa-entity-entitymanager/images/image_1.jpg" />
   <meta property="article:published_time" content="2022-08-11" />
   <meta property="article:section" content="Backend/Spring Boot" />
   <meta name="twitter:card" content="summary_large_image" />
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "엔티티(Entity), 엔티티매니저(EntityManager)", "description": "엔티티(Entity) 객체, 엔티티를 다루는 엔티티매니저(EntityManager) 객체 JPA의 가장 큰 특징은 영속성(Persistence)이다. JPA를 사용해 검색한 DB매핑정보(엔티티)는 메모리(영속 컨텍스트)에 저장되고, 이러한 엔티티를 영속객체라 부른다.", "datePublished": "2022-08-11", "dateModified": "2022-08-11", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jpa-entity-entitymanager/", "image": "https://minjipi.github.io/posts/jpa-entity-entitymanager/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "[JPA] 엔티티(Entity)와 엔티티 매니저(EntityManager)", "description": "엔티티(Entity) 객체, 엔티티를 다루는 엔티티매니저(EntityManager) 객체 JPA의 가장 큰 특징은 영속성(Persistence)이다. JPA를 사용해 검색한 DB매핑정보(엔티티)는 메모리(영속 컨텍스트)에 저장되고, 이러한 엔티티를 영속객체라 부른다.", "datePublished": "2022-08-11", "dateModified": "2022-08-11", "inLanguage": "ko-KR", "author": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "publisher": {"@type": "Person", "name": "minj", "url": "https://minjipi.github.io/"}, "mainEntityOfPage": "https://minjipi.github.io/posts/jpa-entity-entitymanager/", "image": "https://minjipi.github.io/posts/jpa-entity-entitymanager/images/image_1.jpg", "articleSection": "Backend/Spring Boot"}</script>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -57,9 +57,9 @@
             </div>
             <a id="postSourceBtn" class="post-source-btn" href="https://blog.naver.com/ghdalswl77/222845565959" target="_blank" rel="noopener noreferrer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>원본 글 보기</a>
           </div>
-          <h1 class="post-detail-title">엔티티(Entity), 엔티티매니저(EntityManager)</h1>
+          <h1 class="post-detail-title">[JPA] 엔티티(Entity)와 엔티티 매니저(EntityManager)</h1>
         </div>
-        <div class="post-detail-thumb"><img src="/posts/jpa-entity-entitymanager/images/image_1.jpg" alt="엔티티(Entity), 엔티티매니저(EntityManager)" onerror="this.parentElement.style.display='none'" /></div>
+        <div class="post-detail-thumb"><img src="/posts/jpa-entity-entitymanager/images/image_1.jpg" alt="[JPA] 엔티티(Entity)와 엔티티 매니저(EntityManager)" onerror="this.parentElement.style.display='none'" /></div>
         <div class="post-detail-body" id="postBody">
           <div class="post-body naver-post">
 <!-- source: https://blog.naver.com/ghdalswl77/222845565959 -->
