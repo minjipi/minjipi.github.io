@@ -77,9 +77,9 @@ ul {
 }
 
 .logo {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
   transition: color 0.2s;
@@ -1009,6 +1009,190 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+/* 첫 화면: 히어로 위 한 줄 */
+.about-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+/* 첫 화면: Project (카드 없이 글로만) */
+.project-plain {
+  display: grid;
+  gap: 8px;
+}
+.project-plain-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+.project-plain-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.project-plain-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+.project-plain-link:hover {
+  color: var(--accent);
+}
+.project-plain .about-text strong {
+  color: inherit;
+  font-weight: 700;
+}
+
+/* 첫 화면: Writing (대표 글 카드) */
+.writing-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.writing-head .about-section-label {
+  flex: 1;
+  margin-bottom: 0;
+}
+.writing-all {
+  font-size: 0.8rem;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.writing-all:hover {
+  text-decoration: underline;
+}
+.writing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.writing-card {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-width: 0;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+.writing-card:hover {
+  transform: translateY(-2px);
+  border-color: #bfd0f7;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+.writing-card:focus-visible {
+  outline: none;
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 3px var(--accent-light),
+    0 10px 24px rgba(15, 23, 42, 0.08);
+}
+.writing-card:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+.writing-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+}
+.writing-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--brand);
+}
+.writing-title {
+  padding-right: 20px;
+  font-size: 0.97rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--text-primary);
+  word-break: keep-all;
+  transition: color 0.18s ease;
+}
+.writing-card:hover .writing-title,
+.writing-card:focus-visible .writing-title {
+  color: var(--accent);
+}
+.writing-cat {
+  display: inline-block;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-muted);
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+.writing-sub {
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  word-break: keep-all;
+}
+.writing-go {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0.45;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease,
+    color 0.18s ease;
+}
+.writing-card:hover .writing-go,
+.writing-card:focus-visible .writing-go {
+  opacity: 1;
+  color: var(--accent);
+  transform: translateX(3px);
+}
+.writing-card.ext:hover .writing-go,
+.writing-card.ext:focus-visible .writing-go {
+  transform: translate(2px, -2px);
+}
+@media (max-width: 640px) {
+  .writing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .writing-card,
+  .writing-go,
+  .writing-title {
+    transition: none;
+  }
+  .writing-card:hover,
+  .writing-card:focus-visible,
+  .writing-card:hover .writing-go,
+  .writing-card:focus-visible .writing-go {
+    transform: none;
+  }
 }
 
 .exp-groups {
