@@ -1023,7 +1023,7 @@ ul {
 /* 첫 화면: Project (카드 없이 글로만) */
 .project-plain {
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 .project-plain-head {
   display: flex;
@@ -1037,14 +1037,80 @@ ul {
   font-weight: 700;
   color: var(--text-primary);
 }
-.project-plain-link {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  transition: color 0.15s;
+.project-site-card {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  padding: 10px 16px 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
-.project-plain-link:hover {
+.project-site-card:hover {
+  transform: translateY(-2px);
+  border-color: #bfd0f7;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+.project-site-card:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+.project-site-icon {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+.project-site-text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.35;
+}
+.project-site-url {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color 0.18s ease;
+}
+.project-site-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.project-site-go {
+  margin-left: 6px;
+  color: var(--text-muted);
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease;
+}
+.project-site-card:hover .project-site-url,
+.project-site-card:focus-visible .project-site-url,
+.project-site-card:hover .project-site-go,
+.project-site-card:focus-visible .project-site-go {
   color: var(--accent);
+}
+.project-site-card:hover .project-site-go,
+.project-site-card:focus-visible .project-site-go {
+  transform: translate(2px, -2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-site-card,
+  .project-site-go {
+    transition: none;
+  }
+  .project-site-card:hover,
+  .project-site-card:hover .project-site-go,
+  .project-site-card:focus-visible .project-site-go {
+    transform: none;
+  }
 }
 .project-plain .about-text strong {
   color: inherit;
