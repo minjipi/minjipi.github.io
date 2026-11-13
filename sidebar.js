@@ -110,7 +110,7 @@
 
       return `
         <div class="cat-group">
-          <button class="cat-toggle" onclick="toggleCat(this)">
+          <button class="cat-toggle" data-group="${label}" onclick="toggleCat(this)">
             ${chevronSVG}
             ${label}
           </button>
@@ -166,15 +166,55 @@
       .join("");
   }
 
+  // 페이지를 옮겨도 카테고리가 그 자리에 있도록: 스크롤 위치와 접은 그룹을 탭 단위로 기억
+  const STATE_KEY = "minj-sidebar";
+
+  function saveState() {
+    const sidebar = document.getElementById("sidebar");
+    if (!sidebar) return;
+    const closed = [...sidebar.querySelectorAll(".cat-toggle.collapsed")].map(
+      (b) => b.dataset.group,
+    );
+    try {
+      sessionStorage.setItem(
+        STATE_KEY,
+        JSON.stringify({ scroll: sidebar.scrollTop, closed }),
+      );
+    } catch (e) {}
+  }
+
+  function restoreState(sidebar) {
+    let state = null;
+    try {
+      state = JSON.parse(sessionStorage.getItem(STATE_KEY));
+    } catch (e) {}
+    if (!state) return;
+    (state.closed || []).forEach((name) => {
+      sidebar.querySelectorAll(".cat-toggle[data-group]").forEach((btn) => {
+        if (btn.dataset.group !== name) return;
+        btn.classList.add("collapsed");
+        btn.nextElementSibling.classList.add("closed");
+      });
+    });
+    if (state.scroll) sidebar.scrollTop = state.scroll;
+  }
+
   function toggleCat(btn) {
     btn.classList.toggle("collapsed");
     btn.nextElementSibling.classList.toggle("closed");
+    saveState();
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById("sidebar");
-    if (sidebar) sidebar.innerHTML = buildSidebar();
+    if (!sidebar) return;
+    sidebar.innerHTML = buildSidebar();
+    restoreState(sidebar);
+    sidebar.addEventListener("click", (e) => {
+      if (e.target.closest("a")) saveState();
+    });
   });
+  window.addEventListener("pagehide", saveState);
 
   // toggleCat을 전역으로 노출 (HTML의 onclick에서 호출)
   window.toggleCat = toggleCat;
